@@ -12,9 +12,9 @@ private let kMicSeatCellId = "kMicSeatCellId"
 
 /// 麦位管理组件
 public class AUiMicSeatView: UIView {
-    weak var uiDelegate: AUiMicSeatViewDelegate?
+    public weak var uiDelegate: AUiMicSeatViewDelegate?
     
-    lazy var collectionView: UICollectionView = {
+    public lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         let width: CGFloat = 56//min(bounds.size.width / 4.0, bounds.size.height / 2)
         let height: CGFloat = 106

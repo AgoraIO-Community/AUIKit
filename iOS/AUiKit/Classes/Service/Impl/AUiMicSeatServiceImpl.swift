@@ -9,7 +9,6 @@ import Foundation
 import AgoraRtcKit
 import YYModel
 
-let kMicSeatCount = 8
 
 //麦位Service实现
 open class AUiMicSeatServiceImpl: NSObject {

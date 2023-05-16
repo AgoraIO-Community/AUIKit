@@ -128,13 +128,14 @@ private let kSearchMusicListKey: Int = 10000
 
 /// 点歌器组件
 open class AUiJukeBoxView: UIView {
+    public var pageSize: Int = 10
     @objc var cellHeight: CGFloat = 84 {
         didSet {
             self.allMusicTableView.reloadData()
             self.addedMusicTableView.reloadData()
         }
     }
-    weak var uiDelegate: AUiJukeBoxViewDelegate? {
+    public weak var uiDelegate: AUiJukeBoxViewDelegate? {
         didSet {
             onSegmentAction()
         }
@@ -330,7 +331,7 @@ extension AUiJukeBoxView {
             self.allMusicTableView.mj_header?.endRefreshing()
             self.allMusicTableView.reloadData()
             
-            if list?.count ?? 0 < kListPageCount {
+            if list?.count ?? 0 < self.pageSize {
                 return
             }
             
@@ -350,7 +351,7 @@ extension AUiJukeBoxView {
             self.allMusicTableView.mj_footer?.endRefreshing()
             self.allMusicTableView.reloadData()
             
-            guard list?.count ?? 0 < kListPageCount else {
+            guard list?.count ?? 0 < self.pageSize else {
                 return
             }
             

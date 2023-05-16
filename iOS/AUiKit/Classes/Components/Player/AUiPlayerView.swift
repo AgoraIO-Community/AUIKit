@@ -21,14 +21,14 @@ import AgoraLyricsScore
     case acc               //伴奏
 }
 
-enum joinChorusState {
+public enum JoinChorusState {
     case none //主唱
     case before //观众加入合唱前
     case loding //加入合唱过程中
     case after //合唱
 }
 
-protocol AUiKaraokeLrcViewDelegate: NSObjectProtocol {
+public protocol AUiKaraokeLrcViewDelegate: NSObjectProtocol {
     func didJoinChorus()
     func didLeaveChorus()
 }
@@ -62,8 +62,8 @@ open class AUiPlayerView: UIView {
         }
     }
     
-    weak var delegate: AUiKaraokeLrcViewDelegate?
-    var joinState: joinChorusState = .none {
+    public weak var delegate: AUiKaraokeLrcViewDelegate?
+    public var joinState: JoinChorusState = .none {
         didSet {
             switch joinState {
             case .none:
@@ -107,13 +107,13 @@ open class AUiPlayerView: UIView {
         }
     }
 
-    var selectSongBtnNeedHidden: Bool = true {
+    public var selectSongBtnNeedHidden: Bool = true {
         didSet {
             selectSongButton.isHidden = selectSongBtnNeedHidden
         }
     }
     
-    var musicInfo: AUiChooseMusicModel? {
+    public var musicInfo: AUiChooseMusicModel? {
         didSet {
             guard let musicInfo = musicInfo
             else {
@@ -221,7 +221,7 @@ open class AUiPlayerView: UIView {
     }()
     
     //加入合唱按钮
-    lazy var joinChorusButton: AUiButton = {
+    public lazy var joinChorusButton: AUiButton = {
         let theme = AUiButtonDynamicTheme()
         theme.buttonWitdth = "Player.JoinChorusButtonWidth"
         theme.buttonHeight = "Player.JoinChorusButtonHeight"
@@ -238,7 +238,7 @@ open class AUiPlayerView: UIView {
     }()
     
     //离开合唱按钮
-    lazy var leaveChorusBtn: AUiButton = {
+    public lazy var leaveChorusBtn: AUiButton = {
         let theme = AUiButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconLeaveChorus"
         theme.cornerRadius = nil
@@ -252,7 +252,7 @@ open class AUiPlayerView: UIView {
     }()
     
     //暂停播放按钮
-    lazy var playOrPauseButton: AUiButton = {
+    public lazy var playOrPauseButton: AUiButton = {
         let theme = AUiButtonDynamicTheme.toolbarTheme()
         theme.selectedIcon = "Player.playerLrcItemIconPlay"
         theme.icon = "Player.playerLrcItemIconPause"
@@ -266,7 +266,7 @@ open class AUiPlayerView: UIView {
     }()
     
     //切歌按钮
-    lazy var nextSongButton: AUiButton = {
+    public lazy var nextSongButton: AUiButton = {
         let theme = AUiButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconNext"
         let button = AUiButton()
@@ -278,7 +278,7 @@ open class AUiPlayerView: UIView {
     }()
     
     //点歌按钮
-    lazy var chooseSongButton: AUiButton = {
+    public lazy var chooseSongButton: AUiButton = {
         let theme = AUiButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconChooseSong"
         let button = AUiButton()
@@ -290,7 +290,7 @@ open class AUiPlayerView: UIView {
     }()
     
     //原唱按钮
-    lazy var originalButton: AUiButton = {
+    public lazy var originalButton: AUiButton = {
         let theme = AUiButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconAcc"
         theme.selectedIcon = "Player.playerLrcItemIconOriginal"

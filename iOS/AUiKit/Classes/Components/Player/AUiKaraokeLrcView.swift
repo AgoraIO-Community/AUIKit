@@ -9,7 +9,7 @@ import UIKit
 import AgoraLyricsScore
 import ScoreEffectUI
 
-@objc protocol AUiLrcViewDelegate: NSObjectProtocol {
+@objc public protocol AUiLrcViewDelegate: NSObjectProtocol {
     func onKaraokeView( didDragTo position: Int)
     func onKaraokeView(score: Int, totalScore: Int, lineScore: Int, lineIndex: Int)
 }
@@ -38,7 +38,7 @@ public class AUiKaraokeLrcView: UIView {
     private var hasShowEpilogueOnce: Bool = false
     public var skipCallBack: ((Int, Bool) -> Void)?
     public var showSkipCallBack: ((SkipType) -> Void)?
-    weak var delegate: AUiLrcViewDelegate?
+    public weak var delegate: AUiLrcViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

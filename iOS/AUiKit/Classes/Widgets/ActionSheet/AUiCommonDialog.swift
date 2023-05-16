@@ -86,7 +86,7 @@ open class AUiCommonDialog: UIView {
     }
     
     @discardableResult
-    class func show(contentView: UIView) -> AUiCommonDialog? {
+    public class func show(contentView: UIView) -> AUiCommonDialog? {
         guard let window = getWindow() else {
             return nil
         }
@@ -101,7 +101,7 @@ open class AUiCommonDialog: UIView {
         return dialog
     }
     
-    class func hidden() {
+    public class func hidden() {
         guard let dialog = getDialog() else {
             return
         }
@@ -109,14 +109,14 @@ open class AUiCommonDialog: UIView {
         dialog.hidden()
     }
     
-    func show() {
+    public func show() {
         UIView.animate(withDuration: 0.3) {
             self.contentView.aui_bottom = self.aui_height
         } completion: { flag in
         }
     }
     
-    func hidden() {
+    public func hidden() {
         UIView.animate(withDuration: 0.3) {
             self.contentView.aui_top = self.aui_height
         } completion: { flag in
@@ -124,7 +124,7 @@ open class AUiCommonDialog: UIView {
         }
     }
     
-    func setStyle(style: AUiCommonDialogStyle) {
+    public func setStyle(style: AUiCommonDialogStyle) {
         indicatorView.backgroundColor = style.indicatorColor
         contentControlView.backgroundColor = style.contentControlColor
     }
