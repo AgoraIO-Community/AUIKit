@@ -10,7 +10,7 @@ import Foundation
 
 
 /// 房间管理抽象协议
-public protocol AUiRoomManagerDelegate: NSObject {
+public protocol AUiRoomManagerDelegate: NSObjectProtocol {
     
     /// 绑定响应
     /// - Parameter delegate: 需要回调的对象
@@ -55,7 +55,7 @@ public protocol AUiRoomManagerDelegate: NSObject {
 }
 
 /// 房间操作对应的响应
-public protocol AUiRoomManagerRespDelegate: NSObject {
+public protocol AUiRoomManagerRespDelegate: NSObjectProtocol {
 
     /// 房间被销毁的回调
     /// - Parameter roomId: 房间id
