@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group01">
+        <item
+            android:id="@+id/voice_origin"
+            android:title="原声"
+            android:icon="@mipmap/ic_none"
+            />
+
+        <item
+            android:id="@+id/voice_tongsheng"
+            android:title="童声"
+            android:icon="@mipmap/ic_voice_tongsheng"/>
+
+        <item
+            android:id="@+id/voice_luoli"
+            android:title="萝莉声"
+            android:icon="@mipmap/ic_voice_luoli"/>
+
+        <item
+            android:id="@+id/voice_dashu"
+            android:title="大叔声"
+            android:icon="@mipmap/ic_voice_dashu"/>
+
+        <item
+            android:id="@+id/voice_konglin"
+            android:title="空灵声"
+            android:icon="@mipmap/ic_voice_konglin"/>
+
+    </group>
+
+    <group
+        android:id="@+id/group02">
+        <item
+            android:id="@+id/voice_origin2"
+            android:title="原声2"
+            android:icon="@mipmap/ic_none"
+            />
+
+        <item
+            android:id="@+id/voice_tongsheng2"
+            android:title="童声2"
+            android:icon="@mipmap/ic_voice_tongsheng"/>
+
+        <item
+            android:id="@+id/voice_luoli2"
+            android:title="萝莉声2"
+            android:icon="@mipmap/ic_voice_luoli"/>
+
+        <item
+            android:id="@+id/voice_dashu2"
+            android:title="大叔声2"
+            android:icon="@mipmap/ic_voice_dashu"/>
+
+        <item
+            android:id="@+id/voice_konglin2"
+            android:title="空灵声2"
+            android:icon="@mipmap/ic_voice_konglin"/>
+
+    </group>
+
+    <group
+        android:id="@+id/group03">
+        <item
+            android:id="@+id/voice_origin3"
+            android:title="原声3"
+            android:icon="@mipmap/ic_none"
+            />
+
+        <item
+            android:id="@+id/voice_tongsheng3"
+            android:title="童声3"
+            android:icon="@mipmap/ic_voice_tongsheng"/>
+
+        <item
+            android:id="@+id/voice_luoli3"
+            android:title="萝莉声3"
+            android:icon="@mipmap/ic_voice_luoli"/>
+
+        <item
+            android:id="@+id/voice_dashu3"
+            android:title="大叔声3"
+            android:icon="@mipmap/ic_voice_dashu"/>
+
+        <item
+            android:id="@+id/voice_konglin3"
+            android:title="空灵声3"
+            android:icon="@mipmap/ic_voice_konglin"/>
+
+    </group>
+
+</menu>

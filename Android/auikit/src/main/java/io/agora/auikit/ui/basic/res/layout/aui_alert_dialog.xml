@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentPanel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:minWidth="?attr/aui_alertDialog_minWidth"
+    android:orientation="vertical"
+    android:padding="?attr/aui_alertDialog_contentPadding"
+    android:paddingStart="?attr/aui_alertDialog_contentPaddingStart"
+    android:paddingTop="?attr/aui_alertDialog_contentPaddingTop"
+    android:paddingEnd="?attr/aui_alertDialog_contentPaddingEnd"
+    android:paddingBottom="?attr/aui_alertDialog_contentPaddingBottom"
+    tools:theme="@style/AUiAlertDialog">
+
+    <LinearLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="?attr/aui_alertDialog_titleGravity"
+                android:singleLine="true"
+                android:textColor="?attr/aui_alertDialog_titleTextColor"
+                android:textSize="?attr/aui_alertDialog_titleTextSize" />
+
+            <ImageView
+                android:id="@+id/ivTitleClose"
+                android:layout_width="?attr/aui_alertDialog_titleCloseIconSize"
+                android:layout_height="?attr/aui_alertDialog_titleCloseIconSize"
+                android:src="?attr/aui_alertDialog_titleCloseIcon"
+                app:tint="?attr/aui_alertDialog_titleCloseIconColor"
+                android:visibility="gone"
+                android:layout_gravity="end|center_vertical"/>
+
+        </FrameLayout>
+
+
+        <android.widget.Space
+            android:id="@+id/titleDividerNoCustom"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/aui_alertDialog_titleSpaceBottom" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.widget.Space
+                    android:id="@+id/messageSpaceTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/aui_alertDialog_messageSpaceTop"
+                    android:visibility="?attr/aui_alertDialog_messageVisible" />
+
+                <TextView
+                    android:id="@+id/tvMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="?attr/aui_alertDialog_messageGravity"
+                    android:text="?attr/aui_alertDialog_messageText"
+                    android:textColor="?attr/aui_alertDialog_messageTextColor"
+                    android:textSize="?attr/aui_alertDialog_messageTextSize"
+                    android:visibility="?attr/aui_alertDialog_messageVisible" />
+
+                <android.widget.Space
+                    android:id="@+id/messageSpaceBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/aui_alertDialog_messageSpaceBottom"
+                    android:visibility="?attr/aui_alertDialog_messageVisible" />
+
+                <android.widget.Space
+                    android:id="@+id/inputSpaceTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/aui_alertDialog_inputSpaceTop"
+                    android:visibility="?attr/aui_alertDialog_inputVisible" />
+
+                <io.agora.auikit.ui.basic.AUiEditText
+                    android:id="@+id/inputEditText"
+                    style="?attr/aui_alertDialog_inputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="?attr/aui_alertDialog_inputVisible" />
+
+                <android.widget.Space
+                    android:id="@+id/inputSpaceBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/aui_alertDialog_inputSpaceBottom"
+                    android:visibility="?attr/aui_alertDialog_inputVisible" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/customPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/buttonPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollIndicators="top|bottom">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:layoutDirection="locale"
+            android:orientation="horizontal">
+
+
+            <io.agora.auikit.ui.basic.AUiButton
+                android:id="@+id/buttonNegative"
+                style="?attr/aui_alertDialog_buttonNegativeStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="?attr/aui_alertDialog_buttonNegativeVisible"
+                app:aui_button_text="?attr/aui_alertDialog_buttonNegativeText" />
+
+            <android.widget.Space
+                android:id="@+id/buttonSpacer"
+                android:layout_width="?attr/aui_alertDialog_buttonSpacer"
+                android:layout_height="0dp"
+                android:visibility="?attr/aui_alertDialog_buttonNegativeVisible" />
+
+            <io.agora.auikit.ui.basic.AUiButton
+                android:id="@+id/buttonPositive"
+                style="?attr/aui_alertDialog_buttonPositiveStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:aui_button_text="?attr/aui_alertDialog_buttonPositiveText" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

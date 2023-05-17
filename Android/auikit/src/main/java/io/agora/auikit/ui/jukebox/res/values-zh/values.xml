@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="aui_jukebox_title_choose_song">点歌</string>
+    <string name="aui_jukebox_title_chosen_song">已点</string>
+    <string name="aui_jukebox_search_hint">搜索歌曲</string>
+    <string name="aui_jukebox_song_choose">点歌</string>
+    <string name="aui_jukebox_song_chosen">已点</string>
+    <string name="aui_jukebox_sing_solo">独唱</string>
+    <string name="aui_jukebox_sing_chorus">合唱</string>
+    <string name="aui_jukebox_song_playing">演唱中</string>
+</resources>

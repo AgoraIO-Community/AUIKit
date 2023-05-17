@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_previous_step">Previous</string>
+    <string name="aui_next_step">Next</string>
+    <string name="aui_home">Home</string>
+    <string name="aui_message">Message</string>
+    <string name="aui_music">Music</string>
+    <string name="aui_more">More</string>
+    <string name="aui_option">Option</string>
+    <string name="aui_confirm">Confirm</string>
+    <string name="aui_cancel">Cancel</string>
+</resources>

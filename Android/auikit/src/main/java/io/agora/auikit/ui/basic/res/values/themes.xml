@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.Basic" parent="Theme.MaterialComponents.Light">
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/aui_primary</item>
+        <item name="colorPrimaryVariant">@color/aui_primary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/aui_grey_light</item>
+        <item name="colorSecondaryVariant">@color/aui_grey_light</item>
+        <item name="colorOnSecondary">@color/aui_black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- 基础组件 -->
+        <!--         Button       -->
+        <item name="aui_button_appearance">@style/AUiButton</item>
+        <item name="aui_button_appearance_stroke">@style/AUiButton.Stroke</item>
+        <item name="aui_button_appearance_min">@style/AUiButton.Mini</item>
+        <item name="aui_button_appearance_min_stroke">@style/AUiButton.Mini.Stroke</item>
+        <item name="aui_button_appearance_circle">@style/AUiButton.Circle</item>
+        <item name="aui_button_appearance_circle_stroke">@style/AUiButton.Circle.Stroke</item>
+        <!--         EditText       -->
+        <item name="aui_editText_appearance">@style/AUiEditText</item>
+        <item name="aui_editText_appearance_outline">@style/AUiEditText.OutLine</item>
+        <!--         BottomDialog       -->
+        <item name="aui_bottomDialog_appearance">@style/AUiBottomDialog</item>
+        <!--         AlertDialog       -->
+        <item name="aui_alertDialog_appearance">@style/AUiAlertDialog</item>
+        <item name="aui_alertDialog_appearance_outline">@style/AUiAlertDialog.Outline</item>
+        <!--         Dividers       -->
+        <item name="aui_dividers_appearance">@style/AUiDividers</item>
+        <!--         TitleBar       -->
+        <item name="aui_titleBar_appearance">@style/AUiTitleBar</item>
+        <!--         NavigationBar       -->
+        <item name="aui_navigationBar_appearance">@style/AUiNavigationBar</item>
+        <!--         TabLayout       -->
+        <item name="aui_tabLayout_appearance">@style/AUiTabLayout</item>
+        <item name="aui_tabLayout_appearance_round">@style/AUiTabLayout.Round</item>
+        <!--         AUiCellText       -->
+        <item name="aui_cellText_appearance">@style/AUiCellText</item>
+    </style>
+
+</resources>

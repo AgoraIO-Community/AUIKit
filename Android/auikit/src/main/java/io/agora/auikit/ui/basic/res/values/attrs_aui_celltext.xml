@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_cellText_appearance" format="reference"/>
+
+    <declare-styleable name="AUiCellText">
+
+        <!-- Title -->
+        <attr name="aui_cellText_title_text" format="string" />
+        <attr name="aui_cellText_title_textColor" format="color" />
+        <attr name="aui_cellText_title_textSize" format="dimension" />
+
+        <attr name="aui_cellText_asterisk_show" format="boolean" />
+
+        <!-- Info Text -->
+        <attr name="aui_cellText_info_text" format="string" />
+        <attr name="aui_cellText_info_textColor" format="color" />
+        <attr name="aui_cellText_info_textSize" format="dimension" />
+
+        <!-- Sub Title Text -->
+        <attr name="aui_cellText_subtitle_text" format="string" />
+        <attr name="aui_cellText_subtitle_textColor" format="color" />
+        <attr name="aui_cellText_subtitle_textSize" format="dimension" />
+
+        <!-- 指示图标 -->
+        <attr name="aui_cellText_indicator_icon" format="reference" />
+        <attr name="aui_cellText_indicator_show" format="boolean" />
+
+        <!-- 选项开关 -->
+        <attr name="aui_cellText_checkBox_show" format="boolean" />
+
+        <!-- 红点显示值 -->
+        <attr name="aui_cellText_red_dot_num" format="integer" />
+
+        <!-- 分割线 -->
+        <attr name="aui_cellText_divider_show" format="boolean" />
+        <attr name="aui_cellText_divider_color" format="color" />
+    </declare-styleable>
+
+    <style name="AUiCellText">
+
+        <!-- Title -->
+        <item name="aui_cellText_title_textColor">@color/aui_black</item>
+        <item name="aui_cellText_title_textSize">17sp</item>
+
+        <item name="aui_cellText_asterisk_show">false</item>
+
+        <!-- Info Text -->
+        <item name="aui_cellText_info_textColor">@color/aui_black_light</item>
+        <item name="aui_cellText_info_textSize">12sp</item>
+
+        <!-- Sub Title Text -->
+        <item name="aui_cellText_subtitle_textColor">@color/aui_grey</item>
+        <item name="aui_cellText_subtitle_textSize">17sp</item>
+
+        <item name="aui_cellText_indicator_icon">@drawable/aui_bottom_dialog_page_indicator</item>
+        <item name="aui_cellText_indicator_show">false</item>
+
+        <item name="aui_cellText_checkBox_show">false</item>
+
+        <item name="aui_cellText_red_dot_num">0</item>
+
+        <item name="aui_cellText_divider_show">true</item>
+        <item name="aui_cellText_divider_color">@color/aui_grey_light</item>
+    </style>
+</resources>

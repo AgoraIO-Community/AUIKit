@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_jukebox_title_choose_song">ChooseSong</string>
+    <string name="aui_jukebox_title_chosen_song">ChosenSong</string>
+    <string name="aui_jukebox_search_hint">Search Songs</string>
+    <string name="aui_jukebox_song_choose">Choose</string>
+    <string name="aui_jukebox_song_chosen">Chosen</string>
+    <string name="aui_jukebox_sing_solo">Solo</string>
+    <string name="aui_jukebox_sing_chorus">Chorus</string>
+    <string name="aui_jukebox_song_playing">Playing</string>
+</resources>

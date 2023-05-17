@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:theme="?attr/aui_micSeatDialog_appearance">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="?attr/aui_micSeatDialog_marginTop"
+        android:background="?attr/aui_micSeatDialog_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="?attr/aui_micSeatDialog_padding"
+        android:paddingVertical="10dp"
+        android:text="?attr/aui_micSeatDialog_titleText"
+        android:textColor="?attr/aui_micSeatDialog_titleTextColor"
+        android:textSize="?attr/aui_micSeatDialog_titleTextSize"
+        android:visibility="?attr/aui_micSeatDialog_titleVisibility"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?attr/aui_micSeatDialog_buttonsDivider"
+        android:dividerPadding="?attr/aui_micSeatDialog_buttonsDividerPadding"
+        android:orientation="?attr/aui_micSeatDialog_buttonsOrientation"
+        android:padding="?attr/aui_micSeatDialog_padding"
+        android:showDividers="middle"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="?attr/aui_micSeatDialog_buttonsMarginTop"
+        android:layout_marginBottom="?attr/aui_micSeatDialog_buttonsMarginBottom"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ctl_user"
+            android:layout_marginBottom="?attr/aui_micSeatDialog_buttonsMarginBottom"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_user_avatar"
+                android:layout_width="?attr/aui_micSeatDialog_userAvatarWidth"
+                android:layout_height="?attr/aui_micSeatDialog_userAvatarHeight"
+                android:src="?attr/aui_micSeatDialog_userAvatarIdle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="?attr/aui_micSeatDialog_userNameTextColor"
+                android:textSize="?attr/aui_micSeatDialog_userNameTextSize"
+                android:layout_marginTop="?attr/aui_micSeatDialog_userNameMarginTop"
+                app:layout_constraintBottom_toTopOf="@id/tv_user_info"
+                app:layout_constraintStart_toEndOf="@id/iv_user_avatar"
+                app:layout_constraintTop_toTopOf="@id/iv_user_avatar"
+                tools:text="用户名" />
+
+            <TextView
+                android:id="@+id/tv_user_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/aui_micSeatDialog_userDesTextColor"
+                android:textSize="?attr/aui_micSeatDialog_userDesTextSize"
+                android:visibility="?attr/aui_micSeatDialog_userDesVisible"
+                app:layout_constraintBottom_toBottomOf="@id/iv_user_avatar"
+                app:layout_constraintStart_toStartOf="@id/tv_user_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+                tools:text="?attr/aui_micSeatDialog_userDesText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_enter_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:text="@string/aui_micseat_dialog_up_seat"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:textColor="?attr/aui_micSeatDialog_buttonNormalTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_leave_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:text="@string/aui_micseat_dialog_down_seat"
+            android:visibility="gone"
+            android:textColor="?attr/aui_micSeatDialog_buttonNormalTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize" />
+
+        <TextView
+            android:id="@+id/tv_kick_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:gravity="center"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:text="@string/aui_micseat_dialog_kick_out_seat"
+            android:visibility="gone"
+            android:textColor="?attr/aui_micSeatDialog_buttonNormalTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize" />
+
+        <TextView
+            android:id="@+id/tv_mute_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:text="@string/aui_micseat_dialog_mute_audio"
+            android:visibility="gone"
+            android:textColor="?attr/aui_micSeatDialog_buttonNormalTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize" />
+
+        <TextView
+            android:id="@+id/tv_mute_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:text="@string/aui_micseat_dialog_mute_video"
+            android:visibility="gone"
+            android:textColor="?attr/aui_micSeatDialog_buttonNormalTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize" />
+
+        <TextView
+            android:id="@+id/tv_lock_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:text="@string/aui_micseat_dialog_close_seat"
+            android:textColor="?attr/aui_micSeatDialog_buttonAbandonTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
