@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_tabLayout_appearance" format="reference"/>
+    <attr name="aui_tabLayout_appearance_round" format="reference"/>
+
+    <declare-styleable name="AUiTabLayout">
+        <attr name="android:background" format="color|reference" />
+        <attr name="android:padding" format="dimension" />
+
+        <!-- 分隔线 -->
+        <attr name="aui_tabLayout_divider" format="color|reference" />
+        <attr name="aui_tabLayout_dividerHeight" format="dimension" />
+
+
+        <!-- Tab显示模式 -->
+        <attr name="aui_tabLayout_tabMode">
+            <enum name="scrollable" value="0"/>
+            <enum name="fixed" value="1"/>
+            <enum name="auto" value="2"/>
+        </attr>
+        <attr name="aui_tabLayout_tabGravity">
+            <enum name="fill" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="start" value="2"/>
+        </attr>
+
+        <!-- 指示器 -->
+        <attr name="aui_tabLayout_indicator" format="reference" />
+        <attr name="aui_tabLayout_indicatorFullWidth" format="boolean" />
+        <attr name="aui_tabLayout_indicatorGravity">
+            <!-- Align indicator to the bottom of this tab layout. -->
+            <enum name="bottom" value="0"/>
+            <!-- Align indicator along the center of this tab layout. -->
+            <enum name="center" value="1"/>
+            <!-- Align indicator to the top of this tab layout. -->
+            <enum name="top" value="2"/>
+            <!-- Stretch indicator to match the height and width of a tab item in this layout. -->
+            <enum name="stretch" value="3"/>
+        </attr>
+
+
+        <!-- ======= Menu配置 ======= -->
+        <attr name="aui_tabLayout_menu" format="reference" />
+        <attr name="aui_tabLayout_menu_appearance" format="reference"/>
+
+
+    </declare-styleable>
+
+    <declare-styleable name="AUiTabLayoutMenu">
+        <!-- 布局id -->
+        <attr name="android:id" />
+        <attr name="aui_tabLayoutMenu_layout" format="reference" />
+
+        <!-- 是否选中 -->
+        <attr name="aui_tabLayoutMenu_selected" format="boolean" />
+
+        <!-- 标题 -->
+        <attr name="android:title" />
+        <attr name="aui_tabLayoutMenu_titleTextSize" format="dimension"/>
+        <attr name="aui_tabLayoutMenu_titleTextColor" format="color"/>
+        <attr name="aui_tabLayoutMenu_titleTextColorSelected" format="color"/>
+
+        <!-- 图标 -->
+        <attr name="android:icon" />
+        <attr name="aui_tabLayoutMenu_iconTint" format="color"/>
+        <attr name="aui_tabLayoutMenu_iconTintSelected" format="color"/>
+        <attr name="aui_tabLayoutMenu_iconWidth" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_tabLayoutMenu_iconHeight" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_tabLayoutMenu_iconPadding" format="dimension"/>
+        <attr name="aui_tabLayoutMenu_iconPaddingStart" format="dimension"/>
+        <attr name="aui_tabLayoutMenu_iconPaddingTop" format="dimension"/>
+        <attr name="aui_tabLayoutMenu_iconPaddingEnd" format="dimension"/>
+        <attr name="aui_tabLayoutMenu_iconPaddingBottom" format="dimension"/>
+
+        <!-- 小红点 -->
+        <attr name="aui_tabLayoutMenu_dotWidth" format="dimension" >
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_tabLayoutMenu_dotHeight" format="dimension" >
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_tabLayoutMenu_dotText" format="integer" />
+        <attr name="aui_tabLayoutMenu_dotTextSize" format="dimension" />
+        <attr name="aui_tabLayoutMenu_dotTextColor" format="color" />
+        <attr name="aui_tabLayoutMenu_dotBackgroundColor" format="color" />
+        <attr name="aui_tabLayoutMenu_dotPadding" format="dimension" />
+        <attr name="aui_tabLayoutMenu_dotPaddingStart" format="dimension" />
+        <attr name="aui_tabLayoutMenu_dotPaddingTop" format="dimension" />
+        <attr name="aui_tabLayoutMenu_dotPaddingEnd" format="dimension" />
+        <attr name="aui_tabLayoutMenu_dotPaddingBottom" format="dimension" />
+    </declare-styleable>
+
+    <style name="AUiTabLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">0dp</item>
+
+        <!-- Tab显示模式 -->
+        <item name="aui_tabLayout_tabMode">fixed</item>
+        <item name="aui_tabLayout_tabGravity">fill</item>
+
+        <!-- 指示器 -->
+        <item name="aui_tabLayout_indicator">@drawable/aui_tab_layout_indicator</item>
+        <item name="aui_tabLayout_indicatorFullWidth">false</item>
+        <item name="aui_tabLayout_indicatorGravity">bottom</item>
+
+
+        <!-- 分隔线 -->
+        <item name="aui_tabLayout_divider">@drawable/aui_tab_layout_divider</item>
+        <item name="aui_tabLayout_dividerHeight">1dp</item>
+
+        <!-- ====== Menu配置 ====== -->
+        <item name="aui_tabLayout_menu">@menu/aui_tab_menu</item>
+        <item name="aui_tabLayout_menu_appearance">@style/AUiTabLayoutMenu</item>
+
+    </style>
+
+    <style name="AUiTabLayoutMenu">
+        <!-- 布局id -->
+        <item name="aui_tabLayoutMenu_layout">@layout/aui_tab_layout_item</item>
+
+        <!-- 是否选中 -->
+        <item name="aui_tabLayoutMenu_selected">false</item>
+
+        <!-- 标题 -->
+        <item name="aui_tabLayoutMenu_titleTextSize">16sp</item>
+        <item name="aui_tabLayoutMenu_titleTextColor">@color/aui_black_light</item>
+        <item name="aui_tabLayoutMenu_titleTextColorSelected">@color/aui_black</item>
+
+        <!-- 图标 -->
+        <item name="aui_tabLayoutMenu_iconTint">@color/aui_primary_light</item>
+        <item name="aui_tabLayoutMenu_iconTintSelected">@color/aui_primary</item>
+        <item name="aui_tabLayoutMenu_iconWidth">wrap_content</item>
+        <item name="aui_tabLayoutMenu_iconHeight">wrap_content</item>
+        <item name="aui_tabLayoutMenu_iconPadding">@null</item>
+        <item name="aui_tabLayoutMenu_iconPaddingStart">@null</item>
+        <item name="aui_tabLayoutMenu_iconPaddingTop">@null</item>
+        <item name="aui_tabLayoutMenu_iconPaddingEnd">3dp</item>
+        <item name="aui_tabLayoutMenu_iconPaddingBottom">@null</item>
+
+        <!-- 小红点 -->
+        <item name="aui_tabLayoutMenu_dotWidth">wrap_content</item>
+        <item name="aui_tabLayoutMenu_dotHeight">wrap_content</item>
+        <item name="aui_tabLayoutMenu_dotTextSize">11sp</item>
+        <item name="aui_tabLayoutMenu_dotTextColor">@android:color/white</item>
+        <item name="aui_tabLayoutMenu_dotBackgroundColor">@android:color/holo_red_light</item>
+        <item name="aui_tabLayoutMenu_dotPadding">@null</item>
+        <item name="aui_tabLayoutMenu_dotPaddingStart">3dp</item>
+        <item name="aui_tabLayoutMenu_dotPaddingTop">1.5dp</item>
+        <item name="aui_tabLayoutMenu_dotPaddingEnd">3dp</item>
+        <item name="aui_tabLayoutMenu_dotPaddingBottom">3dp</item>
+    </style>
+
+    <style name="AUiTabLayout.Round">
+        <item name="android:background">@drawable/aui_tab_layout_round_background</item>
+        <item name="android:padding">1dp</item>
+        <item name="aui_tabLayout_dividerHeight">0dp</item>
+        <item name="aui_tabLayout_indicator">@drawable/aui_tab_layout_round_indicator</item>
+        <item name="aui_tabLayout_indicatorFullWidth">true</item>
+        <item name="aui_tabLayout_indicatorGravity">stretch</item>
+        <item name="aui_tabLayout_menu_appearance">@style/AUiTabLayoutMenu.Round</item>
+    </style>
+
+    <style name="AUiTabLayoutMenu.Round">
+        <item name="aui_tabLayoutMenu_titleTextColor">@color/aui_black_light</item>
+        <item name="aui_tabLayoutMenu_titleTextColorSelected">@color/aui_white</item>
+        <item name="aui_tabLayoutMenu_iconTintSelected">@color/aui_white</item>
+    </style>
+
+
+
+</resources>

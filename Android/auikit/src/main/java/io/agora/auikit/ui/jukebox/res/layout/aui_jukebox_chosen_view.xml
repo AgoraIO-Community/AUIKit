@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="?attr/aui_jukeboxChosen_appearance">
+
+    <io.agora.auikit.ui.basic.AUIRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="?attr/aui_jukeboxChosen_listPaddingHorizontal"
+        app:aui_listDivider="?attr/aui_jukeboxChosen_listDivider"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        tools:listitem="@layout/aui_jukebox_chosen_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

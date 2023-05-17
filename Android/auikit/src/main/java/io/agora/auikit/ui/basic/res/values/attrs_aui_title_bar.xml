@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_titleBar_appearance" format="reference"/>
+
+    <declare-styleable name="AUiTitleBar">
+        <!-- 背景色和间距 -->
+        <attr name="android:background" format="reference|color"/>
+        <attr name="android:padding" format="dimension"/>
+        <attr name="android:paddingStart" format="dimension"/>
+        <attr name="android:paddingTop" format="dimension"/>
+        <attr name="android:paddingEnd" format="dimension"/>
+        <attr name="android:paddingBottom" format="dimension"/>
+
+        <!-- 标题字体 -->
+        <attr name="aui_titleBar_titleText" format="string"/>
+        <attr name="aui_titleBar_titleTextSize" format="dimension"/>
+        <attr name="aui_titleBar_titleTextColor" format="color"/>
+        <attr name="aui_titleBar_titleMaxWidth" format="dimension"/>
+
+        <!-- 显示模式 -->
+        <attr name="aui_titleBar_mode">
+            <enum name="home" value="0x01"/>
+            <enum name="back" value="0x02"/>
+            <enum name="step" value="0x03"/>
+        </attr>
+
+        <!-- back模式下配置 -->
+        <attr name="aui_titleBar_backDrawable" format="reference"/>
+        <attr name="aui_titleBar_backWidth" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_titleBar_backHeight" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+
+        <!-- step模式下配置 -->
+        <attr name="aui_titleBar_stepTextSize" format="dimension"/>
+        <attr name="aui_titleBar_stepTextColor" format="color"/>
+        <attr name="aui_titleBar_stepPreviousText" format="string"/>
+        <attr name="aui_titleBar_stepNextText" format="string"/>
+
+    </declare-styleable>
+
+    <style name="AUiTitleBar">
+        <!-- 背景色和间距 -->
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">@null</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingBottom">10dp</item>
+
+        <!-- 标题字体 -->
+        <item name="aui_titleBar_titleTextSize">16sp</item>
+        <item name="aui_titleBar_titleTextColor">@color/aui_black</item>
+        <item name="aui_titleBar_titleMaxWidth">200dp</item>
+
+        <!-- 显示模式 -->
+        <item name="aui_titleBar_mode">home</item>
+
+        <!-- back模式下配置 -->
+        <item name="aui_titleBar_backDrawable">@drawable/aui_ic_back</item>
+        <item name="aui_titleBar_backWidth">wrap_content</item>
+        <item name="aui_titleBar_backHeight">wrap_content</item>
+
+        <!-- step模式下配置 -->
+        <item name="aui_titleBar_stepTextSize">16sp</item>
+        <item name="aui_titleBar_stepTextColor">@color/aui_primary</item>
+        <item name="aui_titleBar_stepPreviousText">@string/aui_previous_step</item>
+        <item name="aui_titleBar_stepNextText">@string/aui_next_step</item>
+
+    </style>
+
+</resources>

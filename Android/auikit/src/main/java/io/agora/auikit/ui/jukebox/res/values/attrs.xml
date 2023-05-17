@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--================= 主题属性 =================-->
+    <attr name="aui_jukebox_appearance" format="reference"/>
+    <attr name="aui_jukeboxChoose_appearance" format="reference"/>
+    <attr name="aui_jukeboxChosen_appearance" format="reference"/>
+    <attr name="aui_jukeboxChooseItem_appearance" format="reference"/>
+    <attr name="aui_jukeboxChosenItem_appearance" format="reference"/>
+
+    <!--================= 样式属性 =================-->
+
+    <!-- 点唱机样式 -->
+    <declare-styleable name="AUIJukeboxView">
+        <attr name="aui_jukebox_appearance"/>
+
+        <!-- 背景 -->
+        <attr name="aui_jukebox_background" format="reference|color"/>
+        <!-- 最小高度 -->
+        <attr name="aui_jukebox_minHeight" format="dimension"/>
+        <attr name="aui_jukebox_paddingTop" format="dimension"/>
+
+        <!-- 标题tab -->
+        <attr name="aui_jukebox_tab_layout_background" format="reference|color"/>
+        <attr name="aui_jukebox_tab_background" format="reference|color"/>
+        <attr name="aui_jukebox_titleTabChooseText" format="string" />
+        <attr name="aui_jukebox_titleTabChosenText" format="string" />
+        <attr name="aui_jukebox_titleTabMode">
+            <enum name="scrollable" value="0"/>
+            <enum name="fixed" value="1"/>
+            <enum name="auto" value="2"/>
+        </attr>
+        <attr name="aui_jukebox_titleTabGravity">
+            <enum name="fill" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="start" value="2"/>
+        </attr>
+        <attr name="aui_jukebox_titleTabTextColor" format="reference|color" />
+        <attr name="aui_jukebox_titleTabSelectedTextColor" format="color" />
+        <attr name="aui_jukebox_titleTabTextSize" format="dimension" />
+        <attr name="aui_jukebox_titleTabIndicator" format="reference" />
+        <attr name="aui_jukebox_titleTabDivider" format="reference" />
+
+        <!-- 标题数量标签tag -->
+        <attr name="aui_jukebox_numTagWidth" format="dimension" >
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukebox_numTagHeight" format="dimension" >
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukebox_numTagBackground" format="reference" />
+        <attr name="aui_jukebox_numTagTextColor" format="color" />
+        <attr name="aui_jukebox_numTagTextSize" format="dimension" />
+
+
+    </declare-styleable>
+
+    <style name="TextAppearance.Design.Tab.AUiJukeboxTitle" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">?attr/aui_jukebox_titleTabTextSize</item>
+    </style>
+    <style name="TextAppearance.Design.Tab.AUiJukeboxChooseCategory" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">?attr/aui_jukeboxChoose_categoryTabTextSize</item>
+    </style>
+
+
+    <!-- 点唱机点歌样式 -->
+    <declare-styleable name="AUIJukeboxChooseView">
+        <attr name="aui_jukeboxChoose_appearance"/>
+
+        <!-- 搜索输入框 -->
+        <attr name="aui_jukeboxChoose_searchBackground" format="reference"/>
+        <attr name="aui_jukeboxChoose_searchPaddingHorizontal" format="dimension"/>
+        <attr name="aui_jukeboxChoose_searchMarginHorizontal" format="dimension"/>
+        <attr name="aui_jukeboxChoose_searchInputMarginHorizontal" format="dimension"/>
+        <attr name="aui_jukeboxChoose_searchPaddingVertical" format="dimension"/>
+        <attr name="aui_jukeboxChoose_searchMarginVertical" format="dimension"/>
+        <attr name="aui_jukeboxChoose_searchIcon" format="reference"/>
+        <attr name="aui_jukeboxChoose_searchCloseIcon" format="reference"/>
+        <attr name="aui_jukeboxChoose_searchHintText" format="string"/>
+        <attr name="aui_jukeboxChoose_searchHintTextColor" format="color"/>
+        <attr name="aui_jukeboxChoose_searchTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChoose_searchTextColor" format="color"/>
+
+        <!-- 分类Tab -->
+        <attr name="aui_jukeboxChoose_categoryTabHeight" format="dimension" >
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukeboxChoose_categoryTabMode">
+            <enum name="scrollable" value="0"/>
+            <enum name="fixed" value="1"/>
+            <enum name="auto" value="2"/>
+        </attr>
+        <attr name="aui_jukeboxChoose_categoryTabGravity">
+            <enum name="fill" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="start" value="2"/>
+        </attr>
+        <attr name="aui_jukeboxChoose_categoryTabIndicator" format="reference" />
+        <attr name="aui_jukeboxChoose_categoryTabTextSize" format="dimension" />
+        <attr name="aui_jukeboxChoose_categoryTabTextColor" format="color" />
+        <attr name="aui_jukeboxChoose_categoryTabSelectedTextColor" format="color" />
+        <attr name="aui_jukeboxChoose_categoryTabDivider" format="reference" />
+
+        <!-- 列表分隔线 -->
+        <attr name="aui_jukeboxChoose_listDivider" format="reference"/>
+        <attr name="aui_jukeboxChoose_listPaddingHorizontal" format="dimension"/>
+
+    </declare-styleable>
+
+    <style name="ShapeAppearance.MaterialComponents.AUIJukeboxChooseItemCover" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">?attr/aui_jukeboxChooseItem_coverCircleRadius</item>
+    </style>
+
+    <!-- 点唱机歌曲样式 -->
+    <declare-styleable name="AUIJukeboxChooseItemView">
+        <attr name="aui_jukeboxChooseItem_appearance"/>
+
+        <attr name="aui_jukeboxChooseItem_paddingHorizontal" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_paddingVertical" format="dimension"/>
+
+        <!-- 歌词封面 -->
+        <attr name="aui_jukeboxChooseItem_coverWidth" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_coverHeight" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_coverCircleRadius" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_coverDefaultImg" format="reference|color"/>
+
+        <!-- 歌词名 -->
+        <attr name="aui_jukeboxChooseItem_songNameTextColor" format="color"/>
+        <attr name="aui_jukeboxChooseItem_songNameTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_songNameMarginStart" format="dimension"/>
+
+        <!-- 歌手名 -->
+        <attr name="aui_jukeboxChooseItem_singerNameTextColor" format="color"/>
+        <attr name="aui_jukeboxChooseItem_singerNameTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_singerNameMarginStart" format="dimension"/>
+
+        <!-- 点歌/已点(no check / checked)按钮 -->
+
+        <attr name="aui_jukeboxChooseItem_buttonWidth" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_buttonHeight" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_buttonBackground" format="reference"/>
+        <attr name="aui_jukeboxChooseItem_buttonTextColor" format="color"/>
+        <attr name="aui_jukeboxChooseItem_buttonTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChooseItem_buttonText" format="string"/>
+        <attr name="aui_jukeboxChooseItem_buttonCheckedText" format="string"/>
+
+
+    </declare-styleable>
+
+
+    <declare-styleable name="AUIJukeboxChosenView">
+        <attr name="aui_jukeboxChosen_appearance"/>
+
+        <!-- 列表分隔线 -->
+        <attr name="aui_jukeboxChosen_listDivider" format="reference"/>
+        <attr name="aui_jukeboxChosen_listPaddingHorizontal" format="dimension"/>
+
+    </declare-styleable>
+
+    <style name="ShapeAppearance.MaterialComponents.AUIJukeboxChosenItemCover" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">?attr/aui_jukeboxChosenItem_coverCircleRadius</item>
+    </style>
+
+    <!-- 点唱机已点歌曲样式 -->
+    <declare-styleable name="AUiJukeboxChosenItemView">
+        <attr name="aui_jukeboxChosenItem_appearance"/>
+
+        <attr name="aui_jukeboxChosenItem_paddingHorizontal" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_paddingVertical" format="dimension"/>
+
+        <!-- 标号 -->
+        <attr name="aui_jukeboxChosenItem_orderMinWidth" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_orderTextColor" format="color"/>
+        <attr name="aui_jukeboxChosenItem_orderTextSize" format="dimension"/>
+
+        <!-- 歌词封面 -->
+        <attr name="aui_jukeboxChosenItem_coverWidth" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_coverHeight" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_coverCircleRadius" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_coverDefaultImg" format="reference|color"/>
+
+        <!-- 歌词名 -->
+        <attr name="aui_jukeboxChosenItem_songNameTextColor" format="color"/>
+        <attr name="aui_jukeboxChosenItem_songNameTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_songNameMarginStart" format="dimension"/>
+
+        <!-- 点唱/合唱者 -->
+        <attr name="aui_jukeboxChosenItem_singerTextColor" format="color"/>
+        <attr name="aui_jukeboxChosenItem_singerTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_singerMarginStart" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_singerSoloText" format="string"/>
+        <attr name="aui_jukeboxChosenItem_singerChorusText" format="string"/>
+
+        <!-- 演唱中图标 -->
+        <attr name="aui_jukeboxChosenItem_playingTagSrc" format="reference|color"/>
+        <attr name="aui_jukeboxChosenItem_playingTagPadding" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_playingTagWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukeboxChosenItem_playingTagHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukeboxChosenItem_playingTagLocation">
+            <enum name="aboveOrder" value="1"/>
+            <enum name="toTextStart" value="2"/>
+        </attr>
+
+        <!-- 演唱中按钮 -->
+        <attr name="aui_jukeboxChosenItem_playingBtnBackground" format="reference"/>
+        <attr name="aui_jukeboxChosenItem_playingBtnText" format="string"/>
+        <attr name="aui_jukeboxChosenItem_playingBtnTextColor" format="color"/>
+        <attr name="aui_jukeboxChosenItem_playingBtnTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_playingBtnWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukeboxChosenItem_playingBtnHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+
+
+        <!-- 删除按钮 -->
+        <attr name="aui_jukeboxChosenItem_deleteBtnBackground" format="reference"/>
+        <attr name="aui_jukeboxChosenItem_deleteBtnText" format="string"/>
+        <attr name="aui_jukeboxChosenItem_deleteBtnTextColor" format="color"/>
+        <attr name="aui_jukeboxChosenItem_deleteBtnTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_deleteBtnWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukeboxChosenItem_deleteBtnHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+
+        <!-- 置顶按钮 -->
+        <attr name="aui_jukeboxChosenItem_topBtnBackground" format="reference"/>
+        <attr name="aui_jukeboxChosenItem_topBtnText" format="string"/>
+        <attr name="aui_jukeboxChosenItem_topBtnTextColor" format="color"/>
+        <attr name="aui_jukeboxChosenItem_topBtnTextSize" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_topBtnMarginEnd" format="dimension"/>
+        <attr name="aui_jukeboxChosenItem_topBtnWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_jukeboxChosenItem_topBtnHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+
+
+    </declare-styleable>
+
+
+</resources>

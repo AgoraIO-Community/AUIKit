@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:background="?attr/aui_musicPlayer_backgroundColor"
+    tools:theme="?attr/aui_musicPlayer_appearance">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_musicplayer_bg_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:src="?attr/aui_musicPlayer_idleIcon"
+        app:layout_constraintBottom_toTopOf="@+id/tv_no_chosen_song"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_no_chosen_song"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/aui_musicplayer_no_song_chosen"
+        android:textColor="?attr/aui_musicPlayer_idleTextColor"
+        android:textSize="?attr/aui_musicPlayer_idleTextSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_choose_song"
+        android:layout_width="80dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/aui_musicPlayer_idleOrderBackground"
+        android:padding="0dp"
+        android:visibility="invisible"
+        android:text="?attr/aui_musicPlayer_idleOrderText"
+        android:textColor="?attr/aui_musicPlayer_idleOrderTextColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_no_chosen_song" />
+</androidx.constraintlayout.widget.ConstraintLayout>

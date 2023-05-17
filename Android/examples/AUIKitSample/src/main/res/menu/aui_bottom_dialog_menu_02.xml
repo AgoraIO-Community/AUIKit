@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="踢人下麦"
+        android:icon="@mipmap/ic_member_add"
+        android:iconTint="?attr/aui_bottomDialog_titleTextColor"/>
+
+    <item
+        android:title="静音"
+        android:enabled="false"
+        android:icon="@mipmap/ic_member_add"
+        android:iconTint="?attr/aui_bottomDialog_titleTextColor"/>
+
+    <item
+        android:title="封禁"
+        android:icon="@mipmap/ic_member_add"
+        android:iconTint="@android:color/holo_red_light"
+        android:titleTextColor="@android:color/holo_red_light"/>
+
+    <item
+        android:title="取消"
+        android:iconTint="?attr/aui_bottomDialog_titleTextColor"/>
+</menu>

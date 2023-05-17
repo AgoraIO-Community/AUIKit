@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_dividers_appearance" format="reference"/>
+
+    <declare-styleable name="AUiDividers">
+        <attr name="android:background" />
+
+        <attr name="aui_dividers_line_width" format="dimension" />
+        <attr name="aui_dividers_line_color" format="color" />
+        <attr name="aui_dividers_line_insertStart" format="dimension" />
+        <attr name="aui_dividers_line_insertEnd" format="dimension" />
+
+        <attr name="aui_dividers_line_dash_gap" format="dimension" />
+        <attr name="aui_dividers_line_dash_width" format="dimension" />
+
+        <attr name="aui_dividers_text" format="string" />
+        <attr name="aui_dividers_textSize" format="dimension" />
+        <attr name="aui_dividers_textColor" format="color" />
+
+    </declare-styleable>
+
+    <style name="AUiDividers">
+        <item name="android:background">#F9F9F9</item>
+
+        <item name="aui_dividers_line_width">1dp</item>
+        <item name="aui_dividers_line_color">@color/aui_grey_light</item>
+        <item name="aui_dividers_line_insertStart">20dp</item>
+        <item name="aui_dividers_line_insertEnd">20dp</item>
+
+        <item name="aui_dividers_line_dash_gap">@null</item>
+        <item name="aui_dividers_line_dash_width">2dp</item>
+
+        <item name="aui_dividers_textSize">12sp</item>
+        <item name="aui_dividers_textColor">@color/aui_grey_light</item>
+
+    </style>
+
+</resources>

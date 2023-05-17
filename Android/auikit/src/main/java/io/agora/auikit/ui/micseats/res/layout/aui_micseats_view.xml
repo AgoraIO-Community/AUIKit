@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="?attr/aui_micSeats_appearance">
+
+    <View
+        android:id="@+id/bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/aui_micSeats_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <io.agora.auikit.ui.basic.AUIRecyclerView
+        android:id="@+id/rv_mic_seats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:aui_spaceHorizontal="?attr/aui_micSeats_spaceHorizontal"
+        app:aui_spaceVertical="?attr/aui_micSeats_spaceVertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintTop_toTopOf="parent"
+        app:spanCount="4"
+        tools:itemCount="8"
+        tools:listitem="@layout/aui_micseat_item_view" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

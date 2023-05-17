@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/aui_ic_nav_home"
+        android:title="@string/aui_home" />
+
+
+    <item
+        android:id="@+id/floating"
+        android:icon="@drawable/aui_ic_nav_floating"
+        android:title=""
+        app:aui_navigationBarMenu_floatingOffsetStart="38dp"
+        app:aui_navigationBarMenu_floatingOffsetEnd="38dp"
+        app:aui_navigationBarMenu_isFloating="true"
+        app:aui_navigationBarMenu_scale="1.2" />
+
+    <item
+        android:id="@+id/message"
+        android:icon="@drawable/aui_ic_nav_msg"
+        android:title="@string/aui_message"/>
+
+
+</menu>

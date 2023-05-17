@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="?attr/aui_jukeboxChooseItem_paddingHorizontal"
+    android:paddingVertical="?attr/aui_jukeboxChooseItem_paddingVertical"
+    android:theme="?attr/aui_jukeboxChooseItem_appearance">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="?attr/aui_jukeboxChooseItem_coverWidth"
+        android:layout_height="?attr/aui_jukeboxChooseItem_coverHeight"
+        android:src="?attr/aui_jukeboxChooseItem_coverDefaultImg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.AUIJukeboxChooseItemCover" />
+
+    <TextView
+        android:id="@+id/tv_song_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/aui_jukeboxChooseItem_songNameMarginStart"
+        android:textColor="?attr/aui_jukeboxChooseItem_songNameTextColor"
+        android:textSize="?attr/aui_jukeboxChooseItem_songNameTextSize"
+        app:layout_constraintBottom_toTopOf="@id/tv_singer_name"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_cover"
+        tools:text="SongName" />
+
+    <TextView
+        android:id="@+id/tv_singer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="?attr/aui_jukeboxChooseItem_singerNameMarginStart"
+        android:textColor="?attr/aui_jukeboxChooseItem_singerNameTextColor"
+        android:textSize="?attr/aui_jukeboxChooseItem_singerNameTextSize"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/tv_song_name"
+        tools:text="SingerName" />
+
+    <io.agora.auikit.ui.basic.AUiCheckBox
+        android:id="@+id/cb_choose"
+        android:layout_width="?attr/aui_jukeboxChooseItem_buttonWidth"
+        android:layout_height="?attr/aui_jukeboxChooseItem_buttonHeight"
+        android:background="?attr/aui_jukeboxChooseItem_buttonBackground"
+        android:button="@null"
+        android:gravity="center"
+        android:text="?attr/aui_jukeboxChooseItem_buttonText"
+        android:textColor="?attr/aui_jukeboxChooseItem_buttonTextColor"
+        android:textSize="?attr/aui_jukeboxChooseItem_buttonTextSize"
+        app:aui_checkedText="?attr/aui_jukeboxChooseItem_buttonCheckedText"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+        tools:checked="true"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_cover" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

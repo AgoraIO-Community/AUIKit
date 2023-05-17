@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_navigationBar_appearance" format="reference"/>
+
+    <declare-styleable name="AUiNavigationBar">
+        <!-- Menu配置 -->
+        <attr name="aui_navigationBar_menu" format="reference" />
+        <attr name="aui_navigationBar_menu_appearance" format="reference" />
+
+        <!-- 阴影配置 -->
+        <attr name="aui_navigationBar_shadowColor" format="color" />
+        <attr name="aui_navigationBar_shadowWidth" format="dimension" />
+        <attr name="aui_navigationBar_backgroundColor" format="color" />
+
+        <!-- 间距 -->
+        <attr name="aui_navigationBar_contentPadding" format="dimension"/>
+        <attr name="aui_navigationBar_contentPaddingStart" format="dimension"/>
+        <attr name="aui_navigationBar_contentPaddingTop" format="dimension"/>
+        <attr name="aui_navigationBar_contentPaddingEnd" format="dimension"/>
+        <attr name="aui_navigationBar_contentPaddingBottom" format="dimension"/>
+
+    </declare-styleable>
+
+    <style name="AUiNavigationBar">
+        <!-- 间距 -->
+        <item name="aui_navigationBar_contentPadding">@null</item>
+        <item name="aui_navigationBar_contentPaddingStart">@null</item>
+        <item name="aui_navigationBar_contentPaddingTop">@null</item>
+        <item name="aui_navigationBar_contentPaddingEnd">@null</item>
+        <item name="aui_navigationBar_contentPaddingBottom">6dp</item>
+
+        <!-- Menu配置 -->
+        <item name="aui_navigationBar_menu">@menu/aui_navigation_menu</item>
+        <item name="aui_navigationBar_menu_appearance">@style/AUiNavigationBarMenu</item>
+
+        <!-- 阴影背景配置 -->
+        <item name="aui_navigationBar_backgroundColor">@android:color/white</item>
+        <item name="aui_navigationBar_shadowColor">@android:color/darker_gray</item>
+        <item name="aui_navigationBar_shadowWidth">2dp</item>
+    </style>
+
+    <declare-styleable name="AUiNavigationBarMenu">
+        <attr name="android:id" />
+        <attr name="aui_navigationBarMenu_isActivated" format="boolean"/>
+        <!-- 布局 -->
+        <attr name="aui_navigationBarMenu_layout" format="reference" />
+        <!-- 图标 -->
+        <attr name="android:icon" />
+        <attr name="aui_navigationBarMenu_iconTint" format="color"/>
+        <attr name="aui_navigationBarMenu_iconTintActivated" format="color"/>
+        <attr name="aui_navigationBarMenu_iconWidth" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_navigationBarMenu_iconHeight" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_navigationBarMenu_iconPadding" format="dimension"/>
+        <attr name="aui_navigationBarMenu_iconPaddingStart" format="dimension"/>
+        <attr name="aui_navigationBarMenu_iconPaddingTop" format="dimension"/>
+        <attr name="aui_navigationBarMenu_iconPaddingEnd" format="dimension"/>
+        <attr name="aui_navigationBarMenu_iconPaddingBottom" format="dimension"/>
+        <!-- 标题 -->
+        <attr name="android:title" />
+        <attr name="aui_navigationBarMenu_titleTextSize" format="dimension"/>
+        <attr name="aui_navigationBarMenu_titleTextColor" format="color"/>
+        <attr name="aui_navigationBarMenu_titleTextColorActivated" format="color"/>
+        <!-- 浮动 -->
+        <attr name="aui_navigationBarMenu_isFloating" format="boolean" />
+        <attr name="aui_navigationBarMenu_floatingHeight" format="dimension" />
+        <attr name="aui_navigationBarMenu_floatingOffsetStart" format="dimension" />
+        <attr name="aui_navigationBarMenu_floatingOffsetTop" format="dimension" />
+        <attr name="aui_navigationBarMenu_floatingOffsetEnd" format="dimension" />
+        <attr name="aui_navigationBarMenu_floatingOffsetBottom" format="dimension" />
+        <!-- 小红点 -->
+        <attr name="aui_navigationBarMenu_dotWidth" format="dimension" >
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_navigationBarMenu_dotHeight" format="dimension" >
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_navigationBarMenu_dotText" format="integer" />
+        <attr name="aui_navigationBarMenu_dotTextSize" format="dimension" />
+        <attr name="aui_navigationBarMenu_dotTextColor" format="color" />
+        <attr name="aui_navigationBarMenu_dotBackgroundColor" format="color" />
+        <attr name="aui_navigationBarMenu_dotPadding" format="dimension" />
+        <!-- 缩放 -->
+        <attr name="aui_navigationBarMenu_scale" format="float" />
+        <!-- 占比 -->
+        <attr name="aui_navigationBarMenu_weight" format="integer" />
+    </declare-styleable>
+
+    <style name="AUiNavigationBarMenu">
+        <!-- Menu Item 配置 -->
+        <item name="aui_navigationBarMenu_isActivated">false</item>
+        <!-- 布局 -->
+        <item name="aui_navigationBarMenu_layout">@layout/aui_navigation_bar_item</item>
+        <!-- 图标 -->
+        <item name="aui_navigationBarMenu_iconTint">@color/aui_primary_light</item>
+        <item name="aui_navigationBarMenu_iconTintActivated">@color/aui_primary</item>
+        <item name="aui_navigationBarMenu_iconWidth">wrap_content</item>
+        <item name="aui_navigationBarMenu_iconHeight">wrap_content</item>
+        <item name="aui_navigationBarMenu_iconPadding">@null</item>
+        <item name="aui_navigationBarMenu_iconPaddingStart">6dp</item>
+        <item name="aui_navigationBarMenu_iconPaddingTop">6dp</item>
+        <item name="aui_navigationBarMenu_iconPaddingEnd">6dp</item>
+        <item name="aui_navigationBarMenu_iconPaddingBottom">@null</item>
+        <!-- 标题 -->
+        <item name="aui_navigationBarMenu_titleTextSize">15sp</item>
+        <item name="aui_navigationBarMenu_titleTextColor">@color/aui_primary_light</item>
+        <item name="aui_navigationBarMenu_titleTextColorActivated">@color/aui_primary</item>
+        <!-- 缩放 -->
+        <item name="aui_navigationBarMenu_scale">1.0</item>
+        <!-- 浮动 -->
+        <item name="aui_navigationBarMenu_isFloating">false</item>
+        <item name="aui_navigationBarMenu_floatingHeight">25dp</item>
+        <item name="aui_navigationBarMenu_floatingOffsetStart">8dp</item>
+        <item name="aui_navigationBarMenu_floatingOffsetTop">15dp</item>
+        <item name="aui_navigationBarMenu_floatingOffsetEnd">8dp</item>
+        <item name="aui_navigationBarMenu_floatingOffsetBottom">8dp</item>
+        <!-- 小红点 -->
+        <item name="aui_navigationBarMenu_dotWidth">wrap_content</item>
+        <item name="aui_navigationBarMenu_dotHeight">wrap_content</item>
+        <item name="aui_navigationBarMenu_dotTextSize">11sp</item>
+        <item name="aui_navigationBarMenu_dotPadding">3dp</item>
+        <item name="aui_navigationBarMenu_dotTextColor">@android:color/white</item>
+        <item name="aui_navigationBarMenu_dotBackgroundColor">@android:color/holo_red_light</item>
+        <!-- 占比 -->
+        <item name="aui_navigationBarMenu_weight">1</item>
+    </style>
+
+</resources>

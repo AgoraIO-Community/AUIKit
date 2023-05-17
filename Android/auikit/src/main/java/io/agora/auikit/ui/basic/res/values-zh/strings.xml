@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_previous_step">上一步</string>
+    <string name="aui_next_step">下一步</string>
+    <string name="aui_home">首页</string>
+    <string name="aui_message">消息</string>
+    <string name="aui_music">音乐</string>
+    <string name="aui_more">更多</string>
+    <string name="aui_option">选项</string>
+    <string name="aui_confirm">确认</string>
+    <string name="aui_cancel">取消</string>
+</resources>
