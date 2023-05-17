@@ -47,6 +47,14 @@ TODO: Add long description of the pod here.
       chat.dependency 'AUiKit/Service'
   end
   
+  s.subspec 'AUiKit' do |gift|
+      gift.source_files = 'AUiKit/Classes/Components/Gift/**/*'
+      gift.resource = 'AUiKit/Classes/Components/IM/Resource/Gift.bundle'
+      gift.dependency 'Agora_Chat_iOS'
+      gift.dependency 'AUiKit/Core'
+      gift.dependency 'AUiKit/Service'
+  end
+  
   s.subspec 'AUiKit' do |player|
       player.source_files = 'AUiKit/Classes/Components/Player/*'
 #      player.resource = 'AUiKit/Classes/Components/Player/Resource/PlayerResource.bundle'
@@ -79,4 +87,5 @@ TODO: Add long description of the pod here.
   s.dependency 'MJRefresh'
   s.dependency 'ScoreEffectUI'
   s.dependency 'AgoraLyricsScore'
+  s.dependency 'Agora_Chat_iOS'
 end
