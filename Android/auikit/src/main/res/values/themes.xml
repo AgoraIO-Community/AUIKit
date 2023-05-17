@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 系统基础主题 -->
+    <style name="Theme.AUIKit" parent="Theme.AUIKit.Basic.Dark">
+
+        <!-- 麦位组件 -->
+        <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
+        <item name="aui_micSeatItem_appearance">@style/AUIMicSeatItem.Appearance</item>
+        <item name="aui_micSeatDialog_appearance">@style/AUIMicSeatDialog.Appearance</item>
+
+        <!-- 点歌器组件 -->
+        <item name="aui_jukebox_appearance">@style/AUiJukebox.Appearance</item>
+        <item name="aui_jukeboxChoose_appearance">@style/AUiJukeboxChoose.Appearance</item>
+        <item name="aui_jukeboxChosen_appearance">@style/AUiJukeboxChosen.Appearance</item>
+        <item name="aui_jukeboxChooseItem_appearance">@style/AUiJukeboxChooseItem.Appearance</item>
+        <item name="aui_jukeboxChosenItem_appearance">@style/AUiJukeboxChosenItem.Appearance</item>
+
+        <!--  播放器组件      -->
+        <item name="aui_musicPlayer_appearance">@style/AUIMusicPlayer.Appearance</item>
+        <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance</item>
+        <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance</item>
+
+    </style>
+
+
+</resources>

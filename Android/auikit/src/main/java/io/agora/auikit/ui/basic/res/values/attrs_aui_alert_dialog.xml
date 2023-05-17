@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_alertDialog_appearance" format="reference"/>
+    <attr name="aui_alertDialog_appearance_outline" format="reference"/>
+
+    <declare-styleable name="AUiAlertDialog">
+
+        <attr name="aui_alertDialog_contentLayout" format="reference"/>
+        <attr name="aui_alertDialog_minWidth" format="dimension"/>
+
+        <!-- 背景 -->
+        <attr name="aui_alertDialog_shadowColor" format="color"/>
+        <attr name="aui_alertDialog_contentBackgroundColor" format="color"/>
+        <attr name="aui_alertDialog_contentRadius" format="dimension"/>
+        <attr name="aui_alertDialog_contentPadding" format="dimension"/>
+        <attr name="aui_alertDialog_contentPaddingStart" format="dimension"/>
+        <attr name="aui_alertDialog_contentPaddingTop" format="dimension"/>
+        <attr name="aui_alertDialog_contentPaddingEnd" format="dimension"/>
+        <attr name="aui_alertDialog_contentPaddingBottom" format="dimension"/>
+
+        <!-- 标题 -->
+        <attr name="aui_alertDialog_titleCloseIcon" format="reference"/>
+        <attr name="aui_alertDialog_titleCloseIconSize" format="dimension"/>
+        <attr name="aui_alertDialog_titleCloseIconColor" format="color"/>
+        <attr name="aui_alertDialog_titleTextColor" format="color"/>
+        <attr name="aui_alertDialog_titleTextSize" format="dimension"/>
+        <attr name="aui_alertDialog_titleGravity">
+            <flag name="center_horizontal" value="0x01" />
+            <flag name="start" value="0x00800003" />
+        </attr>
+        <attr name="aui_alertDialog_titleSpaceBottom" format="dimension"/>
+
+        <!-- 消息 -->
+        <attr name="aui_alertDialog_messageSpaceTop" format="dimension"/>
+        <attr name="aui_alertDialog_messageSpaceBottom" format="dimension"/>
+        <attr name="aui_alertDialog_messageVisible">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_alertDialog_messageText" format="string"/>
+        <attr name="aui_alertDialog_messageTextColor" format="color"/>
+        <attr name="aui_alertDialog_messageTextSize" format="dimension"/>
+        <attr name="aui_alertDialog_messageGravity">
+            <flag name="center_horizontal" value="0x01" />
+            <flag name="start" value="0x00800003" />
+        </attr>
+
+        <!-- 输入框 -->
+        <attr name="aui_alertDialog_inputSpaceTop" format="dimension"/>
+        <attr name="aui_alertDialog_inputSpaceBottom" format="dimension"/>
+        <attr name="aui_alertDialog_inputVisible">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_alertDialog_inputStyle" format="reference"/>
+
+        <!-- 按钮 -->
+        <attr name="aui_alertDialog_buttonNegativeVisible">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_alertDialog_buttonNegativeStyle" format="reference"/>
+        <attr name="aui_alertDialog_buttonNegativeText" format="string"/>
+        <attr name="aui_alertDialog_buttonPositiveStyle" format="reference"/>
+        <attr name="aui_alertDialog_buttonPositiveText" format="string"/>
+        <attr name="aui_alertDialog_buttonSpacer" format="dimension"/>
+
+    </declare-styleable>
+
+
+    <style name="AUiAlertDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.DropDownUp</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+
+        <item name="aui_alertDialog_contentLayout">@layout/aui_alert_dialog</item>
+        <item name="aui_alertDialog_minWidth">350dp</item>
+
+        <!-- 背景 -->
+        <item name="aui_alertDialog_shadowColor">#0f1B1067</item>
+        <item name="aui_alertDialog_contentBackgroundColor">@android:color/white</item>
+        <item name="aui_alertDialog_contentRadius">16dp</item>
+        <item name="aui_alertDialog_contentPadding">@null</item>
+        <item name="aui_alertDialog_contentPaddingStart">24dp</item>
+        <item name="aui_alertDialog_contentPaddingTop">16dp</item>
+        <item name="aui_alertDialog_contentPaddingEnd">24dp</item>
+        <item name="aui_alertDialog_contentPaddingBottom">16dp</item>
+
+        <!-- 标题 -->
+        <item name="aui_alertDialog_titleCloseIcon">@drawable/aui_ic_close</item>
+        <item name="aui_alertDialog_titleCloseIconSize">28dp</item>
+        <item name="aui_alertDialog_titleCloseIconColor">#9599EF</item>
+        <item name="aui_alertDialog_titleTextColor">@android:color/black</item>
+        <item name="aui_alertDialog_titleTextSize">20sp</item>
+        <item name="aui_alertDialog_titleGravity">center_horizontal</item>
+        <item name="aui_alertDialog_titleSpaceBottom">24dp</item>
+
+        <!-- 内容 -->
+        <item name="aui_alertDialog_messageVisible">gone</item>
+        <item name="aui_alertDialog_messageTextColor">@color/aui_black</item>
+        <item name="aui_alertDialog_messageTextSize">16sp</item>
+        <item name="aui_alertDialog_messageGravity">center_horizontal</item>
+        <item name="aui_alertDialog_messageSpaceTop">0dp</item>
+        <item name="aui_alertDialog_messageSpaceBottom">12dp</item>
+
+        <!-- 输入框 -->
+        <item name="aui_alertDialog_inputSpaceTop">0dp</item>
+        <item name="aui_alertDialog_inputSpaceBottom">24dp</item>
+        <item name="aui_alertDialog_inputVisible">gone</item>
+        <item name="aui_alertDialog_inputStyle">?attr/aui_editText_appearance</item>
+
+        <!-- 按钮 -->
+        <item name="aui_alertDialog_buttonNegativeVisible">gone</item>
+        <item name="aui_alertDialog_buttonNegativeStyle">?attr/aui_button_appearance_stroke</item>
+        <item name="aui_alertDialog_buttonNegativeText">@string/aui_cancel</item>
+        <item name="aui_alertDialog_buttonPositiveStyle">?attr/aui_button_appearance</item>
+        <item name="aui_alertDialog_buttonPositiveText">@string/aui_confirm</item>
+        <item name="aui_alertDialog_buttonSpacer">20dp</item>
+
+    </style>
+
+    <style name="AUiAlertDialog.Outline">
+        <item name="aui_alertDialog_inputStyle">?attr/aui_editText_appearance_outline</item>
+    </style>
+
+</resources>

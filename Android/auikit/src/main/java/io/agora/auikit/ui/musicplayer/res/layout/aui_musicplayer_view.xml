@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="282dp"
+    android:layout_margin="12dp"
+    android:minHeight="?attr/aui_musicPlayer_minHeight"
+    android:theme="?attr/aui_musicPlayer_appearance"
+    app:cardBackgroundColor="?attr/aui_musicPlayer_backgroundColor"
+    app:cardCornerRadius="?attr/aui_musicPlayer_cornerRadius"
+    app:cardElevation="0dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/ilIDLE"
+            layout="@layout/aui_musicplayer_idle_view"
+            android:visibility="visible"
+            tools:visibility="gone" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clActive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_music_name"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="12dp"
+                android:drawableStart="?attr/aui_musicPlayer_titleIcon"
+                android:gravity="center"
+                android:textColor="?attr/aui_musicPlayer_titleTextColor"
+                android:textSize="?attr/aui_musicPlayer_titleTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="彩虹" />
+
+            <ImageView
+                android:id="@+id/ivCumulativeScoreGrade"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="Grade"
+                app:layout_constraintEnd_toStartOf="@id/tvCumulativeScore"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCumulativeScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="40dp"
+                android:textSize="?attr/aui_musicPlayer_cumulativeScoreTextSize"
+                android:textColor="?attr/aui_musicPlayer_cumulativeScoreTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="得分：0分" />
+
+            <include
+                android:id="@+id/il_musicplayer_active_view"
+                layout="@layout/aui_musicplayer_active_view"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
+            <include
+                android:id="@+id/il_musicplayer_prepare_view"
+                layout="@layout/aui_musicplayer_prepare_view"
+                android:visibility="invisible"
+                tools:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLineScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="68dp"
+                android:textColor="?attr/aui_musicPlayer_lineScoreTextColor"
+                android:textSize="?attr/aui_musicPlayer_lineScoreTextSize"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="    " />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

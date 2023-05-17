@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:theme="?attr/aui_jukebox_appearance">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="?attr/aui_jukebox_titleTabChosenText"
+        android:textColor="@color/aui_jukebox_title_tab_text_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNumTag"
+        android:layout_width="?attr/aui_jukebox_numTagWidth"
+        android:layout_height="?attr/aui_jukebox_numTagHeight"
+        android:background="?attr/aui_jukebox_numTagBackground"
+        android:gravity="center"
+        android:textColor="?attr/aui_jukebox_numTagTextColor"
+        android:textSize="?attr/aui_jukebox_numTagTextSize"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/text1"
+        app:layout_constraintTop_toTopOf="@id/text1"
+        tools:text="9"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
