@@ -33,10 +33,10 @@ public class AUiTokenGenerateNetworkModel: AUiNetworkModel {
     }
 }
 
-//public class AUiTokenGenerate006NetworkModel: AUiTokenGenerateNetworkModel {
-//    public override init() {
-//        super.init()
-//        interfaceName = "/v1/token006/generate"
-//    }
-//    
-//}
+public class AUiTokenGenerate006NetworkModel: AUiTokenGenerateNetworkModel {
+    public override init() {
+        super.init()
+        interfaceName = "/v1/token006/generate"
+    }
+    
+}
