@@ -41,7 +41,7 @@ public protocol AUiChorusServiceDelegate: AUiCommonServiceDelegate {
 
 
 /// 合唱响应协议
-public protocol AUiChorusRespDelegate: NSObject {
+public protocol AUiChorusRespDelegate: NSObjectProtocol {
     
     /// 合唱者加入
     /// - Parameter chorus: 加入的合唱者信息

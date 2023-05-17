@@ -71,7 +71,7 @@ public protocol AUiMicSeatServiceDelegate: AUiCommonServiceDelegate {
 }
 
 /// 麦位相关操作的响应
-public protocol AUiMicSeatRespDelegate: NSObject {
+public protocol AUiMicSeatRespDelegate: NSObjectProtocol {
     
     /// 有成员上麦（主动上麦/房主抱人上麦）
     /// - Parameters:

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol AUiMicSeatCellDataProtocol: NSObject {
+public protocol AUiMicSeatCellDataProtocol: NSObjectProtocol {
     var seatName: String {get}
     var isMuteAudio: Bool {get}
     var isMuteVideo: Bool {get}

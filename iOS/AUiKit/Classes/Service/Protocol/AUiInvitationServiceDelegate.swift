@@ -69,7 +69,7 @@ public protocol AUiInvitationServiceDelegate: AUiCommonServiceDelegate {
 
 
 /// 邀请相关操作的响应
-public protocol AUiInvitationRespDelegate: NSObject {
+public protocol AUiInvitationRespDelegate: NSObjectProtocol {
     
     /// 收到新的邀请请求(不动态显示content)
     /// - Parameters:

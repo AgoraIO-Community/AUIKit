@@ -126,7 +126,7 @@ public protocol AUiPlayerServiceDelegate: AUiCommonServiceDelegate {
 
 
 /// 播放器回调协议
-public protocol AUiPlayerRespDelegate: NSObject {
+public protocol AUiPlayerRespDelegate: NSObjectProtocol {
     
     /// 前奏开始加载
     func onPreludeDidAppear()

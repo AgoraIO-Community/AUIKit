@@ -32,7 +32,7 @@ import AgoraRtcKit
     func onMsgDidChanged(channelName: String, key: String, value: Any)
 }
 
-public protocol AUiRtmUserProxyDelegate: NSObject {
+public protocol AUiRtmUserProxyDelegate: NSObjectProtocol {
     func onUserSnapshotRecv(channelName: String, userId:String, userList: [[String: Any]])
     func onUserDidJoined(channelName: String, userId:String, userInfo: [String: Any])
     func onUserDidLeaved(channelName: String, userId:String, userInfo: [String: Any])
