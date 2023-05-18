@@ -63,8 +63,8 @@ public class AUIReceiveGiftCell: UITableViewCell {
         if gift == nil {
             gift = item
         }
-        avatar.kf.setImage(with: URL(string: gift?.portrait ?? ""), placeholder:UIImage("mine_avatar_placeHolder",.gift))
-        userName.text = gift?.userName ?? ""
+        avatar.kf.setImage(with: URL(string: gift?.gift_id ?? ""), placeholder:UIImage("mine_avatar_placeHolder",.gift))
+        userName.text = gift?.sendUser?.userName ?? ""
         giftName.text = "Sent ".a.localize(type: .gift) + (gift?.gift_name ?? "")
         giftIcon.image = UIImage("\(gift?.gift_id ?? "")",.gift)
         giftNumbers.text = "X \(gift?.gift_count ?? "1")"

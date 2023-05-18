@@ -1,11 +1,12 @@
 //
-//  AUIServiceGiftDelegate.swift
+//  AUIGiftServiceDelegate.swift
 //  AUiKit
 //
-//  Created by 朱继超 on 2023/5/17.
+//  Created by 朱继超 on 2023/5/18.
 //
 
 import Foundation
+
 
 public class AUIGiftEntity:NSObject,NSMutableCopying {
      
@@ -16,8 +17,6 @@ public class AUIGiftEntity:NSObject,NSMutableCopying {
         model.gift_count = self.gift_count
         model.gift_price = self.gift_price
         model.gift_name = self.gift_name
-        model.portrait = self.portrait
-        model.userName = self.userName
         model.selected = self.selected
         model.sendUser = self.sendUser
         return model
@@ -25,19 +24,14 @@ public class AUIGiftEntity:NSObject,NSMutableCopying {
 
     var gift_id: String? = ""
     var gift_name: String? = ""
-    var userName: String? = ""
     var gift_price: String? = ""
-    var portrait: String? = ""
-    var avatar: String? = ""
-
     var gift_count: String? = "0"
+    
     var selected = false
     
     var sendUser: AUiUserThumbnailInfo?
-     
  
     /// Description 开发者可以上传服务器一个匹配礼物id的特效  特效名称为礼物的id  sdk会进入房间时拉取礼物资源并下载对应礼物id的特效，如果收到的礼物这个值为true 则会找到对应的特效全屏播放加广播，礼物资源以及特效资源下载服务端可做一个web页面供用户使用，每个app启动后加载场景之前预先去下载礼物资源缓存到磁盘供UIKit取用
- 
     var hasEffect: Bool?
      
     override public required init() {}
@@ -56,7 +50,6 @@ public class AUIGiftTabEntity: NSObject {
     
     /// Description tab下礼物数据
     var gifts: [AUIGiftEntity]?
- 
      
  
 }
