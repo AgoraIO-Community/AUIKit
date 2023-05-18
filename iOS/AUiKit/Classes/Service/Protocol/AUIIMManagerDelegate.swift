@@ -92,10 +92,17 @@ public protocol AUIMManagerRespDelegate: NSObjectProtocol {
  
     /// Description 收到消息回调
  
-    /// - Parameter messages: 消息数组
+    /// - Parameter messages: 消息
  
-    func messagesDidReceive(messages: [AgoraChatTextMessage])
-     
+    func messageDidReceive(roomId: String, message: AgoraChatTextMessage)
+    
+    
+    /// Description 用户加入聊天室
+    /// - Parameters:
+    ///   - roomId: 聊天室id
+    ///   - user: 用户信息
+    func onUserDidJoinRoom(roomId: String, user: AUiUserThumbnailInfo)
+    
  
 }
  

@@ -25,16 +25,12 @@ open class AUIIMManagerServiceImplement: NSObject {
     /// Description 请求协议
     public weak var requestDelegate: AUIMManagerServiceDelegate?
     
-    /// Description 消息回调协议
-    public weak var delegate: AUIChatRoomIMDelegate?
-    
     
     /// Description 单例
     public static var shared: AUIIMManagerServiceImplement? = once
     
     override init() {
         super.init()
-        self.responseDelegate = self
         self.requestDelegate = self
     }
  
@@ -133,57 +129,31 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     
 }
 
-//MARK: - AUIMManagerRespDelegate
-extension AUIIMManagerServiceImplement: AUIMManagerRespDelegate {
-    public func messagesDidReceive(messages: [AgoraChatTextMessage]) {
-//        for message in messages {
-//            if message.body is AgoraChatTextMessageBody {
-//                if let callback = self.delegate, callback.responds(to: #selector(VoiceRoomIMDelegate.receiveTextMessage(roomId:message:))) {
-//                    self.delegate?.receiveTextMessage(roomId: self.currentRoomId, message: self.convertTextMessage(message: message))
-//                }
-//                continue
-//            }
-//            if let body = message.body as? AgoraChatCustomMessageBody {
-//                switch body.event {
-//                case AUIChatRoomJoinedMember:
-//                    if let callback = self.delegate, callback.responds(to: #selector(AUIChatRoomIMDelegate.userJoinedRoom(roomId:chatId:user:))) {
-//                        if let ext = body.customExt["user"], let user = AUiUserThumbnailInfo.yy_model(with: ext) {
-//                            self.delegate?.userJoinedRoom(roomId: message.to, chatId: message.from ?? "", user: user)
-//                        }
-//                    }
-//                default:
-//                    break
-//                }
-//            }
-//        }
+//MARK: - AgoraChat Delegate
+extension AUIIMManagerServiceImplement: AgoraChatManagerDelegate, AgoraChatroomManagerDelegate, AgoraChatClientDelegate {
+    public func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
+        for message in aMessages {
+            if message.body is AgoraChatTextMessageBody {
+                if self.responseDelegate != nil {
+                    self.responseDelegate?.messageDidReceive(roomId: self.currentRoomId, message: self.convertTextMessage(message: message))
+                }
+                continue
+            }
+            if let body = message.body as? AgoraChatCustomMessageBody {
+                switch body.event {
+                case AUIChatRoomJoinedMember:
+                    if self.responseDelegate != nil {
+                        if let ext = body.customExt["user"]?.a.jsonToDictionary(), let user = AUiUserThumbnailInfo.yy_model(with: ext) {
+                            self.responseDelegate?.onUserDidJoinRoom(roomId: message.to, user: user)
+                        }
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
     
 }
 
 
-@objc public protocol AUIChatRoomIMDelegate: NSObjectProtocol {
-    /// Description you'll call login api,when you receive this message
-    /// - Parameter code: AgoraChatErrorCode
-    func chatTokenWillExpire(code: AgoraChatErrorCode)
-    /// Description receive text message
-    /// - Parameters:
-    ///   - roomId: AgoraChat's uid
-    ///   - message: VoiceRoomChatEntity
-    func receiveTextMessage(roomId: String, message: AgoraChatTextMessage)
-    
-//    /// Description 收到礼物
-//    /// - Parameters:
-//    ///   - roomId: 聊天室id
-//    ///   - meta: 扩展礼物信息
-//    func receiveGift(roomId: String, gift: [String: String]?)
-
-    
-    /// Description 用户加入聊天室（携带用户信息）
-    /// - Parameters:
-    ///   - roomId: 聊天室id
-    ///   - chatId: 用户聊天id
-    ///   - user: 用户信息
-    func userJoinedRoom(roomId: String, chatId: String, user: AUiUserThumbnailInfo)
-
-   
-}
