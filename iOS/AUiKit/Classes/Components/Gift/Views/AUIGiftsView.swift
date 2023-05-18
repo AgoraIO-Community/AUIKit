@@ -25,24 +25,12 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
         layout.itemSize = CGSize(width: (AScreenWidth - 30) / 4.0, height: (110 / 84.0) * (AScreenWidth - 30) / 4.0)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         return layout
     }()
 
     lazy var giftList: UICollectionView = {
         UICollectionView(frame: CGRect(x: 15, y: self.header.frame.maxY, width: AScreenWidth - 30, height: (110 / 84.0) * ((AScreenWidth - 30) / 4.0)), collectionViewLayout: self.flowLayout).registerCell(AUISendGiftCell.self, forCellReuseIdentifier: "AUISendGiftCell").delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).backgroundColor(.white)
-    }()
-
-    lazy var pageControl: UIPageControl = {
-        let pageControl = UIPageControl(frame: CGRect(x: 0, y: self.giftList.frame.maxY + 20, width: self.frame.width, height: 5))
-        pageControl.backgroundColor = UIColor.clear
-        pageControl.numberOfPages = 3
-        pageControl.currentPage = 0
-        // 设置pageControl未选中的点的颜色
-        pageControl.pageIndicatorTintColor = UIColor(0xEFF4FF)
-        // 设置pageControl选中的点的颜色
-        pageControl.currentPageIndicatorTintColor = UIColor(0x6378F4)
-        return pageControl
     }()
 
     lazy var contribution: UILabel = {
@@ -86,7 +74,7 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
     public convenience init(frame: CGRect, gifts: [AUIGiftEntity]) {
         self.init(frame: frame)
         self.gifts = gifts
-        addSubViews([header, giftList, pageControl, contribution, lineLayer, disableView])
+        addSubViews([header, giftList, contribution, lineLayer, disableView])
         disableView.isHidden = true
         bringSubviewToFront(disableView)
         chooseQuantity.setImage(UIImage("arrow_down",.gift), for: .normal)
@@ -125,17 +113,10 @@ public extension AUIGiftsView {
             self.disableView.isHidden = true
             self.contribution.text = "Contribution Total".a.localize(type: .gift) + ": " + "\(self.current?.gift_price ?? "1")"
         }
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let index = scrollView.contentOffset.x / giftList.frame.width
-        pageControl.currentPage = Int(index)
-
-        lastPoint = scrollView.contentOffset
-    }
+    }    
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        gifts.count+3
+        gifts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -149,9 +130,6 @@ public extension AUIGiftsView {
         gifts.forEach { $0.selected = false }
         let gift = gifts[safe: indexPath.row]
         gift?.selected = true
-        if indexPath.row == 8 {
-            pageControl.currentPage = 3
-        }
         current = gift
         if let value = gift?.gift_price {
             if Int(value)! >= 100 {

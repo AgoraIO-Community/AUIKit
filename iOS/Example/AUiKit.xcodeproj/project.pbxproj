@@ -297,11 +297,15 @@
 				"${PODS_ROOT}/Target Support Files/Pods-AUiKit_Example/Pods-AUiKit_Example-resources.sh",
 				"${PODS_ROOT}/../../AUiKit/Resource/auiLocalizable.bundle",
 				"${PODS_ROOT}/../../AUiKit/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUiKit/Resource/Gift.bundle",
+				"${PODS_ROOT}/../../AUiKit/Resource/VoiceChatRoomResource.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiLocalizable.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gift.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/VoiceChatRoomResource.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -9,7 +9,7 @@ import Foundation
 import AgoraChat
 import YYModel
 
-fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
+//fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
 
 fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
 
@@ -104,6 +104,10 @@ open class AUIIMManagerServiceImplement: NSObject {
 //MARK: - AUIMManagerServiceDelegate
 extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     public func sendMessage(roomId: String, text: String, userInfo: AUiUserThumbnailInfo, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void) {
+        if !self.isLogin {
+            completion(nil, AUiCommonError.httpError(400, "please login first.").toNSError())
+            return
+        }
         let message = AgoraChatMessage(conversationID: roomId, body: AgoraChatTextMessageBody(text: text), ext: nil)
         message.chatType = .chatRoom
         AgoraChatClient.shared().chatManager?.send(message, progress: nil) { message, error in
@@ -113,6 +117,10 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     }
  
     public func joinedChatRoom(roomId: String, completion: @escaping ((String?, NSError?) -> Void)) {
+        if !self.isLogin {
+            completion(nil, AUiCommonError.httpError(400, "please login first.").toNSError())
+            return
+        }
         AgoraChatClient.shared().roomManager?.joinChatroom(roomId, completion: { room, error in
             if error == nil, let id = room?.chatroomId {
                 self.currentRoomId = id
@@ -123,6 +131,14 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     }
  
     public func userQuitRoom(completion: ((NSError?) -> Void)?) {
+        if !self.isLogin {
+            if completion != nil {
+                completion!(AUiCommonError.httpError(400, "please login first.").toNSError())
+            } else {
+                aui_error("quitChatroom failed! please login first.")
+            }
+            return
+        }
         AgoraChatClient.shared().roomManager?.leaveChatroom(currentRoomId, completion: { error in
             if error == nil {
                 self.currentRoomId = ""
@@ -135,6 +151,10 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     }
  
     public func userDestroyedChatroom() {
+        if !self.isLogin {
+            aui_error("destroyChatroom failed! please login first.")
+            return
+        }
         AgoraChatClient.shared().roomManager?.destroyChatroom(self.currentRoomId)
         self.removeListener()
     }
