@@ -55,6 +55,7 @@ open class AUIIMManagerServiceImplement: NSObject {
                 completion(AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError())
             }
         }
+        
     }
  
     /// Description 退出登录IMSDK
@@ -86,6 +87,18 @@ open class AUIIMManagerServiceImplement: NSObject {
         return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
     }
     
+    private func addChatRoomListener() {
+        AgoraChatClient.shared().add(self, delegateQueue: .main)
+        AgoraChatClient.shared().chatManager?.add(self, delegateQueue: .main)
+        AgoraChatClient.shared().roomManager?.add(self, delegateQueue: .main)
+    }
+
+    private func removeListener() {
+        AgoraChatClient.shared().removeDelegate(self)
+        AgoraChatClient.shared().roomManager?.remove(self)
+        AgoraChatClient.shared().chatManager?.remove(self)
+    }
+    
 }
 
 //MARK: - AUIMManagerServiceDelegate
@@ -103,6 +116,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         AgoraChatClient.shared().roomManager?.joinChatroom(roomId, completion: { room, error in
             if error == nil, let id = room?.chatroomId {
                 self.currentRoomId = id
+                self.addChatRoomListener()
             }
             completion(self.currentRoomId, self.mapError(error: error))
         })
@@ -112,6 +126,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         AgoraChatClient.shared().roomManager?.leaveChatroom(currentRoomId, completion: { error in
             if error == nil {
                 self.currentRoomId = ""
+                self.removeListener()
             }
             if completion != nil {
                 completion!(self.mapError(error: error))
@@ -121,6 +136,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
  
     public func userDestroyedChatroom() {
         AgoraChatClient.shared().roomManager?.destroyChatroom(self.currentRoomId)
+        self.removeListener()
     }
     
     private func convertTextMessage(message: AgoraChatMessage) -> AgoraChatTextMessage {
