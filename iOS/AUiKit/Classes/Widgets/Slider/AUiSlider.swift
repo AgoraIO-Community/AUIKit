@@ -9,6 +9,12 @@ import Foundation
 import SwiftTheme
 
 public class AUiSliderTheme: NSObject {
+    func setup(slider: AUiSlider, style: AUiSliderStyle){}
+    func resetFont(slider: AUiSlider, style: AUiSliderStyle){}
+}
+
+public class AUiSliderDynamicTheme: AUiSliderTheme {
+    
     public var backgroundColor: ThemeColorPicker = "CommonColor.black"              //背景色
     public var minimumTrackColor: ThemeColorPicker = "CommonColor.primary"          //滑块左边部分颜色
     public var maximumTrackColor: ThemeColorPicker = "CommonColor.primary35"        //滑块右边部分颜色
@@ -19,6 +25,78 @@ public class AUiSliderTheme: NSObject {
     public var trackLabelColor: ThemeColorPicker = "CommonColor.normalTextColor"    //数值描述颜色
     public var titleLabelFont: ThemeFontPicker = "Slider.titleLabelFont"            //标题字体
     public var titleLabelColor: ThemeColorPicker = "CommonColor.normalTextColor"    //标题颜色
+    
+    public override func setup(slider: AUiSlider, style: AUiSliderStyle) {
+        
+        slider.textLabel.theme_font = titleLabelFont
+        slider.textLabel.theme_textColor = titleLabelColor
+        
+        slider.minimumTrackLine.theme_backgroundColor = minimumTrackColor
+        slider.maximumTrackLine.theme_backgroundColor = maximumTrackColor
+        slider.thumbView.theme_backgroundColor = thumbColor
+        slider.thumbView.layer.theme_borderColor = thumbBorderColor
+        
+        slider.minimumTrackLabel.theme_textColor = titleLabelColor
+        slider.maximumTrackLabel.theme_textColor = titleLabelColor
+        slider.thumbLabel.theme_textColor = titleLabelColor
+         
+        resetFont(slider: slider, style: style)
+    }
+    
+    public override func resetFont(slider: AUiSlider, style: AUiSliderStyle) {
+        if style == .smallNumberAndSingleLine {
+            slider.minimumTrackLabel.theme_font = trackSmallLabelFont
+            slider.maximumTrackLabel.theme_font = trackSmallLabelFont
+            slider.thumbLabel.theme_font = trackSmallLabelFont
+        } else {
+            slider.minimumTrackLabel.theme_font = trackBigLabelFont
+            slider.maximumTrackLabel.theme_font = trackBigLabelFont
+            slider.thumbLabel.theme_font = trackBigLabelFont
+        }
+    }
+}
+
+public class AUiSliderNativeTheme: AUiSliderTheme {
+    
+    public var backgroundColor: UIColor = .black              //背景色
+    public var minimumTrackColor: UIColor = .aui_primary          //滑块左边部分颜色
+    public var maximumTrackColor: UIColor = .aui_primary35        //滑块右边部分颜色
+    public var thumbColor: UIColor = .aui_normalTextColor        //滑块颜色
+    public var thumbBorderColor: UIColor = .aui_primary        //滑块边框颜色
+    public var trackBigLabelFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 17)!     //数值描述的字体(文字描述居于左右时)
+    public var trackSmallLabelFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 14)! //数值描述的字体(文字描述居于底部时)
+    public var trackLabelColor: UIColor = .aui_normalTextColor    //数值描述颜色
+    public var titleLabelFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 12)!            //标题字体
+    public var titleLabelColor: UIColor = .aui_normalTextColor    //标题颜色
+    
+    public override func setup(slider: AUiSlider, style: AUiSliderStyle) {
+        
+        slider.textLabel.font = titleLabelFont
+        slider.textLabel.textColor = titleLabelColor
+        
+        slider.minimumTrackLine.backgroundColor = minimumTrackColor
+        slider.maximumTrackLine.backgroundColor = maximumTrackColor
+        slider.thumbView.backgroundColor = thumbColor
+        slider.thumbView.layer.borderColor = thumbBorderColor.cgColor
+        
+        slider.minimumTrackLabel.textColor = titleLabelColor
+        slider.maximumTrackLabel.textColor = titleLabelColor
+        slider.thumbLabel.textColor = titleLabelColor
+         
+        resetFont(slider: slider, style: style)
+    }
+    
+    public override func resetFont(slider: AUiSlider, style: AUiSliderStyle) {
+        if style == .smallNumberAndSingleLine {
+            slider.minimumTrackLabel.font = trackSmallLabelFont
+            slider.maximumTrackLabel.font = trackSmallLabelFont
+            slider.thumbLabel.font = trackSmallLabelFont
+        } else {
+            slider.minimumTrackLabel.font = trackBigLabelFont
+            slider.maximumTrackLabel.font = trackBigLabelFont
+            slider.thumbLabel.font = trackBigLabelFont
+        }
+    }
 }
 
 public enum AUiSliderStyle: Int {
@@ -51,7 +129,7 @@ open class AUiSlider: UIControl {
             resetStyle()
         }
     }
-    public var theme: AUiSliderTheme = AUiSliderTheme() {
+    public var theme: AUiSliderTheme = AUiSliderDynamicTheme() {
         didSet {
             resetTheme()
         }
@@ -77,7 +155,6 @@ open class AUiSlider: UIControl {
         let view = UIView()
         view.aui_size = kThumbViewSize
         view.layer.cornerRadius = kThumbViewSize.width / 2
-        view.layer.theme_borderColor = theme.thumbBorderColor
         view.layer.borderWidth = 2
         view.clipsToBounds = true
         
@@ -104,34 +181,10 @@ open class AUiSlider: UIControl {
     }
     
     private func resetTheme() {
-        textLabel.theme_font = theme.titleLabelFont
-        textLabel.theme_textColor = theme.titleLabelColor
-        
-        minimumTrackLine.theme_backgroundColor = theme.minimumTrackColor
-        maximumTrackLine.theme_backgroundColor = theme.maximumTrackColor
-        thumbView.theme_backgroundColor = theme.thumbColor
-        
-        minimumTrackLabel.theme_textColor = theme.titleLabelColor
-        maximumTrackLabel.theme_textColor = theme.titleLabelColor
-        thumbLabel.theme_textColor = theme.titleLabelColor
-        
+        theme.setup(slider: self, style: style)
         maximumTrackLabel.text = "\(Int(maximumValue))"
         minimumTrackLabel.text = "\(Int(minimumValue))"
         thumbLabel.text = "\(Int(currentValue))"
-        
-        _resetFont()
-    }
-    
-    private func _resetFont() {
-        if style == .smallNumberAndSingleLine {
-            minimumTrackLabel.theme_font = theme.trackSmallLabelFont
-            maximumTrackLabel.theme_font = theme.trackSmallLabelFont
-            thumbLabel.theme_font = theme.trackSmallLabelFont
-        } else {
-            minimumTrackLabel.theme_font = theme.trackBigLabelFont
-            maximumTrackLabel.theme_font = theme.trackBigLabelFont
-            thumbLabel.theme_font = theme.trackBigLabelFont
-        }
     }
     
     private func _loadSubViews() {
@@ -153,7 +206,7 @@ open class AUiSlider: UIControl {
     }
     
     private func resetStyle() {
-        _resetFont()
+        theme.resetFont(slider: self, style: style)
         switch style {
         case .singleLine:
             textLabel.isHidden = true
