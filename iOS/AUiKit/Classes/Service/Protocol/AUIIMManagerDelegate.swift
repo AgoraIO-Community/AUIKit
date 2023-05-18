@@ -10,11 +10,11 @@ import YYModel
 
 public class AgoraChatTextMessage:NSObject {
     
-    var messageId: String?
+    public var messageId: String?
     
-    var content: String?
+    public var content: String?
     
-    var user: AUiUserThumbnailInfo?
+    public var user: AUiUserThumbnailInfo?
     
     func modelContainerPropertyGenericClass() -> [String: AnyClass] {
         return ["user": AUiUserThumbnailInfo.self]

@@ -10,7 +10,7 @@ import UIKit
 public class AUIChatCell: UITableViewCell {
 
     lazy var container: UIImageView = {
-        UIImageView(frame: CGRect(x: 15, y: 6, width: self.contentView.frame.width - 30, height: self.frame.height - 6)).image(UIImage("chatBg",.voiceRoom)).backgroundColor(.clear)
+        UIImageView(frame: CGRect(x: 15, y: 6, width: self.contentView.frame.width - 30, height: self.frame.height - 6)).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).layerProperties(UIColor(red: 0.978, green: 0.98, blue: 0.982, alpha: 0.6), 1).cornerRadius(12)
     }()
 
     lazy var content: UILabel = {

@@ -10,25 +10,25 @@ import UIKit
 
 @objcMembers open class AUIChatEntity: NSObject {
     
-    var chatId: String? = ""
+    public var chatId: String? = ""
     
-    var userName: String? = ""
+    public var userName: String? = ""
     
-    var content: String? = ""
+    public var content: String? = ""
     
-    var joined: Bool? = false
+    public var joined: Bool? = false
     
-    var attachmentImage: UIImage?
+    public var attachmentImage: UIImage?
     
-    var fullText: String? {
+    public var fullText: String? {
         (self.userName ?? "") + (self.content ?? "")
     }
 
-    lazy var height: CGFloat? = UILabel(frame: CGRect(x: 0, y: 0, width: chatViewWidth - 54, height: 15)).backgroundColor(.clear).numberOfLines(0).lineBreakMode(.byWordWrapping).attributedText(self.attributeContent).sizeThatFits(CGSize(width: chatViewWidth - 54, height: 9999)).height + 26
+    public lazy var height: CGFloat? = UILabel(frame: CGRect(x: 0, y: 0, width: chatViewWidth - 54, height: 15)).backgroundColor(.clear).numberOfLines(0).lineBreakMode(.byWordWrapping).attributedText(self.attributeContent).sizeThatFits(CGSize(width: chatViewWidth - 54, height: 9999)).height + 26
 
-    lazy var width: CGFloat? = UILabel(frame: CGRect(x: 0, y: 0, width: chatViewWidth - 54, height: 15)).backgroundColor(.clear).numberOfLines(0).lineBreakMode(.byWordWrapping).attributedText(self.attributeContent).sizeThatFits(CGSize(width: chatViewWidth - 54, height: 9999)).width
+    public lazy var width: CGFloat? = UILabel(frame: CGRect(x: 0, y: 0, width: chatViewWidth - 54, height: 15)).backgroundColor(.clear).numberOfLines(0).lineBreakMode(.byWordWrapping).attributedText(self.attributeContent).sizeThatFits(CGSize(width: chatViewWidth - 54, height: 9999)).width
 
-    lazy var attributeContent: NSAttributedString? = self.renderAttributeText()
+    public lazy var attributeContent: NSAttributedString? = self.renderAttributeText()
 }
 
 public extension AUIChatEntity {

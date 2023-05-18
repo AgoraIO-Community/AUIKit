@@ -41,7 +41,7 @@ TODO: Add long description of the pod here.
 
   s.subspec 'AUiKit' do |chat|
       chat.source_files = 'AUiKit/Classes/Components/IM/**/*'
-      chat.resource = 'AUiKit/Classes/Components/IM/Resource/VoiceChatRoomResource.bundle'
+      chat.resource = 'AUiKit/Resource/VoiceChatRoomResource.bundle'
       chat.dependency 'Agora_Chat_iOS'
       chat.dependency 'AUiKit/Core'
       chat.dependency 'AUiKit/Service'
@@ -49,7 +49,7 @@ TODO: Add long description of the pod here.
   
   s.subspec 'AUiKit' do |gift|
       gift.source_files = 'AUiKit/Classes/Components/Gift/**/*'
-      gift.resource = 'AUiKit/Classes/Components/IM/Resource/Gift.bundle'
+      gift.resource = 'AUiKit/Resource/Gift.bundle'
       gift.dependency 'Agora_Chat_iOS'
       gift.dependency 'AUiKit/Core'
       gift.dependency 'AUiKit/Service'

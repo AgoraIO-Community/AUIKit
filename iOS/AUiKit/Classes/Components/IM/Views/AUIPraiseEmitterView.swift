@@ -45,7 +45,7 @@ public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
             let image = self.images[safe: Int(count) % images.count] ?? UIImage()
             shipLayer?.contents = image?.cgImage
             shipLayer?.contentsScale = UIScreen.main.scale
-            shipLayer?.frame = CGRect(x: bounds.width / 2.0, y: bounds.height, width: 40, height: 40)
+            shipLayer?.frame = CGRect(x: bounds.width / 2.0, y: bounds.height+55, width: 40, height: 40)
             shipLayer?.transform = CATransform3DRotate(CATransform3DIdentity, CGFloat(Double.pi / 2.0), 0, 0, 1)
         }
         shipLayer?.opacity = 1.0
