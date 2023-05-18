@@ -23,7 +23,7 @@ class AUiRtmManager(
     private val rtmClient: RtmClient,
 ) {
 
-    private val proxy = AUiRtmMsgProxy()
+    public val proxy = AUiRtmMsgProxy()
     private val rtmStreamChannelMap = mutableMapOf<String, StreamChannel>()
     private val logger = AUiLogger(AUiLogger.Config(context, "AUiRtmManager"))
     @Volatile

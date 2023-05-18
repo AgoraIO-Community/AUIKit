@@ -74,11 +74,10 @@ class KTVApiImpl(
     var mpkPublishVolume: Int = 50
 
     private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
-    private lateinit var mRtcEngine: RtcEngineEx
-    private lateinit var mMusicCenter: IAgoraMusicContentCenter
-    private lateinit var mPlayer: IAgoraMusicPlayer
+    private var mRtcEngine: RtcEngineEx = mConfig.engine as RtcEngineEx
+    private var mMusicCenter: IAgoraMusicContentCenter
+    private var mPlayer: IAgoraMusicPlayer
 
-    private lateinit var ktvApiConfig: KTVApiConfig
     private var innerDataStreamId: Int = 0
     private var subChorusConnection: RtcConnection? = null
 
@@ -107,7 +106,6 @@ class KTVApiImpl(
     private var localPlayerSystemTime: Long = 0
 
     //歌词实时刷新
-    private var mStopDisplayLrc = true
     private var mReceivedPlayPosition: Long = 0 //播放器播放position，ms
     private var mLastReceivedPlayPosTime: Long? = null
 
@@ -127,17 +125,12 @@ class KTVApiImpl(
 
     // mpk状态
     private var mediaPlayerState: MediaPlayerState = MediaPlayerState.PLAYER_STATE_IDLE
-
     companion object{
         private val scheduledThreadPool: ScheduledExecutorService = Executors.newScheduledThreadPool(5)
     }
 
     private var mCustomAudioTrackId = -1
-
     init {
-        this.mRtcEngine = mConfig.engine as RtcEngineEx
-        this.ktvApiConfig = mConfig
-
         val innerCfg = DataStreamConfig()
         innerCfg.syncWithAudio = true
         innerCfg.ordered = false
@@ -146,7 +139,7 @@ class KTVApiImpl(
         // ------------------ 初始化内容中心 ------------------
         val contentCenterConfiguration = MusicContentCenterConfiguration()
         contentCenterConfiguration.appId = mConfig.appId
-        contentCenterConfiguration.mccUid = ktvApiConfig.localUid.toLong()
+        contentCenterConfiguration.mccUid = mConfig.localUid.toLong()
         contentCenterConfiguration.token = mConfig.rtmToken
         contentCenterConfiguration.maxCacheSize = mConfig.maxCacheSize
         mMusicCenter = IAgoraMusicContentCenter.create(mRtcEngine)
@@ -163,9 +156,8 @@ class KTVApiImpl(
         mMusicCenter.registerEventHandler(this)
 
         setKTVParameters()
-        // TODO: 这两个函数会导致crash，等结构调整后再打开并解决
-//        startDisplayLrc()
-//        startSyncPitch()
+        startDisplayLrc()
+        startSyncPitch()
         isRelease = false;
     }
     private fun setKTVParameters() {
@@ -246,7 +238,7 @@ class KTVApiImpl(
         } else if (this.singerRole == KTVSingRole.Audience && newRole == KTVSingRole.LeadSinger) {
             // 2、Audience -》LeadSinger
             becomeSoloSinger()
-            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object : OnJoinChorusStateListener {
+            joinChorus(newRole, mConfig.chorusChannelToken, object : OnJoinChorusStateListener {
                 override fun onJoinChorusSuccess() {
                     Log.d(TAG, "onJoinChorusSuccess")
                     singerRole = newRole
@@ -270,7 +262,7 @@ class KTVApiImpl(
 
         } else if (this.singerRole == KTVSingRole.Audience && newRole == KTVSingRole.CoSinger) {
             // 4、Audience -》CoSinger
-            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object : OnJoinChorusStateListener {
+            joinChorus(newRole, mConfig.chorusChannelToken, object : OnJoinChorusStateListener {
                 override fun onJoinChorusSuccess() {
                     Log.d(TAG, "onJoinChorusSuccess")
                     singerRole = newRole
@@ -296,7 +288,7 @@ class KTVApiImpl(
         } else if (this.singerRole == KTVSingRole.SoloSinger && newRole == KTVSingRole.LeadSinger) {
             // 6、SoloSinger -》LeadSinger
 
-            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object : OnJoinChorusStateListener {
+            joinChorus(newRole, mConfig.chorusChannelToken, object : OnJoinChorusStateListener {
                 override fun onJoinChorusSuccess() {
                     Log.d(TAG, "onJoinChorusSuccess")
                     singerRole = newRole
@@ -720,8 +712,8 @@ class KTVApiImpl(
         channelMediaOption.publishCustomAudioTrackId = mCustomAudioTrackId
 
         val rtcConnection = RtcConnection()
-        rtcConnection.channelId = ktvApiConfig.chorusChannelName
-        rtcConnection.localUid = ktvApiConfig.localUid
+        rtcConnection.channelId = mConfig.chorusChannelName
+        rtcConnection.localUid = mConfig.localUid
         subChorusConnection = rtcConnection
 
         val ret = mRtcEngine.joinChannelEx(
@@ -788,9 +780,16 @@ class KTVApiImpl(
     // ------------------ 歌词播放、同步 ------------------
     // 开始播放歌词
 
-    private val displayLrcTask = object : Runnable {
-        override fun run() {
-            if (!mStopDisplayLrc){
+    private var displayLrcTask: Runnable? = null
+
+    private var displayLrcFuture: ScheduledFuture<*>? = null
+    private fun startDisplayLrc() {
+        if (displayLrcTask != null) {
+            return
+        }
+        Log.d(TAG, "startDisplayLrc called")
+        displayLrcTask = object : Runnable {
+            override fun run() {
                 val lastReceivedTime = mLastReceivedPlayPosTime ?: return
                 val curTime = System.currentTimeMillis()
                 val offset = curTime - lastReceivedTime
@@ -808,39 +807,23 @@ class KTVApiImpl(
                 }
             }
         }
-    }
-
-    private var displayLrcFuture: ScheduledFuture<*>? = null
-    private fun startDisplayLrc() {
-        Log.d(TAG, "startDisplayLrc called")
-        mStopDisplayLrc = false
         displayLrcFuture = scheduledThreadPool.scheduleAtFixedRate(displayLrcTask, 0,20, TimeUnit.MILLISECONDS)
     }
 
     // 停止播放歌词
     private fun stopDisplayLrc() {
         Log.d(TAG, "stopDisplayLrc called")
-        mStopDisplayLrc = true
         displayLrcFuture?.cancel(true)
         displayLrcFuture = null
-        if (scheduledThreadPool is ScheduledThreadPoolExecutor) {
+        if (scheduledThreadPool is ScheduledThreadPoolExecutor && displayLrcTask != null) {
             (scheduledThreadPool as ScheduledThreadPoolExecutor).remove(displayLrcTask)
+            displayLrcTask = null
         }
     }
 
     // ------------------ 音高pitch同步 ------------------
 //    private var mSyncPitchThread: Thread? = null
-    private var mStopSyncPitch = true
-
-    private val mSyncPitchTask = Runnable {
-        if (!mStopSyncPitch) {
-            if (mediaPlayerState == MediaPlayerState.PLAYER_STATE_PLAYING &&
-                (singerRole == KTVSingRole.LeadSinger || singerRole == KTVSingRole.SoloSinger)) {
-                sendSyncPitch(pitch)
-            }
-        }
-    }
-
+    private var mSyncPitchTask: Runnable? = null
     private fun sendSyncPitch(pitch: Double) {
         val msg: MutableMap<String?, Any?> = java.util.HashMap()
         msg["cmd"] = "setVoicePitch"
@@ -852,19 +835,26 @@ class KTVApiImpl(
     // 开始同步音高
     private var mSyncPitchFuture :ScheduledFuture<*>? = null
     private fun startSyncPitch() {
-        mStopSyncPitch = false
+        if (mSyncPitchTask != null) {
+            return
+        }
+        mSyncPitchTask = Runnable {
+            if (mediaPlayerState == MediaPlayerState.PLAYER_STATE_PLAYING &&
+                (singerRole == KTVSingRole.LeadSinger || singerRole == KTVSingRole.SoloSinger)) {
+                sendSyncPitch(pitch)
+            }
+        }
         mSyncPitchFuture = scheduledThreadPool.scheduleAtFixedRate(mSyncPitchTask,0,50,TimeUnit.MILLISECONDS)
     }
 
     // 停止同步音高
     private fun stopSyncPitch() {
-        mStopSyncPitch = true
         pitch = 0.0
-
         mSyncPitchFuture?.cancel(true)
         mSyncPitchFuture = null
-        if (scheduledThreadPool is ScheduledThreadPoolExecutor) {
+        if (scheduledThreadPool is ScheduledThreadPoolExecutor && mSyncPitchTask != null) {
             (scheduledThreadPool as ScheduledThreadPoolExecutor).remove(mSyncPitchTask)
+            mSyncPitchTask = null
         }
     }
 

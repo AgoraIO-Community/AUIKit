@@ -41,7 +41,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
         initView(context);
     }
 
-
     private void initView(@NonNull Context context) {
         View.inflate(context, R.layout.aui_micseats_view, this);
         AUIRecyclerView rvMicSeats = findViewById(R.id.rv_mic_seats);
@@ -52,7 +51,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 return new RecyclerView.ViewHolder(new AUIMicSeatItemView(parent.getContext())) {
                 };
             }
-
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 AUIMicSeatItemView seatItemView = (AUIMicSeatItemView) holder.itemView;
@@ -62,7 +60,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                     showMicSeatDialog(position);
                 });
             }
-
             @Override
             public int getItemCount() {
                 return micSeatCount;
@@ -148,7 +145,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
         private Drawable userAvatarImageDrawable;
         private int seatStatus;
         private String userAvatarImageUrl;
-
         private IMicSeatItemView view;
 
         private void setView(IMicSeatItemView view) {
@@ -170,7 +166,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setTitleText(text);
             }
         }
-
         @Override
         public void setRoomOwnerVisibility(int visible) {
             this.roomOwnerVisibility = visible;
@@ -178,7 +173,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setRoomOwnerVisibility(visible);
             }
         }
-
         @Override
         public void setTitleIndex(int index) {
             this.titleIndex = index;
