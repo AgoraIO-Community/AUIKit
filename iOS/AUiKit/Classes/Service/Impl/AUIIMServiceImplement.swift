@@ -19,6 +19,8 @@ open class AUIIMManagerServiceImplement: NSObject {
     
     public var currentRoomId = ""
     
+    private var currentUser:AUiUserThumbnailInfo?
+    
     /// Description 回调协议
     public weak var responseDelegate: AUIMManagerRespDelegate?
     
@@ -65,7 +67,7 @@ open class AUIIMManagerServiceImplement: NSObject {
     ///   - appKey: AgoraChat  app key
     ///   - user: AUiUserThumbnailInfo instance
     /// - Returns: error
-    public func configIM(appKey: String, user:[AUiUserThumbnailInfo]) -> NSError? {
+    public func configIM(appKey: String, user:AUiUserThumbnailInfo) -> NSError? {
         if appKey.isEmpty {
             return AUiCommonError.httpError(400, "app key is empty.").toNSError()
         }
@@ -74,6 +76,9 @@ open class AUIIMManagerServiceImplement: NSObject {
         options.isAutoLogin = false
         options.setValue("https://a1.chat.agora.io", forKeyPath: "restServer")
         let error = AgoraChatClient.shared().initializeSDK(with: options)
+        if error == nil {
+            self.currentUser = user
+        }
         return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
     }
     

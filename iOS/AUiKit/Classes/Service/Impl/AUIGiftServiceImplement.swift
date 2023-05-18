@@ -19,12 +19,13 @@ class AUIGiftServiceImplement: NSObject {
     
     public var currentRoomId = ""
     
+    private var currentUser:AUiUserThumbnailInfo?
+    
     /// Description 回调协议
     public weak var responseDelegate: AUIGiftsManagerRespDelegate?
     
     /// Description 请求协议
     public weak var requestDelegate: AUIGiftsManagerServiceDelegate?
-    
     
     /// Description 单例
     public static var shared: AUIGiftServiceImplement? = once
@@ -65,7 +66,7 @@ class AUIGiftServiceImplement: NSObject {
     ///   - appKey: AgoraChat  app key
     ///   - user: AUiUserThumbnailInfo instance
     /// - Returns: error
-    public func configIM(appKey: String, user:[AUiUserThumbnailInfo]) -> NSError? {
+    public func configIM(appKey: String, user:AUiUserThumbnailInfo) -> NSError? {
         if appKey.isEmpty {
             return AUiCommonError.httpError(400, "app key is empty.").toNSError()
         }
@@ -74,6 +75,9 @@ class AUIGiftServiceImplement: NSObject {
         options.isAutoLogin = false
         options.setValue("https://a1.chat.agora.io", forKeyPath: "restServer")
         let error = AgoraChatClient.shared().initializeSDK(with: options)
+        if error == nil {
+            self.currentUser = user
+        }
         return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
     }
     
