@@ -8,7 +8,7 @@
 import UIKit
 
 
-extension UIImage {
+public extension UIImage {
     convenience init?(_ bundleResourceName: String,_ type: AUIBundleType) {
         if #available(iOS 13.0, *) {
             self.init(named: bundleResourceName, in: Bundle.bundle(for: type), with: nil)

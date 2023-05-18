@@ -11,6 +11,7 @@ public enum AUIBundleType: Int {
     case voiceRoom
     case karaoke
     case live
+    case gift
 }
 
 public let VoiceResourceBundle = Bundle(path: Bundle.main.path(forResource: "VoiceChatRoomResource", ofType: "bundle") ?? "") ?? Bundle.main
@@ -19,19 +20,24 @@ public let KaraokeResourceBundle = Bundle(path: Bundle.main.path(forResource: "K
 
 public let LiveResourceBundle = Bundle(path: Bundle.main.path(forResource: "LiveResource", ofType: "bundle") ?? "") ?? Bundle.main
 
+public let GiftBundle = Bundle(path: Bundle.main.path(forResource: "GiftResource", ofType: "bundle") ?? "") ?? Bundle.main
+
 public extension Bundle {
     class var voiceRoomBundle: Bundle { VoiceResourceBundle }
     class var karaokeRoomBundle: Bundle { KaraokeResourceBundle }
     class var liveRoomBundle: Bundle { LiveResourceBundle }
+    class var giftBundle: Bundle { GiftBundle }
     
     class func bundle(for type: AUIBundleType) -> Bundle {
         switch type {
         case .voiceRoom:
-            return voiceRoomBundle
+            return Bundle.voiceRoomBundle
         case .karaoke:
-            return karaokeRoomBundle
+            return Bundle.karaokeRoomBundle
         case .live:
-            return liveRoomBundle
+            return Bundle.liveRoomBundle
+        case .gift:
+            return Bundle.giftBundle
         }
     }
     
