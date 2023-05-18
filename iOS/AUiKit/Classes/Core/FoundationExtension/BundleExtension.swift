@@ -20,7 +20,7 @@ public let KaraokeResourceBundle = Bundle(path: Bundle.main.path(forResource: "K
 
 public let LiveResourceBundle = Bundle(path: Bundle.main.path(forResource: "LiveResource", ofType: "bundle") ?? "") ?? Bundle.main
 
-public let GiftBundle = Bundle(path: Bundle.main.path(forResource: "GiftResource", ofType: "bundle") ?? "") ?? Bundle.main
+public let GiftBundle = Bundle(path: Bundle.main.path(forResource: "Gift", ofType: "bundle") ?? "") ?? Bundle.main
 
 public extension Bundle {
     class var voiceRoomBundle: Bundle { VoiceResourceBundle }

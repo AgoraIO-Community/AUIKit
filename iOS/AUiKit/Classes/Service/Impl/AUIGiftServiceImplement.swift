@@ -84,6 +84,18 @@ class AUIGiftServiceImplement: NSObject {
     private func mapError(error: AgoraChatError?) -> NSError {
         return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
     }
+    
+    private func addChatRoomListener() {
+        AgoraChatClient.shared().add(self, delegateQueue: .main)
+        AgoraChatClient.shared().chatManager?.add(self, delegateQueue: .main)
+        AgoraChatClient.shared().roomManager?.add(self, delegateQueue: .main)
+    }
+
+    private func removeListener() {
+        AgoraChatClient.shared().removeDelegate(self)
+        AgoraChatClient.shared().roomManager?.remove(self)
+        AgoraChatClient.shared().chatManager?.remove(self)
+    }
 
 }
 
