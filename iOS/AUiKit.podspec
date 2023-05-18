@@ -64,12 +64,13 @@ TODO: Add long description of the pod here.
       player.dependency 'AUiKit/Service'
   end
   
-  s.source_files = 'AUiKit/Classes/**/*'
+  s.source_files = 'AUiKit/Classes/**/*.swift'
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = 'AUiKit/Resource/*.bundle'
+  s.resource = ['AUiKit/Resource/*.bundle', 'AUiKit/Classes/Components/**/Resources/*.bundle']
+
   
   # s.resource_bundles = {
   #   'AUiKit' => ['AUiKit/Assets/*.png']

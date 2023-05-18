@@ -20,7 +20,7 @@ open class AUiMicSeatServiceImpl: NSObject {
     private var micSeats:[Int: AUiMicSeatInfo] = [:]
     
     deinit {
-        self.rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
+        self.rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         aui_info("deinit AUiMicSeatServiceImpl", tag: "AUiMicSeatServiceImpl")
     }
     
@@ -29,13 +29,13 @@ open class AUiMicSeatServiceImpl: NSObject {
         self.channelName = channelName
         self.roomManager = roomManager
         super.init()
-        rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
+        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         aui_info("init AUiMicSeatServiceImpl", tag: "AUiMicSeatServiceImpl")
     }
 }
 
-extension AUiMicSeatServiceImpl: AUiRtmMsgProxyDelegate {
-    public func onMsgDidChanged(channelName: String, key: String, value: Any) {
+extension AUiMicSeatServiceImpl: AUiRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kSeatAttrKry {
             aui_info("recv seat attr did changed \(value)", tag: "AUiMicSeatServiceImpl")
             guard let map = value as? [String: [String: Any]] else {return}

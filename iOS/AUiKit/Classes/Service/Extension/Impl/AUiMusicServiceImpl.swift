@@ -44,7 +44,7 @@ open class AUiMusicServiceImpl: NSObject {
     private var ktvApi: KTVApiDelegate!
     
     deinit {
-        rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
+        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         aui_info("deinit AUiMusicServiceImpl", tag: "AUiMusicServiceImpl")
     }
     
@@ -54,14 +54,14 @@ open class AUiMusicServiceImpl: NSObject {
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.ktvApi = ktvApi
-        rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
+        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
     }
 }
 
 
 //MARK: AUiRtmMsgProxyDelegate
-extension AUiMusicServiceImpl: AUiRtmMsgProxyDelegate {
-    public func onMsgDidChanged(channelName: String, key: String, value: Any) {
+extension AUiMusicServiceImpl: AUiRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kChooseSongKey {
             aui_info("recv choose song attr did changed \(value)", tag: "AUiMusicServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),

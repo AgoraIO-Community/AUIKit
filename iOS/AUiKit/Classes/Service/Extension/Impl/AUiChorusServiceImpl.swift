@@ -21,7 +21,7 @@ open class AUiChorusServiceImpl: NSObject {
     
     deinit {
         aui_info("deinit AUiChorusServiceImpl", tag: "AUiChorusServiceImpl")
-        rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
+        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
     
     public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUiRtmManager) {
@@ -31,7 +31,7 @@ open class AUiChorusServiceImpl: NSObject {
         self.channelName = channelName
         self.rtcKit = rtcKit
         self.ktvApi = ktvApi
-        rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
+        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
 }
 
@@ -75,8 +75,8 @@ extension AUiChorusServiceImpl: AUiChorusServiceDelegate {
 }
 
 //MARK: AUiRtmMsgProxyDelegate
-extension AUiChorusServiceImpl: AUiRtmMsgProxyDelegate {
-    public func onMsgDidChanged(channelName: String, key: String, value: Any) {
+extension AUiChorusServiceImpl: AUiRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kChorusKey {
             aui_info("recv chorus attr did changed \(value)", tag: "AUiPlayerServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),

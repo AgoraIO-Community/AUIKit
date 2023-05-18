@@ -28,8 +28,12 @@ import AgoraRtcKit
     @objc optional func onMsgRecvEmpty(channelName: String)
 }
 
-@objc public protocol AUiRtmMsgProxyDelegate: NSObjectProtocol {
-    func onMsgDidChanged(channelName: String, key: String, value: Any)
+@objc public protocol AUiRtmAttributesProxyDelegate: NSObjectProtocol {
+    func onAttributesDidChanged(channelName: String, key: String, value: Any)
+}
+
+@objc public protocol AUiRtmMessageProxyDelegate: NSObjectProtocol {
+    func onMessageReceive(channelName: String, message: String)
 }
 
 public protocol AUiRtmUserProxyDelegate: NSObjectProtocol {
@@ -39,21 +43,23 @@ public protocol AUiRtmUserProxyDelegate: NSObjectProtocol {
     func onUserDidUpdated(channelName: String, userId:String, userInfo: [String: Any])
 }
 
+
 /// RTM消息转发器
 open class AUiRtmMsgProxy: NSObject {
-    private var msgDelegates:[String: NSHashTable<AnyObject>] = [:]
-    private var msgCacheAttr: [String: [String: String]] = [:]
+    private var attributesDelegates:[String: NSHashTable<AnyObject>] = [:]
+    private var attributesCacheAttr: [String: [String: String]] = [:]
+    private var messageDelegates:NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var userDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var errorDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     weak var origRtmDelegate: AgoraRtmClientDelegate?  //保存原有的delegate做转发
     
     func cleanCache(channelName: String) {
-        msgCacheAttr[channelName] = nil
+        attributesCacheAttr[channelName] = nil
     }
     
-    func subscribeMsg(channelName: String, itemKey: String, delegate: AUiRtmMsgProxyDelegate) {
+    func subscribeAttributes(channelName: String, itemKey: String, delegate: AUiRtmAttributesProxyDelegate) {
         let key = "\(channelName)__\(itemKey)"
-        if let value = msgDelegates[key] {
+        if let value = attributesDelegates[key] {
             if !value.contains(delegate) {
                 value.add(delegate)
             }
@@ -61,15 +67,26 @@ open class AUiRtmMsgProxy: NSObject {
         }
         let weakObjects = NSHashTable<AnyObject>.weakObjects()
         weakObjects.add(delegate)
-        msgDelegates[key] = weakObjects
+        attributesDelegates[key] = weakObjects
     }
     
-    func unsubscribeMsg(channelName: String, itemKey: String, delegate: AUiRtmMsgProxyDelegate) {
+    func unsubscribeAttributes(channelName: String, itemKey: String, delegate: AUiRtmAttributesProxyDelegate) {
         let key = "\(channelName)__\(itemKey)"
-        guard let value = msgDelegates[key] else {
+        guard let value = attributesDelegates[key] else {
             return
         }
         value.remove(delegate)
+    }
+    
+    func subscribeMessage(channelName: String, delegate: AUiRtmMessageProxyDelegate) {
+        if messageDelegates.contains(delegate) {
+            return
+        }
+        messageDelegates.add(delegate)
+    }
+    
+    func unsubscribeMessage(channelName: String, delegate: AUiRtmMessageProxyDelegate) {
+        messageDelegates.remove(delegate)
     }
     
     func subscribeUser(channelName: String, delegate: AUiRtmUserProxyDelegate) {
@@ -124,10 +141,14 @@ extension AUiRtmMsgProxy: AgoraRtmClientDelegate {
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, on event: AgoraRtmStorageEvent) {
         origRtmDelegate?.rtmKit?(rtmKit, on: event)
         
+        guard event.channelType == .stream else {
+            return
+        }
+        
         aui_info("storage event[\(event.target)] channelType: [\(event.channelType.rawValue)] storageType: [\(event.eventType.rawValue)] =======", tag: "AUiRtmMsgProxy")
         //key使用channelType__eventType，保证message channel/stream channel, user storage event/channel storage event共存
         let cacheKey = event.target//"\(event.channelType.rawValue)__\(event.eventType.rawValue)_\(event.target)"
-        var cache = self.msgCacheAttr[cacheKey] ?? [:]
+        var cache = self.attributesCacheAttr[cacheKey] ?? [:]
         event.data.getItems().forEach { item in
 //            aui_info("\(item.key): \(item.value)", tag: "AUiRtmMsgProxy")
             //判断value和缓存里是否一致，这里用string可能会不准，例如不同终端序列化的时候json obj不同kv的位置不一样会造成生成的json string不同
@@ -141,15 +162,15 @@ extension AUiRtmMsgProxy: AgoraRtmClientDelegate {
                 return
             }
             let delegateKey = "\(event.target)__\(item.key)"
-            if let value = self.msgDelegates[delegateKey] {
+            if let value = self.attributesDelegates[delegateKey] {
                 value.objectEnumerator().forEach { element in
-                    if let delegate = element as? AUiRtmMsgProxyDelegate {
-                        delegate.onMsgDidChanged(channelName: event.target, key: item.key, value: itemValue)
+                    if let delegate = element as? AUiRtmAttributesProxyDelegate {
+                        delegate.onAttributesDidChanged(channelName: event.target, key: item.key, value: itemValue)
                     }
                 }
             }
         }
-        self.msgCacheAttr[cacheKey] = cache
+        self.attributesCacheAttr[cacheKey] = cache
         if event.data.getItems().count > 0 {
             return
         }
@@ -164,6 +185,12 @@ extension AUiRtmMsgProxy: AgoraRtmClientDelegate {
         origRtmDelegate?.rtmKit?(rtmKit, on: event)
         
         aui_info("[\(event.channelName)] presence event type: [\(event.type.rawValue)] channel type: [\(event.channelType.rawValue)]] states: \(event.states.count) =======", tag: "AUiRtmMsgProxy")
+        
+        
+        guard event.channelType == .stream else {
+            return
+        }
+        
 //        var map: [[]]
         var map: [String: String] = [:]
         event.states.forEach { item in
@@ -196,6 +223,19 @@ extension AUiRtmMsgProxy: AgoraRtmClientDelegate {
             userDelegates.objectEnumerator().forEach { element in
                 (element as? AUiRtmUserProxyDelegate)?.onUserSnapshotRecv(channelName: event.channelName, userId: userId, userList: userList)
             }
+        }
+    }
+    
+    public func rtmKit(_ rtmKit: AgoraRtmClientKit, on event: AgoraRtmMessageEvent) {
+        origRtmDelegate?.rtmKit?(rtmKit, on: event)
+        aui_info("[\(event.channelName)] message event type: [\(event.messageType.rawValue)] message: [\(event.message)]]  =======", tag: "AUiRtmMsgProxy")
+        
+        if event.messageType == .string {
+            messageDelegates.objectEnumerator().forEach { element in
+                (element as? AUiRtmMessageProxyDelegate)?.onMessageReceive(channelName: event.channelName, message: event.message)
+            }
+        } else {
+            aui_warn("recv unknown type message: \(event.messageType.rawValue)", tag: "AUiRtmMsgProxy")
         }
     }
 }
