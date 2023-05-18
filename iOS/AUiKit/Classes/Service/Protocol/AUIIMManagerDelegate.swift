@@ -38,48 +38,33 @@ public enum AgoraChatroomBeKickedReason: Int {
  
 public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
      
- 
-    /// Description 发送文本消息
- 
+    
+    /// Description 发送聊天室消息
     /// - Parameters:
- 
     ///   - roomId: 聊天室id
- 
-    ///   - text: 文本
- 
+    ///   - text: 文本内容
     ///   - userInfo: 用户信息
- 
-    ///   - completion: 回调包含发送的消息以及是否成功
- 
+    ///   - completion: 回调包含发送成功的文本消息，失败消息为空，错误不为空
     func sendMessage(roomId: String, text: String, userInfo: AUiUserThumbnailInfo, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void)
  
-     
- 
+    
     /// Description 加入聊天室
- 
     /// - Parameters:
- 
     ///   - roomId: 聊天室id
- 
-    ///   - completion: 回调包含聊天室id以及是否成功
- 
-    func joinedChatRoom(roomId: String, completion: @escaping ((String?, NSError?) -> Void))
+    ///   - completion: 回调包含聊天室id以及错误
+     func joinedChatRoom(roomId: String, completion: @escaping ((String?, NSError?) -> Void))
  
      
  
+    
     /// Description 退出聊天室
- 
-    /// - Parameter completion: 是否退出成功
- 
+    /// - Parameter completion: 错误为空即为成功
     func userQuitRoom(completion: ((NSError?) -> Void)?)
  
      
  
     /// Description 销毁聊天室
- 
     func userDestroyedChatroom()
- 
-     
  
 }
  
