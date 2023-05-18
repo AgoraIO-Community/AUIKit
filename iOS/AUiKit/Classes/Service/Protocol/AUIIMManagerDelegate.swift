@@ -88,12 +88,11 @@ public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
  
 public protocol AUIMManagerRespDelegate: NSObjectProtocol {
  
-     
- 
-    /// Description 收到消息回调
- 
-    /// - Parameter messages: 消息
- 
+    
+    /// Description 接收到消息
+    /// - Parameters:
+    ///   - roomId: 聊天室id
+    ///   - message: 接受到的文本小安溪
     func messageDidReceive(roomId: String, message: AgoraChatTextMessage)
     
     
