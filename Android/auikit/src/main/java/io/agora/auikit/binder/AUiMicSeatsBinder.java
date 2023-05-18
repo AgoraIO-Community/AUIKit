@@ -2,6 +2,7 @@ package io.agora.auikit.binder;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -121,19 +122,16 @@ public class AUiMicSeatsBinder implements
     public void onSeatListChange(List<AUiMicSeatInfo> seatInfoList) {
         IAUiMicSeatService.AUiMicSeatRespDelegate.super.onSeatListChange(seatInfoList);
     }
-
     @Override
     public void onAnchorEnterSeat(int seatIndex, @NonNull AUiUserThumbnailInfo userInfo) {
-        IMicSeatItemView seatView = micSeatsView.getMicSeatItemViewList()[seatIndex];
-        seatView.setTitleText(userInfo.userName);
-        seatView.setUserAvatarImageUrl(userInfo.userAvatar);
+        AUiMicSeatInfo seatInfo = micSeatService.getMicSeatInfo(seatIndex);
+        updateSeatView(seatIndex, seatInfo);
     }
-
     @Override
     public void onAnchorLeaveSeat(int seatIndex, @NonNull AUiUserThumbnailInfo userInfo) {
-        updateSeatView(seatIndex, null);
+        AUiMicSeatInfo seatInfo = micSeatService.getMicSeatInfo(seatIndex);
+        updateSeatView(seatIndex, seatInfo);
     }
-
     @Override
     public void onSeatAudioMute(int seatIndex, boolean isMute) {
         IMicSeatItemView seatView = micSeatsView.getMicSeatItemViewList()[seatIndex];
@@ -152,10 +150,9 @@ public class AUiMicSeatsBinder implements
         IMicSeatItemView seatView = micSeatsView.getMicSeatItemViewList()[seatIndex];
         seatView.setMicSeatState(seatInfo.seatStatus);
     }
-
     private void updateSeatView(int seatIndex, @Nullable AUiMicSeatInfo micSeatInfo) {
         IMicSeatItemView seatView = micSeatsView.getMicSeatItemViewList()[seatIndex];
-        if (micSeatInfo == null || micSeatInfo.seatStatus == AUiMicSeatStatus.idle) {
+        if (micSeatInfo == null) {
             seatView.setTitleIndex(seatIndex + 1);
             seatView.setAudioMuteVisibility(View.GONE);
             seatView.setVideoMuteVisibility(View.GONE);
@@ -163,24 +160,9 @@ public class AUiMicSeatsBinder implements
             seatView.setChorusMicOwnerType(IMicSeatItemView.ChorusType.None);
             return;
         }
-        AUiUserInfo userInfo = null;
-        if (micSeatInfo.user != null) {
-            userInfo = userService.getUserInfo(micSeatInfo.user.userId);
-        }
-        seatView.setRoomOwnerVisibility((seatIndex == 0) ? View.VISIBLE : View.GONE);
+        seatView.setMicSeatState(micSeatInfo.seatStatus);
 
-        seatView.setMicSeatState(AUiMicSeatStatus.locked);
-
-        boolean isAudioMute = (micSeatInfo.muteAudio != 0);
-        if (userInfo != null) {
-            isAudioMute = isAudioMute || (userInfo.muteAudio == 1);
-        }
-        seatView.setAudioMuteVisibility(isAudioMute ? View.VISIBLE : View.GONE);
-
-        boolean isVideoMute = (micSeatInfo.muteVideo != 0);
-        seatView.setVideoMuteVisibility(isVideoMute ? View.VISIBLE : View.GONE);
-
-        if (micSeatInfo.user != null) {
+        if (micSeatInfo.user != null && !micSeatInfo.user.userId.isEmpty()) {
             seatView.setTitleText(micSeatInfo.user.userName);
             seatView.setUserAvatarImageUrl(micSeatInfo.user.userAvatar);
 
@@ -191,9 +173,24 @@ public class AUiMicSeatsBinder implements
             } else {
                 seatView.setChorusMicOwnerType(IMicSeatItemView.ChorusType.None);
             }
+            seatView.setRoomOwnerVisibility((seatIndex == 0) ? View.VISIBLE : View.GONE);
+
+            AUiUserInfo userInfo = userService.getUserInfo(micSeatInfo.user.userId);
+            boolean isAudioMute = (micSeatInfo.muteAudio == 1);
+            boolean isVideoMute = (micSeatInfo.muteVideo != 0);
+            if (userInfo != null) {
+                isAudioMute = isAudioMute || (userInfo.muteAudio == 1);
+            }
+            seatView.setAudioMuteVisibility(isAudioMute ? View.VISIBLE : View.GONE);
+            seatView.setVideoMuteVisibility(isVideoMute ? View.VISIBLE : View.GONE);
+        } else {
+            seatView.setTitleIndex(seatIndex + 1);
+            seatView.setAudioMuteVisibility((micSeatInfo.muteAudio == 1) ? View.VISIBLE : View.GONE);
+            seatView.setVideoMuteVisibility((micSeatInfo.muteVideo != 0) ? View.VISIBLE : View.GONE);
+            seatView.setUserAvatarImageDrawable(null);
+            seatView.setChorusMicOwnerType(IMicSeatItemView.ChorusType.None);
         }
     }
-
     private void setLeadSingerId(String str) {
         if (str.equals(mLeadSingerId)) {
             return;

@@ -17,11 +17,11 @@ interface AUiRtmErrorProxyDelegate {
 
     /** 网络状态变化
      */
-    fun onConnectionStateChanged(channelName: String, state: Int, reason: Int)
+    fun onConnectionStateChanged(channelName: String, state: Int, reason: Int) {}
 
     /** 收到的KV为空
      */
-    fun onMsgRecvEmpty(channelName: String)
+    fun onMsgRecvEmpty(channelName: String) {}
 }
 
 interface AUiRtmMsgProxyDelegate {
@@ -40,8 +40,9 @@ class AUiRtmMsgProxy : RtmEventListener {
 
     var originEventListeners: RtmEventListener? = null
     private val msgDelegates: MutableMap<String, ArrayList<AUiRtmMsgProxyDelegate>> = mutableMapOf()
-    private val userDelegates: MutableList<AUiRtmUserProxyDelegate> = mutableListOf()
     private val msgCacheAttr: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
+    private val userDelegates: MutableList<AUiRtmUserProxyDelegate> = mutableListOf()
+    private val errorDelegates: MutableList<AUiRtmErrorProxyDelegate> = mutableListOf()
 
     fun cleanCache(channelName: String) {
         msgCacheAttr.remove(channelName)
@@ -69,6 +70,17 @@ class AUiRtmMsgProxy : RtmEventListener {
 
     fun unsubscribeUser(delegate: AUiRtmUserProxyDelegate) {
         userDelegates.remove(delegate)
+    }
+
+    fun subscribeError(channelName: String, delegate: AUiRtmErrorProxyDelegate) {
+        if (errorDelegates.contains(delegate)) {
+            return
+        }
+        errorDelegates.add(delegate)
+    }
+
+    fun unsubscribeError(channelName: String, delegate: AUiRtmErrorProxyDelegate) {
+        errorDelegates.remove(delegate)
     }
 
     override fun onStorageEvent(event: StorageEvent?) {

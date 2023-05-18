@@ -214,34 +214,43 @@ class AUiMicSeatServiceImpl(
         val seats = GsonTools.toBean(value as String, map.javaClass)
         Log.d("mic_seat_update", "seats: $seats")
         seats?.values?.forEach {
-            val micSeat = GsonTools.toBean(GsonTools.beanToString(it), AUiMicSeatInfo::class.java) ?: return
-            val index = micSeat.seatIndex
-            val originMicSeat = micSeats[index]
-            micSeats[index] = micSeat
-            delegateHelper.notifyDelegate { delegate ->
-                val newUser = micSeat.user
-                if ((originMicSeat?.user == null || originMicSeat.user?.userId?.length == 0)
-                    && newUser != null) {
-                    Log.d("mic_seat_update", "onAnchorEnterSeat: $it")
+            val newSeatInfo = GsonTools.toBean(GsonTools.beanToString(it), AUiMicSeatInfo::class.java) ?: return
+            val index = newSeatInfo.seatIndex
+            val oldSeatInfo = micSeats[index]
+            micSeats[index] = newSeatInfo
+            val newSeatUserId = newSeatInfo.user?.userId ?: ""
+            val oldSeatUserId = oldSeatInfo?.user?.userId ?: ""
+            if (oldSeatUserId.isEmpty() && newSeatUserId.isNotEmpty()) {
+                Log.d("mic_seat_update", "onAnchorEnterSeat: $it")
+                val newUser = newSeatInfo.user ?: return
+                delegateHelper.notifyDelegate { delegate ->
                     delegate.onAnchorEnterSeat(index, newUser)
                 }
-                val originUser = originMicSeat?.user
-                if ((micSeat.user == null || micSeat.user?.userId?.length == 0)
-                    && originUser != null) {
-                    Log.d("mic_seat_update", "onAnchorLeaveSeat: $it")
+            }
+            if (oldSeatUserId.isNotEmpty() && newSeatUserId.isEmpty()) {
+                Log.d("mic_seat_update", "onAnchorLeaveSeat: $it")
+                val originUser = oldSeatInfo?.user ?: return
+                delegateHelper.notifyDelegate { delegate ->
                     delegate.onAnchorLeaveSeat(index, originUser)
                 }
-                if ((originMicSeat?.seatStatus ?: AUiMicSeatStatus.idle) != micSeat.seatStatus) {
-                    Log.d("mic_seat_update", "onSeatClose: $it")
-                    delegate.onSeatClose(index, (micSeat.seatStatus == AUiMicSeatStatus.locked))
+            }
+            if ((oldSeatInfo?.seatStatus ?: AUiMicSeatStatus.idle) != newSeatInfo.seatStatus &&
+                (oldSeatInfo?.seatStatus == AUiMicSeatStatus.locked || newSeatInfo.seatStatus == AUiMicSeatStatus.locked)) {
+                Log.d("mic_seat_update", "onSeatClose: $it")
+                delegateHelper.notifyDelegate { delegate ->
+                    delegate.onSeatClose(index, (newSeatInfo.seatStatus == AUiMicSeatStatus.locked))
                 }
-                if ((originMicSeat?.muteAudio ?: 0) != micSeat.muteAudio) {
-                    Log.d("mic_seat_update", "onSeatAudioMute: $it")
-                    delegate.onSeatAudioMute(index, (micSeat.muteAudio != 0))
+            }
+            if ((oldSeatInfo?.muteAudio ?: 0) != newSeatInfo.muteAudio) {
+                Log.d("mic_seat_update", "onSeatAudioMute: $it")
+                delegateHelper.notifyDelegate { delegate ->
+                    delegate.onSeatAudioMute(index, (newSeatInfo.muteAudio != 0))
                 }
-                if ((originMicSeat?.muteVideo ?: 0) != micSeat.muteVideo) {
-                    Log.d("mic_seat_update", "onSeatVideoMute: $it")
-                    delegate.onSeatVideoMute(index, (micSeat.muteVideo != 0))
+            }
+            if ((oldSeatInfo?.muteVideo ?: 0) != newSeatInfo.muteVideo) {
+                Log.d("mic_seat_update", "onSeatVideoMute: $it")
+                delegateHelper.notifyDelegate { delegate ->
+                    delegate.onSeatVideoMute(index, (newSeatInfo.muteVideo != 0))
                 }
             }
         }

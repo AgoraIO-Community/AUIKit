@@ -12,13 +12,27 @@ import io.agora.auikit.service.callback.AUiRoomListCallback;
 /**
  * 房间Service抽象协议
  */
-public interface IAUiRoomManager extends IAUiCommonService<IAUiRoomManager.AUiRoomRespDelegate>{
+public interface IAUiRoomManager extends IAUiCommonService<IAUiRoomManager.AUiRoomManagerRespDelegate> {
+
+    /**
+     * 绑定响应
+     *
+     * @param delegate 需要回调的对象
+     */
+    void bindRespDelegate(@NonNull AUiRoomManagerRespDelegate delegate);
+
+    /**
+     * 解绑响应
+     *
+     * @param delegate 需要回调的对象
+     */
+    void unbindRespDelegate(@NonNull AUiRoomManagerRespDelegate delegate);
 
     /**
      * 创建房间（房主调用），若房间不存在，系统将自动创建一个新房间
      *
      * @param createRoomInfo 房间内信息
-     * @param callback 成功/失败回调
+     * @param callback       成功/失败回调
      */
     void createRoom(@NonNull AUiCreateRoomInfo createRoomInfo, @Nullable AUiCreateRoomCallback callback);
 
@@ -49,13 +63,13 @@ public interface IAUiRoomManager extends IAUiCommonService<IAUiRoomManager.AUiRo
     /**
      * 获取指定房间id列表的详细信息，如果房间id列表为空，则获取所有房间的信息
      *
-     * @param lastCreateTime  最后1条数据的创建时间, 返回数据list的createTime字段值，如果为空, 默认会设置为服务器当前时间戳
-     * @param pageSize  分页大小
-     * @param callback 成功/失败回调
+     * @param lastCreateTime 最后1条数据的创建时间, 返回数据list的createTime字段值，如果为空, 默认会设置为服务器当前时间戳
+     * @param pageSize       分页大小
+     * @param callback       成功/失败回调
      */
     void getRoomInfoList(@Nullable Long lastCreateTime, int pageSize, @Nullable AUiRoomListCallback callback);
 
-    interface AUiRoomRespDelegate {
+    interface AUiRoomManagerRespDelegate {
 
         /**
          * 房间被销毁的回调

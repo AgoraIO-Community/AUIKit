@@ -5,6 +5,7 @@ import io.agora.auikit.model.AUiCreateRoomInfo
 import io.agora.auikit.model.AUiRoomContext
 import io.agora.auikit.model.AUiRoomInfo
 import io.agora.auikit.service.IAUiRoomManager
+import io.agora.auikit.service.IAUiRoomManager.AUiRoomManagerRespDelegate
 import io.agora.auikit.service.callback.AUiCallback
 import io.agora.auikit.service.callback.AUiCreateRoomCallback
 import io.agora.auikit.service.callback.AUiException
@@ -46,23 +47,20 @@ class AUiRoomManagerImpl(
 
     private val TAG = "AUiRoomManagerImpl"
 
-    private val delegateHelper = DelegateHelper<IAUiRoomManager.AUiRoomRespDelegate>()
+    private val delegateHelper = DelegateHelper<IAUiRoomManager.AUiRoomManagerRespDelegate>()
 
     private var mChannelName: String? = null
-
     protected fun finalize() {
         rtmManager.logout()
     }
-
     init {
         AUiRoomContext.shared().commonConfig = commonConfig
     }
-
-    override fun bindRespDelegate(delegate: IAUiRoomManager.AUiRoomRespDelegate?) {
+    override fun bindRespDelegate(delegate: AUiRoomManagerRespDelegate?) {
         delegateHelper.bindDelegate(delegate)
     }
 
-    override fun unbindRespDelegate(delegate: IAUiRoomManager.AUiRoomRespDelegate?) {
+    override fun unbindRespDelegate(delegate: AUiRoomManagerRespDelegate?) {
         delegateHelper.unBindDelegate(delegate)
     }
 
@@ -118,7 +116,6 @@ class AUiRoomManagerImpl(
                 }
             })
     }
-
     override fun enterRoom(roomId: String, token: String, callback: AUiCallback?) {
         val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, String>
         if (user == null) {
@@ -145,7 +142,6 @@ class AUiRoomManagerImpl(
             }
         }
     }
-
     override fun exitRoom(roomId: String, callback: AUiCallback?) {
         rtmManager.unSubscribe(roomId)
         callback?.onResult(null)
@@ -158,7 +154,6 @@ class AUiRoomManagerImpl(
                 }
             })
     }
-
     override fun getRoomInfoList(lastCreateTime: Long?, pageSize: Int, callback: AUiRoomListCallback?) {
         HttpManager.getService(RoomInterface::class.java)
             .fetchRoomList(RoomListReq(pageSize, lastCreateTime))
@@ -178,9 +173,7 @@ class AUiRoomManagerImpl(
                 }
             })
     }
-
     override fun getChannelName() = mChannelName ?: ""
-
     override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
         if (key != kRoomAttrKey) {
             return
