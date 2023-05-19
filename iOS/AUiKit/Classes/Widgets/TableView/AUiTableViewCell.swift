@@ -9,7 +9,7 @@ import Foundation
 import SwiftTheme
 
 
-public protocol AUiTableViewItemProtocol: NSObject {
+public protocol AUiTableViewItemProtocol: NSObjectProtocol {
     var aui_style: AUiTableViewCellStyle {get}
     var aui_title: String? {get}
     var aui_subTitle: String? {get}

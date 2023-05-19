@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol AUiMicSeatViewDelegate: NSObject {
+public protocol AUiMicSeatViewDelegate: NSObjectProtocol {
     func seatItems(view: AUiMicSeatView) -> [AUiMicSeatCellDataProtocol]
     
     func onItemDidClick(view: AUiMicSeatView, seatIndex: Int)
