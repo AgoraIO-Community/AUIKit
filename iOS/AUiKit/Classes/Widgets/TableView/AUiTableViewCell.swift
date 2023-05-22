@@ -23,6 +23,10 @@ public protocol AUiTableViewItemProtocol: NSObjectProtocol {
 }
 
 open class AUiTableViewCellTheme: NSObject {
+    public func setUp(for cell: AUiTableViewCell){}
+}
+
+open class AUiTableViewCellDynamicTheme: AUiTableViewCellTheme {
     public var titleFont: ThemeFontPicker = "TableViewCell.titleFont"           //主标题字体
     public var titleColor: ThemeColorPicker = "CommonColor.normalTextColor"         //主标题字体颜色
     public var subTitleFont: ThemeFontPicker = "TableViewCell.subTitleFont"        //副标题字体
@@ -40,6 +44,72 @@ open class AUiTableViewCellTheme: NSObject {
     public var switchThumbColor: ThemeColorPicker = "CommonColor.normalTextColor"  //开关滑块颜色
     
     public var arrow: ThemeImagePicker = "TableViewCell.arrow"    //箭头图标
+    
+    public override func setUp(for cell: AUiTableViewCell){
+        cell.aui_highlightView.theme_font = titleFont
+        cell.aui_highlightView.theme_textColor = highlightColor
+        
+        cell.aui_titleLabel.theme_font = titleFont
+        cell.aui_titleLabel.theme_textColor = titleColor
+        
+        cell.aui_subTitleLabel.theme_font = subTitleFont
+        cell.aui_subTitleLabel.theme_textColor = subTitleColor
+        
+        cell.aui_detailLabel.theme_font = detailFont
+        cell.aui_detailLabel.theme_textColor = detailColor
+        
+        cell.aui_badgeLabel.theme_font = badgeFont
+        cell.aui_badgeLabel.theme_textColor = badgeColor
+        cell.aui_badgeLabel.theme_backgroundColor = badgeBackgroundColor
+        
+        cell.aui_switch.theme_onTintColor = switchTintColor
+        cell.aui_switch.theme_thumbTintColor = switchThumbColor
+        
+        cell.aui_arrowView.theme_image = arrow
+    }
+}
+
+open class AUiTableViewCellNativeTheme: AUiTableViewCellTheme {
+    public var titleFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 17)!           //主标题字体
+    public var titleColor: UIColor = .aui_normalTextColor         //主标题字体颜色
+    public var subTitleFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 12)!       //副标题字体
+    public var subTitleColor: UIColor = .aui_normalTextColor50     //副标题字体颜色
+    public var detailFont: UIFont =  UIFont(name: "PingFangSC-Semibold", size: 17)!    //详情字体
+    public var detailColor: UIColor = .aui_grey     //详情字体颜色
+    
+    public var highlightColor: UIColor = .aui_danger   //必填项星号颜色
+    
+    public var badgeFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 12)!     //角标字体
+    public var badgeColor: UIColor = .aui_normalTextColor    //角标文字颜色
+    public var badgeBackgroundColor: UIColor = .aui_danger   //角标背景色
+    
+    public var switchTintColor: UIColor = .aui_primary          //开关背景色
+    public var switchThumbColor: UIColor =  .aui_normalTextColor //开关滑块颜色
+    
+    public var arrow: UIImage? = UIImage.aui_Image(named: "aui_common_tableview_arrow")    //箭头图标
+    
+    public override func setUp(for cell: AUiTableViewCell){
+        cell.aui_highlightView.font = titleFont
+        cell.aui_highlightView.textColor = highlightColor
+        
+        cell.aui_titleLabel.font = titleFont
+        cell.aui_titleLabel.textColor = titleColor
+        
+        cell.aui_subTitleLabel.font = subTitleFont
+        cell.aui_subTitleLabel.textColor = subTitleColor
+        
+        cell.aui_detailLabel.font = detailFont
+        cell.aui_detailLabel.textColor = detailColor
+        
+        cell.aui_badgeLabel.font = badgeFont
+        cell.aui_badgeLabel.textColor = badgeColor
+        cell.aui_badgeLabel.backgroundColor = badgeBackgroundColor
+        
+        cell.aui_switch.onTintColor = switchTintColor
+        cell.aui_switch.thumbTintColor = switchThumbColor
+        
+        cell.aui_arrowView.image = arrow
+    }
 }
 
 //@objc
@@ -74,9 +144,9 @@ private let kRightPadding:CGFloat = 25
 private let kArrowSize: CGSize = CGSize(width: 6, height: 12)
 private let kWidgetPadding: CGFloat = 9
 open class AUiTableViewCell: UITableViewCell {
-    public var theme: AUiTableViewCellTheme = AUiTableViewCellTheme() {
+    public var theme: AUiTableViewCellTheme = AUiTableViewCellDynamicTheme() {
         didSet {
-            _resetTheme()
+            theme.setUp(for: self)
         }
     }
     
@@ -95,7 +165,7 @@ open class AUiTableViewCell: UITableViewCell {
     public lazy var aui_subTitleLabel: UILabel = UILabel()
     public lazy var aui_detailLabel = UILabel()
     public lazy var aui_badgeLabel = UILabel()
-    private lazy var aui_arrowView: UIImageView = {
+    public lazy var aui_arrowView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.aui_size = kArrowSize
@@ -131,7 +201,7 @@ open class AUiTableViewCell: UITableViewCell {
         contentView.addSubview(aui_highlightView)
         
         _resetStyle()
-        _resetTheme()
+        theme.setUp(for: self)
     }
     
     private func _resetStyle() {
@@ -152,28 +222,6 @@ open class AUiTableViewCell: UITableViewCell {
         aui_highlightView.isHidden = !item.aui_style.contains(.highlight)
     }
     
-    private func _resetTheme() {
-        aui_highlightView.theme_font = theme.titleFont
-        aui_highlightView.theme_textColor = theme.highlightColor
-        
-        aui_titleLabel.theme_font = theme.titleFont
-        aui_titleLabel.theme_textColor = theme.titleColor
-        
-        aui_subTitleLabel.theme_font = theme.subTitleFont
-        aui_subTitleLabel.theme_textColor = theme.subTitleColor
-        
-        aui_detailLabel.theme_font = theme.detailFont
-        aui_detailLabel.theme_textColor = theme.detailColor
-        
-        aui_badgeLabel.theme_font = theme.badgeFont
-        aui_badgeLabel.theme_textColor = theme.badgeColor
-        aui_badgeLabel.theme_backgroundColor = theme.badgeBackgroundColor
-        
-        aui_switch.theme_onTintColor = theme.switchTintColor
-        aui_switch.theme_thumbTintColor = theme.switchThumbColor
-        
-        aui_arrowView.theme_image = theme.arrow
-    }
     
     open override func layoutIfNeeded() {
         super.layoutIfNeeded()
