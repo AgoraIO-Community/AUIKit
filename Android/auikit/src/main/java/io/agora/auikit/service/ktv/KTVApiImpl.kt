@@ -161,7 +161,7 @@ class KTVApiImpl(
         isRelease = false;
     }
     private fun setKTVParameters() {
-        mRtcEngine.setParameters("{\"rtc.enable_nasa2\": false}")
+//        mRtcEngine.setParameters("{\"rtc.enable_nasa2\": false}")
         mRtcEngine.setParameters("{\"rtc.ntp_delay_drop_threshold\":1000}")
         mRtcEngine.setParameters("{\"rtc.video.enable_sync_render_ntp\": true}")
         mRtcEngine.setParameters("{\"rtc.net.maxS2LDelay\": 800}")

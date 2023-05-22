@@ -249,6 +249,7 @@ class AUiJukeboxServiceImpl constructor(
 
     // 更新播放状态
     override fun updatePlayStatus(songCode: String, @AUiPlayStatus playStatus: Int, completion: AUiCallback?) {
+        Log.d(TAG, "updatePlayStatus: $songCode, playStatus: $playStatus")
         if (playStatus == AUiPlayStatus.playing) {
             playSong(songCode, completion)
         } else if (playStatus == AUiPlayStatus.idle) {
