@@ -103,6 +103,16 @@ extension AUiUserServiceImpl: AUiRtmUserProxyDelegate {
             obj.onRoomUserLeave(roomId: channelName, userInfo: user)
         }
     }
+    
+    public func onUserBeKicked(channelName: String, userId: String, userInfo: [String : Any]) {
+        aui_info("onUserBeKicked: \(userId)", tag: "AUiUserServiceImpl")
+        let user = userList.filter({$0.userId == userId}).first ?? AUiUserInfo.yy_model(withJSON: userInfo)!
+        self.userList = userList.filter({$0.userId != userId})
+        self.respDelegates.allObjects.forEach { obj in
+            guard let obj = obj as? AUiUserRespDelegate else {return}
+            obj.onRoomUserLeave(roomId: channelName, userInfo: user)
+        }
+    }
 }
 
 extension AUiUserServiceImpl: AUiUserServiceDelegate {
@@ -121,7 +131,7 @@ extension AUiUserServiceImpl: AUiUserServiceDelegate {
     public func getUserInfoList(roomId: String, userIdList: [String], callback:@escaping AUiUserListCallback) {
         self.rtmManager.whoNow(channelName: roomId) { error, userList in
             if let error = error {
-                callback(error, nil)
+                callback(error as NSError, nil)
                 return
             }
             
@@ -149,7 +159,7 @@ extension AUiUserServiceImpl: AUiUserServiceDelegate {
         self.rtmManager.setPresenceState(channelName: channelName, attr: userAttr) {[weak self] error in
             guard let self = self else {return}
             if let error = error {
-                callback(error)
+                callback(error as NSError)
                 return
             }
             
@@ -173,7 +183,7 @@ extension AUiUserServiceImpl: AUiUserServiceDelegate {
         self.rtmManager.setPresenceState(channelName: channelName, attr: userAttr) {[weak self] error in
             guard let self = self else {return}
             if let error = error {
-                callback(error)
+                callback(error as NSError)
                 return
             }
             

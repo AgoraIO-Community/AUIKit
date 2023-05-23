@@ -39,13 +39,13 @@ open class AUiCommonDialog: UIView {
         view.aui_size = CGSize(width: 48, height: 2)
         view.layer.cornerRadius = 1
         view.clipsToBounds = true
-//        view.theme_backgroundColor = "CommonColor.lightGrey35"
+        view.theme_backgroundColor = "CommonColor.lightGrey35"
         return view
     }()
     
     private lazy var contentControlView: UIView = {
         let view = UIView()
-//        view.theme_backgroundColor = "CommonColor.black90"
+        view.theme_backgroundColor = "CommonColor.black90"
         return view
     }()
     

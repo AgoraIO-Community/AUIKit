@@ -8,13 +8,13 @@
 import Foundation
 import YYModel
 
-public typealias AUiCallback = (Error?) -> ()
+public typealias AUiCallback = (NSError?) -> ()
 
-public typealias AUiCreateRoomCallback = (Error?, AUiRoomInfo?) -> ()
+public typealias AUiCreateRoomCallback = (NSError?, AUiRoomInfo?) -> ()
 
-public typealias AUiUserListCallback = (Error?, [AUiUserInfo]?) -> ()
+public typealias AUiUserListCallback = (NSError?, [AUiUserInfo]?) -> ()
 
-public typealias AUiRoomListCallback = (Error?, [AUiRoomInfo]?) -> ()
+public typealias AUiRoomListCallback = (NSError?, [AUiRoomInfo]?) -> ()
 
 @objcMembers
 /// 创建房间信息对象，用于创建房间时传递

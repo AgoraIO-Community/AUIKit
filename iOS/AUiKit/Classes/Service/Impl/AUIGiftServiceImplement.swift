@@ -6,129 +6,64 @@
 //
 
 import UIKit
-import AgoraChat
 import YYModel
 
 
 fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
 
-fileprivate let once = AUIGiftServiceImplement()
 
-
-class AUIGiftServiceImplement: NSObject {
-    
-    public var currentRoomId = ""
-    
-    private var currentUser:AUiUserThumbnailInfo?
-    
+public class AUIGiftServiceImplement: NSObject {
+        
     /// Description 回调协议
     public weak var responseDelegate: AUIGiftsManagerRespDelegate?
     
     /// Description 请求协议
     public weak var requestDelegate: AUIGiftsManagerServiceDelegate?
+        
+    private var channelName: String = ""
+    private var rtmManager: AUiRtmManager?
+    private var roomManager: AUiRoomManagerDelegate?
     
-    /// Description 单例
-    public static var shared: AUIGiftServiceImplement? = once
-    
-    override init() {
-        super.init()
-        self.requestDelegate = self
-    }
- 
-    
-    /// Description judge login state
-    public var isLogin: Bool {
-        AgoraChatClient.shared().isLoggedIn
+    deinit {
+        aui_info("deinit AUiUserServiceImpl", tag: "AUiUserServiceImpl")
+        rtmManager?.unsubscribeMessage(channelName: channelName, delegate: self)
     }
     
-    /// Description  登录IMSDK
-    /// - Parameters:
-    ///   - chatId: AgoraChat chatId
-    ///   - token: chat token
-    ///   - completion: 回调
-    public func login(chatId: String,token: String, completion: @escaping (NSError?) -> Void) {
-        if self.isLogin {
-            completion(nil)
-        } else {
-            AgoraChatClient.shared().login(withUsername: chatId, token: token) { name, error in
-                completion(AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError())
-            }
-        }
+    convenience public init(channelName: String, rtmManager: AUiRtmManager, roomManager: AUiRtmMessageProxyDelegate) {
+        self.init()
+        self.rtmManager = rtmManager
+        self.channelName = channelName
+        self.rtmManager?.subscribeMessage(channelName: channelName, delegate: self)
+        aui_info("init AUiUserServiceImpl", tag: "AUiUserServiceImpl")
     }
- 
-    /// Description 退出登录IMSDK
-    public func logout() {
-        AgoraChatClient.shared().logout(false)
-    }
-    
-    /// Description 配置IMSDK
-    /// - Parameters:
-    ///   - appKey: AgoraChat  app key
-    ///   - user: AUiUserThumbnailInfo instance
-    /// - Returns: error
-    public func configIM(appKey: String, user:AUiUserThumbnailInfo) -> NSError? {
-        if appKey.isEmpty {
-            return AUiCommonError.httpError(400, "app key is empty.").toNSError()
-        }
-        let options = AgoraChatOptions(appkey: appKey.isEmpty ? "easemob-demo#easeim" : appKey)
-        options.enableConsoleLog = true
-        options.isAutoLogin = false
-        options.setValue("https://a1.chat.agora.io", forKeyPath: "restServer")
-        let error = AgoraChatClient.shared().initializeSDK(with: options)
-        if error == nil {
-            self.currentUser = user
-        }
-        return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
-    }
-    
-    private func mapError(error: AgoraChatError?) -> NSError {
-        return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
-    }
-    
-    private func addChatRoomListener() {
-        AgoraChatClient.shared().add(self, delegateQueue: .main)
-        AgoraChatClient.shared().chatManager?.add(self, delegateQueue: .main)
-        AgoraChatClient.shared().roomManager?.add(self, delegateQueue: .main)
-    }
-
-    private func removeListener() {
-        AgoraChatClient.shared().removeDelegate(self)
-        AgoraChatClient.shared().roomManager?.remove(self)
-        AgoraChatClient.shared().chatManager?.remove(self)
-    }
-
 }
 
-extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AgoraChatManagerDelegate, AgoraChatroomManagerDelegate, AgoraChatClientDelegate {
+extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUiRtmMessageProxyDelegate {
     
-    public func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
-        for message in aMessages {
-            if let body = message.body as? AgoraChatCustomMessageBody {
-                switch body.event {
-                case AUIChatRoomGift:
-                    if self.responseDelegate != nil {
-                        if let ext = body.customExt["user"]?.a.jsonToDictionary(), let gift = AUIGiftEntity.yy_model(with: ext) {
-                            self.responseDelegate?.receiveGift(gift: gift)
-                        }
-                    }
-                default:
-                    break
-                }
+    public func onMessageReceive(channelName: String, message: String) {
+        switch message {
+        case AUIChatRoomGift:
+            if self.responseDelegate != nil {
+                guard let gift = AUIGiftEntity.yy_model(with: message.a.jsonToDictionary()) else { return }
+              self.responseDelegate?.receiveGift(gift: gift)
             }
+        default:
+            break
         }
     }
     
-    func giftsFromService(roomId: String, completion: @escaping ([AUIGiftTabEntity], Error?) -> Void) {
+    public func giftsFromService(roomId: String, completion: @escaping ([AUIGiftTabEntity], NSError?) -> Void) {
         //TODO: - mock data
     }
     
-    func sendGift(gift: AUIGiftEntity, completion: @escaping (Error?) -> Void) {
-        let jsonDic = gift.yy_modelToJSONObject() as? Dictionary<String,String>
-        let message = AgoraChatMessage(conversationID: self.currentRoomId, body: AgoraChatCustomMessageBody(event: AUIChatRoomGift, customExt: jsonDic), ext: nil)
-        message.chatType = .chatRoom
-        AgoraChatClient.shared().chatManager?.send(message, progress: nil) { message,error in
-            completion(self.mapError(error: error))
+    public func sendGift(gift: AUIGiftEntity, completion: @escaping (NSError?) -> Void) {
+        let json = gift.yy_modelToJSONString() ?? ""
+        guard let message = ["messageType":AUIChatRoomGift,"messageInfo":json].a.toJsonString() else {
+            completion(NSError(domain: "sendGift json error", code: 400))
+            return
         }
+        
+        self.rtmManager?.publish(channelName: self.channelName, message: message,completion: completion)
     }
     
     

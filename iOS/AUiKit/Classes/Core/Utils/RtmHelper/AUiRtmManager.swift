@@ -460,10 +460,15 @@ extension AUiRtmManager {
 
 //message
 extension AUiRtmManager {
-    public func publish(channelName: String, message: String) {
+    public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
         let options = AgoraRtmPublishOptions()
         options.type = .string
         let ret = rtmClient.publish(channelName, message: message, withOption: options) { resp, error in
+            var callbackError: NSError?
+            if error.errorCode != .OK {
+                callbackError = AUiCommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
+            }
+            completion(callbackError)
             aui_info("publish '\(message)' to '\(channelName)': \(resp) \(error.errorCode.rawValue)", tag: "AUiRtmManager")
         }
         aui_info("publish '\(message)' to '\(channelName)' ret: \(ret)", tag: "AUiRtmManager")

@@ -9,6 +9,8 @@
 import UIKit
 import AUiKit
 
+let giftMap = [["gift_id": "AUIKitGift1", "gift_name": "Sweet Heart", "gift_price": "1", "gift_count": "1", "selected": true], ["gift_id": "AUIKitGift2", "gift_name": "Flower", "gift_price": "5", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift3", "gift_name": "Crystal Box", "gift_price": "10", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift4", "gift_name": "Super Agora", "gift_price": "20", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift5", "gift_name": "Star", "gift_price": "50", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift6", "gift_name": "Lollipop", "gift_price": "100", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift7", "gift_name": "Diamond", "gift_price": "500", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift8", "gift_name": "Crown", "gift_price": "1000", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift9", "gift_name": "Rocket", "gift_price": "1500", "gift_count": "1", "selected": false]]
+
 class ViewController: UIViewController {
     
     lazy var bg: UIImageView = {
@@ -25,7 +27,7 @@ class ViewController: UIViewController {
         for i in 0...3 {
             let entity = AUIChatFunctionBottomEntity()
             entity.selected = false
-            entity.selectedImage = UIImage(named: "")
+            entity.selectedImage = nil
             entity.normalImage = UIImage(named: names[i])
             entity.index = i
             entities.append(entity)
@@ -40,9 +42,18 @@ class ViewController: UIViewController {
     lazy var testInputBar: AUIChatInputBar = {
         AUIChatInputBar(frame: CGRect(x: 0, y: AScreenHeight, width: AScreenWidth, height: 60)).backgroundColor(.white)
     }()
+    
+    lazy var gifts: AUIGiftsView = {
+        AUIGiftsView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: AScreenWidth*(3.0/3.9)), gifts: self.giftList()).backgroundColor(.white)
+    }()
+    
+    lazy var giftsContainer: AUITabsPageContainer = {
+        AUITabsPageContainer(frame: CGRect(x: 0, y: 438, width: AScreenWidth, height: 406), barStyle: AUiTabsStyle(), containers: [self.gifts], titles: ["Gifts"])
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        AUiRoomContext.shared.switchTheme (themeName: "UIKit" )
         // Do any additional setup after loading the view, typically from a nib.
         self.view.addSubViews([self.bg,self.testIMView,self.testBottomBar,self.testInputBar])
         self.testInputBar.isHidden = true
@@ -54,6 +65,7 @@ class ViewController: UIViewController {
             case 3:
                 self.testIMView.showLikeAnimation()
             default:
+                self.showTabs()
                 break
             }
         }
@@ -80,7 +92,7 @@ class ViewController: UIViewController {
     }
     
     func showTabs() {
-        
+        AUiCommonDialog.show(contentView: self.gifts)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -92,5 +104,14 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    
+    func giftList() -> [AUIGiftEntity] {
+        var gifts = [AUIGiftEntity]()
+        for dic in giftMap {
+            guard let entity = AUIGiftEntity.yy_model(with: dic) else { continue }
+            gifts.append(entity)
+        }
+        return gifts
+    }
 }
 

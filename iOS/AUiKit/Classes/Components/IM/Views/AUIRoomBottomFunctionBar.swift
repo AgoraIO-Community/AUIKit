@@ -72,7 +72,7 @@ public extension AUIRoomBottomFunctionBar {
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
         let selected = entity.selected ?? false
         entity.index = indexPath.row
-        cell?.icon.image = selected ? entity.selectedImage:entity.normalImage
+        cell?.icon.image = selected ? (entity.selectedImage != nil ? entity.selectedImage:entity.normalImage):entity.normalImage
         cell?.redDot.isHidden = !selected
         return cell ?? AUIChatBarFunctionCell()
     }

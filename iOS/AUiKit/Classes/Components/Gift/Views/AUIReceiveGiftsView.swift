@@ -9,7 +9,13 @@ import UIKit
 
 public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSource {
     
-    public var gifts = [AUIGiftEntity]()
+    public var gifts = [AUIGiftEntity]() {
+        didSet {
+            if self.gifts.count > 0 {
+                self.cellAnimation()
+            }
+        }
+    }
 
     private var lastOffsetY = CGFloat(0)
 
@@ -19,9 +25,9 @@ public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSo
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(giftList)
-        giftList.isScrollEnabled = false
-        giftList.isUserInteractionEnabled = false
+        self.addSubview(giftList)
+        self.giftList.isScrollEnabled = false
+        self.giftList.isUserInteractionEnabled = false
     }
 
     @available(*, unavailable)
@@ -32,7 +38,7 @@ public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSo
 
 public extension AUIReceiveGiftsView {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        gifts.count
+        self.gifts.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -53,16 +59,16 @@ public extension AUIReceiveGiftsView {
         if cell == nil {
             cell = AUIReceiveGiftCell(style: .default, reuseIdentifier: "AUIReceiveGiftCell")
         }
-        cell?.refresh(item: gifts[safe: indexPath.row] ?? AUIGiftEntity())
+        cell?.refresh(item: self.gifts[safe: indexPath.row] ?? AUIGiftEntity())
         return cell ?? AUIReceiveGiftCell()
     }
 
     internal func cellAnimation() {
-        alpha = 1
-        giftList.reloadData()
-        let indexPath = IndexPath(row: gifts.count - 2, section: 0)
-        let cell = giftList.cellForRow(at: indexPath) as? AUIReceiveGiftCell
-        cell?.refresh(item: gifts[indexPath.row])
+        self.alpha = 1
+        self.giftList.reloadData()
+        let indexPath = IndexPath(row: self.gifts.count - 2, section: 0)
+        let cell = self.giftList.cellForRow(at: indexPath) as? AUIReceiveGiftCell
+        cell?.refresh(item: self.gifts[indexPath.row])
         UIView.animate(withDuration: 0.3) {
             cell?.alpha = 0.35
             cell?.contentView.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)

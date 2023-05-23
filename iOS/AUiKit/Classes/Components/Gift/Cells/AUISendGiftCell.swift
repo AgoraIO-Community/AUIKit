@@ -36,9 +36,10 @@ public class AUISendGiftCell: UICollectionViewCell {
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .white
-        backgroundColor = .white
-        contentView.addSubViews([cover, icon, name, displayValue])
+        self.contentView.backgroundColor = .white
+        self.backgroundColor = .white
+        self.contentView.addSubViews([self.cover, self.icon, self.name, self.displayValue])
+        self.displayValue.imageEdgeInsets(UIEdgeInsets(top: self.displayValue.imageEdgeInsets.top, left: -10, bottom: self.displayValue.imageEdgeInsets.bottom, right: self.displayValue.imageEdgeInsets.right))
     }
 
     @available(*, unavailable)
@@ -48,12 +49,13 @@ public class AUISendGiftCell: UICollectionViewCell {
 
     func refresh(item: AUIGiftEntity?) {
         self.contentView.isHidden = (item == nil)
-        icon.image = UIImage(item?.gift_id ?? "",.gift)
-        name.text = item?.gift_name
-//        displayValue.set(image: UIImage("dollagora"), title: item?.gift_price ?? "100", titlePosition: .right, additionalSpacing: 5, state: .normal)
-        cover.isHidden = !(item?.selected ?? false)
-        cover.frame = CGRect(x: 0, y: 5, width: contentView.frame.width, height: contentView.frame.height - 5)
-        icon.frame = CGRect(x: contentView.frame.width / 2.0 - 24, y: 16.5, width: 48, height: 48)
-        displayValue.frame = CGRect(x: 0, y: name.frame.maxY + 1, width: contentView.frame.width, height: 15)
+        self.icon.image = UIImage(item?.gift_id ?? "",.gift)
+        self.name.text = item?.gift_name
+        self.displayValue.setImage(UIImage("dollagora",.gift), for: .normal)
+        self.displayValue.setTitle(item?.gift_price ?? "100", for: .normal)
+        self.cover.isHidden = !(item?.selected ?? false)
+        self.cover.frame = CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)
+        self.icon.frame = CGRect(x: self.contentView.frame.width / 2.0 - 24, y: 16.5, width: 48, height: 48)
+        self.displayValue.frame = CGRect(x: 0, y: name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)
     }
 }

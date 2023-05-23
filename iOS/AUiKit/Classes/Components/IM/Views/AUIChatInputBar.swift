@@ -113,8 +113,8 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         if !self.inputField.isFirstResponder {
             return
         }
-        let frame = notification.keyboardEndFrame
-        let duration = notification.keyboardAnimationDuration
+        let frame = notification.a.keyboardEndFrame
+        let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
         UIView.animate(withDuration: duration!) {
             self.frame = CGRect(x: 0, y: AScreenHeight - 60 - frame!.height, width: AScreenWidth, height: 60)
@@ -122,8 +122,8 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }
 
     @objc private func keyboardWillHide(notification: Notification) {
-        let frame = notification.keyboardEndFrame
-        let duration = notification.keyboardAnimationDuration
+        let frame = notification.a.keyboardEndFrame
+        let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
         self.frame = CGRect(x: 0, y: self.frame.origin.y, width: AScreenWidth, height: self.keyboardHeight + 5 + 60)
         let emoji = AUIEmojisView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124)

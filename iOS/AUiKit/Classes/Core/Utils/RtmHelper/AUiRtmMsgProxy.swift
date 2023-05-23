@@ -41,6 +41,7 @@ public protocol AUiRtmUserProxyDelegate: NSObjectProtocol {
     func onUserDidJoined(channelName: String, userId:String, userInfo: [String: Any])
     func onUserDidLeaved(channelName: String, userId:String, userInfo: [String: Any])
     func onUserDidUpdated(channelName: String, userId:String, userInfo: [String: Any])
+    func onUserBeKicked(channelName: String, userId:String, userInfo: [String: Any])
 }
 
 

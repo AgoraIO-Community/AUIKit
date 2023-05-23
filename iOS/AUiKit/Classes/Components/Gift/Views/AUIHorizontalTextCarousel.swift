@@ -10,7 +10,7 @@ import UIKit
 @objc public class AUIHorizontalTextCarousel: UIView {
     
     lazy var voiceIcon: UIImageView = {
-        UIImageView(frame: CGRect(x: 8, y: (self.frame.height-10)/2.0, width: 10, height: 10)).image(UIImage("speaker",.gift)!)
+        UIImageView(frame: CGRect(x: 8, y: (self.frame.height-10)/2.0, width: 10, height: 10)).image(UIImage("speaker",.gift))
     }()
     
     lazy var scroll: UIScrollView = {

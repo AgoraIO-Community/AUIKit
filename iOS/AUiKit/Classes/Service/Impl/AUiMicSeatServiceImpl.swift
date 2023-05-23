@@ -102,7 +102,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         respDelegates.remove(delegate)
     }
     
-    public func enterSeat(seatIndex: Int, callback: @escaping (Error?) -> ()) {
+    public func enterSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
 //        if let _ = self.micSeats.values.filter({ $0.userId == self.getRoomContext().currentUserInfo.userId }).first {
 //            callback(nil)
 //            return
@@ -115,7 +115,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
 //        model.user = getRoomContext().currentUserInfo
         model.micSeatNo = seatIndex
         model.request { error, _ in
-            callback(error)
+            callback(error as? NSError)
         }
 
         return
@@ -145,14 +145,14 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
          */
     }
     
-    public func leaveSeat(callback: @escaping (Error?) -> ()) {
+    public func leaveSeat(callback: @escaping (NSError?) -> ()) {
         
         let model = AUiSeatLeaveNetworkModel()
         model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
 //        model.micSeatNo = seatIndex
         model.request { error, _ in
-            callback(error)
+            callback(error as? NSError)
         }
         return
         //mock
@@ -180,7 +180,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
          */
     }
     
-    public func pickSeat(seatIndex: Int, userId: String, callback: @escaping (Error?) -> ()) {
+    public func pickSeat(seatIndex: Int, userId: String, callback: @escaping (NSError?) -> ()) {
         //mock
 //        guard let seat = self.micSeats[seatIndex], seat.user == nil else {
 //            callback(nil)
@@ -207,13 +207,13 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
 //        }
     }
     
-    public func kickSeat(seatIndex: Int, callback: @escaping (Error?) -> ()) {
+    public func kickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
         let model = AUiSeatkickNetworkModel()
         model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
         model.micSeatNo = seatIndex
         model.request { error, _ in
-            callback(error)
+            callback(error as? NSError)
         }
         return
         //mock
@@ -243,14 +243,14 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
          */
     }
     
-    public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (Error?) -> ()) {
+    public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
         if isMute {
             let model = AUiSeatMuteAudioNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             model.request { error, _ in
-                callback(error)
+                callback(error as? NSError)
             }
         }else {
             let model = AUiSeatUnMuteAudioNetworkModel()
@@ -258,7 +258,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             model.request { error, _ in
-                callback(error)
+                callback(error as? NSError)
             }
         }
         //mock
@@ -296,7 +296,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             model.request { error, _ in
-                callback(error)
+                callback(error as? NSError)
             }
         }else {
             let model = AUiSeatUnMuteVideoNetworkModel()
@@ -304,7 +304,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             model.request { error, _ in
-                callback(error)
+                callback(error as? NSError)
             }
         }
         //mock
@@ -334,14 +334,14 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
          */
     }
     
-    public func closeSeat(seatIndex: Int, isClose: Bool, callback: @escaping (Error?) -> ()) {
+    public func closeSeat(seatIndex: Int, isClose: Bool, callback: @escaping (NSError?) -> ()) {
         if isClose {
             let model = AUiSeatLockNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             model.request { error, _ in
-                callback(error)
+                callback(error as? NSError)
             }
         }else {
             let model = AUiSeatUnLockNetworkModel()
@@ -349,7 +349,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             model.request { error, _ in
-                callback(error)
+                callback(error as? NSError)
             }
         }
         

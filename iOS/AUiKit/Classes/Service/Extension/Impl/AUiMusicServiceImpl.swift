@@ -259,7 +259,7 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         networkModel.owner = owner
         chooseModel.owner = owner
         networkModel.request(completion: { err, _ in
-            completion?(err)
+            completion?(err as? NSError)
         })
     }
     
@@ -270,7 +270,7 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         model.songCode = songCode
         model.roomId = channelName
         model.request { err, _ in
-            completion?(err)
+            completion?(err as? NSError)
         }
     }
     
@@ -281,7 +281,7 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         model.songCode = songCode
         model.roomId = channelName
         model.request { err, _ in
-            completion?(err)
+            completion?(err as? NSError)
         }
     }
     
@@ -293,7 +293,7 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
             model.songCode = songCode
             model.roomId = channelName
             model.request { err, _ in
-                completion?(err)
+                completion?(err as? NSError)
             }
         } else {
             let model = AUiSongStopNetworkModel()
@@ -301,7 +301,7 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
             model.songCode = songCode
             model.roomId = channelName
             model.request { err, _ in
-                completion?(err)
+                completion?(err as? NSError)
             }
         }
     }

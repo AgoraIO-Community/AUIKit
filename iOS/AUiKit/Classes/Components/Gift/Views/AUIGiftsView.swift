@@ -7,7 +7,25 @@
 
 import UIKit
 
-public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
+public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,AUITabsPageContainerCellDelegate {
+    
+    public func viewIdentity() -> String {
+        self.a.swiftClassName ?? "AUIKit.AUIGiftsView"
+    }
+    
+    public func create(frame: CGRect, datas: [NSObject]) -> UIView? {
+        guard let dataSource = datas as? [AUIGiftEntity] else { return AUIGiftsView() }
+        return AUIGiftsView(frame: frame, gifts: dataSource)
+    }
+    
+    public func rawFrame() -> CGRect {
+        self.frame
+    }
+    
+    public func rawDatas() -> [NSObject] {
+        self.gifts
+    }
+        
     var gifts = [AUIGiftEntity]() {
         willSet {
             current = gifts.last
@@ -25,12 +43,11 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
         layout.itemSize = CGSize(width: (AScreenWidth - 30) / 4.0, height: (110 / 84.0) * (AScreenWidth - 30) / 4.0)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.scrollDirection = .vertical
         return layout
     }()
 
     lazy var giftList: UICollectionView = {
-        UICollectionView(frame: CGRect(x: 15, y: self.header.frame.maxY, width: AScreenWidth - 30, height: (110 / 84.0) * ((AScreenWidth - 30) / 4.0)), collectionViewLayout: self.flowLayout).registerCell(AUISendGiftCell.self, forCellReuseIdentifier: "AUISendGiftCell").delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).backgroundColor(.white)
+        UICollectionView(frame: CGRect(x: 15, y: self.header.frame.maxY, width: AScreenWidth - 30, height: (110 / 84.0) * ((AScreenWidth - 30) / 4.0)), collectionViewLayout: self.flowLayout).registerCell(AUISendGiftCell.self, forCellReuseIdentifier: "AUISendGiftCell").delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).backgroundColor(.white).showsVerticalScrollIndicator(false)
     }()
 
     lazy var contribution: UILabel = {
@@ -74,6 +91,7 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
     public convenience init(frame: CGRect, gifts: [AUIGiftEntity]) {
         self.init(frame: frame)
         self.gifts = gifts
+        self.giftList.bounces = false
         addSubViews([header, giftList, contribution, lineLayer, disableView])
         disableView.isHidden = true
         bringSubviewToFront(disableView)

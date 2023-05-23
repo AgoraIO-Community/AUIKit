@@ -54,7 +54,7 @@ extension AUiChorusServiceImpl: AUiChorusServiceDelegate {
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
         model.request { err, _ in
-            completion(err)
+            completion(err as? NSError)
         }
     }
     
@@ -64,7 +64,7 @@ extension AUiChorusServiceImpl: AUiChorusServiceDelegate {
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
         model.request { err, _ in
-            completion(err)
+            completion(err as? NSError)
         }
     }
     

@@ -9,15 +9,23 @@ import Foundation
 
 public extension Notification {
     
+    var a: AUIKitSwiftLib<Self> {
+        AUIKitSwiftLib.init(self)
+    }
+    
+}
+
+public extension AUIKitSwiftLib where Base == Notification {
+    
     
     /// Description keyboardEndFrame
     var keyboardEndFrame: CGRect? {
-        return (userInfo?[UIApplication.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        return (base.userInfo?[UIApplication.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
     }
 
     
     /// Description keyboard animation duration
     var keyboardAnimationDuration: TimeInterval? {
-        return (userInfo?[UIApplication.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+        return (base.userInfo?[UIApplication.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
     }
 }
