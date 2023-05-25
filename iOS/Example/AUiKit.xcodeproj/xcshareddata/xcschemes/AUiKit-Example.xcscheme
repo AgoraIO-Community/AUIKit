@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-               BuildableName = "AUiKit_Example.app"
-               BlueprintName = "AUiKit_Example"
-               ReferencedContainer = "container:AUiKit.xcodeproj">
+               BuildableName = "AUIKit_Example.app"
+               BlueprintName = "AUIKit_Example"
+               ReferencedContainer = "container:AUIKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "AUiKit_Tests.xctest"
-               BlueprintName = "AUiKit_Tests"
-               ReferencedContainer = "container:AUiKit.xcodeproj">
+               BuildableName = "AUIKit_Tests.xctest"
+               BlueprintName = "AUIKit_Tests"
+               ReferencedContainer = "container:AUIKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,9 +48,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "AUiKit_Tests.xctest"
-               BlueprintName = "AUiKit_Tests"
-               ReferencedContainer = "container:AUiKit.xcodeproj">
+               BuildableName = "AUIKit_Tests.xctest"
+               BlueprintName = "AUIKit_Tests"
+               ReferencedContainer = "container:AUIKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -58,9 +58,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "AUiKit_Example.app"
-            BlueprintName = "AUiKit_Example"
-            ReferencedContainer = "container:AUiKit.xcodeproj">
+            BuildableName = "AUIKit_Example.app"
+            BlueprintName = "AUIKit_Example"
+            ReferencedContainer = "container:AUIKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -82,9 +82,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "AUiKit_Example.app"
-            BlueprintName = "AUiKit_Example"
-            ReferencedContainer = "container:AUiKit.xcodeproj">
+            BuildableName = "AUIKit_Example.app"
+            BlueprintName = "AUIKit_Example"
+            ReferencedContainer = "container:AUIKit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -101,9 +101,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-            BuildableName = "AUiKit_Example.app"
-            BlueprintName = "AUiKit_Example"
-            ReferencedContainer = "container:AUiKit.xcodeproj">
+            BuildableName = "AUIKit_Example.app"
+            BlueprintName = "AUIKit_Example"
+            ReferencedContainer = "container:AUIKit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

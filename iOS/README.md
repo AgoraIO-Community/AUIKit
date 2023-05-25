@@ -1,11 +1,11 @@
-# AUiKit-iOS
+# AUIKit-iOS
 
 *English | [中文](README_zh.md)*
 
 
 <!-- TOC START -->
 
-- [AUiKit Basic Components](#auikit-basic-components)
+- [AUIKit Basic Components](#auikit-basic-components)
 - [Service](#service)
   * [AUiMicSeatServiceDelegate](#auimicseatservicedelegate)
   * [AUiMicSeatRespDelegate](#auimicseatrespdelegate)
@@ -34,9 +34,9 @@
   
   <!-- TOC END -->
 
-# AUiKit Basic Components
+# AUIKit Basic Components
 ```
-AUiKit  
+AUIKit  
 ├─ Service                              // Basic service components
 │  ├─ AUiMicSeatServiceDelegate         // MicSeat management protocol
 │  ├─ AUiMicSeatRespDelegate            // MicSeat management response protocol

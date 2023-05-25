@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint AUiKit.podspec' to ensure this is a
+# Be sure to run `pod lib lint AUIKit.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'AUiKit'
+  s.name             = 'AUIKit'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of AUiKit.'
+  s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,50 +21,50 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/AgoraIO-Usecase/AUiKit'
+  s.homepage         = 'https://github.com/AgoraIO-Usecase/AUIKit'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'wushengtao' => 'agora@agora.io' }
-  s.source           = { :git => 'https://github.com/AgoraIO-Usecase/AUiKit.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/AgoraIO-Usecase/AUIKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '13.0'
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
 
-  s.subspec 'AUiKit' do |core|
-      core.source_files = 'AUiKit/Classes/Core/**/*'
+  s.subspec 'AUIKit' do |core|
+      core.source_files = 'AUIKit/Classes/Core/**/*'
   end
   
-  s.subspec 'AUiKit' do |service|
-      service.source_files = 'AUiKit/Classes/Service/**/*'
+  s.subspec 'AUIKit' do |service|
+      service.source_files = 'AUIKit/Classes/Service/**/*'
   end
 
-  s.subspec 'AUiKit' do |chat|
-      chat.source_files = 'AUiKit/Classes/Components/IM/**/*'
-      chat.resource = 'AUiKit/Classes/Components/IM/Resource/VoiceChatRoomResource.bundle'
+  s.subspec 'AUIKit' do |chat|
+      chat.source_files = 'AUIKit/Classes/Components/IM/**/*'
+      chat.resource = 'AUIKit/Classes/Components/IM/Resource/VoiceChatRoomResource.bundle'
       chat.dependency 'Agora_Chat_iOS'
-      chat.dependency 'AUiKit/Core'
-      chat.dependency 'AUiKit/Service'
+      chat.dependency 'AUIKit/Core'
+      chat.dependency 'AUIKit/Service'
   end
   
-  s.subspec 'AUiKit' do |player|
-      player.source_files = 'AUiKit/Classes/Components/Player/*'
-#      player.resource = 'AUiKit/Classes/Components/Player/Resource/PlayerResource.bundle'
+  s.subspec 'AUIKit' do |player|
+      player.source_files = 'AUIKit/Classes/Components/Player/*'
+#      player.resource = 'AUIKit/Classes/Components/Player/Resource/PlayerResource.bundle'
       player.dependency 'ScoreEffectUI'
       player.dependency 'AgoraLyricsScore'
-      player.dependency 'AUiKit/Core'
-      player.dependency 'AUiKit/Service'
+      player.dependency 'AUIKit/Core'
+      player.dependency 'AUIKit/Service'
   end
   
-  s.source_files = 'AUiKit/Classes/**/*'
+  s.source_files = 'AUIKit/Classes/**/*'
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = 'AUiKit/Resource/*.bundle'
+  s.resource = 'AUIKit/Resource/*.bundle'
   
   # s.resource_bundles = {
-  #   'AUiKit' => ['AUiKit/Assets/*.png']
+  #   'AUIKit' => ['AUIKit/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
