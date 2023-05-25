@@ -18,11 +18,11 @@ public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource
     public var messages: [AUIChatEntity]? = [AUIChatEntity]()
 
     public lazy var chatView: UITableView = {
-        UITableView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height), style: .plain).delegate(self).dataSource(self).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).registerCell(AUIChatCell.self, forCellReuseIdentifier: "AUIChatCell").showsVerticalScrollIndicator(false)
+        UITableView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height), style: .plain).delegate(self).dataSource(self).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).showsVerticalScrollIndicator(false)
     }()
 
     public lazy var emitter: AUIPraiseEmitterView = {
-        AUIPraiseEmitterView(frame: CGRect(x: AScreenWidth - 80, y: 0, width: 80, height: self.frame.height - 20)).backgroundColor(.clear)
+        AUIPraiseEmitterView(frame: CGRect(x: AScreenWidth - 80, y: 0, width: 80, height: self.frame.height - 20),images: []).backgroundColor(.clear)
     }()
 
     public lazy var gradientLayer: CAGradientLayer = {
@@ -80,11 +80,11 @@ public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource
 
 public extension AUIRoomChatView {
     @objc func showLikeAnimation() {
-        emitter.setupEmitter()
+        self.emitter.setupEmitter()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messages?.count ?? 0
+        self.messages?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -95,7 +95,7 @@ public extension AUIRoomChatView {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "AUIChatCell") as? AUIChatCell
         if cell == nil {
-            cell = AUIChatCell(style: .default, reuseIdentifier: "AUIChatCell")
+            cell = AUIChatCell(reuseIdentifier: "AUIChatCell",config: AUIChatCellConfig())
         }
         guard let entity = self.messages?[safe: indexPath.row] else { return AUIChatCell() }
         cell?.refresh(chat: entity)

@@ -39,20 +39,32 @@ public class AUITabsPageContainer: UIView {
     private var containers = [AUITabsPageContainerCellDelegate]()
             
     private lazy var tabs: AUiTabs = {
-        AUiTabs(frame: CGRect(x: 15, y: 24, width: self.frame.width-30, height: 44), segmentStyle: self.tabStyle, titles: self.titles)
+        self.tabStyle.indicatorHeight = 4
+        self.tabStyle.indicatorWidth = 28
+        self.tabStyle.indicatorCornerRadius = 2
+        self.tabStyle.indicatorStyle = .line
+        self.tabStyle.indicatorColor = UIColor(0x009EFF)
+        self.tabStyle.selectedTitleColor = UIColor(0x171a1c)
+        self.tabStyle.normalTitleColor = UIColor(0xACB4B9)
+        self.tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
+        return AUiTabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
     }()
     
     private lazy var layout: UICollectionViewFlowLayout = {
         let flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .horizontal
-        flow.itemSize = CGSize(width: AScreenWidth, height: self.frame.height - self.tabs.frame.maxY - 5 - CGFloat(ABottomBarHeight))
+        flow.itemSize = CGSize(width: self.frame.width, height: self.frame.height - self.tabs.frame.maxY)
         flow.minimumLineSpacing = 0
         flow.minimumInteritemSpacing = 0
         return flow
     }()
     
     private lazy var container: UICollectionView = {
-        UICollectionView(frame: CGRect(x: 0, y: self.tabs.frame.maxY, width: AScreenWidth, height: self.frame.height - self.tabs.frame.maxY - 5 - CGFloat(ABottomBarHeight)), collectionViewLayout: self.layout).registerCell(AUITabsPageContainerCell.self, forCellReuseIdentifier: "AUITabsPageContainerCell").backgroundColor(.clear).delegate(self).dataSource(self)
+        UICollectionView(frame: CGRect(x: 0, y: self.tabs.frame.maxY, width: AScreenWidth, height: self.frame.height - self.tabs.frame.maxY), collectionViewLayout: self.layout).registerCell(AUITabsPageContainerCell.self, forCellReuseIdentifier: "AUITabsPageContainerCell").backgroundColor(.clear).delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).showsHorizontalScrollIndicator(false)
+    }()
+    
+    lazy var gradient: UIView = {
+        UIImageView(frame: CGRect(x: 0, y: Int(self.frame.height)-ABottomBarHeight-40, width: Int(self.frame.width), height: ABottomBarHeight+40)).backgroundColor(.clear).image(UIImage("mask_onlight",.gift))
     }()
     
     public convenience init(frame: CGRect,barStyle: AUiTabsStyle,containers: [AUITabsPageContainerCellDelegate],titles: [String]) {
@@ -60,11 +72,20 @@ public class AUITabsPageContainer: UIView {
         self.tabStyle = barStyle
         self.containers = containers
         self.titles = titles
-        self.addSubview(self.tabs)
-        self.addSubview(self.container)
+        self.addSubViews([self.tabs,self.container,self.gradient])
+        self.container.bounces = false
+        self.tabs.valueChange = {
+            self.container.scrollToItem(at: IndexPath(row: $0, section: 0), at: .centeredHorizontally, animated: true)
+        }
     }
     
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 }
 
@@ -74,27 +95,32 @@ extension AUITabsPageContainer: UICollectionViewDataSource,UICollectionViewDeleg
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUITabsPageContainerCell", for: indexPath) as? AUITabsPageContainerCell
-        cell?.renderContainer()
-        return cell ?? AUITabsPageContainerCell()
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let container = self.containers[safe: indexPath.row] else { return }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUITabsPageContainerCell", for: indexPath) as? AUITabsPageContainerCell  else { return AUITabsPageContainerCell() }
+        guard let container = self.containers[safe: indexPath.row] else { return AUITabsPageContainerCell() }
         
-//        for (index,container) in self.containers.enumerated() {
-//            if index < indexPath.row - 1 || index > indexPath.row + 1 {
-//                guard let cell = collectionView.cellForItem(at: IndexPath(row: index, section: indexPath.section)) as? AUITabsPageContainerCell else { continue }
-//                cell.view = nil
-//            }
-//        }
-        guard let cell = cell as? AUITabsPageContainerCell else { return }
         let identity = container.viewIdentity()
         if cell.identity != identity {
             cell.willRenderContainer(displayView: container.create(frame: container.rawFrame(), datas: container.rawDatas()), identity: identity)
         }
+        return cell
     }
     
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if self.containers.count > 10 {
+            for index in 0...self.containers.count {
+                if index < indexPath.row - 1 || index > indexPath.row + 1 {
+                    guard let cell = collectionView.cellForItem(at: IndexPath(row: index, section: indexPath.section)) as? AUITabsPageContainerCell else { continue }
+                    cell.view = nil
+                    cell.identity = ""
+                }
+            }
+        }
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let index = scrollView.contentOffset.x/AScreenWidth
+        self.tabs.setSelectIndex(index: Int(index))
+    }
     
 }
 
@@ -104,7 +130,7 @@ class AUITabsPageContainerCell: UICollectionViewCell {
     
     var identity: String = ""
     
-    private var view: UIView?
+    var view: UIView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -119,6 +145,7 @@ class AUITabsPageContainerCell: UICollectionViewCell {
         self.view?.removeFromSuperview()
         self.view = nil
         self.view = displayView
+        self.renderContainer()
     }
     
     func renderContainer() {

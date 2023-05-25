@@ -154,7 +154,7 @@ public struct AUiTabsStyle {
     }
 
     public func setSelectIndex(index: Int, animated: Bool = true) {
-        setSelectIndex(index: index, animated: animated, sendAction: true)
+        setSelectIndex(index: index, animated: animated, sendAction: false)
     }
 
     // Target action

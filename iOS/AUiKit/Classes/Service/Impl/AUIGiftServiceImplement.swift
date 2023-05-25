@@ -14,39 +14,47 @@ fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
 
 public class AUIGiftServiceImplement: NSObject {
         
-    /// Description 回调协议
-    public weak var responseDelegate: AUIGiftsManagerRespDelegate?
+    private var responseDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
     /// Description 请求协议
     public weak var requestDelegate: AUIGiftsManagerServiceDelegate?
         
     private var channelName: String = ""
     private var rtmManager: AUiRtmManager?
-    private var roomManager: AUiRoomManagerDelegate?
     
     deinit {
         aui_info("deinit AUiUserServiceImpl", tag: "AUiUserServiceImpl")
         rtmManager?.unsubscribeMessage(channelName: channelName, delegate: self)
     }
     
-    convenience public init(channelName: String, rtmManager: AUiRtmManager, roomManager: AUiRtmMessageProxyDelegate) {
+    convenience public init(channelName: String, rtmManager: AUiRtmManager) {
         self.init()
         self.rtmManager = rtmManager
         self.channelName = channelName
+        self.requestDelegate = self
         self.rtmManager?.subscribeMessage(channelName: channelName, delegate: self)
         aui_info("init AUiUserServiceImpl", tag: "AUiUserServiceImpl")
     }
 }
 
 extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUiRtmMessageProxyDelegate {
+    public func bindRespDelegate(delegate: AUIGiftsManagerRespDelegate) {
+        self.responseDelegates.add(delegate)
+    }
+    
+    public func unbindRespDelegate(delegate: AUIGiftsManagerRespDelegate) {
+        self.responseDelegates.remove(delegate)
+    }
+    
     
     public func onMessageReceive(channelName: String, message: String) {
         switch message {
         case AUIChatRoomGift:
-            if self.responseDelegate != nil {
+            for response in self.responseDelegates.allObjects {
                 guard let gift = AUIGiftEntity.yy_model(with: message.a.jsonToDictionary()) else { return }
-              self.responseDelegate?.receiveGift(gift: gift)
+                (response as? AUIGiftsManagerRespDelegate)?.receiveGift(gift: gift)
             }
+        
         default:
             break
         }

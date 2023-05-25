@@ -37,8 +37,26 @@ public enum AgoraChatroomBeKickedReason: Int {
 
 
 public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
+    /// 绑定响应回调
+    /// - Parameter delegate: 需要回调的对象
+    func bindRespDelegate(delegate: AUIMManagerRespDelegate)
     
+    /// 解除绑响应回调
+    /// - Parameter delegate: 需要回调的对象
+    func unbindRespDelegate(delegate: AUIMManagerRespDelegate)
     
+    /// Description 配置IMSDK
+    /// - Parameters:
+    ///   - appKey: AgoraChat  app key
+    ///   - user: AUiUserThumbnailInfo instance
+    /// - Returns: error
+    func configIM(appKey: String, user:AUiUserThumbnailInfo,completion: @escaping (NSError?) -> Void)
+    
+    /// Description 创建聊天室
+    /// - Parameters:
+    ///   - roomId: 语聊房id
+    ///   - completion: 回调 成功后会将聊天室id存储在implement实现类中
+    func createChatRoom(roomId: String,completion: @escaping (String,NSError?) -> Void)
     /// Description 发送聊天室消息
     /// - Parameters:
     ///   - roomId: 聊天室id
@@ -65,7 +83,7 @@ public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
 
 
 
-public protocol AUIMManagerRespDelegate: NSObjectProtocol {
+@objc public protocol AUIMManagerRespDelegate: NSObjectProtocol {
     
     
     /// Description 接收到消息

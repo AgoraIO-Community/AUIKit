@@ -8,6 +8,7 @@
 import UIKit
 
 public class AUIChatInputBar: UIView, UITextViewDelegate {
+    
     var keyboardHeight = CGFloat(0)
 
     public var sendClosure: ((String) -> Void)?
@@ -27,7 +28,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }()
 
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient([UIColor(red: 0.13, green: 0.608, blue: 1, alpha: 1), UIColor(red: 0.204, green: 0.366, blue: 1, alpha: 1)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]).title(LanguageManager.localValue(key: "Send",type: .voiceRoom), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient([UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]).title("Send".a.localize(type: .voiceRoom), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
     }()
 
     private var limitCount: Int {
@@ -165,7 +166,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     func convertText(text: NSAttributedString?, key: String) -> NSAttributedString {
         let attribute = NSMutableAttributedString(attributedString: text!)
         let attachment = NSTextAttachment()
-        attachment.image = UIImage(key,.voiceRoom)
+        attachment.image = AUIChatEmojiManager.shared.emojiMap[key]
         attachment.bounds = CGRect(x: 0, y: -3.5, width: 18, height: 18)
         let imageText = NSMutableAttributedString(attachment: attachment)
         if #available(iOS 11.0, *) {
@@ -176,6 +177,45 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         attribute.append(imageText)
         return attribute
     }
+}
+
+public class AUIChatInputBarConfig: NSObject {
+    
+    var backgroundColor: UIColor = .white
+    
+    var textFont: UIFont = .systemFont(ofSize: 15)
+    
+    var placeHolder: String = "Aa"
+    
+    var placeHolderColor: UIColor = UIColor(0xB6B8C9)
+    
+    var cursorColor: UIColor = UIColor(0x009FFF)
+    
+    var textColor: UIColor = .black
+    
+    var textInputCornerRadius: CGFloat = 5
+    
+    var returnKeyType: UIReturnKeyType = .send
+    
+    var textInputIcon: UIImage? = UIImage("key",.voiceRoom)
+    
+    var emojiInputIcon: UIImage? = UIImage("face",.voiceRoom)
+    
+    /// Description Colors for gradient layer
+    var sendGradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
+    
+    /// start & end
+    var sendGradientPoints: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    
+    var enLimitCount: Int = 80
+    
+    var zhLimitCount: Int = 30
+    
+    
+    public override init() {
+        super.init()
+    }
+    
 }
 
 public extension NSAttributedString {

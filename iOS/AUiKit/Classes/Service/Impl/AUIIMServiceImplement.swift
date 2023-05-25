@@ -13,45 +13,38 @@ import YYModel
 
 fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
 
-fileprivate let once = AUIIMManagerServiceImplement()
-
-open class AUIIMManagerServiceImplement: NSObject {
+@objcMembers open class AUIIMManagerServiceImplement: NSObject {
     
     public var currentRoomId = ""
     
+    public var chatId = ""
+    
+    public var chatToken = ""
+    
     private var currentUser:AUiUserThumbnailInfo?
     
-    /// Description 回调协议
-    public weak var responseDelegate: AUIMManagerRespDelegate?
+    private var responseDelegates: NSHashTable<AUIMManagerRespDelegate> = NSHashTable<AUIMManagerRespDelegate>.weakObjects()
     
     /// Description 请求协议
     public weak var requestDelegate: AUIMManagerServiceDelegate?
     
-    
-    /// Description 单例
-    public static var shared: AUIIMManagerServiceImplement? = once
-    
-    override init() {
+    @objc public override init() {
         super.init()
         self.requestDelegate = self
     }
- 
-    
     /// Description judge login state
-    public var isLogin: Bool {
+    private var isLogin: Bool {
         AgoraChatClient.shared().isLoggedIn
     }
     
     /// Description  登录IMSDK
     /// - Parameters:
-    ///   - chatId: AgoraChat chatId
-    ///   - token: chat token
     ///   - completion: 回调
-    public func login(chatId: String,token: String, completion: @escaping (NSError?) -> Void) {
+    private func login(completion: @escaping (NSError?) -> Void) {
         if self.isLogin {
             completion(nil)
         } else {
-            AgoraChatClient.shared().login(withUsername: chatId, token: token) { name, error in
+            AgoraChatClient.shared().login(withUsername: self.chatId, token: self.chatToken) { name, error in
                 completion(AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError())
             }
         }
@@ -59,29 +52,11 @@ open class AUIIMManagerServiceImplement: NSObject {
     }
  
     /// Description 退出登录IMSDK
-    public func logout() {
+    private func logout() {
         AgoraChatClient.shared().logout(false)
     }
     
-    /// Description 配置IMSDK
-    /// - Parameters:
-    ///   - appKey: AgoraChat  app key
-    ///   - user: AUiUserThumbnailInfo instance
-    /// - Returns: error
-    public func configIM(appKey: String, user:AUiUserThumbnailInfo) -> NSError? {
-        if appKey.isEmpty {
-            return AUiCommonError.httpError(400, "app key is empty.").toNSError()
-        }
-        let options = AgoraChatOptions(appkey: appKey.isEmpty ? "easemob-demo#easeim" : appKey)
-        options.enableConsoleLog = true
-        options.isAutoLogin = false
-        options.setValue("https://a1.chat.agora.io", forKeyPath: "restServer")
-        let error = AgoraChatClient.shared().initializeSDK(with: options)
-        if error == nil {
-            self.currentUser = user
-        }
-        return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
-    }
+    
     
     private func mapError(error: AgoraChatError?) -> NSError {
         return AUiCommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError()
@@ -103,6 +78,77 @@ open class AUIIMManagerServiceImplement: NSObject {
 
 //MARK: - AUIMManagerServiceDelegate
 extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
+    
+    public func bindRespDelegate(delegate: AUIMManagerRespDelegate) {
+        self.responseDelegates.add(delegate)
+    }
+    
+    public func unbindRespDelegate(delegate: AUIMManagerRespDelegate) {
+        self.responseDelegates.remove(delegate)
+    }
+    
+    /// Description 配置IMSDK
+    /// - Parameters:
+    ///   - appKey: AgoraChat  app key
+    ///   - user: AUiUserThumbnailInfo instance
+    /// - Returns: error
+    public func configIM(appKey: String, user:AUiUserThumbnailInfo, completion: @escaping (NSError?) -> Void) {
+        var error: AgoraChatError?
+        if !self.isLogin {
+            let options = AgoraChatOptions(appkey: appKey.isEmpty ? "1129210531094378#auikit-voiceroom" : appKey)
+            options.enableConsoleLog = true
+            error = AgoraChatClient.shared().initializeSDK(with: options)
+        }
+        if error == nil {
+            let model = AUIIMUserCreateNetworkModel()
+            model.userName = user.userId
+            model.request { error, obj in
+                var callError: NSError?
+                if error == nil,obj != nil,let data = obj as? Dictionary<String,String>,let userId = data["userName"],let accessToken = data["accessToken"] {
+                    self.chatId = userId
+                    self.chatToken = accessToken
+                    self.login(completion: completion)
+                    return
+                } else {
+                    callError = error as? NSError
+                }
+                completion(callError)
+            }
+            self.currentUser = user
+        }
+    }
+    
+    public func createChatRoom(roomId: String,completion: @escaping (String,NSError?) -> Void) {
+        if !self.isLogin {
+            completion("", AUiCommonError.httpError(400, "please login first.").toNSError())
+            return
+        }
+        let model = AUIIMChatroomCreateNetworkModel()
+        model.userId = self.chatId
+        model.roomId = roomId//dic["roomId"]
+        model.request { error, obj in
+            var callError: NSError?
+            var chatroomId = ""
+            if error == nil,obj != nil,let data = obj as? Dictionary<String,String> {
+                chatroomId = data["chatRoomId"] ?? ""
+            } else {
+                callError = error as? NSError
+            }
+            completion(chatroomId, callError)
+        }
+//        let room = AUiRoomCreateNetworkModel()
+//        room.roomName = "test"
+//        room.userId = self.chatId
+//        room.userName = "UIKitTest1"
+//        room.userAvatar = "testAvatar"
+//        room.micSeatCount = 2
+//        room.request { error, data in
+//            if error == nil,data != nil,let dic = data as? Dictionary<String,String> {
+                
+//            }
+//        }
+    }
+    
     public func sendMessage(roomId: String, text: String, userInfo: AUiUserThumbnailInfo, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void) {
         if !self.isLogin {
             completion(nil, AUiCommonError.httpError(400, "please login first.").toNSError())
@@ -139,10 +185,11 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
             }
             return
         }
-        AgoraChatClient.shared().roomManager?.leaveChatroom(currentRoomId, completion: { error in
+        AgoraChatClient.shared().roomManager?.leaveChatroom(self.currentRoomId, completion: { error in
             if error == nil {
                 self.currentRoomId = ""
                 self.removeListener()
+                self.logout()
             }
             if completion != nil {
                 completion!(self.mapError(error: error))
@@ -157,6 +204,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         }
         AgoraChatClient.shared().roomManager?.destroyChatroom(self.currentRoomId)
         self.removeListener()
+        self.logout()
     }
     
     private func convertTextMessage(message: AgoraChatMessage) -> AgoraChatTextMessage {
@@ -175,17 +223,17 @@ extension AUIIMManagerServiceImplement: AgoraChatManagerDelegate, AgoraChatroomM
     public func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
         for message in aMessages {
             if message.body is AgoraChatTextMessageBody {
-                if self.responseDelegate != nil {
-                    self.responseDelegate?.messageDidReceive(roomId: self.currentRoomId, message: self.convertTextMessage(message: message))
+                for response in self.responseDelegates.allObjects {
+                    response.messageDidReceive(roomId: self.currentRoomId, message: self.convertTextMessage(message: message))
                 }
                 continue
             }
             if let body = message.body as? AgoraChatCustomMessageBody {
                 switch body.event {
                 case AUIChatRoomJoinedMember:
-                    if self.responseDelegate != nil {
+                    for response in self.responseDelegates.allObjects {
                         if let ext = body.customExt["user"]?.a.jsonToDictionary(), let user = AUiUserThumbnailInfo.yy_model(with: ext) {
-                            self.responseDelegate?.onUserDidJoinRoom(roomId: message.to, user: user)
+                            response.onUserDidJoinRoom(roomId: message.to, user: user)
                         }
                     }
                 default:

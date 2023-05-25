@@ -60,14 +60,14 @@ public class AUIReceiveGiftCell: UITableViewCell {
     }
 
     func refresh(item: AUIGiftEntity) {
-        if gift == nil {
-            gift = item
+        if self.gift == nil {
+            self.gift = item
         }
-        avatar.kf.setImage(with: URL(string: gift?.gift_id ?? ""), placeholder:UIImage("mine_avatar_placeHolder",.gift))
-//        userName.text = gift?.sendUser?.userName ?? ""
-        giftName.text = "Sent ".a.localize(type: .gift) + (gift?.gift_name ?? "")
-        giftIcon.image = UIImage("\(gift?.gift_id ?? "")",.gift)
-        giftNumbers.text = "X \(gift?.gift_count ?? "1")"
+        self.avatar.kf.setImage(with: URL(string: item.sendUser?.userAvatar ?? ""), placeholder:UIImage("mine_avatar_placeHolder",.gift))
+        self.userName.text = item.sendUser?.userName ?? ""
+        self.giftName.text = "Sent ".a.localize(type: .gift) + (item.gift_name ?? "")
+        self.giftIcon.image = UIImage("\(item.gift_id ?? "")",.gift)
+        self.giftNumbers.text = "X \(item.gift_count ?? "1")"
     }
 }
 

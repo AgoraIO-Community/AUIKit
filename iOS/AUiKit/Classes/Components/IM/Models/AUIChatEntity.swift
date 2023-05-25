@@ -18,7 +18,7 @@ import UIKit
     
     public var joined: Bool? = false
     
-    public var attachmentImage: UIImage?
+    public var attachmentImages: [UIImage]?
     
     public var fullText: String? {
         (self.userName ?? "") + (self.content ?? "")
@@ -31,24 +31,31 @@ import UIKit
     public lazy var attributeContent: NSAttributedString? = self.renderAttributeText()
 }
 
-public extension AUIChatEntity {
+@objc public extension AUIChatEntity {
     
     func renderAttributeText() -> NSAttributedString {
-        if joined! == false {
-            let attachment = NSTextAttachment()
-            attachment.image = UIImage("fangzhu",.voiceRoom)
-            attachment.bounds = CGRect(x: 0, y: -1.5, width: 14, height: 14)
-            let host = NSMutableAttributedString(attachment: attachment)
-            host.append(NSAttributedString(string: " "))
+        if self.joined! == false {
+            
+            var imageText = NSMutableAttributedString()
+            if let images = self.attachmentImages {
+                for image in images {
+                    let attachment = NSTextAttachment()
+                    attachment.image = image
+                    attachment.bounds = CGRect(x: 0, y: -1.5, width: 14, height: 14)
+                    imageText.append(NSAttributedString(string: " "))
+                    imageText.append(NSMutableAttributedString(attachment: attachment))
+                }
+            }
+            
             var text = NSMutableAttributedString {
                 AttributedText(self.userName! + " : ").foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 14, weight: .semibold)).lineSpacing(5)
                 AttributedText(self.content!).foregroundColor(self.joined! == false ? Color.white : Color(0xFCF0B3)).font(.systemFont(ofSize: 14, weight: .regular)).lineSpacing(5)
             }
             var string = text.string as NSString
-            if self.attachmentImage != nil {
-                host.append(text)
-                text = host
-                string = host.string as NSString
+            if self.attachmentImages != nil,self.attachmentImages!.count > 0 {
+                imageText.append(text)
+                text = imageText
+                string = imageText.string as NSString
             }
             for symbol in AUIChatEmojiManager.shared.emojis {
                 if string.range(of: symbol).location != NSNotFound {

@@ -11,7 +11,7 @@ open class AUiCommonConfig: NSObject {
     /// appid
     public var appId: String = ""
     /// 网络请求域名
-    public var host: String = ""
+    public var host: String = "https://uikit-voiceroom-staging.bj2.agoralab.co"
     
     //用户信息
     public var userId: String = ""
