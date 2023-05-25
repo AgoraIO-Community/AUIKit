@@ -1,13 +1,13 @@
 //
-//  AUiTokenGenerateNetworkModel.swift
-//  AUiKit
+//  AUITokenGenerateNetworkModel.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/20.
 //
 
 import Foundation
 
-public class AUiTokenGenerateNetworkModel: AUiNetworkModel {
+public class AUITokenGenerateNetworkModel: AUINetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/token/generate"
@@ -25,7 +25,7 @@ public class AUiTokenGenerateNetworkModel: AUiNetworkModel {
         }
         guard let dic = dic as? [String: Any],
               let result = dic["data"] as? [String: String] else {
-            throw AUiCommonError.networkParseFail.toNSError()
+            throw AUICommonError.networkParseFail.toNSError()
         }
         
         
@@ -33,7 +33,7 @@ public class AUiTokenGenerateNetworkModel: AUiNetworkModel {
     }
 }
 
-public class AUiTokenGenerate006NetworkModel: AUiTokenGenerateNetworkModel {
+public class AUITokenGenerate006NetworkModel: AUITokenGenerateNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/token006/generate"

@@ -1,16 +1,16 @@
 //
-//  AUiMicSeatInfo+UI.swift
-//  AUiKit
+//  AUIMicSeatInfo+UI.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/6.
 //
 
 import Foundation
 
-extension AUiMicSeatInfo: AUiMicSeatCellDataProtocol {
+extension AUIMicSeatInfo: AUIMicSeatCellDataProtocol {
     public var isMuteAudio: Bool {
         var userMuteAudio = kUserMuteAudioInitStatus
-        if let fullUser = user as? AUiUserInfo {
+        if let fullUser = user as? AUIUserInfo {
             userMuteAudio = fullUser.muteAudio
         }
         return muteAudio || userMuteAudio
@@ -21,7 +21,7 @@ extension AUiMicSeatInfo: AUiMicSeatCellDataProtocol {
         return true
         
         var userMuteVideo: Bool = kUserMuteVideoInitStatus
-        if let fullUser = user as? AUiUserInfo {
+        if let fullUser = user as? AUIUserInfo {
             userMuteVideo = fullUser.muteVideo
         }
         return muteVideo || userMuteVideo

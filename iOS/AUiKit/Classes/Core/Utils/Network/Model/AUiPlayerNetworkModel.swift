@@ -1,6 +1,6 @@
 //
-//  AUiPlayerNetworkModel.swift
-//  AUiKit
+//  AUIPlayerNetworkModel.swift
+//  AUIKit
 //
 //  Created by FanPengpeng on 2023/3/23.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 @objcMembers
-open class AUiPlayerJoinNetworkModel: AUiCommonNetworkModel {
+open class AUIPlayerJoinNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/chorus/join"
@@ -19,7 +19,7 @@ open class AUiPlayerJoinNetworkModel: AUiCommonNetworkModel {
 
 }
 
-open class AUiPlayerLeaveNetworkModel: AUiCommonNetworkModel {
+open class AUIPlayerLeaveNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/chorus/leave"

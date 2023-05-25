@@ -1,16 +1,16 @@
 //
-//  AUiToast.swift
+//  AUIToast.swift
 //  Scene-Examples
 //
 //  Created by zhaoyongqiang on 2021/11/10.
 //
 import UIKit
 
-public enum AUiToastPostion {
+public enum AUIToastPostion {
     case top, center, bottom
 }
 
-open class AUiToast: UIView {
+open class AUIToast: UIView {
     private lazy var tagImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -52,7 +52,7 @@ open class AUiToast: UIView {
             tagImageView.isHidden = tagImage == nil
         }
     }
-    static private var currentToastView: AUiToast?
+    static private var currentToastView: AUIToast?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -105,7 +105,7 @@ open class AUiToast: UIView {
         }
     }
     
-    public static func show(text: String, postion: AUiToastPostion = .center) {
+    public static func show(text: String, postion: AUIToastPostion = .center) {
         hidden()
         DispatchQueue.main.async {
             let toastView = show(text: text, tagImage: nil,
@@ -118,7 +118,7 @@ open class AUiToast: UIView {
     }
     
     public static func show(text: String,
-                     postion: AUiToastPostion = .center,
+                     postion: AUIToastPostion = .center,
                      duration: CGFloat = 2.5,
                      view: UIView? = nil) {
         hidden()
@@ -132,7 +132,7 @@ open class AUiToast: UIView {
         }
     }
     
-    static func show(text: String, tagImage: UIImage? = nil, postion: AUiToastPostion = .center, view: UIView? = nil) {
+    static func show(text: String, tagImage: UIImage? = nil, postion: AUIToastPostion = .center, view: UIView? = nil) {
         DispatchQueue.main.async {
             let toastView = show(text: text, tagImage: tagImage,
                                  textColor: .white, font: nil,
@@ -147,9 +147,9 @@ open class AUiToast: UIView {
                      tagImage: UIImage? = nil,
                      textColor: UIColor = .white,
                      font: UIFont? = nil,
-                     postion: AUiToastPostion = .center,
-                     view: UIView?) -> AUiToast {
-        let toastView = AUiToast()
+                     postion: AUIToastPostion = .center,
+                     view: UIView?) -> AUIToast {
+        let toastView = AUIToast()
         guard let currentView = view ?? getWindow() else { return toastView }
         toastView.backgroundColor = UIColor.black.withAlphaComponent(0)
         toastView.layer.cornerRadius = 10

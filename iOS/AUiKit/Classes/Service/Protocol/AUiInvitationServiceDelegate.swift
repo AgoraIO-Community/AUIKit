@@ -1,6 +1,6 @@
 //
-//  AUiInvitationServiceDelegate.swift
-//  AUiKit
+//  AUIInvitationServiceDelegate.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/2/21.
 //
@@ -9,67 +9,67 @@ import Foundation
 
 
 /// 邀请Service抽象协议
-public protocol AUiInvitationServiceDelegate: AUiCommonServiceDelegate {
+public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应回调
     /// - Parameter delegate: 需要回调的对象
-    func bindRespDelegate(delegate: AUiInvitationRespDelegate)
+    func bindRespDelegate(delegate: AUIInvitationRespDelegate)
     
     /// 解除绑响应回调
     /// - Parameter delegate: 需要回调的对象
-    func unbindRespDelegate(delegate: AUiInvitationRespDelegate)
+    func unbindRespDelegate(delegate: AUIInvitationRespDelegate)
     
     /// 向用户发送邀请
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
     /// - Returns: <#description#>
-    func sendInvitation(userId: String, seatIndex: Int?, callback: AUiCallback)
+    func sendInvitation(userId: String, seatIndex: Int?, callback: AUICallback)
     
     /// 接受邀请
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - callback: <#callback description#>
-    func acceptInvitation(userId: String, seatIndex: Int?, callback: AUiCallback)
+    func acceptInvitation(userId: String, seatIndex: Int?, callback: AUICallback)
     
     
     /// 拒绝邀请
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - callback: <#callback description#>
-    func rejectInvitation(userId: String, callback: AUiCallback)
+    func rejectInvitation(userId: String, callback: AUICallback)
     
     /// 取消邀请
     /// - Parameters:
     ///   - id: <#id description#>
     ///   - callback: <#callback description#>
-    func cancelInvitation(userId: String, callback: AUiCallback)
+    func cancelInvitation(userId: String, callback: AUICallback)
 
     /// 发送申请
     /// - Parameter callback: <#callback description#>
-    func sendApply(seatIndex: Int?, callback: AUiCallback)
+    func sendApply(seatIndex: Int?, callback: AUICallback)
     
     /// 取消申请
     /// - Parameter callback: <#callback description#>
-    func cancelApply(callback: AUiCallback)
+    func cancelApply(callback: AUICallback)
     
     /// 接受申请(房主同意)
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
-    func acceptApply(userId: String, seatIndex: Int?, callback: AUiCallback)
+    func acceptApply(userId: String, seatIndex: Int?, callback: AUICallback)
     
     
     /// 拒绝申请(房主同意)
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
-    func rejectApply(userId: String, callback: AUiCallback)
+    func rejectApply(userId: String, callback: AUICallback)
 }
 
 
 /// 邀请相关操作的响应
-public protocol AUiInvitationRespDelegate: NSObjectProtocol {
+public protocol AUIInvitationRespDelegate: NSObjectProtocol {
     
     /// 收到新的邀请请求(不动态显示content)
     /// - Parameters:

@@ -1,13 +1,13 @@
 //
-//  AUiAlertView.swift
-//  AUiToast
+//  AUIAlertView.swift
+//  AUIToast
 //
 //  Created by zhaoyongqiang on 2023/4/10.
 //
 
 import UIKit
 
-open class AUiAlertView: UIView {
+open class AUIAlertView: UIView {
     private var cancelClosure:(()->())?
     private var sureClosure:((String?)->())?
     private var rightClosure:(()->())?
@@ -111,90 +111,90 @@ open class AUiAlertView: UIView {
     private var placeHolderFont: UIFont?
     
     //MARK: Public
-    public func background(color: UIColor?) -> AUiAlertView {
+    public func background(color: UIColor?) -> AUIAlertView {
         backgroundColor = color
         return self
     }
-    public func isShowCloseButton(isShow: Bool) -> AUiAlertView {
+    public func isShowCloseButton(isShow: Bool) -> AUIAlertView {
         closeButton.isHidden = !isShow
         return self
     }
-    public func title(title: String?) -> AUiAlertView {
+    public func title(title: String?) -> AUIAlertView {
         titleLabelContaniner.isHidden = title == nil
         titleLabel.text = title
         return self
     }
-    public func titleColor(color: UIColor?) -> AUiAlertView {
+    public func titleColor(color: UIColor?) -> AUIAlertView {
         titleLabel.textColor = color
         return self
     }
-    public func titleFont(font: UIFont?) -> AUiAlertView {
+    public func titleFont(font: UIFont?) -> AUIAlertView {
         titleLabel.font = font
         return self
     }
-    public func content(content: String?) -> AUiAlertView {
+    public func content(content: String?) -> AUIAlertView {
         contentLabel.isHidden = content == nil
         contentLabel.text = content
         return self
     }
-    public func contentTextAligment(textAlignment: NSTextAlignment) -> AUiAlertView {
+    public func contentTextAligment(textAlignment: NSTextAlignment) -> AUIAlertView {
         contentLabel.textAlignment = textAlignment
         return self
     }
     
-    public func contentAttrs(content: NSAttributedString?) -> AUiAlertView {
+    public func contentAttrs(content: NSAttributedString?) -> AUIAlertView {
         contentLabel.isHidden = content == nil
         contentLabel.attributedText = content
         return self
     }
-    public func contentColor(color: UIColor?) -> AUiAlertView {
+    public func contentColor(color: UIColor?) -> AUIAlertView {
         contentLabel.textColor = color
         return self
     }
-    public func contentFont(font: UIFont?) -> AUiAlertView {
+    public func contentFont(font: UIFont?) -> AUIAlertView {
         contentLabel.font = font
         return self
     }
-    public func textField(text: String?) -> AUiAlertView {
+    public func textField(text: String?) -> AUIAlertView {
         textField.isHidden = text == nil
         textField.text = text
         return self
     }
-    public func textField(color: UIColor?) -> AUiAlertView {
+    public func textField(color: UIColor?) -> AUIAlertView {
         textField.textColor = color
         return self
     }
-    public func textField(font: UIFont?) -> AUiAlertView {
+    public func textField(font: UIFont?) -> AUIAlertView {
         textField.font = font
         return self
     }
-    public func textField(leftView: UIView?) -> AUiAlertView {
+    public func textField(leftView: UIView?) -> AUIAlertView {
         textField.leftView = leftView
         return self
     }
-    public func textField(cornerRadius: CGFloat) -> AUiAlertView {
+    public func textField(cornerRadius: CGFloat) -> AUIAlertView {
         textField.layer.cornerRadius = cornerRadius
         textField.layer.masksToBounds = true
         return self
     }
-    public func textField(showBottomDivider: Bool) -> AUiAlertView {
+    public func textField(showBottomDivider: Bool) -> AUIAlertView {
         textFieldLineView.isHidden = !showBottomDivider
         return self
     }
-    public func textField(bottomDividerColor: UIColor?) -> AUiAlertView {
+    public func textField(bottomDividerColor: UIColor?) -> AUIAlertView {
         textFieldLineView.backgroundColor = bottomDividerColor
         return self
     }
-    public func textFieldBackground(color: UIColor?) -> AUiAlertView {
+    public func textFieldBackground(color: UIColor?) -> AUIAlertView {
         textField.backgroundColor = color
         return self
     }
-    public func textFieldPlaceholder(placeholder: String?) -> AUiAlertView {
+    public func textFieldPlaceholder(placeholder: String?) -> AUIAlertView {
         textField.isHidden = placeholder == nil
         textField.placeholder = placeholder
         return self
     }
-    public func textFieldPlaceholder(color: UIColor?) -> AUiAlertView {
+    public func textFieldPlaceholder(color: UIColor?) -> AUIAlertView {
         guard let color = color else { return self }
         placeHolderColor = color
         var attr = NSAttributedString(string: textField.placeholder ?? "",
@@ -207,7 +207,7 @@ open class AUiAlertView: UIView {
         textField.attributedPlaceholder = attr
         return self
     }
-    public func textFieldPlaceholder(font: UIFont?) -> AUiAlertView {
+    public func textFieldPlaceholder(font: UIFont?) -> AUIAlertView {
         guard let font = font else { return self }
         placeHolderFont = font
         var attr = NSAttributedString(string: textField.placeholder ?? "",
@@ -220,89 +220,89 @@ open class AUiAlertView: UIView {
         textField.attributedPlaceholder = attr
         return self
     }
-    public func leftButton(title: String?) -> AUiAlertView {
+    public func leftButton(title: String?) -> AUIAlertView {
         leftButton.isHidden = title == nil
         leftButton.setTitle(title, for: .normal)
         return self
     }
-    public func leftButton(color: UIColor?) -> AUiAlertView {
+    public func leftButton(color: UIColor?) -> AUIAlertView {
         leftButton.setTitleColor(color, for: .normal)
         return self
     }
-    public func leftButton(font: UIFont?) -> AUiAlertView {
+    public func leftButton(font: UIFont?) -> AUIAlertView {
         leftButton.titleLabel?.font = font
         return self
     }
-    public func leftButton(cornerRadius: CGFloat) -> AUiAlertView {
+    public func leftButton(cornerRadius: CGFloat) -> AUIAlertView {
         leftButton.layer.cornerRadius = cornerRadius
         leftButton.layer.masksToBounds = true
         return self
     }
-    public func leftButtonBackground(color: UIColor?) -> AUiAlertView {
+    public func leftButtonBackground(color: UIColor?) -> AUIAlertView {
         leftButton.backgroundColor = color
         return self
     }
-    public func leftButtonBorder(color: UIColor?) -> AUiAlertView {
+    public func leftButtonBorder(color: UIColor?) -> AUIAlertView {
         leftButton.layer.borderColor = color?.cgColor
         return self
     }
-    public func leftButtonBorder(width: CGFloat) -> AUiAlertView {
+    public func leftButtonBorder(width: CGFloat) -> AUIAlertView {
         leftButton.layer.borderWidth = width
         return self
     }
     @discardableResult
-    public func leftButtonTapClosure(onTap: @escaping () -> Void) -> AUiAlertView {
+    public func leftButtonTapClosure(onTap: @escaping () -> Void) -> AUIAlertView {
         cancelClosure = onTap
         return self
     }
-    public func rightButton(title: String?) -> AUiAlertView {
+    public func rightButton(title: String?) -> AUIAlertView {
         rightButton.isHidden = title == nil
         rightButton.setTitle(title, for: .normal)
         return self
     }
-    public func rightButton(color: UIColor?) -> AUiAlertView {
+    public func rightButton(color: UIColor?) -> AUIAlertView {
         rightButton.setTitleColor(color, for: .normal)
         return self
     }
-    public func rightButton(font: UIFont?) -> AUiAlertView {
+    public func rightButton(font: UIFont?) -> AUIAlertView {
         rightButton.titleLabel?.font = font
         return self
     }
-    public func rightButton(cornerRadius: CGFloat) -> AUiAlertView {
+    public func rightButton(cornerRadius: CGFloat) -> AUIAlertView {
         rightButton.layer.cornerRadius = cornerRadius
         rightButton.layer.masksToBounds = true
         return self
     }
-    public func rightButtonBackground(color: UIColor?) -> AUiAlertView {
+    public func rightButtonBackground(color: UIColor?) -> AUIAlertView {
         rightButton.backgroundColor = color
         return self
     }
-    public func rightButtonBorder(color: UIColor?) -> AUiAlertView {
+    public func rightButtonBorder(color: UIColor?) -> AUIAlertView {
         rightButton.layer.borderColor = color?.cgColor
         return self
     }
-    public func rightButtonBorder(width: CGFloat) -> AUiAlertView {
+    public func rightButtonBorder(width: CGFloat) -> AUIAlertView {
         rightButton.layer.borderWidth = width
         return self
     }
     @discardableResult
-    public func rightButtonTapClosure(onTap: @escaping (String?) -> Void) -> AUiAlertView {
+    public func rightButtonTapClosure(onTap: @escaping (String?) -> Void) -> AUIAlertView {
         sureClosure = onTap
         return self
     }
     @discardableResult
-    public func rightButtonTapClosure(onTap: @escaping () -> Void) -> AUiAlertView {
+    public func rightButtonTapClosure(onTap: @escaping () -> Void) -> AUIAlertView {
         rightClosure = onTap
         return self
     }
     @discardableResult
-    public func show(fromVC: UIViewController? = nil) -> AUiAlertView {
-        AUiAlertManager.show(view: self, fromVC: fromVC, alertPostion: .center, didCoverDismiss: false)
+    public func show(fromVC: UIViewController? = nil) -> AUIAlertView {
+        AUIAlertManager.show(view: self, fromVC: fromVC, alertPostion: .center, didCoverDismiss: false)
         return self
     }
     @discardableResult
-    public func hidden() -> AUiAlertView {
-        AUiAlertManager.hiddenView()
+    public func hidden() -> AUIAlertView {
+        AUIAlertManager.hiddenView()
         return self
     }
     
@@ -367,29 +367,29 @@ open class AUiAlertView: UIView {
     
     @objc
     private func clickCancelButton(){
-        AUiAlertManager.hiddenView()
+        AUIAlertManager.hiddenView()
         textField.endEditing(true)
         cancelClosure?()
     }
     
     @objc
     private func clickSureButton(){
-        AUiAlertManager.hiddenView()
+        AUIAlertManager.hiddenView()
         textField.endEditing(true)
         sureClosure == nil ? rightClosure?() : sureClosure?(textField.text)
     }
     @objc
     private func clickCloseButton() {
-        AUiAlertManager.hiddenView()
+        AUIAlertManager.hiddenView()
         textField.endEditing(true)
     }
 }
 
 
 import SwiftTheme
-extension AUiAlertView {
-    public class func theme_defaultAlert() -> AUiAlertView {
-        let alert = AUiAlertView()
+extension AUIAlertView {
+    public class func theme_defaultAlert() -> AUIAlertView {
+        let alert = AUIAlertView()
             .theme_background(color: "CommonColor.black")
             .theme_leftButtonBackground(color: "CommonColor.black20")
             .theme_leftButton(color: "Alert.leftBorderColor")
@@ -402,91 +402,91 @@ extension AUiAlertView {
         return alert
     }
     
-    public func theme_background(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_background(color: ThemeColorPicker?) -> AUIAlertView {
         theme_backgroundColor = color
         return self
     }
     
     //title
-    public func theme_titleColor(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_titleColor(color: ThemeColorPicker?) -> AUIAlertView {
         titleLabel.theme_textColor = color
         return self
     }
-    public func theme_titleFont(font: ThemeFontPicker?) -> AUiAlertView {
+    public func theme_titleFont(font: ThemeFontPicker?) -> AUIAlertView {
         titleLabel.theme_font = font
         return self
     }
     
-    public func theme_textFieldBackground(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_textFieldBackground(color: ThemeColorPicker?) -> AUIAlertView {
         textField.theme_backgroundColor = color
         return self
     }
     
     //content
-    public func theme_contentColor(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_contentColor(color: ThemeColorPicker?) -> AUIAlertView {
         contentLabel.theme_textColor = color
         return self
     }
-    public func theme_contentFont(font: ThemeFontPicker?) -> AUiAlertView {
+    public func theme_contentFont(font: ThemeFontPicker?) -> AUIAlertView {
         contentLabel.theme_font = font
         return self
     }
     
     //right button
-    public func theme_rightButton(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_rightButton(color: ThemeColorPicker?) -> AUIAlertView {
         rightButton.theme_setTitleColor(color, forState: .normal)
         return self
     }
     
-    public func theme_rightButton(font: ThemeFontPicker?) -> AUiAlertView {
+    public func theme_rightButton(font: ThemeFontPicker?) -> AUIAlertView {
         rightButton.titleLabel?.theme_font = font
         return self
     }
-    public func theme_rightButton(cornerRadius: ThemeCGFloatPicker) -> AUiAlertView {
+    public func theme_rightButton(cornerRadius: ThemeCGFloatPicker) -> AUIAlertView {
         rightButton.layer.theme_cornerRadius = cornerRadius
         rightButton.layer.masksToBounds = true
         return self
     }
     
-    public func theme_rightButtonBackground(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_rightButtonBackground(color: ThemeColorPicker?) -> AUIAlertView {
         rightButton.theme_backgroundColor = color
         return self
     }
-    public func rightButtonBorder(color: ThemeCGColorPicker?) -> AUiAlertView {
+    public func rightButtonBorder(color: ThemeCGColorPicker?) -> AUIAlertView {
         rightButton.layer.theme_borderColor = color
         return self
     }
-    public func theme_rightButtonBorder(width: ThemeCGFloatPicker) -> AUiAlertView {
+    public func theme_rightButtonBorder(width: ThemeCGFloatPicker) -> AUIAlertView {
         rightButton.layer.theme_borderWidth = width
         return self
     }
     
     //left button
-    public func theme_leftButton(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_leftButton(color: ThemeColorPicker?) -> AUIAlertView {
         leftButton.theme_setTitleColor(color, forState: .normal)
         return self
     }
-    public func theme_leftButton(font: ThemeFontPicker?) -> AUiAlertView {
+    public func theme_leftButton(font: ThemeFontPicker?) -> AUIAlertView {
         leftButton.titleLabel?.theme_font = font
         return self
     }
     
-    public func theme_leftButton(cornerRadius: ThemeCGFloatPicker) -> AUiAlertView {
+    public func theme_leftButton(cornerRadius: ThemeCGFloatPicker) -> AUIAlertView {
         leftButton.layer.theme_cornerRadius = cornerRadius
         leftButton.layer.masksToBounds = true
         return self
     }
     
-    public func theme_leftButtonBackground(color: ThemeColorPicker?) -> AUiAlertView {
+    public func theme_leftButtonBackground(color: ThemeColorPicker?) -> AUIAlertView {
         leftButton.theme_backgroundColor = color
         return self
     }
     
-    public func theme_leftButtonBorder(color: ThemeCGColorPicker?) -> AUiAlertView {
+    public func theme_leftButtonBorder(color: ThemeCGColorPicker?) -> AUIAlertView {
         leftButton.layer.theme_borderColor = color
         return self
     }
-    public func theme_leftButtonBorder(width: ThemeCGFloatPicker) -> AUiAlertView {
+    public func theme_leftButtonBorder(width: ThemeCGFloatPicker) -> AUIAlertView {
         leftButton.layer.theme_borderWidth = width
         return self
     }

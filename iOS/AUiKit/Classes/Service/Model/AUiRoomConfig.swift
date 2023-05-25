@@ -1,13 +1,13 @@
 //
-//  AUiRoomConfig.swift
-//  AUiKit
+//  AUIRoomConfig.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/2/24.
 //
 
 import Foundation
 
-open class AUiCommonConfig: NSObject {
+open class AUICommonConfig: NSObject {
     /// appid
     public var appId: String = ""
     /// 网络请求域名
@@ -19,11 +19,11 @@ open class AUiCommonConfig: NSObject {
     public var userAvatar: String = ""
     
     open override var description: String {
-        return "AUiCommonConfig: userId: \(userId) userName: \(userName)"
+        return "AUICommonConfig: userId: \(userId) userName: \(userName)"
     }
 }
 
-open class AUiRoomConfig: NSObject {
+open class AUIRoomConfig: NSObject {
     public var channelName: String = ""     //正常rtm使用的频道
     public var rtmToken007: String = ""     //rtm login用，只能007
     public var rtcToken007: String = ""     //rtm join用

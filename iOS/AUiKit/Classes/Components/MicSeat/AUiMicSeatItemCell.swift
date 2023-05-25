@@ -1,6 +1,6 @@
 //
-//  AUiMicSeatItemCell.swift
-//  AUiKit
+//  AUIMicSeatItemCell.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/23.
 //
@@ -17,8 +17,8 @@ public enum MicRole: Int {
 }
 
 /// 麦位管理对话框cell
-open class AUiMicSeatItemCell: UICollectionViewCell {
-    weak var item: AUiMicSeatCellDataProtocol? {
+open class AUIMicSeatItemCell: UICollectionViewCell {
+    weak var item: AUIMicSeatCellDataProtocol? {
         didSet {
             reloadData()
         }
@@ -67,7 +67,7 @@ open class AUiMicSeatItemCell: UICollectionViewCell {
     
     //角色标记
     lazy var micRoleBtn: UIButton = {
-        let theme = AUiButtonDynamicTheme()
+        let theme = AUIButtonDynamicTheme()
         theme.buttonWitdth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
         theme.icon = "SeatItem.micSeatItemIconMainSinger"
@@ -77,7 +77,7 @@ open class AUiMicSeatItemCell: UICollectionViewCell {
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
         theme.iconHeight = "SeatItem.micRoleButtonIconHeight"
         theme.cornerRadius = nil
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageLeftTextRight
         button.style = theme
         button.setTitle("主唱", for: .normal)
@@ -86,13 +86,13 @@ open class AUiMicSeatItemCell: UICollectionViewCell {
     }()
     
     //房主标记
-    lazy var hostIcon: AUiButton = {
-        let theme = AUiButtonDynamicTheme()
+    lazy var hostIcon: AUIButton = {
+        let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
         theme.icon = "SeatItem.micSeatHostIcon"
         theme.buttonWitdth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
         button.setTitle("房主", for: .normal)
@@ -176,7 +176,7 @@ open class AUiMicSeatItemCell: UICollectionViewCell {
     }
     
     private func reloadData() {
-        aui_info("reload seat name \(item?.seatName ?? "") url: \(item?.avatarUrl ?? "") mute video: \(item?.isMuteVideo ?? true)", tag: "AUiMicSeatItemCell")
+        aui_info("reload seat name \(item?.seatName ?? "") url: \(item?.avatarUrl ?? "") mute video: \(item?.isMuteVideo ?? true)", tag: "AUIMicSeatItemCell")
         avatarImageView.kf.setImage(with: URL(string: item?.avatarUrl ?? ""))
         seatLabel.text = item?.seatName
         if let _ = item?.avatarUrl {

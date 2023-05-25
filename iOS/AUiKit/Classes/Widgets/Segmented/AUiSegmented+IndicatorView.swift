@@ -1,6 +1,6 @@
 //
-//  AUiSegmented+IndicatorView.swift
-//  AUiSegmented
+//  AUISegmented+IndicatorView.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 19.10.20.
 //
@@ -9,7 +9,7 @@
 
 import UIKit
 
-extension AUiSegmented {
+extension AUISegmented {
     open class IndicatorView: UIView {
         // MARK: Properties
         let segmentMaskView = UIView()

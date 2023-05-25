@@ -1,6 +1,6 @@
 //
-//  AUiRoomNetworkModel.swift
-//  AUiKit
+//  AUIRoomNetworkModel.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/13.
 //
@@ -9,7 +9,7 @@ import Foundation
 import YYModel
 
 @objcMembers
-open class AUiRoomCreateNetworkModel: AUiCommonNetworkModel {
+open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/room/create"
@@ -29,18 +29,18 @@ open class AUiRoomCreateNetworkModel: AUiCommonNetworkModel {
         }
         guard let dic = dic as? [String: Any],
               let result = dic["data"],
-              let roomInfo = AUiRoomInfo.yy_model(withJSON: result) else {
-            throw AUiCommonError.networkParseFail.toNSError()
+              let roomInfo = AUIRoomInfo.yy_model(withJSON: result) else {
+            throw AUICommonError.networkParseFail.toNSError()
         }
         
         roomInfo.memberCount = micSeatCount
-        roomInfo.owner = AUiRoomContext.shared.currentUserInfo
+        roomInfo.owner = AUIRoomContext.shared.currentUserInfo
         
         return roomInfo
     }
 }
 
-open class AUiRoomDestoryNetworkModel: AUiCommonNetworkModel {
+open class AUIRoomDestoryNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/room/destroy"

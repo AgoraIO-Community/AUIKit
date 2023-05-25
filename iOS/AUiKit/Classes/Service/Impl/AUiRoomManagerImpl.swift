@@ -1,6 +1,6 @@
 //
-//  AUiRoomManagerImpl.swift
-//  AUiKit
+//  AUIRoomManagerImpl.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/2/24.
 //
@@ -16,27 +16,27 @@ let kUserInfoAttrKey = "basic"
 let kUserMuteAttrKey = "mute"
 
 //房间Service实现
-open class AUiRoomManagerImpl: NSObject {
+open class AUIRoomManagerImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private lazy var rtmClient: AgoraRtmClientKit = createRtmClient()
-    public private(set) var commonConfig: AUiCommonConfig!
-    public private(set) lazy var rtmManager: AUiRtmManager = {
-        return AUiRtmManager(rtmClient: self.rtmClient)
+    public private(set) var commonConfig: AUICommonConfig!
+    public private(set) lazy var rtmManager: AUIRtmManager = {
+        return AUIRtmManager(rtmClient: self.rtmClient)
     }()
     
     deinit {
         //rtmManager.logout()
-        aui_info("deinit AUiRoomManagerImpl", tag: "AUiRoomManagerImpl")
+        aui_info("deinit AUIRoomManagerImpl", tag: "AUIRoomManagerImpl")
     }
     
-    public required init(commonConfig: AUiCommonConfig, rtmClient: AgoraRtmClientKit? = nil) {
+    public required init(commonConfig: AUICommonConfig, rtmClient: AgoraRtmClientKit? = nil) {
         super.init()
         self.commonConfig = commonConfig
         if let rtmClient = rtmClient {
             self.rtmClient = rtmClient
         }
-        AUiRoomContext.shared.commonConfig = commonConfig
-        aui_info("init AUiRoomManagerImpl", tag: "AUiRoomManagerImpl")
+        AUIRoomContext.shared.commonConfig = commonConfig
+        aui_info("init AUIRoomManagerImpl", tag: "AUIRoomManagerImpl")
     }
     
     private func createRtmClient() -> AgoraRtmClientKit {
@@ -48,8 +48,8 @@ open class AUiRoomManagerImpl: NSObject {
             assert(false, "userId is empty")
         }
         if rtmConfig.appId.count == 0 {
-            aui_error("appId is empty, please check 'AUiRoomContext.shared.commonConfig.appId' ")
-            assert(false, "appId is empty, please check 'AUiRoomContext.shared.commonConfig.appId' ")
+            aui_error("appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId' ")
+            assert(false, "appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId' ")
         }
         
         let rtmClient = AgoraRtmClientKit(config: rtmConfig, delegate: nil)!
@@ -57,36 +57,36 @@ open class AUiRoomManagerImpl: NSObject {
     }
 }
 
-extension AUiRoomManagerImpl: AUiRoomManagerDelegate {
-    public func bindRespDelegate(delegate: AUiRoomManagerRespDelegate) {
+extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
+    public func bindRespDelegate(delegate: AUIRoomManagerRespDelegate) {
         respDelegates.add(delegate)
     }
     
-    public func unbindRespDelegate(delegate: AUiRoomManagerRespDelegate) {
+    public func unbindRespDelegate(delegate: AUIRoomManagerRespDelegate) {
         respDelegates.remove(delegate)
     }
     
-    public func createRoom(room: AUiCreateRoomInfo, callback: @escaping (Error?, AUiRoomInfo?) -> ()) {
-        let model = AUiRoomCreateNetworkModel()
+    public func createRoom(room: AUICreateRoomInfo, callback: @escaping (Error?, AUIRoomInfo?) -> ()) {
+        let model = AUIRoomCreateNetworkModel()
         model.roomName = room.roomName
-        model.userId = AUiRoomContext.shared.currentUserInfo.userId
-        model.userName = AUiRoomContext.shared.currentUserInfo.userName
-        model.userAvatar = AUiRoomContext.shared.currentUserInfo.userAvatar
+        model.userId = AUIRoomContext.shared.currentUserInfo.userId
+        model.userName = AUIRoomContext.shared.currentUserInfo.userName
+        model.userAvatar = AUIRoomContext.shared.currentUserInfo.userAvatar
         model.request {/*[weak self]*/ error, resp in
 //            guard let self = self else {return}
-//            if let room = resp as? AUiRoomInfo {
+//            if let room = resp as? AUIRoomInfo {
 //                self.rtmManager.subscribeError(channelName: room.roomId, delegate: self)
 //            }
-            callback(error, resp as? AUiRoomInfo)
+            callback(error, resp as? AUIRoomInfo)
         }
     }
     
     public func destroyRoom(roomId: String, callback: @escaping (Error?) -> ()) {
-        aui_info("destroyRoom: \(roomId)", tag: "AUiRoomManagerImpl")
+        aui_info("destroyRoom: \(roomId)", tag: "AUIRoomManagerImpl")
         self.rtmManager.unSubscribe(channelName: roomId)
         
-        let model = AUiRoomDestoryNetworkModel()
-        model.userId = AUiRoomContext.shared.currentUserInfo.userId
+        let model = AUIRoomDestoryNetworkModel()
+        model.userId = AUIRoomContext.shared.currentUserInfo.userId
         model.roomId = roomId
         model.request { error, _ in
             callback(error)
@@ -96,9 +96,9 @@ extension AUiRoomManagerImpl: AUiRoomManagerDelegate {
     }
     
     public func enterRoom(roomId: String, callback:@escaping (Error?) -> ()) {
-        aui_info("enterRoom: \(roomId) ", tag: "AUiRoomManagerImpl")
+        aui_info("enterRoom: \(roomId) ", tag: "AUIRoomManagerImpl")
         
-        let rtmToken = AUiRoomContext.shared.roomConfigMap[roomId]?.rtmToken007 ?? ""
+        let rtmToken = AUIRoomContext.shared.roomConfigMap[roomId]?.rtmToken007 ?? ""
         guard rtmManager.isLogin else {
             rtmManager.login(token: rtmToken) {[weak self] err in
                 if let err = err {
@@ -111,15 +111,15 @@ extension AUiRoomManagerImpl: AUiRoomManagerDelegate {
             return
         }
         
-        guard let roomConfig = AUiRoomContext.shared.roomConfigMap[roomId] else {
+        guard let roomConfig = AUIRoomContext.shared.roomConfigMap[roomId] else {
             assert(false)
-            aui_info("enterRoom: \(roomId) fail", tag: "AUiRoomManagerImpl")
-            callback(AUiCommonError.missmatchRoomConfig.toNSError())
+            aui_info("enterRoom: \(roomId) fail", tag: "AUIRoomManagerImpl")
+            callback(AUICommonError.missmatchRoomConfig.toNSError())
             return
         }
-        aui_info("enterRoom subscribe: \(roomId)", tag: "AUiRoomManagerImpl")
+        aui_info("enterRoom subscribe: \(roomId)", tag: "AUIRoomManagerImpl")
         rtmManager.subscribe(channelName: roomId, rtcToken: roomConfig.rtcToken007) { error in
-            aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUiRoomManagerImpl")
+            aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUIRoomManagerImpl")
             callback(error)
         }
         
@@ -127,26 +127,26 @@ extension AUiRoomManagerImpl: AUiRoomManagerDelegate {
     }
     
     public func exitRoom(roomId: String, callback: (Error?) -> ()) {
-        aui_info("exitRoom: \(roomId)", tag: "AUiRoomManagerImpl")
+        aui_info("exitRoom: \(roomId)", tag: "AUIRoomManagerImpl")
         self.rtmManager.unSubscribe(channelName: roomId)
         rtmManager.logout()
         callback(nil)
     }
     
-    public func getRoomInfoList(lastCreateTime: Int64?, pageSize: Int, callback: @escaping AUiRoomListCallback) {
-        let model = AUiRoomListNetworkModel()
+    public func getRoomInfoList(lastCreateTime: Int64?, pageSize: Int, callback: @escaping AUIRoomListCallback) {
+        let model = AUIRoomListNetworkModel()
         model.lastCreateTime = lastCreateTime == nil ? nil : NSNumber(value: Int(lastCreateTime!))
         model.pageSize = pageSize
         model.request { error, list in
-            callback(error, list as? [AUiRoomInfo])
+            callback(error, list as? [AUIRoomInfo])
         }
     }
 }
 
-extension AUiRoomManagerImpl: AUiRtmErrorProxyDelegate {
+extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
     @objc public func onMsgRecvEmpty(channelName: String) {
         self.respDelegates.allObjects.forEach { obj in
-            guard let delegate = obj as? AUiRoomManagerRespDelegate else {return}
+            guard let delegate = obj as? AUIRoomManagerRespDelegate else {return}
             delegate.onRoomDestroy(roomId: channelName)
         }
     }

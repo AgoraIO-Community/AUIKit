@@ -1,6 +1,6 @@
 //
 //  UIView+Helpers.swift
-//  AUiSegmented
+//  AUISegmented
 //
 //  Created by George Marmaridis on 19.10.20.
 //

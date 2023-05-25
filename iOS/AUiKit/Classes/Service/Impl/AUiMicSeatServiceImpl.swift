@@ -1,5 +1,5 @@
 //
-//  AUiMicSeatServiceImpl.swift
+//  AUIMicSeatServiceImpl.swift
 //  Pods
 //
 //  Created by wushengtao on 2023/2/21.
@@ -11,37 +11,37 @@ import YYModel
 
 
 //麦位Service实现
-open class AUiMicSeatServiceImpl: NSObject {
+open class AUIMicSeatServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
-    private let rtmManager: AUiRtmManager!
-    private let roomManager: AUiRoomManagerDelegate!
+    private let rtmManager: AUIRtmManager!
+    private let roomManager: AUIRoomManagerDelegate!
     
-    private var micSeats:[Int: AUiMicSeatInfo] = [:]
+    private var micSeats:[Int: AUIMicSeatInfo] = [:]
     
     deinit {
         self.rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
-        aui_info("deinit AUiMicSeatServiceImpl", tag: "AUiMicSeatServiceImpl")
+        aui_info("deinit AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
     
-    public init(channelName: String, rtmManager: AUiRtmManager, roomManager: AUiRoomManagerDelegate) {
+    public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.roomManager = roomManager
         super.init()
         rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
-        aui_info("init AUiMicSeatServiceImpl", tag: "AUiMicSeatServiceImpl")
+        aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
 }
 
-extension AUiMicSeatServiceImpl: AUiRtmMsgProxyDelegate {
+extension AUIMicSeatServiceImpl: AUIRtmMsgProxyDelegate {
     public func onMsgDidChanged(channelName: String, key: String, value: Any) {
         if key == kSeatAttrKry {
-            aui_info("recv seat attr did changed \(value)", tag: "AUiMicSeatServiceImpl")
+            aui_info("recv seat attr did changed \(value)", tag: "AUIMicSeatServiceImpl")
             guard let map = value as? [String: [String: Any]] else {return}
             map.values.forEach { element in
-                guard let micSeat = AUiMicSeatInfo.yy_model(with: element) else {return}
-                aui_info(" micSeat.islock \(micSeat.lockSeat) micSeat.Index = \(micSeat.seatIndex)", tag: "AUiMicSeatServiceImpl")
+                guard let micSeat = AUIMicSeatInfo.yy_model(with: element) else {return}
+                aui_info(" micSeat.islock \(micSeat.lockSeat) micSeat.Index = \(micSeat.seatIndex)", tag: "AUIMicSeatServiceImpl")
                 let index: Int = Int(micSeat.seatIndex)
                 let origMicSeat = self.micSeats[index]
 //                if let origMicSeat = origMicSeat {
@@ -50,7 +50,7 @@ extension AUiMicSeatServiceImpl: AUiRtmMsgProxyDelegate {
 //                micSeat.user = roomManager.getUserInfo(by: micSeat.userId)
                 self.micSeats[index] = micSeat
                 self.respDelegates.allObjects.forEach { obj in
-                    guard let delegate = obj as? AUiMicSeatRespDelegate else {
+                    guard let delegate = obj as? AUIMicSeatRespDelegate else {
                         return
                     }
                     
@@ -89,16 +89,16 @@ extension AUiMicSeatServiceImpl: AUiRtmMsgProxyDelegate {
 }
 
 
-extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
+extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
     public func getChannelName() -> String {
         return channelName
     }
     
-    public func bindRespDelegate(delegate: AUiMicSeatRespDelegate) {
+    public func bindRespDelegate(delegate: AUIMicSeatRespDelegate) {
         respDelegates.add(delegate)
     }
     
-    public func unbindRespDelegate(delegate: AUiMicSeatRespDelegate) {
+    public func unbindRespDelegate(delegate: AUIMicSeatRespDelegate) {
         respDelegates.remove(delegate)
     }
     
@@ -107,7 +107,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
 //            callback(nil)
 //            return
 //        }
-        let model = AUiSeatEnterNetworkModel()
+        let model = AUISeatEnterNetworkModel()
         model.roomId = channelName
         model.userAvatar = getRoomContext().currentUserInfo.userAvatar
         model.userId = getRoomContext().currentUserInfo.userId
@@ -128,7 +128,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         
         var seatMap: [String: [String: Any]] = [:]
         
-        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
                 map["user"] = self.getRoomContext().currentUserInfo.yy_modelToJSONObject()
@@ -147,7 +147,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
     
     public func leaveSeat(callback: @escaping (Error?) -> ()) {
         
-        let model = AUiSeatLeaveNetworkModel()
+        let model = AUISeatLeaveNetworkModel()
         model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
 //        model.micSeatNo = seatIndex
@@ -164,7 +164,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         
         var seatMap: [String: [String: Any]] = [:]
         
-        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seat.seatIndex {
                 map.removeValue(forKey: "user")
@@ -189,10 +189,10 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
 //        
 //        var seatMap: [String: [String: Any]] = [:]
 //        
-//        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+//        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
 //            var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
 //            if key == seatIndex {
-//                let user = AUiUserThumbnailInfo()
+//                let user = AUIUserThumbnailInfo()
 //                user.userId = userId
 //                user.userName = userId
 //                map["user"] = user.yy_modelToJSONObject()
@@ -208,7 +208,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
     }
     
     public func kickSeat(seatIndex: Int, callback: @escaping (Error?) -> ()) {
-        let model = AUiSeatkickNetworkModel()
+        let model = AUISeatkickNetworkModel()
         model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
         model.micSeatNo = seatIndex
@@ -225,7 +225,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         
         var seatMap: [String: [String: Any]] = [:]
         
-        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
                 map = [
@@ -245,7 +245,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
     
     public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (Error?) -> ()) {
         if isMute {
-            let model = AUiSeatMuteAudioNetworkModel()
+            let model = AUISeatMuteAudioNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
@@ -253,7 +253,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
                 callback(error)
             }
         }else {
-            let model = AUiSeatUnMuteAudioNetworkModel()
+            let model = AUISeatUnMuteAudioNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
@@ -271,7 +271,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         
         var seatMap: [String: [String: Any]] = [:]
         
-        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
                 map["isMuteAudio"] = isMute
@@ -289,9 +289,9 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
          */
     }
     
-    public func muteVideoSeat(seatIndex: Int, isMute: Bool, callback: @escaping AUiCallback) {
+    public func muteVideoSeat(seatIndex: Int, isMute: Bool, callback: @escaping AUICallback) {
         if isMute {
-            let model = AUiSeatMuteVideoNetworkModel()
+            let model = AUISeatMuteVideoNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
@@ -299,7 +299,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
                 callback(error)
             }
         }else {
-            let model = AUiSeatUnMuteVideoNetworkModel()
+            let model = AUISeatUnMuteVideoNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
@@ -317,7 +317,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         
         var seatMap: [String: [String: Any]] = [:]
         
-        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
                 map["isMuteVideo"] = isMute
@@ -336,7 +336,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
     
     public func closeSeat(seatIndex: Int, isClose: Bool, callback: @escaping (Error?) -> ()) {
         if isClose {
-            let model = AUiSeatLockNetworkModel()
+            let model = AUISeatLockNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
@@ -344,7 +344,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
                 callback(error)
             }
         }else {
-            let model = AUiSeatUnLockNetworkModel()
+            let model = AUISeatUnLockNetworkModel()
             model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
@@ -363,7 +363,7 @@ extension AUiMicSeatServiceImpl: AUiMicSeatServiceDelegate {
         
         var seatMap: [String: [String: Any]] = [:]
         
-        self.micSeats.forEach { (key: Int, value: AUiMicSeatInfo) in
+        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
                 map["isLockSeat"] = isClose

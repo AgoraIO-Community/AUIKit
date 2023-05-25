@@ -1,6 +1,6 @@
 //
-//  AUiKaraokeLrcView.swift
-//  AUiKit
+//  AUIKaraokeLrcView.swift
+//  AUIKit
 //
 //  Created by CP on 2023/4/11.
 //
@@ -9,12 +9,12 @@ import UIKit
 import AgoraLyricsScore
 import ScoreEffectUI
 
-@objc public protocol AUiLrcViewDelegate: NSObjectProtocol {
+@objc public protocol AUILrcViewDelegate: NSObjectProtocol {
     func onKaraokeView( didDragTo position: Int)
     func onKaraokeView(score: Int, totalScore: Int, lineScore: Int, lineIndex: Int)
 }
 
-public class AUiKaraokeLrcView: UIView {
+public class AUIKaraokeLrcView: UIView {
 
     var lrcView: KaraokeView!
     var incentiveView: IncentiveView!
@@ -38,7 +38,7 @@ public class AUiKaraokeLrcView: UIView {
     private var hasShowEpilogueOnce: Bool = false
     public var skipCallBack: ((Int, Bool) -> Void)?
     public var showSkipCallBack: ((SkipType) -> Void)?
-    public weak var delegate: AUiLrcViewDelegate?
+    public weak var delegate: AUILrcViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -149,7 +149,7 @@ public class AUiKaraokeLrcView: UIView {
     }
 }
 
-extension AUiKaraokeLrcView: KaraokeDelegate {
+extension AUIKaraokeLrcView: KaraokeDelegate {
     public func onKaraokeView(view: KaraokeView, didDragTo position: Int) {
         //歌词组件的滚动
         totalScore = view.scoringView.getCumulativeScore()
@@ -169,7 +169,7 @@ extension AUiKaraokeLrcView: KaraokeDelegate {
     }
 }
 
-extension AUiKaraokeLrcView: KTVLrcViewDelegate {
+extension AUIKaraokeLrcView: KTVLrcViewDelegate {
     
     public func onUpdatePitch(pitch: Float) {
         //pitch 更新

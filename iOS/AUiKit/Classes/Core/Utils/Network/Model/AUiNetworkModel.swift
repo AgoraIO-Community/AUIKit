@@ -1,6 +1,6 @@
 //
-//  AUiNetworkModel.swift
-//  AUiKit
+//  AUINetworkModel.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/13.
 //
@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 import YYModel
 
-public enum AUiNetworkMethod: Int {
+public enum AUINetworkMethod: Int {
     case get = 0
     case post
     
@@ -24,11 +24,11 @@ public enum AUiNetworkMethod: Int {
 }
 
 @objcMembers
-open class AUiNetworkModel: NSObject {
+open class AUINetworkModel: NSObject {
     public let uniqueId: String = UUID().uuidString
-    public var host: String = AUiRoomContext.shared.commonConfig?.host ?? ""
+    public var host: String = AUIRoomContext.shared.commonConfig?.host ?? ""
     public var interfaceName: String?
-    public var method: AUiNetworkMethod = .post
+    public var method: AUINetworkMethod = .post
     
     static func modelPropertyBlacklist() -> [Any] {
         return ["uniqueId", "host", "interfaceName", "method"]
@@ -47,19 +47,19 @@ open class AUiNetworkModel: NSObject {
     }
     
     public func request(completion: ((Error?, Any?)->())?) {
-        AUiNetworking.shared.request(model: self, completion: completion)
+        AUINetworking.shared.request(model: self, completion: completion)
     }
     
     
     public func parse(data: Data?) throws -> Any  {
         guard let data = data,
               let dic = try? JSONSerialization.jsonObject(with: data) else {
-            throw AUiCommonError.networkParseFail.toNSError()
+            throw AUICommonError.networkParseFail.toNSError()
         }
         
         if let dic = (dic as? [String: Any]), let code = dic["code"] as? Int, code != 0 {
             let message = dic["message"] as? String ?? ""
-            throw AUiCommonError.httpError(code, message).toNSError()
+            throw AUICommonError.httpError(code, message).toNSError()
         }
         
         return dic
@@ -68,6 +68,6 @@ open class AUiNetworkModel: NSObject {
 
 
 @objcMembers
-open class AUiCommonNetworkModel: AUiNetworkModel {
+open class AUICommonNetworkModel: AUINetworkModel {
     public var userId: String?
 }

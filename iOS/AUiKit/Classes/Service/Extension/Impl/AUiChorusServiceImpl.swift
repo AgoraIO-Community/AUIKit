@@ -1,6 +1,6 @@
 //
-//  AUiChorusServiceImpl.swift
-//  AUiKit
+//  AUIChorusServiceImpl.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/7.
 //
@@ -11,21 +11,21 @@ import YYModel
 
 private let kChorusKey = "chorus"
 
-open class AUiChorusServiceImpl: NSObject {
+open class AUIChorusServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var ktvApi: KTVApiDelegate!
     private var rtcKit: AgoraRtcEngineKit!
     private var channelName: String!
-    private var chorusUserList: [AUiChoristerModel] = []
-    private var rtmManager: AUiRtmManager!
+    private var chorusUserList: [AUIChoristerModel] = []
+    private var rtmManager: AUIRtmManager!
     
     deinit {
-        aui_info("deinit AUiChorusServiceImpl", tag: "AUiChorusServiceImpl")
+        aui_info("deinit AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
         rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
     
-    public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUiRtmManager) {
-        aui_info("init AUiChorusServiceImpl", tag: "AUiChorusServiceImpl")
+    public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
+        aui_info("init AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
         super.init()
         self.rtmManager = rtmManager
         self.channelName = channelName
@@ -35,21 +35,21 @@ open class AUiChorusServiceImpl: NSObject {
     }
 }
 
-extension AUiChorusServiceImpl: AUiChorusServiceDelegate {
-    public func bindRespDelegate(delegate: AUiChorusRespDelegate) {
+extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
+    public func bindRespDelegate(delegate: AUIChorusRespDelegate) {
         respDelegates.add(delegate)
     }
     
-    public func unbindRespDelegate(delegate: AUiChorusRespDelegate) {
+    public func unbindRespDelegate(delegate: AUIChorusRespDelegate) {
         respDelegates.remove(delegate)
     }
     
-    public func getChoristersList(completion: (Error?, [AUiChoristerModel]?) -> ()) {
+    public func getChoristersList(completion: (Error?, [AUIChoristerModel]?) -> ()) {
 //        rtmManager.rtmClient.
     }
     
-    public func joinChorus(songCode: String, userId: String?, completion: @escaping AUiCallback) {
-        let model = AUiPlayerJoinNetworkModel()
+    public func joinChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
+        let model = AUIPlayerJoinNetworkModel()
         model.songCode = songCode
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
@@ -58,8 +58,8 @@ extension AUiChorusServiceImpl: AUiChorusServiceDelegate {
         }
     }
     
-    public func leaveChorus(songCode: String, userId: String?, completion: @escaping AUiCallback) {
-        let model = AUiPlayerLeaveNetworkModel()
+    public func leaveChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
+        let model = AUIPlayerLeaveNetworkModel()
         model.songCode = songCode
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
@@ -74,13 +74,13 @@ extension AUiChorusServiceImpl: AUiChorusServiceDelegate {
 
 }
 
-//MARK: AUiRtmMsgProxyDelegate
-extension AUiChorusServiceImpl: AUiRtmMsgProxyDelegate {
+//MARK: AUIRtmMsgProxyDelegate
+extension AUIChorusServiceImpl: AUIRtmMsgProxyDelegate {
     public func onMsgDidChanged(channelName: String, key: String, value: Any) {
         if key == kChorusKey {
-            aui_info("recv chorus attr did changed \(value)", tag: "AUiPlayerServiceImpl")
+            aui_info("recv chorus attr did changed \(value)", tag: "AUIPlayerServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
-                    let chorusList = NSArray.yy_modelArray(with: AUiChoristerModel.self, json: songArray) as? [AUiChoristerModel] else {
+                    let chorusList = NSArray.yy_modelArray(with: AUIChoristerModel.self, json: songArray) as? [AUIChoristerModel] else {
                 return
             }
             
@@ -92,12 +92,12 @@ extension AUiChorusServiceImpl: AUiRtmMsgProxyDelegate {
                 case let .remove(offset, oldElement, _):
                     unChangesOldList.remove(at: offset)
                     self.respDelegates.allObjects.forEach { obj in
-                        guard let delegate = obj as? AUiChorusRespDelegate else {return}
+                        guard let delegate = obj as? AUIChorusRespDelegate else {return}
                         delegate.onChoristerDidLeave(chorister: oldElement)
                     }
                 case let .insert(_, newElement, _):
                     self.respDelegates.allObjects.forEach { obj in
-                        guard let delegate = obj as? AUiChorusRespDelegate else {return}
+                        guard let delegate = obj as? AUIChorusRespDelegate else {return}
                         delegate.onChoristerDidEnter(chorister: newElement)
                     }
                 }

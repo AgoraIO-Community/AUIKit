@@ -1,6 +1,6 @@
 //
-//  AUiPlayerServiceImpl.swift
-//  AUiKit
+//  AUIPlayerServiceImpl.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/10.
 //
@@ -9,7 +9,7 @@ import Foundation
 import AgoraRtcKit
 import YYModel
 
-open class AUiPlayerServiceImpl: NSObject {
+open class AUIPlayerServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var ktvApi: KTVApiDelegate!
     private var rtcKit: AgoraRtcEngineKit!
@@ -17,11 +17,11 @@ open class AUiPlayerServiceImpl: NSObject {
     private var streamId: Int = 0
     
     deinit {
-        aui_info("deinit AUiPlayerServiceImpl", tag: "AUiPlayerServiceImpl")
+        aui_info("deinit AUIPlayerServiceImpl", tag: "AUIPlayerServiceImpl")
     }
     
-    public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUiRtmManager) {
-        aui_info("init AUiPlayerServiceImpl", tag: "AUiPlayerServiceImpl")
+    public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
+        aui_info("init AUIPlayerServiceImpl", tag: "AUIPlayerServiceImpl")
         super.init()
         self.channelName = channelName
         self.rtcKit = rtcKit
@@ -34,14 +34,14 @@ open class AUiPlayerServiceImpl: NSObject {
     }
 }
 
-//MARK: AUiPlayerServiceDelegate
-extension AUiPlayerServiceImpl: AUiPlayerServiceDelegate {
+//MARK: AUIPlayerServiceDelegate
+extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
-    public func bindRespDelegate(delegate: AUiPlayerRespDelegate) {
+    public func bindRespDelegate(delegate: AUIPlayerRespDelegate) {
         respDelegates.add(delegate)
     }
     
-    public func unbindRespDelegate(delegate: AUiPlayerRespDelegate) {
+    public func unbindRespDelegate(delegate: AUIPlayerRespDelegate) {
         respDelegates.remove(delegate)
     }
     
@@ -153,7 +153,7 @@ extension AUiPlayerServiceImpl: AUiPlayerServiceDelegate {
     public func didKTVAPIReceiveStreamMessageFrom(uid: NSInteger, streamId: NSInteger, data: Data) {
         ktvApi.didKTVAPIReceiveStreamMessageFrom(uid: uid, streamId: streamId, data: data)
         respDelegates.objectEnumerator().forEach { obj in
-            (obj as? AUiPlayerRespDelegate)?.onDataStreamMsgReceived(with: uid, streamId: streamId, data: data)
+            (obj as? AUIPlayerRespDelegate)?.onDataStreamMsgReceived(with: uid, streamId: streamId, data: data)
         }
     }
     
@@ -211,7 +211,7 @@ extension AUiPlayerServiceImpl: AUiPlayerServiceDelegate {
     
 }
 
-extension AUiPlayerServiceImpl: KTVApiEventHandlerDelegate {
+extension AUIPlayerServiceImpl: KTVApiEventHandlerDelegate {
     public func onChorusChannelTokenPrivilegeWillExpire(token: String?) {
         
     }
@@ -230,7 +230,7 @@ extension AUiPlayerServiceImpl: KTVApiEventHandlerDelegate {
 }
 
 //MARK: KTVMusicLoadStateListener
-extension AUiPlayerServiceImpl: IMusicLoadStateListener {
+extension AUIPlayerServiceImpl: IMusicLoadStateListener {
     
     public func onMusicLoadProgress(songCode: Int, percent: Int, status: AgoraMusicContentCenterPreloadStatus, msg: String?, lyricUrl: String?) {
         
@@ -249,13 +249,13 @@ extension AUiPlayerServiceImpl: IMusicLoadStateListener {
     
 //    public func onPlayerStateChanged(state: AgoraMediaPlayerState, isLocal: Bool) {
 //        respDelegates.objectEnumerator().forEach { obj in
-//            (obj as? AUiPlayerRespDelegate)?.onPlayerStateChanged(state: state, isLocal: isLocal)
+//            (obj as? AUIPlayerRespDelegate)?.onPlayerStateChanged(state: state, isLocal: isLocal)
 //        }
 //    }
 //
 //    public func onSyncMusicPosition(position: Int, pitch: Float) {
 //        respDelegates.objectEnumerator().forEach { obj in
-//            (obj as? AUiPlayerRespDelegate)?.onPlayerPositionDidChange(position: position)
+//            (obj as? AUIPlayerRespDelegate)?.onPlayerPositionDidChange(position: position)
 //        }
 //    }
 //
@@ -273,13 +273,13 @@ extension AUiPlayerServiceImpl: IMusicLoadStateListener {
 //
 //    public func didSkipViewShowPreludeEndPosition() {
 //        respDelegates.objectEnumerator().forEach { obj in
-//            (obj as? AUiPlayerRespDelegate)?.onPreludeDidAppear()
+//            (obj as? AUIPlayerRespDelegate)?.onPreludeDidAppear()
 //        }
 //    }
 //
 //    public func didSkipViewShowEndDuration() {
 //        respDelegates.objectEnumerator().forEach { obj in
-//            (obj as? AUiPlayerRespDelegate)?.onPostludeDidAppear()
+//            (obj as? AUIPlayerRespDelegate)?.onPostludeDidAppear()
 //        }
 //    }
 //

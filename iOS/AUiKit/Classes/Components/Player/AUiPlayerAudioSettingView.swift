@@ -1,6 +1,6 @@
 //
-//  AUiPlayerAudioSettingView.swift
-//  AUiKit
+//  AUIPlayerAudioSettingView.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/30.
 //
@@ -8,8 +8,8 @@
 import Foundation
 import SwiftTheme
 
-public class AUiPlayerAudioSettingItem: NSObject, AUiTableViewItemProtocol {
-    public var aui_style: AUiTableViewCellStyle = .singleLabel
+public class AUIPlayerAudioSettingItem: NSObject, AUITableViewItemProtocol {
+    public var aui_style: AUITableViewCellStyle = .singleLabel
     
     public var aui_title: String?
     
@@ -32,21 +32,21 @@ public class AUiPlayerAudioSettingItem: NSObject, AUiTableViewItemProtocol {
     public var sliderCurrentValue: CGFloat = 0.5
 }
 
-public protocol AUiPlayerAudioSettingViewDelegate: NSObjectProtocol {
-    func onSliderCellWillLoad(playerView: AUiPlayerAudioSettingView, item: AUiPlayerAudioSettingItem)
-    func onSwitchCellWillLoad(playerView: AUiPlayerAudioSettingView, item: AUiPlayerAudioSettingItem)
-    func onSliderValueDidChanged(playerView: AUiPlayerAudioSettingView, value: CGFloat, item: AUiPlayerAudioSettingItem)
-    func onSwitchValueDidChanged(playerView: AUiPlayerAudioSettingView, isSwitch: Bool, item: AUiPlayerAudioSettingItem)
-    func onAudioMixDidChanged(playerView: AUiPlayerAudioSettingView, audioMixIndex: Int)
-    func audioMixIsSelected(playerView: AUiPlayerAudioSettingView, audioMixIndex: Int) -> Bool
+public protocol AUIPlayerAudioSettingViewDelegate: NSObjectProtocol {
+    func onSliderCellWillLoad(playerView: AUIPlayerAudioSettingView, item: AUIPlayerAudioSettingItem)
+    func onSwitchCellWillLoad(playerView: AUIPlayerAudioSettingView, item: AUIPlayerAudioSettingItem)
+    func onSliderValueDidChanged(playerView: AUIPlayerAudioSettingView, value: CGFloat, item: AUIPlayerAudioSettingItem)
+    func onSwitchValueDidChanged(playerView: AUIPlayerAudioSettingView, isSwitch: Bool, item: AUIPlayerAudioSettingItem)
+    func onAudioMixDidChanged(playerView: AUIPlayerAudioSettingView, audioMixIndex: Int)
+    func audioMixIsSelected(playerView: AUIPlayerAudioSettingView, audioMixIndex: Int) -> Bool
 }
 
 private let kEdgeSpace:CGFloat = 16
-private let kAUiPlayerActionSheetCellId = "AUiPlayerActionSheetCellId"
-public class AUiPlayerAudioSettingView: UIView {
-    public weak var delegate: AUiPlayerAudioSettingViewDelegate?
-    private(set) var mix_items: [AUiActionSheetItem] = []
-    private var setting_items: [AUiPlayerAudioSettingItem] = []
+private let kAUIPlayerActionSheetCellId = "AUIPlayerActionSheetCellId"
+public class AUIPlayerAudioSettingView: UIView {
+    public weak var delegate: AUIPlayerAudioSettingViewDelegate?
+    private(set) var mix_items: [AUIActionSheetItem] = []
+    private var setting_items: [AUIPlayerAudioSettingItem] = []
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -63,8 +63,8 @@ public class AUiPlayerAudioSettingView: UIView {
         label.text = aui_localized("audioMix")
         return label
     }()
-    private lazy var tableView: AUiTableView = {
-        let tableView = AUiTableView()
+    private lazy var tableView: AUITableView = {
+        let tableView = AUITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
@@ -73,7 +73,7 @@ public class AUiPlayerAudioSettingView: UIView {
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.register(AUiActionSheetCell.self, forCellWithReuseIdentifier: kAUiPlayerActionSheetCellId)
+        collectionView.register(AUIActionSheetCell.self, forCellWithReuseIdentifier: kAUIPlayerActionSheetCellId)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
@@ -92,26 +92,26 @@ public class AUiPlayerAudioSettingView: UIView {
     
     private func _loadSubViews() {
         //load setting items
-        let item1 = AUiPlayerAudioSettingItem()
+        let item1 = AUIPlayerAudioSettingItem()
         item1.aui_style = .multiLabelWithSwitch
         item1.aui_title = aui_localized("musicAudition")
         item1.aui_subTitle = aui_localized("musicAuditionDesc")
         item1.uniqueId = 0
         setting_items.append(item1)
         
-        let item2 = AUiPlayerAudioSettingItem()
+        let item2 = AUIPlayerAudioSettingItem()
         item2.aui_style = .singleLabel
         item2.aui_title = aui_localized("musicVolume")
         item2.uniqueId = 1
         setting_items.append(item2)
         
-        let item3 = AUiPlayerAudioSettingItem()
+        let item3 = AUIPlayerAudioSettingItem()
         item3.aui_style = .singleLabel
         item3.aui_title = aui_localized("recordingVolume")
         item3.uniqueId = 2
         setting_items.append(item3)
         
-        let item4 = AUiPlayerAudioSettingItem()
+        let item4 = AUIPlayerAudioSettingItem()
         item4.aui_style = .singleLabel
         item4.aui_title = aui_localized("tones")
         item4.uniqueId = 3
@@ -120,7 +120,7 @@ public class AUiPlayerAudioSettingView: UIView {
         //load audiomix items
         
         for i in 0...8 {
-            let item = AUiActionSheetThemeItem()
+            let item = AUIActionSheetThemeItem()
             item.title = aui_localized("audioMixType\(i + 1)")
             item.titleColor = "ActionSheet.normalColor"
             if i == 0 {
@@ -170,7 +170,7 @@ public class AUiPlayerAudioSettingView: UIView {
     }
 }
 
-extension AUiPlayerAudioSettingView: UITableViewDataSource, UITableViewDelegate {
+extension AUIPlayerAudioSettingView: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = setting_items.count
         return count
@@ -179,9 +179,9 @@ extension AUiPlayerAudioSettingView: UITableViewDataSource, UITableViewDelegate 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = setting_items[indexPath.row]
         if item.aui_style.contains(.subTitle) {
-            var cell: AUiTableViewCell? = tableView.dequeueReusableCell(withIdentifier: "aui_cell") as? AUiTableViewCell
+            var cell: AUITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "aui_cell") as? AUITableViewCell
             if cell == nil {
-                cell = AUiTableViewCell(style: .subtitle, reuseIdentifier: "aui_cell")
+                cell = AUITableViewCell(style: .subtitle, reuseIdentifier: "aui_cell")
             }
             delegate?.onSwitchCellWillLoad(playerView: self, item: item)
             cell?.item = item
@@ -192,9 +192,9 @@ extension AUiPlayerAudioSettingView: UITableViewDataSource, UITableViewDelegate 
             cell?.setNeedsLayout()
             return cell!
         } else {
-            var cell: AUiTableViewSliderCell? = tableView.dequeueReusableCell(withIdentifier: "aui_slider_cell") as? AUiTableViewSliderCell
+            var cell: AUITableViewSliderCell? = tableView.dequeueReusableCell(withIdentifier: "aui_slider_cell") as? AUITableViewSliderCell
             if cell == nil {
-                cell = AUiTableViewSliderCell(style: .subtitle, reuseIdentifier: "aui_slider_cell")
+                cell = AUITableViewSliderCell(style: .subtitle, reuseIdentifier: "aui_slider_cell")
                 cell?.onSliderValueDidChanged = { [weak self] value in
                     guard let self = self else {return}
                     self.delegate?.onSliderValueDidChanged(playerView: self, value: value, item: item)
@@ -226,13 +226,13 @@ extension AUiPlayerAudioSettingView: UITableViewDataSource, UITableViewDelegate 
 }
 
 
-extension AUiPlayerAudioSettingView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AUIPlayerAudioSettingView: UICollectionViewDelegate, UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.mix_items.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AUiActionSheetCell = collectionView.dequeueReusableCell(withReuseIdentifier: kAUiPlayerActionSheetCellId, for: indexPath) as! AUiActionSheetCell
+        let cell: AUIActionSheetCell = collectionView.dequeueReusableCell(withReuseIdentifier: kAUIPlayerActionSheetCellId, for: indexPath) as! AUIActionSheetCell
         cell.itemType = .horizontal
         let item = self.mix_items[indexPath.row]
         item.callback = { [weak self] in

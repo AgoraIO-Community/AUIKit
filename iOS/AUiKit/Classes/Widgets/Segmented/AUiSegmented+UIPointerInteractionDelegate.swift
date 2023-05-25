@@ -1,6 +1,6 @@
 //
-//  AUiSegmented+UIPointerInteractionDelegate.swift
-//  AUiSegmented
+//  AUISegmented+UIPointerInteractionDelegate.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 19.10.20.
 //
@@ -10,7 +10,7 @@
 import UIKit
 
 @available(iOS 13.4, *)
-extension AUiSegmented: UIPointerInteractionDelegate {
+extension AUISegmented: UIPointerInteractionDelegate {
     public func pointerInteraction(_ interaction: UIPointerInteraction,
                                    regionFor request: UIPointerRegionRequest,
                                    defaultRegion: UIPointerRegion) -> UIPointerRegion? {

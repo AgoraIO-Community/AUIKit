@@ -1,6 +1,6 @@
 //
 //  AUIKaraokeSkipView.swift
-//  AUiKit
+//  AUIKit
 //
 //  Created by CP on 2023/4/23.
 //
@@ -28,13 +28,13 @@ open class AUIKaraokeSkipView: UIView {
         return bgView
     }()
     
-    lazy var skipBtn: AUiButton = {
-        let theme = AUiButtonDynamicTheme()
+    lazy var skipBtn: AUIButton = {
+        let theme = AUIButtonDynamicTheme()
         theme.buttonWitdth = "Player.skipButtonWidth"
         theme.buttonHeight = "Player.skipButtonHeight"
         theme.titleFont = "CommonFont.middleBold"
         theme.cornerRadius = nil
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
         button.setTitle("跳过前奏", for: .normal)
@@ -42,13 +42,13 @@ open class AUIKaraokeSkipView: UIView {
         return button
     }()
     
-    lazy var cancleBtn: AUiButton = {
-        let theme = AUiButtonDynamicTheme()
+    lazy var cancleBtn: AUIButton = {
+        let theme = AUIButtonDynamicTheme()
         theme.buttonWitdth = "Player.skipCancleButtonWidth"
         theme.buttonHeight = "Player.skipCancleButtonHeight"
         theme.icon = "Player.playerLrcItemSkipItem"
         theme.cornerRadius = nil
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
         button.addTarget(self, action: #selector(skip(_:)), for: .touchUpInside)

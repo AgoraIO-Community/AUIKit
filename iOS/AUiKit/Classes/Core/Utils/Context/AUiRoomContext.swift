@@ -1,6 +1,6 @@
 //
-//  AUiRoomContext.swift
-//  AUiKit
+//  AUIRoomContext.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/3.
 //
@@ -9,11 +9,11 @@ import Foundation
 import SwiftTheme
 
 private let themeNames = ["UIKit", "KTV"]
-open class AUiRoomContext: NSObject {
-    public static let shared: AUiRoomContext = AUiRoomContext()
+open class AUIRoomContext: NSObject {
+    public static let shared: AUIRoomContext = AUIRoomContext()
     
-    public let currentUserInfo: AUiUserThumbnailInfo = AUiUserThumbnailInfo()
-    public var commonConfig: AUiCommonConfig? {
+    public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
+    public var commonConfig: AUICommonConfig? {
         didSet {
             guard let config = commonConfig else {return}
             currentUserInfo.userName = config.userName
@@ -22,8 +22,8 @@ open class AUiRoomContext: NSObject {
         }
     }
     
-    public var roomInfoMap: [String: AUiRoomInfo] = [:]
-    public var roomConfigMap: [String: AUiRoomConfig] = [:]
+    public var roomInfoMap: [String: AUIRoomInfo] = [:]
+    public var roomConfigMap: [String: AUIRoomConfig] = [:]
     
     public func isRoomOwner(channelName: String) ->Bool {
         return roomInfoMap[channelName]?.owner?.userId == currentUserInfo.userId
@@ -66,12 +66,12 @@ open class AUiRoomContext: NSObject {
     public func switchTheme(themeName: String) {
         guard let folderPath = Bundle.main.path(forResource: "auiTheme", ofType: "bundle") else {return}
         
-        aui_info("switchTheme: \(themeName)", tag: "AUiKaraokeRoomView")
+        aui_info("switchTheme: \(themeName)", tag: "AUIKaraokeRoomView")
         let themeFolderPath = "\(folderPath)/\(themeName)/theme"
         
         let jsonDict = themeFolderPath.aui_theme()
         guard jsonDict.count > 0 else {
-            aui_error("SwiftTheme WARNING: Can't read json '\(themeName)' at: \(themeFolderPath)", tag: "AUiKaraokeRoomView")
+            aui_error("SwiftTheme WARNING: Can't read json '\(themeName)' at: \(themeFolderPath)", tag: "AUIKaraokeRoomView")
             return
         }
         

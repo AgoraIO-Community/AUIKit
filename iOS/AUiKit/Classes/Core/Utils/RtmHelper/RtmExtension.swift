@@ -1,6 +1,6 @@
 //
 //  RtmExtension.swift
-//  AUiKit
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/3.
 //
@@ -31,7 +31,7 @@ extension AgoraRtmWhoNowResponse {
             var userMap = [String: String]()
             userMap["userId"] = user.userId
             user.states.forEach { item in
-                aui_info("presence whoNow user: \(user.userId) \(item.key): \(item.value)", tag: "AUiRtmManager")
+                aui_info("presence whoNow user: \(user.userId) \(item.key): \(item.value)", tag: "AUIRtmManager")
                 userMap[item.key] = item.value
             }
             userList.append(userMap)
@@ -47,7 +47,7 @@ extension AgoraRtmChannelErrorInfo {
             return nil
         }
         
-        return AUiCommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
+        return AUICommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
     }
 }
 
@@ -57,7 +57,7 @@ extension AgoraRtmOperationErrorInfo {
             return nil
         }
         
-        return AUiCommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
+        return AUICommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
     }
 }
 
@@ -67,6 +67,6 @@ extension AgoraRtmLoginErrorInfo {
             return nil
         }
         
-        return AUiCommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
+        return AUICommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
     }
 }

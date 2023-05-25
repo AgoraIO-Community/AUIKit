@@ -479,7 +479,7 @@ extension KTVApiImpl {
         mediaOption.clientRoleType = .broadcaster
         mediaOption.publishCustomAudioTrackId = Int(mCustomAudioTrackId)
         
-        aui_info("update clientRoleType: \(mediaOption.clientRoleType.rawValue)", tag: "AUiMicSeatViewBinder")
+        aui_info("update clientRoleType: \(mediaOption.clientRoleType.rawValue)", tag: "AUIMicSeatViewBinder")
 
         let rtcConnection = AgoraRtcConnection()
         rtcConnection.channelId = apiConfig?.chorusChannelName ?? ""

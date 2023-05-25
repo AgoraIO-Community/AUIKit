@@ -1,6 +1,6 @@
 //
-//  AUiSegmented+PredefinedStyles.swift
-//  AUiSegmented
+//  AUISegmented+PredefinedStyles.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 18.10.20.
 //
@@ -9,11 +9,11 @@
 
 import UIKit
 
-public extension AUiSegmented {
-     class func appleStyled(frame: CGRect, titles: [String]) -> AUiSegmented {
-        let control = AUiSegmented(
+public extension AUISegmented {
+     class func appleStyled(frame: CGRect, titles: [String]) -> AUISegmented {
+        let control = AUISegmented(
             frame: frame,
-            segments: AUiLabelSegment.segments(withTitles: titles),
+            segments: AUILabelSegment.segments(withTitles: titles),
             options: [.cornerRadius(8)])
         control.indicatorView.layer.shadowColor = UIColor.black.cgColor
         control.indicatorView.layer.shadowOpacity = 0.1

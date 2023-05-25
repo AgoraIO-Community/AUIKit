@@ -1,6 +1,6 @@
 //
-//  AUiTextField.swift
-//  AUiTextField
+//  AUITextField.swift
+//  AUITextField
 //
 //  Created by zhaoyongqiang on 2023/4/4.
 //
@@ -8,12 +8,12 @@
 import UIKit
 import SwiftTheme
 
-public enum AUiDividerSide {
+public enum AUIDividerSide {
     case all
     case bottom
 }
 
-public class AUiTextField: UIView {
+public class AUITextField: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 0
@@ -238,7 +238,7 @@ public class AUiTextField: UIView {
             }
         }
     }
-    public func divider(color: UIColor, position: AUiDividerSide = .all) {
+    public func divider(color: UIColor, position: AUIDividerSide = .all) {
         self.position = position
         if position == .all {
             layer.borderWidth = 1
@@ -254,7 +254,7 @@ public class AUiTextField: UIView {
         stackViewLeftCons?.isActive = true
     }
     
-    private var position: AUiDividerSide?
+    private var position: AUIDividerSide?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -348,7 +348,7 @@ public class AUiTextField: UIView {
 }
 
 
-extension AUiTextField {
+extension AUITextField {
     var theme_placeHolderColor: ThemeColorPicker? {
         get { return aui_getThemePicker(self, "setPlaceHolderColor:") as? ThemeColorPicker }
         set { aui_setThemePicker(self, "setPlaceHolderColor:", newValue) }

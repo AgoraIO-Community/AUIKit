@@ -10,7 +10,7 @@ import AVFoundation
 
 public let cl_screenWidht = UIScreen.main.bounds.width
 public let cl_screenHeight = UIScreen.main.bounds.height
-class AUiAlertManager: NSObject {
+class AUIAlertManager: NSObject {
     private struct AlertViewCache {
         var view: UIView?
         var index: Int = 0

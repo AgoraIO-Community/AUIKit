@@ -1,6 +1,6 @@
 //
-//  UIView+AUiLayout.swift
-//  AUiKit
+//  UIView+AUILayout.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/26.
 //

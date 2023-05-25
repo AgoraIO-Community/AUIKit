@@ -1,6 +1,6 @@
 //
-//  AUiSegmentedSegment.swift
-//  AUiSegmented
+//  AUISegmentedSegment.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 08/10/2017.
 //
@@ -10,7 +10,7 @@
 import UIKit
 
 /// A segment is comprised of a normal state view and a selected state view. These need to be separate view instances.
-public protocol AUiSegmentedSegment {
+public protocol AUISegmentedSegment {
     /// If provided, `BetterSegmentedControl` will use its value to calculate an `intrinsicContentSize` based on this.
     var intrinsicContentSize: CGSize? { get }
     

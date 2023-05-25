@@ -1,26 +1,26 @@
 //
-//  AUiJukeBoxCellDataProtocol.swift
-//  AUiKit
+//  AUIJukeBoxCellDataProtocol.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/10.
 //
 
 import Foundation
 
-public protocol AUiJukeBoxItemDataProtocol: NSObjectProtocol {
+public protocol AUIJukeBoxItemDataProtocol: NSObjectProtocol {
     var songCode: String {get}
     var avatarUrl: String {get}   //头像
     var title: String {get}    //主标题
     var subTitle: String? {get}  //副标题
 }
 
-public protocol AUiJukeBoxItemSelectedDataProtocol: AUiJukeBoxItemDataProtocol {
+public protocol AUIJukeBoxItemSelectedDataProtocol: AUIJukeBoxItemDataProtocol {
     var isPlaying: Bool {get} //是否在播放
     var userId: String? {get}  //歌曲拥有者
 }
 
 
-extension AUiMusicModel: AUiJukeBoxItemDataProtocol {
+extension AUIMusicModel: AUIJukeBoxItemDataProtocol {
     public var avatarUrl: String {
         return self.poster
     }
@@ -34,7 +34,7 @@ extension AUiMusicModel: AUiJukeBoxItemDataProtocol {
     }
 }
 
-extension AUiChooseMusicModel: AUiJukeBoxItemSelectedDataProtocol {
+extension AUIChooseMusicModel: AUIJukeBoxItemSelectedDataProtocol {
     public var userId: String? {
         return self.owner?.userId
     }

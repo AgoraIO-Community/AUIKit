@@ -1,6 +1,6 @@
 //
-//  UIColor+AUiKit.swift
-//  AUiKit
+//  UIColor+AUIKit.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/13.
 //

@@ -1,6 +1,6 @@
 //
-//  AUiSeatNetworkModel.swift
-//  AUiKit
+//  AUISeatNetworkModel.swift
+//  AUIKit
 //
 //  Created by FanPengpeng on 2023/3/21.
 //
@@ -9,7 +9,7 @@ import UIKit
 import YYModel
 
 @objcMembers
-open class AUiSeatEnterNetworkModel: AUiCommonNetworkModel {
+open class AUISeatEnterNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/enter"
@@ -23,7 +23,7 @@ open class AUiSeatEnterNetworkModel: AUiCommonNetworkModel {
     
 }
 
-open class AUiSeatLeaveNetworkModel: AUiCommonNetworkModel {
+open class AUISeatLeaveNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/leave"
@@ -34,7 +34,7 @@ open class AUiSeatLeaveNetworkModel: AUiCommonNetworkModel {
     
 }
 
-open class AUiSeatkickNetworkModel: AUiCommonNetworkModel {
+open class AUISeatkickNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/kick"
@@ -44,7 +44,7 @@ open class AUiSeatkickNetworkModel: AUiCommonNetworkModel {
     public var micSeatNo: Int = 0
 }
 
-open class AUiSeatMuteAudioNetworkModel: AUiCommonNetworkModel {
+open class AUISeatMuteAudioNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/audio/mute"
@@ -55,7 +55,7 @@ open class AUiSeatMuteAudioNetworkModel: AUiCommonNetworkModel {
     public var isMuteAudio: Int = 0
 }
 
-open class AUiSeatUnMuteAudioNetworkModel: AUiCommonNetworkModel {
+open class AUISeatUnMuteAudioNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/audio/unmute"
@@ -65,7 +65,7 @@ open class AUiSeatUnMuteAudioNetworkModel: AUiCommonNetworkModel {
     public var micSeatNo: Int = 0
 }
 
-open class AUiSeatMuteVideoNetworkModel: AUiCommonNetworkModel {
+open class AUISeatMuteVideoNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/video/mute"
@@ -76,7 +76,7 @@ open class AUiSeatMuteVideoNetworkModel: AUiCommonNetworkModel {
     public var isMuteVideo: Int = 0
 }
 
-open class AUiSeatUnMuteVideoNetworkModel: AUiCommonNetworkModel {
+open class AUISeatUnMuteVideoNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/video/unmute"
@@ -87,7 +87,7 @@ open class AUiSeatUnMuteVideoNetworkModel: AUiCommonNetworkModel {
 }
 
 
-open class AUiSeatLockNetworkModel: AUiCommonNetworkModel {
+open class AUISeatLockNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/lock"
@@ -98,7 +98,7 @@ open class AUiSeatLockNetworkModel: AUiCommonNetworkModel {
     public var isLock: Int = 0
 }
 
-open class AUiSeatUnLockNetworkModel: AUiCommonNetworkModel {
+open class AUISeatUnLockNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/seat/unlock"

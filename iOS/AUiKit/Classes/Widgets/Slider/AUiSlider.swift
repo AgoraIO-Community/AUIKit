@@ -1,6 +1,6 @@
 //
-//  AUiSlider.swift
-//  AUiKit
+//  AUISlider.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/30.
 //
@@ -8,12 +8,12 @@
 import Foundation
 import SwiftTheme
 
-public class AUiSliderTheme: NSObject {
-    func setup(slider: AUiSlider, style: AUiSliderStyle){}
-    func resetFont(slider: AUiSlider, style: AUiSliderStyle){}
+public class AUISliderTheme: NSObject {
+    func setup(slider: AUISlider, style: AUISliderStyle){}
+    func resetFont(slider: AUISlider, style: AUISliderStyle){}
 }
 
-public class AUiSliderDynamicTheme: AUiSliderTheme {
+public class AUISliderDynamicTheme: AUISliderTheme {
     
     public var backgroundColor: ThemeColorPicker = "CommonColor.black"              //背景色
     public var minimumTrackColor: ThemeColorPicker = "CommonColor.primary"          //滑块左边部分颜色
@@ -26,7 +26,7 @@ public class AUiSliderDynamicTheme: AUiSliderTheme {
     public var titleLabelFont: ThemeFontPicker = "Slider.titleLabelFont"            //标题字体
     public var titleLabelColor: ThemeColorPicker = "CommonColor.normalTextColor"    //标题颜色
     
-    public override func setup(slider: AUiSlider, style: AUiSliderStyle) {
+    public override func setup(slider: AUISlider, style: AUISliderStyle) {
         
         slider.textLabel.theme_font = titleLabelFont
         slider.textLabel.theme_textColor = titleLabelColor
@@ -43,7 +43,7 @@ public class AUiSliderDynamicTheme: AUiSliderTheme {
         resetFont(slider: slider, style: style)
     }
     
-    public override func resetFont(slider: AUiSlider, style: AUiSliderStyle) {
+    public override func resetFont(slider: AUISlider, style: AUISliderStyle) {
         if style == .smallNumberAndSingleLine {
             slider.minimumTrackLabel.theme_font = trackSmallLabelFont
             slider.maximumTrackLabel.theme_font = trackSmallLabelFont
@@ -56,7 +56,7 @@ public class AUiSliderDynamicTheme: AUiSliderTheme {
     }
 }
 
-public class AUiSliderNativeTheme: AUiSliderTheme {
+public class AUISliderNativeTheme: AUISliderTheme {
     
     public var backgroundColor: UIColor = .black              //背景色
     public var minimumTrackColor: UIColor = .aui_primary          //滑块左边部分颜色
@@ -69,7 +69,7 @@ public class AUiSliderNativeTheme: AUiSliderTheme {
     public var titleLabelFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 12)!            //标题字体
     public var titleLabelColor: UIColor = .aui_normalTextColor    //标题颜色
     
-    public override func setup(slider: AUiSlider, style: AUiSliderStyle) {
+    public override func setup(slider: AUISlider, style: AUISliderStyle) {
         
         slider.textLabel.font = titleLabelFont
         slider.textLabel.textColor = titleLabelColor
@@ -86,7 +86,7 @@ public class AUiSliderNativeTheme: AUiSliderTheme {
         resetFont(slider: slider, style: style)
     }
     
-    public override func resetFont(slider: AUiSlider, style: AUiSliderStyle) {
+    public override func resetFont(slider: AUISlider, style: AUISliderStyle) {
         if style == .smallNumberAndSingleLine {
             slider.minimumTrackLabel.font = trackSmallLabelFont
             slider.maximumTrackLabel.font = trackSmallLabelFont
@@ -99,7 +99,7 @@ public class AUiSliderNativeTheme: AUiSliderTheme {
     }
 }
 
-public enum AUiSliderStyle: Int {
+public enum AUISliderStyle: Int {
     case singleLine = 0            //单滑动条
     case titleAndSingleLine        //标题+滑动条
     case bigNumberAndSingleLine    //左右数字+滑动条
@@ -111,7 +111,7 @@ private let kLineHeight: CGFloat = 2
 private let kPaddingBetweenThumbViewAndSmallNumber: CGFloat = 4
 private let kThumbViewSize = CGSize(width: 16, height: 16)
 private let kSplitLineSize = CGSize(width: 2, height: 8)
-open class AUiSlider: UIControl {
+open class AUISlider: UIControl {
     private var touchPrevVal: CGFloat = 0
     open var minimumValue: CGFloat = 0
     open var maximumValue: CGFloat = 100
@@ -124,12 +124,12 @@ open class AUiSlider: UIControl {
             thumbLabel.aui_centerX = thumbView.aui_centerX
         }
     }
-    public var style: AUiSliderStyle = .singleLine {
+    public var style: AUISliderStyle = .singleLine {
         didSet {
             resetStyle()
         }
     }
-    public var theme: AUiSliderTheme = AUiSliderDynamicTheme() {
+    public var theme: AUISliderTheme = AUISliderDynamicTheme() {
         didSet {
             resetTheme()
         }
@@ -308,7 +308,7 @@ open class AUiSlider: UIControl {
 }
 
 
-extension AUiSlider {
+extension AUISlider {
     @objc func onPanGesture(_ ges: UIPanGestureRecognizer) {
         let state = ges.state
         let val = ges.location(in: self).x

@@ -1,5 +1,5 @@
 //
-//  AUiLocalized.swift
+//  AUILocalized.swift
 //  AgoraLyricsScore
 //
 //  Created by wushengtao on 2023/3/30.

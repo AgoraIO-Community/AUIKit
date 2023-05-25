@@ -1,6 +1,6 @@
 //
-//  AUiMusicServiceImpl.swift
-//  AUiKit
+//  AUIMusicServiceImpl.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/7.
 //
@@ -11,12 +11,12 @@ import YYModel
 
 private let kChooseSongKey = "song"
 
-class AUiMusicLoadingInfo: NSObject {
+class AUIMusicLoadingInfo: NSObject {
     var songCode: String?
     var lrcMsgId: String?
     var preloadStatus: AgoraMusicContentCenterPreloadStatus?
     var lrcUrl: String?
-    var callback: AUiLoadSongCompletion?
+    var callback: AUILoadSongCompletion?
     
     func makeCallbackIfNeed() -> Bool {
         
@@ -35,21 +35,21 @@ class AUiMusicLoadingInfo: NSObject {
     }
 }
 
-open class AUiMusicServiceImpl: NSObject {
+open class AUIMusicServiceImpl: NSObject {
     //选歌列表
-    private var chooseSongList: [AUiChooseMusicModel] = []
+    private var chooseSongList: [AUIChooseMusicModel] = []
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
-    private var rtmManager: AUiRtmManager!
+    private var rtmManager: AUIRtmManager!
     private var channelName: String!
     private var ktvApi: KTVApiDelegate!
     
     deinit {
         rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
-        aui_info("deinit AUiMusicServiceImpl", tag: "AUiMusicServiceImpl")
+        aui_info("deinit AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
     }
     
-    public init(channelName: String, rtmManager: AUiRtmManager, ktvApi: KTVApiDelegate) {
-        aui_info("init AUiMusicServiceImpl", tag: "AUiMusicServiceImpl")
+    public init(channelName: String, rtmManager: AUIRtmManager, ktvApi: KTVApiDelegate) {
+        aui_info("init AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
         super.init()
         self.rtmManager = rtmManager
         self.channelName = channelName
@@ -59,13 +59,13 @@ open class AUiMusicServiceImpl: NSObject {
 }
 
 
-//MARK: AUiRtmMsgProxyDelegate
-extension AUiMusicServiceImpl: AUiRtmMsgProxyDelegate {
+//MARK: AUIRtmMsgProxyDelegate
+extension AUIMusicServiceImpl: AUIRtmMsgProxyDelegate {
     public func onMsgDidChanged(channelName: String, key: String, value: Any) {
         if key == kChooseSongKey {
-            aui_info("recv choose song attr did changed \(value)", tag: "AUiMusicServiceImpl")
+            aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
-                    let chooseSongList = NSArray.yy_modelArray(with: AUiChooseMusicModel.self, json: songArray) as? [AUiChooseMusicModel] else {
+                    let chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: songArray) as? [AUIChooseMusicModel] else {
                 return
             }
             
@@ -79,16 +79,16 @@ extension AUiMusicServiceImpl: AUiRtmMsgProxyDelegate {
 //                for change in difference {
 //                    switch change {
 //                    case let .remove(offset, oldElement, _):
-//                        aui_info("remove \(oldElement.name) idx: \(offset)", tag: "AUiMusicServiceImpl")
+//                        aui_info("remove \(oldElement.name) idx: \(offset)", tag: "AUIMusicServiceImpl")
 //                        self.respDelegates.allObjects.forEach { obj in
-//                            guard let delegate = obj as? AUiMusicRespDelegate else {return}
+//                            guard let delegate = obj as? AUIMusicRespDelegate else {return}
 //                            delegate.onRemoveChooseSong(song: oldElement)
 //                        }
 //                        ifDiff = true
 //                    case let .insert(offset, newElement, _):
-//                        aui_info("insert \(newElement.name) idx: \(offset)", tag: "AUiMusicServiceImpl")
+//                        aui_info("insert \(newElement.name) idx: \(offset)", tag: "AUIMusicServiceImpl")
 //                        self.respDelegates.allObjects.forEach { obj in
-//                            guard let delegate = obj as? AUiMusicRespDelegate else {return}
+//                            guard let delegate = obj as? AUIMusicRespDelegate else {return}
 //                            delegate.onAddChooseSong(song: newElement)
 //                        }
 //                        ifDiff = true
@@ -102,9 +102,9 @@ extension AUiMusicServiceImpl: AUiRtmMsgProxyDelegate {
 //                        switch insert {
 //                        case let .insert(newOffset, newElement, _):
 //                            if oldOffset == newOffset, oldElement.songCode == newElement.songCode {
-//                                aui_info("update \(newElement.name) idx: \(newOffset)", tag: "AUiMusicServiceImpl")
+//                                aui_info("update \(newElement.name) idx: \(newOffset)", tag: "AUIMusicServiceImpl")
 //                                self.respDelegates.allObjects.forEach { obj in
-//                                    guard let delegate = obj as? AUiMusicRespDelegate else {return}
+//                                    guard let delegate = obj as? AUIMusicRespDelegate else {return}
 //                                    delegate.onUpdateChooseSong(song:newElement)
 //                                }
 //                                ifDiff = true
@@ -119,14 +119,14 @@ extension AUiMusicServiceImpl: AUiRtmMsgProxyDelegate {
 //            }
             
             if ifDiff == false {
-                aui_info("update \(chooseSongList.count)", tag: "AUiMusicServiceImpl")
+                aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
                 self.respDelegates.allObjects.forEach { obj in
-                    guard let delegate = obj as? AUiMusicRespDelegate else {return}
+                    guard let delegate = obj as? AUIMusicRespDelegate else {return}
                     delegate.onUpdateAllChooseSongs(songs: chooseSongList)
                 }
             }
             
-            aui_info("song update: \(self.chooseSongList.count)->\(chooseSongList.count)", tag: "AUiMusicServiceImpl")
+            aui_info("song update: \(self.chooseSongList.count)->\(chooseSongList.count)", tag: "AUIMusicServiceImpl")
             self.chooseSongList = chooseSongList
         }
     }
@@ -135,13 +135,13 @@ extension AUiMusicServiceImpl: AUiRtmMsgProxyDelegate {
 }
 
 let jsonOption = "{\"needLyric\":true,\"pitchType\":1}"
-//MARK: AUiMusicServiceDelegate
-extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
-    public func bindRespDelegate(delegate: AUiMusicRespDelegate) {
+//MARK: AUIMusicServiceDelegate
+extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
+    public func bindRespDelegate(delegate: AUIMusicRespDelegate) {
         respDelegates.add(delegate)
     }
     
-    public func unbindRespDelegate(delegate: AUiMusicRespDelegate) {
+    public func unbindRespDelegate(delegate: AUIMusicRespDelegate) {
         respDelegates.remove(delegate)
     }
     
@@ -152,13 +152,13 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
     public func getMusicList(chartId: Int,
                              page: Int,
                              pageSize: Int,
-                             completion: @escaping AUiMusicListCompletion) {
-        aui_info("getMusicList with chartId: \(chartId)", tag: "AUiMusicServiceImpl")
+                             completion: @escaping AUIMusicListCompletion) {
+        aui_info("getMusicList with chartId: \(chartId)", tag: "AUIMusicServiceImpl")
         self.ktvApi.searchMusic(musicChartId: chartId,
                                 page: page,
                                 pageSize: pageSize,
                                 jsonOption: jsonOption) { requestId, status, collection in
-            aui_info("getMusicList with chartId: \(chartId) status: \(status.rawValue) count: \(collection.count)", tag: "AUiMusicServiceImpl")
+            aui_info("getMusicList with chartId: \(chartId) status: \(status.rawValue) count: \(collection.count)", tag: "AUIMusicServiceImpl")
             guard status == .OK else {
                 //TODO:
                 DispatchQueue.main.async {
@@ -167,9 +167,9 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
                 return
             }
             
-            var musicList: [AUiMusicModel] = []
+            var musicList: [AUIMusicModel] = []
             collection.musicList.forEach { music in
-                let model = AUiMusicModel()
+                let model = AUIMusicModel()
                 model.songCode = "\(music.songCode)"
                 model.name = music.name
                 model.singer = music.singer
@@ -188,13 +188,13 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
     public func searchMusic(keyword: String,
                             page: Int,
                             pageSize: Int,
-                            completion: @escaping AUiMusicListCompletion) {
-        aui_info("searchMusic with keyword: \(keyword)", tag: "AUiMusicServiceImpl")
+                            completion: @escaping AUIMusicListCompletion) {
+        aui_info("searchMusic with keyword: \(keyword)", tag: "AUIMusicServiceImpl")
         self.ktvApi.searchMusic(keyword: keyword,
                                 page: page,
                                 pageSize: pageSize,
                                 jsonOption: jsonOption) { requestId, status, collection in
-            aui_info("searchMusic with keyword: \(keyword) status: \(status.rawValue) count: \(collection.count)", tag: "AUiMusicServiceImpl")
+            aui_info("searchMusic with keyword: \(keyword) status: \(status.rawValue) count: \(collection.count)", tag: "AUIMusicServiceImpl")
             guard status == .OK else {
                 //TODO:
                 DispatchQueue.main.async {
@@ -203,9 +203,9 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
                 return
             }
             
-            var musicList: [AUiMusicModel] = []
+            var musicList: [AUIMusicModel] = []
             collection.musicList.forEach { music in
-                let model = AUiMusicModel()
+                let model = AUIMusicModel()
                 model.songCode = "\(music.songCode)"
                 model.name = music.name
                 model.singer = music.singer
@@ -221,10 +221,10 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         }
     }
     
-    public func getAllChooseSongList(completion: AUiChooseSongListCompletion?) {
-        aui_info("getAllChooseSongList", tag: "AUiMusicServiceImpl")
+    public func getAllChooseSongList(completion: AUIChooseSongListCompletion?) {
+        aui_info("getAllChooseSongList", tag: "AUIMusicServiceImpl")
         self.rtmManager.getMetadata(channelName: self.channelName) { error, map in
-            aui_info("getAllChooseSongList error: \(error?.localizedDescription ?? "success")", tag: "AUiMusicServiceImpl")
+            aui_info("getAllChooseSongList error: \(error?.localizedDescription ?? "success")", tag: "AUIMusicServiceImpl")
             if let error = error {
                 //TODO: error
                 completion?(error, nil)
@@ -237,22 +237,22 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
                 return
             }
             
-            self.chooseSongList = NSArray.yy_modelArray(with: AUiChooseMusicModel.self, json: jsonStr) as? [AUiChooseMusicModel] ?? []
+            self.chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: jsonStr) as? [AUIChooseMusicModel] ?? []
             completion?(nil, self.chooseSongList)
         }
     }
     
-    public func chooseSong(songModel:AUiMusicModel, completion: AUiCallback?) {
-        aui_info("chooseSong: \(songModel.songCode)", tag: "AUiMusicServiceImpl")
+    public func chooseSong(songModel:AUIMusicModel, completion: AUICallback?) {
+        aui_info("chooseSong: \(songModel.songCode)", tag: "AUIMusicServiceImpl")
         guard let dic = songModel.yy_modelToJSONObject() as? [String: Any] else {
             //TODO: error
             completion?(nil)
             return
         }
         
-        let networkModel = AUiSongAddNetworkModel.yy_model(with: dic)!
+        let networkModel = AUISongAddNetworkModel.yy_model(with: dic)!
         networkModel.userId = getRoomContext().currentUserInfo.userId
-        let chooseModel = AUiChooseMusicModel.yy_model(with: dic)!
+        let chooseModel = AUIChooseMusicModel.yy_model(with: dic)!
         
         networkModel.roomId = channelName
         let owner = getRoomContext().currentUserInfo
@@ -263,9 +263,9 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         })
     }
     
-    public func removeSong(songCode: String, completion: AUiCallback?) {
-        aui_info("removeSong: \(songCode)", tag: "AUiMusicServiceImpl")
-        let model = AUiSongRemoveNetworkModel()
+    public func removeSong(songCode: String, completion: AUICallback?) {
+        aui_info("removeSong: \(songCode)", tag: "AUIMusicServiceImpl")
+        let model = AUISongRemoveNetworkModel()
         model.userId = getRoomContext().currentUserInfo.userId
         model.songCode = songCode
         model.roomId = channelName
@@ -274,9 +274,9 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         }
     }
     
-    public func pinSong(songCode: String, completion: AUiCallback?) {
-        aui_info("pinSong: \(songCode)", tag: "AUiMusicServiceImpl")
-        let model = AUiSongPinNetworkModel()
+    public func pinSong(songCode: String, completion: AUICallback?) {
+        aui_info("pinSong: \(songCode)", tag: "AUIMusicServiceImpl")
+        let model = AUISongPinNetworkModel()
         model.userId = getRoomContext().currentUserInfo.userId
         model.songCode = songCode
         model.roomId = channelName
@@ -285,10 +285,10 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
         }
     }
     
-    public func updatePlayStatus(songCode: String, playStatus: AUiPlayStatus, completion: AUiCallback?) {
-        aui_info("updatePlayStatus: \(songCode)", tag: "AUiMusicServiceImpl")
+    public func updatePlayStatus(songCode: String, playStatus: AUIPlayStatus, completion: AUICallback?) {
+        aui_info("updatePlayStatus: \(songCode)", tag: "AUIMusicServiceImpl")
         if playStatus == .playing {
-            let model = AUiSongPlayNetworkModel()
+            let model = AUISongPlayNetworkModel()
             model.userId = getRoomContext().currentUserInfo.userId
             model.songCode = songCode
             model.roomId = channelName
@@ -296,7 +296,7 @@ extension AUiMusicServiceImpl: AUiMusicServiceDelegate {
                 completion?(err)
             }
         } else {
-            let model = AUiSongStopNetworkModel()
+            let model = AUISongStopNetworkModel()
             model.userId = getRoomContext().currentUserInfo.userId
             model.songCode = songCode
             model.roomId = channelName

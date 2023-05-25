@@ -1,6 +1,6 @@
 //
-//  AUiActionSheet.swift
-//  AUiKit
+//  AUIActionSheet.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/27.
 //
@@ -12,11 +12,11 @@ private let kEdgeSpace:CGFloat = 16
 private let kAvatarViewWidth:CGFloat = 40
 private let kUserTitleLeftPadding: CGFloat = 8
 
-private let kAUiActionSheetCellId = "AUiActionSheetCellId"
+private let kAUIActionSheetCellId = "AUIActionSheetCellId"
 
-open class AUiActionSheetStyle: NSObject {
+open class AUIActionSheetStyle: NSObject {
     public var collectionViewTopEdge: CGFloat = 32
-    public var itemType: AUiActionSheetItemLayoutType = .horizontal
+    public var itemType: AUIActionSheetItemLayoutType = .horizontal
     public var itemHeight: CGFloat = 48
     public var titleLabelFont: UIFont = .aui_big
     public var titleLabelTextColor: UIColor = .white
@@ -28,19 +28,19 @@ open class AUiActionSheetStyle: NSObject {
     public var avatarHeight: CGFloat = 40
 }
 
-open class AUiActionSheetHeaderInfo: NSObject {
+open class AUIActionSheetHeaderInfo: NSObject {
     public var title: String = ""
     public var subTitle: String = ""
     public var avatar: String = ""
 }
 
-open class AUiActionSheet: UIView {
+open class AUIActionSheet: UIView {
     @objc private var itemHeight: CGFloat = 48 {
         didSet {
             layoutCollectionView()
         }
     }
-    @objc var itemType: AUiActionSheetItemLayoutType = .vertical {
+    @objc var itemType: AUIActionSheetItemLayoutType = .vertical {
         didSet {
             layoutCollectionView()
         }
@@ -51,14 +51,14 @@ open class AUiActionSheet: UIView {
         }
     }
     private let title: String
-    private let items: [AUiActionSheetItem]!
-    private let headerInfo: AUiActionSheetHeaderInfo?
+    private let items: [AUIActionSheetItem]!
+    private let headerInfo: AUIActionSheetHeaderInfo?
     
     private lazy var flowLayout = UICollectionViewFlowLayout()
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.register(AUiActionSheetCell.self, forCellWithReuseIdentifier: kAUiActionSheetCellId)
+        collectionView.register(AUIActionSheetCell.self, forCellWithReuseIdentifier: kAUIActionSheetCellId)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
@@ -97,8 +97,8 @@ open class AUiActionSheet: UIView {
     }()
     
     public init(title: String,
-                items: [AUiActionSheetItem],
-                headerInfo: AUiActionSheetHeaderInfo?) {
+                items: [AUIActionSheetItem],
+                headerInfo: AUIActionSheetHeaderInfo?) {
         self.title = title
         self.items = items
         self.headerInfo = headerInfo
@@ -189,7 +189,7 @@ open class AUiActionSheet: UIView {
         return CGSize(width: windowFrame.width, height: collectionView.aui_bottom + UIDevice.current.aui_SafeDistanceBottom)
     }
     
-    public func setStyle(style: AUiActionSheetStyle) {
+    public func setStyle(style: AUIActionSheetStyle) {
         collectionViewTopEdge = style.collectionViewTopEdge
         itemType = style.itemType
         itemHeight = style.itemHeight
@@ -214,13 +214,13 @@ open class AUiActionSheet: UIView {
     }
 }
 
-extension AUiActionSheet: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AUIActionSheet: UICollectionViewDelegate, UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.items.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AUiActionSheetCell = collectionView.dequeueReusableCell(withReuseIdentifier: kAUiActionSheetCellId, for: indexPath) as! AUiActionSheetCell
+        let cell: AUIActionSheetCell = collectionView.dequeueReusableCell(withReuseIdentifier: kAUIActionSheetCellId, for: indexPath) as! AUIActionSheetCell
         cell.itemType = itemType
         let item = self.items[indexPath.row]
         cell.item = item
@@ -242,7 +242,7 @@ extension AUiActionSheet: UICollectionViewDelegate, UICollectionViewDataSource {
 
 
 //MARK: Theme
-open class AUiActionSheetTheme: NSObject {
+open class AUIActionSheetTheme: NSObject {
     public var collectionViewTopEdge: ThemeCGFloatPicker = "ActionSheet.collectionViewTopEdge"
     public var itemType: ThemeCGFloatPicker = "ActionSheet.itemType"
     public var itemHeight: ThemeCGFloatPicker = "ActionSheet.itemHeight"
@@ -256,8 +256,8 @@ open class AUiActionSheetTheme: NSObject {
     public var avatarHeight: ThemeCGFloatPicker = "ActionSheet.avatarHeight"
 }
 
-extension AUiActionSheet {
-    public func setTheme(theme: AUiActionSheetTheme) {
+extension AUIActionSheet {
+    public func setTheme(theme: AUIActionSheetTheme) {
         theme_collectionViewTopEdge = theme.collectionViewTopEdge
         theme_itemType = theme.itemType
         theme_itemHeight = theme.itemHeight
@@ -282,7 +282,7 @@ extension AUiActionSheet {
     }
     
     @objc func setItemType(itemType: CGFloat) {
-        let val = AUiActionSheetItemLayoutType(rawValue: Int(itemType)) ?? .vertical
+        let val = AUIActionSheetItemLayoutType(rawValue: Int(itemType)) ?? .vertical
         self.itemType = val
     }
     

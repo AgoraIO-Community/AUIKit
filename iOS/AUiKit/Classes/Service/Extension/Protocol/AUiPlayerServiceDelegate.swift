@@ -1,6 +1,6 @@
 //
-//  AUiPlayerServiceDelegate.swift
-//  AUiKit
+//  AUIPlayerServiceDelegate.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/8.
 //
@@ -9,15 +9,15 @@ import Foundation
 import AgoraRtcKit
 
 /// 播放器请求协议
-public protocol AUiPlayerServiceDelegate: AUiCommonServiceDelegate {
+public protocol AUIPlayerServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应协议
     /// - Parameter delegate: 需要回调的对象
-    func bindRespDelegate(delegate: AUiPlayerRespDelegate)
+    func bindRespDelegate(delegate: AUIPlayerRespDelegate)
     
     /// 解绑响应协议
     /// - Parameter delegate: 需要回调的对象
-    func unbindRespDelegate(delegate: AUiPlayerRespDelegate)
+    func unbindRespDelegate(delegate: AUIPlayerRespDelegate)
 
     /// 加载歌曲
     /// - Parameters:
@@ -126,7 +126,7 @@ public protocol AUiPlayerServiceDelegate: AUiCommonServiceDelegate {
 
 
 /// 播放器回调协议
-public protocol AUiPlayerRespDelegate: NSObjectProtocol {
+public protocol AUIPlayerRespDelegate: NSObjectProtocol {
     
     /// 前奏开始加载
     func onPreludeDidAppear()

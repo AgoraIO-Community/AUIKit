@@ -1,6 +1,6 @@
 //
-//  AUiCommonDialog.swift
-//  AUiKit
+//  AUICommonDialog.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/23.
 //
@@ -8,23 +8,23 @@
 import UIKit
 import SwiftTheme
 
-func getDialog() -> AUiCommonDialog? {
+func getDialog() -> AUICommonDialog? {
     guard let window = getWindow() else {return nil}
     for subView in window.subviews {
-        if let dialog = subView as? AUiCommonDialog {
+        if let dialog = subView as? AUICommonDialog {
             return dialog
         }
     }
     return nil
 }
 
-public class AUiCommonDialogStyle: NSObject {
+public class AUICommonDialogStyle: NSObject {
     public var indicatorColor: UIColor = UIColor.aui_lightGrey35
     public var contentControlColor: UIColor = UIColor.aui_black90
 }
 
 private let kRadius: CGFloat = 12
-open class AUiCommonDialog: UIView {
+open class AUICommonDialog: UIView {
     private var touchPrevVal: CGFloat = 0
     private lazy var contentView: UIView = {
         let view = UIView()
@@ -64,7 +64,7 @@ open class AUiCommonDialog: UIView {
         contentView.addSubview(contentControlView)
         contentView.addSubview(indicatorView)
         
-//        setStyle(style: AUiCommonDialogStyle())
+//        setStyle(style: AUICommonDialogStyle())
         
         let gesture = UIPanGestureRecognizer()
         gesture.addTarget(self, action: #selector(onPanGesture(_:)))
@@ -86,11 +86,11 @@ open class AUiCommonDialog: UIView {
     }
     
     @discardableResult
-    public class func show(contentView: UIView) -> AUiCommonDialog? {
+    public class func show(contentView: UIView) -> AUICommonDialog? {
         guard let window = getWindow() else {
             return nil
         }
-        let dialog = AUiCommonDialog(frame: window.frame)
+        let dialog = AUICommonDialog(frame: window.frame)
         window.addSubview(dialog)
         dialog.contentView.addSubview(contentView)
         dialog.contentView.aui_size = contentView.aui_size
@@ -124,13 +124,13 @@ open class AUiCommonDialog: UIView {
         }
     }
     
-    public func setStyle(style: AUiCommonDialogStyle) {
+    public func setStyle(style: AUICommonDialogStyle) {
         indicatorView.backgroundColor = style.indicatorColor
         contentControlView.backgroundColor = style.contentControlColor
     }
 }
 
-extension AUiCommonDialog: UIGestureRecognizerDelegate {
+extension AUICommonDialog: UIGestureRecognizerDelegate {
     open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         let point = gestureRecognizer.location(in: self.contentView)
         if point.y > 80 {
@@ -141,7 +141,7 @@ extension AUiCommonDialog: UIGestureRecognizerDelegate {
     }
 }
 
-extension AUiCommonDialog {
+extension AUICommonDialog {
     @objc func onPanGesture(_ ges: UIPanGestureRecognizer) {
         let state = ges.state
         let val = ges.location(in: self).y
@@ -166,18 +166,18 @@ extension AUiCommonDialog {
     }
 }
 
-public class AUiCommonDialogTheme: NSObject {
+public class AUICommonDialogTheme: NSObject {
     public var indicatorColor: ThemeColorPicker = "CommonColor.lightGrey35"
     public var contentControlColor: ThemeColorPicker = "ActionSheet.backgroundColor"
 }
-extension AUiCommonDialog {
-    public func setTheme(_ theme:AUiCommonDialogTheme) {
+extension AUICommonDialog {
+    public func setTheme(_ theme:AUICommonDialogTheme) {
         indicatorView.theme_backgroundColor = theme.indicatorColor
         contentControlView.theme_backgroundColor = theme.contentControlColor
     }
     
     @discardableResult
-    public class func show(contentView: UIView, theme: AUiCommonDialogTheme) -> AUiCommonDialog? {
+    public class func show(contentView: UIView, theme: AUICommonDialogTheme) -> AUICommonDialog? {
         let dialog = show(contentView: contentView)
         dialog?.setTheme(theme)
         return dialog

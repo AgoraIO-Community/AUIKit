@@ -1,13 +1,13 @@
 //
-//  AUiMicSeatCellDataProtocol.swift
-//  AUiKit
+//  AUIMicSeatCellDataProtocol.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/6.
 //
 
 import Foundation
 
-public protocol AUiMicSeatCellDataProtocol: NSObjectProtocol {
+public protocol AUIMicSeatCellDataProtocol: NSObjectProtocol {
     var seatName: String {get}
     var isMuteAudio: Bool {get}
     var isMuteVideo: Bool {get}

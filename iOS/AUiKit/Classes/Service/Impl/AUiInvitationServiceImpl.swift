@@ -1,6 +1,6 @@
 //
-//  AUiInvitationServiceImpl.swift
-//  AUiKit
+//  AUIInvitationServiceImpl.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/2/23.
 //
@@ -9,34 +9,34 @@ import Foundation
 import AgoraRtcKit
 
 //邀请Service实现
-open class AUiInvitationServiceImpl: NSObject {
+open class AUIInvitationServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
-    private var rtmManager: AUiRtmManager!
+    private var rtmManager: AUIRtmManager!
     
     deinit {
-        aui_info("deinit AUiInvitationServiceImpl", tag: "AUiInvitationServiceImpl")
+        aui_info("deinit AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
     }
     
-    init(channelName: String, rtmManager: AUiRtmManager) {
+    init(channelName: String, rtmManager: AUIRtmManager) {
         self.channelName = channelName
         self.rtmManager = rtmManager
         super.init()
         
-        aui_info("init AUiInvitationServiceImpl", tag: "AUiInvitationServiceImpl")
+        aui_info("init AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
     }
 }
 
-extension AUiInvitationServiceImpl: AUiInvitationServiceDelegate {
+extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     public func getChannelName() -> String {
         return channelName
     }
     
-    public func bindRespDelegate(delegate: AUiInvitationRespDelegate) {
+    public func bindRespDelegate(delegate: AUIInvitationRespDelegate) {
         respDelegates.add(delegate)
     }
     
-    public func unbindRespDelegate(delegate: AUiInvitationRespDelegate) {
+    public func unbindRespDelegate(delegate: AUIInvitationRespDelegate) {
         respDelegates.remove(delegate)
     }
     

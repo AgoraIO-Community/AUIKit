@@ -1,6 +1,6 @@
 //
-//  AUiTableViewSliderCell.swift
-//  AUiKit
+//  AUITableViewSliderCell.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/2.
 //
@@ -8,10 +8,10 @@
 import Foundation
 
 
-open class AUiTableViewSliderCell: AUiTableViewCell {
+open class AUITableViewSliderCell: AUITableViewCell {
     public var onSliderValueDidChanged: ((CGFloat)->())?
-    public lazy var slider: AUiSlider = {
-        let slider = AUiSlider()
+    public lazy var slider: AUISlider = {
+        let slider = AUISlider()
         
         slider.addTarget(self, action: #selector(onSliderChanged(_:)), for: .valueChanged)
         
@@ -41,7 +41,7 @@ open class AUiTableViewSliderCell: AUiTableViewCell {
     open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
     }
     
-    @objc private func onSliderChanged(_ sender: AUiSlider) {
+    @objc private func onSliderChanged(_ sender: AUISlider) {
         onSliderValueDidChanged?(slider.currentValue)
     }
 }

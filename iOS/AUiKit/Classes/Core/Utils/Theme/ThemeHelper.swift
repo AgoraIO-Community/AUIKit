@@ -1,6 +1,6 @@
 //
 //  ThemeHelper.swift
-//  AUiKit
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/22.
 //

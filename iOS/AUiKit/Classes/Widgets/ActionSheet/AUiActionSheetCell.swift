@@ -1,6 +1,6 @@
 //
-//  AUiActionSheetCell.swift
-//  AUiKit
+//  AUIActionSheetCell.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/28.
 //
@@ -9,18 +9,18 @@ import UIKit
 import Kingfisher
 import SwiftTheme
 
-@objc public enum AUiActionSheetItemLayoutType: Int {
+@objc public enum AUIActionSheetItemLayoutType: Int {
     case horizontal = 0
     case vertical
 }
 
-open class AUiActionSheetItem: NSObject {
+open class AUIActionSheetItem: NSObject {
     public var title: String = ""
     public var isSelected: (()->(Bool))?
     public var callback: (()->())?
 }
 
-open class AUiActionSheetStyleItem: AUiActionSheetItem {
+open class AUIActionSheetStyleItem: AUIActionSheetItem {
     public var icon: UIImage?
     public var backgroundIcon: UIImage?
     public var titleColor: UIColor = .aui_normalTextColor
@@ -33,12 +33,12 @@ open class AUiActionSheetStyleItem: AUiActionSheetItem {
     public var selectedBorderWidth: CGFloat = 2
     public var selectedBorderRadius: CGFloat = 28
     
-    class func horizontal() -> AUiActionSheetStyleItem {
-        return AUiActionSheetStyleItem()
+    class func horizontal() -> AUIActionSheetStyleItem {
+        return AUIActionSheetStyleItem()
     }
     
-    class func vertical() -> AUiActionSheetStyleItem {
-        let item = AUiActionSheetStyleItem()
+    class func vertical() -> AUIActionSheetStyleItem {
+        let item = AUIActionSheetStyleItem()
         item.imageWidth = 24
         item.imageHeight = 24
         item.backgroundImageWidth = 24
@@ -47,20 +47,20 @@ open class AUiActionSheetStyleItem: AUiActionSheetItem {
     }
 }
 
-open class AUiActionSheetCell: UICollectionViewCell {
+open class AUIActionSheetCell: UICollectionViewCell {
     @objc var itemPadding: CGFloat = 5 {
         didSet {
             setNeedsLayout()
         }
     }
-    var itemType: AUiActionSheetItemLayoutType = .vertical {
+    var itemType: AUIActionSheetItemLayoutType = .vertical {
         didSet {
             resetStyle()
             resetTheme()
             setNeedsLayout()
         }
     }
-    var item: AUiActionSheetItem? {
+    var item: AUIActionSheetItem? {
         didSet {
             titleLabel.text = item?.title
             imageView.isHidden = imageView.image == nil ? true : false
@@ -131,7 +131,7 @@ open class AUiActionSheetCell: UICollectionViewCell {
     }
     
     private func resetStyle() {
-        guard let style = item as? AUiActionSheetStyleItem else {return}
+        guard let style = item as? AUIActionSheetStyleItem else {return}
         self.itemPadding = style.padding
         titleLabel.textColor = style.titleColor
         imageView.image = style.icon
@@ -165,7 +165,7 @@ open class AUiActionSheetCell: UICollectionViewCell {
 }
 
 //MARK: Theme
-open class AUiActionSheetThemeItem: AUiActionSheetItem {
+open class AUIActionSheetThemeItem: AUIActionSheetItem {
     public var icon: ThemeImagePicker?
     public var backgroundIcon: ThemeImagePicker?
     public var titleColor: ThemeColorPicker = "CommonColor.normalTextColor"
@@ -179,12 +179,12 @@ open class AUiActionSheetThemeItem: AUiActionSheetItem {
     public var selectedBorderWidth: ThemeCGFloatPicker = "ActionSheetCell.selectedBorderWidth"
     public var selectedBorderRadius: ThemeCGFloatPicker = "ActionSheetCell.selectedBorderRadius"
     
-    public class func horizontal() -> AUiActionSheetThemeItem {
-        return AUiActionSheetThemeItem()
+    public class func horizontal() -> AUIActionSheetThemeItem {
+        return AUIActionSheetThemeItem()
     }
     
-    public class func vertical() -> AUiActionSheetThemeItem {
-        let item = AUiActionSheetThemeItem()
+    public class func vertical() -> AUIActionSheetThemeItem {
+        let item = AUIActionSheetThemeItem()
         item.imageWidth = "ActionSheetCell.verticalImageWidth"
         item.imageHeight = "ActionSheetCell.verticalImageHeight"
         item.backgroundImageWidth = "ActionSheetCell.verticalBackgroundImageWidth"
@@ -193,9 +193,9 @@ open class AUiActionSheetThemeItem: AUiActionSheetItem {
     }
 }
 
-extension AUiActionSheetCell {
+extension AUIActionSheetCell {
     func resetTheme() {
-        guard let theme = item as? AUiActionSheetThemeItem else {return}
+        guard let theme = item as? AUIActionSheetThemeItem else {return}
         self.theme_padding = theme.padding
         titleLabel.theme_textColor = theme.titleColor
         imageView.theme_image = theme.icon

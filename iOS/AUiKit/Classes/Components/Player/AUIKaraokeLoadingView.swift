@@ -1,6 +1,6 @@
 //
 //  AUIKaraokeLoadingView.swift
-//  AUiKit
+//  AUIKit
 //
 //  Created by CP on 2023/4/20.
 //
@@ -28,16 +28,16 @@ class AUIKaraokeLoadingView: UIView {
     }
     
     private func layoutUI() {
-        self.theme_backgroundColor = AUiColor("Player.LoadingViewBackgroundColor")
+        self.theme_backgroundColor = AUIColor("Player.LoadingViewBackgroundColor")
         
         loadingView.frame = CGRect(x: bounds.width / 2.0 - 80, y: (bounds.height) / 2.0 - 30, width: 160, height: 60)
-        loadingView.theme_backgroundColor = AUiColor("Player.LoadingViewContentColor")
+        loadingView.theme_backgroundColor = AUIColor("Player.LoadingViewContentColor")
         loadingView.layer.cornerRadius = 30
         loadingView.layer.masksToBounds = true
         addSubview(loadingView)
         
         indicatorView.frame = CGRect(x: 25, y: 8, width: 24, height: 24)
-        indicatorView.theme_color = AUiColor("Player.LoadingIndicatorColor")
+        indicatorView.theme_color = AUIColor("Player.LoadingIndicatorColor")
         indicatorView.startAnimating()
         loadingView.addSubview(indicatorView)
         

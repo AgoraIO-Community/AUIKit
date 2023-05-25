@@ -1,6 +1,6 @@
 //
-//  AUiSongNetworkModel.swift
-//  AUiKit
+//  AUISongNetworkModel.swift
+//  AUIKit
 //
 //  Created by FanPengpeng on 2023/3/22.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 @objcMembers
-open class AUiSongAddNetworkModel: AUiCommonNetworkModel {
+open class AUISongAddNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/song/add"
@@ -24,16 +24,16 @@ open class AUiSongAddNetworkModel: AUiCommonNetworkModel {
     public var musicUrl: String?
     public var lrcUrl: String?
     public var micSeatNo: Int = 0
-    public var owner: AUiUserThumbnailInfo?  //房主信息
+    public var owner: AUIUserThumbnailInfo?  //房主信息
     
     class func modelContainerPropertyGenericClass() -> NSDictionary {
         return [
-            "owner": AUiUserThumbnailInfo.self
+            "owner": AUIUserThumbnailInfo.self
         ]
     }
 }
 
-open class AUiSongPinNetworkModel: AUiCommonNetworkModel {
+open class AUISongPinNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/song/pin"
@@ -43,7 +43,7 @@ open class AUiSongPinNetworkModel: AUiCommonNetworkModel {
     public var songCode: String?
 }
 
-open class AUiSongRemoveNetworkModel: AUiCommonNetworkModel {
+open class AUISongRemoveNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/song/remove"
@@ -53,7 +53,7 @@ open class AUiSongRemoveNetworkModel: AUiCommonNetworkModel {
     public var songCode: String?
 }
 
-open class AUiSongPlayNetworkModel: AUiCommonNetworkModel {
+open class AUISongPlayNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/song/play"
@@ -63,7 +63,7 @@ open class AUiSongPlayNetworkModel: AUiCommonNetworkModel {
     public var songCode: String?
 }
 
-open class AUiSongStopNetworkModel: AUiCommonNetworkModel {
+open class AUISongStopNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/song/stop"

@@ -10,7 +10,7 @@
 
 import UIKit
 
-public extension AUiSegmented {
+public extension AUISegmented {
     enum Option {
         /* Selected segment */
         case indicatorViewBackgroundColor(UIColor)

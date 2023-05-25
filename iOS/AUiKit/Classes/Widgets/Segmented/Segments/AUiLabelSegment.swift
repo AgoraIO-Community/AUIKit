@@ -1,6 +1,6 @@
 //
-//  AUiLabelSegment.swift
-//  AUiSegmented
+//  AUILabelSegment.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 08/10/2017.
 //
@@ -10,7 +10,7 @@
 import UIKit
 import SwiftTheme
 
-open class AUiLabelSegment: AUiSegmentedSegment {
+open class AUILabelSegment: AUISegmentedSegment {
     // MARK: Constants
     private struct DefaultValues {
         static let normalBackgroundColor: ThemeColorPicker = "CommonColor.clear"
@@ -93,7 +93,7 @@ open class AUiLabelSegment: AUiSegmentedSegment {
     }
 }
 
-public extension AUiLabelSegment {
+public extension AUILabelSegment {
     class func segments(withTitles titles: [String],
                         numberOfLines: Int = 1,
                         normalBackgroundColor: ThemeColorPicker? = nil,
@@ -101,9 +101,9 @@ public extension AUiLabelSegment {
                         normalTextColor: ThemeColorPicker? = nil,
                         selectedBackgroundColor: ThemeColorPicker? = nil,
                         selectedFont: ThemeFontPicker? = nil,
-                        selectedTextColor: ThemeColorPicker? = nil) -> [AUiSegmentedSegment] {
+                        selectedTextColor: ThemeColorPicker? = nil) -> [AUISegmentedSegment] {
         titles.map {
-            AUiLabelSegment(text: $0,
+            AUILabelSegment(text: $0,
                          numberOfLines: numberOfLines,
                          normalBackgroundColor: normalBackgroundColor,
                          normalFont: normalFont,

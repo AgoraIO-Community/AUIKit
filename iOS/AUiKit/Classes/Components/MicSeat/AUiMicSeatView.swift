@@ -1,6 +1,6 @@
 //
-//  AUiMicSeatView.swift
-//  AUiKit
+//  AUIMicSeatView.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/2/23.
 //
@@ -11,8 +11,8 @@ private let kMicSeatCellId = "kMicSeatCellId"
 
 
 /// 麦位管理组件
-public class AUiMicSeatView: UIView {
-    public weak var uiDelegate: AUiMicSeatViewDelegate?
+public class AUIMicSeatView: UIView {
+    public weak var uiDelegate: AUIMicSeatViewDelegate?
     
     public lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -24,7 +24,7 @@ public class AUiMicSeatView: UIView {
         flowLayout.minimumInteritemSpacing = CGFloat(hPadding)
         
         let collectionView = UICollectionView(frame: bounds, collectionViewLayout: flowLayout)
-        collectionView.register(AUiMicSeatItemCell.self, forCellWithReuseIdentifier: kMicSeatCellId)
+        collectionView.register(AUIMicSeatItemCell.self, forCellWithReuseIdentifier: kMicSeatCellId)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
@@ -54,7 +54,7 @@ public class AUiMicSeatView: UIView {
     
 }
 
-extension AUiMicSeatView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AUIMicSeatView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -65,7 +65,7 @@ extension AUiMicSeatView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AUiMicSeatItemCell = collectionView.dequeueReusableCell(withReuseIdentifier: kMicSeatCellId, for: indexPath) as! AUiMicSeatItemCell
+        let cell: AUIMicSeatItemCell = collectionView.dequeueReusableCell(withReuseIdentifier: kMicSeatCellId, for: indexPath) as! AUIMicSeatItemCell
         let seatInfo = uiDelegate?.seatItems(view: self)[indexPath.item]
         cell.item = seatInfo
         uiDelegate?.onMuteVideo(view: self, seatIndex: indexPath.item, canvas: cell.canvasView, isMuteVideo: seatInfo?.isMuteVideo ?? true)

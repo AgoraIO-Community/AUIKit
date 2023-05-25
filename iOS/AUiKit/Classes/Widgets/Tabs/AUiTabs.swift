@@ -1,6 +1,6 @@
 //
-//  AUiTabs.swift
-//  AUiTabs
+//  AUITabs.swift
+//  AUITabs
 //
 //  Created by zhaoyongqiang on 2021/10/29.
 //
@@ -8,12 +8,12 @@
 import UIKit
 import SwiftTheme
 
-public enum AUiTabsIndicatorStyle {
+public enum AUITabsIndicatorStyle {
     case line, cover
 }
 
-public struct AUiTabsStyle {
-    public var indicatorStyle: AUiTabsIndicatorStyle = .cover
+public struct AUITabsStyle {
+    public var indicatorStyle: AUITabsIndicatorStyle = .cover
     public var indicatorWidth: CGFloat = 0
     public var indicatorHeight: CGFloat = 0
     public var indicatorCornerRadius: CGFloat = 0
@@ -30,7 +30,7 @@ public struct AUiTabsStyle {
     public init() {}
 }
 
-@IBDesignable public class AUiTabs: UIControl {
+@IBDesignable public class AUITabs: UIControl {
 
     public struct TitleElement: Equatable {
         public let title: String
@@ -48,7 +48,7 @@ public struct AUiTabsStyle {
         }
     }
 
-    public var style: AUiTabsStyle {
+    public var style: AUITabsStyle {
         didSet {
             reloadLayout()
         }
@@ -118,30 +118,30 @@ public struct AUiTabsStyle {
 
     // MARK: - life cycle
     convenience init() {
-        self.init(frame: .zero, segmentStyle: AUiTabsStyle(), titles: [])
+        self.init(frame: .zero, segmentStyle: AUITabsStyle(), titles: [])
     }
     public convenience override init(frame: CGRect) {
-        self.init(frame: frame, segmentStyle: AUiTabsStyle(), titles: [])
+        self.init(frame: frame, segmentStyle: AUITabsStyle(), titles: [])
     }
 
     public convenience init(frame: CGRect, titles: [String]) {
-        self.init(frame: frame, segmentStyle: AUiTabsStyle(), titles: titles)
+        self.init(frame: frame, segmentStyle: AUITabsStyle(), titles: titles)
     }
 
-    public init(frame: CGRect, segmentStyle: AUiTabsStyle = .init(), titles: [String]) {
+    public init(frame: CGRect, segmentStyle: AUITabsStyle = .init(), titles: [String]) {
         self.style = segmentStyle
         self._titleElements = titles.map({ TitleElement(title: $0)})
         super.init(frame: frame)
         shareInit()
     }
 
-    public convenience init(frame: CGRect, segmentStyle: AUiTabsStyle, richTextTitles: [TitleElement]) {
+    public convenience init(frame: CGRect, segmentStyle: AUITabsStyle, richTextTitles: [TitleElement]) {
         self.init(frame: frame, segmentStyle: segmentStyle, titles: [])
         setRichTextTitles(richTextTitles)
     }
 
     required public init?(coder aDecoder: NSCoder) {
-        self.style = AUiTabsStyle()
+        self.style = AUITabsStyle()
         self._titleElements = []
         super.init(coder: aDecoder)
         shareInit()
@@ -327,7 +327,7 @@ public struct AUiTabsStyle {
         }
         selectedLabelsMaskView.layer.cornerRadius = coverH/2
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AUiTabs.handleTapGesture(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AUITabs.handleTapGesture(_:)))
         addGestureRecognizer(tapGesture)
 
         setSelectIndex(index: selectIndex, animated: animated, sendAction: sendAction, forceUpdate: true)
@@ -335,7 +335,7 @@ public struct AUiTabsStyle {
     }
 }
 
-extension AUiTabs {
+extension AUITabs {
 
     @IBInspectable public var titleFont: UIFont {
         get {
@@ -465,7 +465,7 @@ extension UILabel {
 }
 
 
-extension AUiTabs {
+extension AUITabs {
 
     var theme_normalTitleColor: ThemeColorPicker? {
         get { return aui_getThemePicker(self, "setNormalTitleColor:") as? ThemeColorPicker }

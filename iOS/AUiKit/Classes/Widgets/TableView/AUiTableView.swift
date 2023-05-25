@@ -1,14 +1,14 @@
 //
-//  AUiTableView.swift
-//  AUiKit
+//  AUITableView.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/1.
 //
 
 import Foundation
 
-open class AUiTableView: UITableView {
-    public var aui_items: [AUiTableViewItemProtocol] = [] {
+open class AUITableView: UITableView {
+    public var aui_items: [AUITableViewItemProtocol] = [] {
         didSet {
             reloadData()
         }
@@ -26,16 +26,16 @@ open class AUiTableView: UITableView {
     }
 }
 
-extension AUiTableView: UITableViewDataSource, UITableViewDelegate {
+extension AUITableView: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = aui_items.count
         return count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell: AUiTableViewCell? = tableView.dequeueReusableCell(withIdentifier: "aui_cell") as? AUiTableViewCell
+        var cell: AUITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "aui_cell") as? AUITableViewCell
         if cell == nil {
-            cell = AUiTableViewCell(style: .subtitle, reuseIdentifier: "aui_cell")
+            cell = AUITableViewCell(style: .subtitle, reuseIdentifier: "aui_cell")
         }
         let item = aui_items[indexPath.row]
         cell?.item = item
@@ -51,6 +51,6 @@ extension AUiTableView: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let item = aui_items[indexPath.row]
-        return AUiTableViewCell.tableViewCellDefaultHeight(style: item.aui_style)
+        return AUITableViewCell.tableViewCellDefaultHeight(style: item.aui_style)
     }
 }

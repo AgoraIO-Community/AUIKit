@@ -1,17 +1,17 @@
 //
-//  AUiMicSeatViewDelegate.swift
-//  AUiKit
+//  AUIMicSeatViewDelegate.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/6.
 //
 
 import Foundation
 
-public protocol AUiMicSeatViewDelegate: NSObjectProtocol {
-    func seatItems(view: AUiMicSeatView) -> [AUiMicSeatCellDataProtocol]
+public protocol AUIMicSeatViewDelegate: NSObjectProtocol {
+    func seatItems(view: AUIMicSeatView) -> [AUIMicSeatCellDataProtocol]
     
-    func onItemDidClick(view: AUiMicSeatView, seatIndex: Int)
+    func onItemDidClick(view: AUIMicSeatView, seatIndex: Int)
     
-    func onMuteVideo(view: AUiMicSeatView, seatIndex: Int, canvas: UIView, isMuteVideo: Bool)
+    func onMuteVideo(view: AUIMicSeatView, seatIndex: Int, canvas: UIView, isMuteVideo: Bool)
 }
 

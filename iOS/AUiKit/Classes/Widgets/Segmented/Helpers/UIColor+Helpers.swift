@@ -1,6 +1,6 @@
 //
 //  UIColor+Helpers.swift
-//  AUiSegmented
+//  AUISegmented
 //
 //  Created by George Marmaridis on 16.10.20.
 //

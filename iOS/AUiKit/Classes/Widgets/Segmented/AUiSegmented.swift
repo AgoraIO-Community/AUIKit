@@ -1,5 +1,5 @@
 //
-//  AUiSegmented.swift
+//  AUISegmented.swift
 //
 //  Created by George Marmaridis on 01/04/16.
 //  Copyright © 2020 George Marmaridis. All rights reserved.
@@ -10,7 +10,7 @@
 import UIKit
 import SwiftTheme
 
-@IBDesignable open class AUiSegmented: UIControl {
+@IBDesignable open class AUISegmented: UIControl {
     private struct Constants {
         static let minimumIntrinsicContentSizeHeight: CGFloat = 32.0
         static let minimumSegmentIntrinsicContentSizeWidth: CGFloat = 20.0
@@ -26,7 +26,7 @@ import SwiftTheme
     public private(set) var index: Int = 0
     
     /// The segments available for selection.
-    public var segments: [AUiSegmentedSegment] {
+    public var segments: [AUISegmentedSegment] {
         didSet {
             applySegments()
         }
@@ -177,7 +177,7 @@ import SwiftTheme
     ///   indicator view. Passing an index beyond the segment indices will set the index to `0`.
     ///   - options: An array of customization options to style and change the behavior of the control.
     public init(frame: CGRect,
-                segments: [AUiSegmentedSegment],
+                segments: [AUISegmentedSegment],
                 index: Int = 0,
                 options: [Option]? = nil) {
         if segments.indices.contains(index) || index == Self.noSegment {
@@ -196,7 +196,7 @@ import SwiftTheme
             setIndicatorViewVisible(false, animated: false, completion: nil)
         }
         
-        setOptions(AUiSegmented.defaultOptions)
+        setOptions(AUISegmented.defaultOptions)
         if let options = options {
             setOptions(options)
         }
@@ -467,7 +467,7 @@ import SwiftTheme
         return Int(distances.firstIndex(of: distances.min()!)!)
     }
     
-    private static func generateDefaultSegments() -> [AUiLabelSegment] {
+    private static func generateDefaultSegments() -> [AUILabelSegment] {
         [.init(text: "First"), .init(text: "Second"), .init(text: "Third")]
     }
     
@@ -494,7 +494,7 @@ import SwiftTheme
 }
 
 // MARK: - UIGestureRecognizerDelegate
-extension AUiSegmented: UIGestureRecognizerDelegate {
+extension AUISegmented: UIGestureRecognizerDelegate {
     override open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer == panGestureRecognizer {
             return indicatorView.frame.contains(gestureRecognizer.location(in: self)) && !panningDisabled
@@ -503,7 +503,7 @@ extension AUiSegmented: UIGestureRecognizerDelegate {
     }
 }
 
-extension AUiSegmented {
+extension AUISegmented {
     var theme_indicatorColor: ThemeColorPicker? {
         get { return aui_getThemePicker(self, "setIndicatorViewBackgroundColor:") as? ThemeColorPicker }
         set { aui_setThemePicker(self, "setIndicatorViewBackgroundColor:", newValue) }

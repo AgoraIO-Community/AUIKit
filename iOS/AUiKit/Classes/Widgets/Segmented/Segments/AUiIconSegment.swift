@@ -1,6 +1,6 @@
 //
-//  AUiIconSegment.swift
-//  AUiSegmented
+//  AUIIconSegment.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 10/02/2018.
 //
@@ -9,7 +9,7 @@
 
 import UIKit
 
-open class AUiIconSegment: AUiSegmentedSegment {
+open class AUIIconSegment: AUISegmentedSegment {
     // MARK: Constants
     private struct DefaultValues {
         static let normalBackgroundColor: UIColor = .clear
@@ -78,15 +78,15 @@ open class AUiIconSegment: AUiSegmentedSegment {
     }
 }
 
-public extension AUiIconSegment {
+public extension AUIIconSegment {
     class func segments(withIcons icons: [UIImage],
                         iconSize: CGSize,
                         normalBackgroundColor: UIColor? = nil,
                         normalIconTintColor: UIColor,
                         selectedBackgroundColor: UIColor? = nil,
-                        selectedIconTintColor: UIColor) -> [AUiSegmentedSegment] {
+                        selectedIconTintColor: UIColor) -> [AUISegmentedSegment] {
         return icons.map {
-            AUiIconSegment(icon: $0,
+            AUIIconSegment(icon: $0,
                         iconSize: iconSize,
                         normalBackgroundColor: normalBackgroundColor,
                         normalIconTintColor: normalIconTintColor,

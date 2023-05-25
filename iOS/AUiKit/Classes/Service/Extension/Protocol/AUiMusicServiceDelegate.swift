@@ -1,23 +1,23 @@
 //
-//  AUiJukeBoxServiceDelegate.swift
-//  AUiKit
+//  AUIJukeBoxServiceDelegate.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/6.
 //
 
 import Foundation
 
-public typealias AUiMusicListCompletion = (Error?, [AUiMusicModel]?)->()
-public typealias AUiChooseSongListCompletion = (Error?, [AUiChooseMusicModel]?)->()
-public typealias AUiLoadSongCompletion = (Error?, String?, String?)->()
+public typealias AUIMusicListCompletion = (Error?, [AUIMusicModel]?)->()
+public typealias AUIChooseSongListCompletion = (Error?, [AUIChooseMusicModel]?)->()
+public typealias AUILoadSongCompletion = (Error?, String?, String?)->()
 
-public enum AUiPlayStatus: Int {
+public enum AUIPlayStatus: Int {
     case idle = 0      //待播放
     case playing       //播放中
 }
 
 @objcMembers
-open class AUiMusicModel: NSObject {
+open class AUIMusicModel: NSObject {
     public var songCode: String = ""     //歌曲id，mcc则对应songCode
     public var name: String = ""         //歌曲名称
     public var singer: String = ""       //演唱者
@@ -29,25 +29,25 @@ open class AUiMusicModel: NSObject {
 }
 
 @objcMembers
-open class AUiChooseMusicModel: AUiMusicModel {
-    public var owner: AUiUserThumbnailInfo?          //点歌用户
+open class AUIChooseMusicModel: AUIMusicModel {
+    public var owner: AUIUserThumbnailInfo?          //点歌用户
     public var pinAt: Int64 = 0                      //置顶歌曲时间，与19700101的时间差，单位ms，为0则无置顶操作
     public var createAt: Int64 = 0                   //点歌时间，与19700101的时间差，单位ms
-    public var playStatus: AUiPlayStatus {    //播放状态
-        AUiPlayStatus(rawValue: status) ?? .idle
+    public var playStatus: AUIPlayStatus {    //播放状态
+        AUIPlayStatus(rawValue: status) ?? .idle
     }
     
     @objc public var status: Int = 0
     
     class func modelContainerPropertyGenericClass() -> NSDictionary {
         return [
-            "owner": AUiUserThumbnailInfo.self
+            "owner": AUIUserThumbnailInfo.self
         ]
     }
     
     //做歌曲变化比较用
-    public static func == (lhs: AUiChooseMusicModel, rhs: AUiChooseMusicModel) -> Bool {
-        aui_info("\(lhs.name)-\(rhs.name)   \(lhs.pinAt)-\(rhs.pinAt)", tag: "AUiChooseMusicModel")
+    public static func == (lhs: AUIChooseMusicModel, rhs: AUIChooseMusicModel) -> Bool {
+        aui_info("\(lhs.name)-\(rhs.name)   \(lhs.pinAt)-\(rhs.pinAt)", tag: "AUIChooseMusicModel")
         if lhs.songCode != rhs.songCode {
             return false
         }
@@ -81,15 +81,15 @@ open class AUiChooseMusicModel: AUiMusicModel {
 }
 
 //歌曲管理Service协议
-public protocol AUiMusicServiceDelegate: AUiCommonServiceDelegate {
+public protocol AUIMusicServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应
     /// - Parameter delegate: 需要回调的对象
-    func bindRespDelegate(delegate: AUiMusicRespDelegate)
+    func bindRespDelegate(delegate: AUIMusicRespDelegate)
     
     /// 解绑响应
     /// - Parameter delegate: 需要回调的对象
-    func unbindRespDelegate(delegate: AUiMusicRespDelegate)
+    func unbindRespDelegate(delegate: AUIMusicRespDelegate)
     
     /// 获取歌曲列表
     /// - Parameters:
@@ -100,7 +100,7 @@ public protocol AUiMusicServiceDelegate: AUiCommonServiceDelegate {
     func getMusicList(chartId: Int,
                       page: Int,
                       pageSize: Int,
-                      completion: @escaping AUiMusicListCompletion)
+                      completion: @escaping AUIMusicListCompletion)
     
     /// 搜索歌曲
     /// - Parameters:
@@ -111,52 +111,52 @@ public protocol AUiMusicServiceDelegate: AUiCommonServiceDelegate {
     func searchMusic(keyword: String,
                      page: Int,
                      pageSize: Int,
-                     completion: @escaping AUiMusicListCompletion)
+                     completion: @escaping AUIMusicListCompletion)
     
     /// 获取当前点歌列表
     /// - Parameter completion: 操作完成回调
-    func getAllChooseSongList(completion: AUiChooseSongListCompletion?)
+    func getAllChooseSongList(completion: AUIChooseSongListCompletion?)
     
     /// 点一首歌
     /// - Parameters:
     ///   - songModel: 歌曲对象(是否需要只传songNo，后端通过mcc查？)
     ///   - completion: 操作完成回调
-    func chooseSong(songModel:AUiMusicModel, completion: AUiCallback?)
+    func chooseSong(songModel:AUIMusicModel, completion: AUICallback?)
     
     /// 移除一首自己点的歌
     /// - Parameters:
     ///   - songCode: 歌曲id
     ///   - completion: 操作完成回调
-    func removeSong(songCode: String, completion: AUiCallback?)
+    func removeSong(songCode: String, completion: AUICallback?)
     
     /// 置顶歌曲
     /// - Parameters:
     ///   - songCode: 歌曲id
     ///   - completion: 操作完成回调
-    func pinSong(songCode: String, completion: AUiCallback?)
+    func pinSong(songCode: String, completion: AUICallback?)
     
     /// 更新歌曲播放状态
     /// - Parameters:
     ///   - playStatus: 播放状态
     ///   - completion: 操作完成回调
-    func updatePlayStatus(songCode: String, playStatus: AUiPlayStatus, completion: AUiCallback?)
+    func updatePlayStatus(songCode: String, playStatus: AUIPlayStatus, completion: AUICallback?)
 }
 
 //歌曲管理操作相关响应
-public protocol AUiMusicRespDelegate: NSObjectProtocol {
+public protocol AUIMusicRespDelegate: NSObjectProtocol {
     /// 新增一首歌曲回调
     /// - Parameter song: <#song description#>
-    func onAddChooseSong(song: AUiChooseMusicModel)
+    func onAddChooseSong(song: AUIChooseMusicModel)
     
     /// 删除一首歌歌曲回调
     /// - Parameter song: <#song description#>
-    func onRemoveChooseSong(song: AUiChooseMusicModel)
+    func onRemoveChooseSong(song: AUIChooseMusicModel)
     
     /// 更新一首歌曲回调（例如修改play status）
     /// - Parameter song: <#song description#>
-    func onUpdateChooseSong(song: AUiChooseMusicModel)
+    func onUpdateChooseSong(song: AUIChooseMusicModel)
     
     /// 更新所有歌曲回调（例如pin）
     /// - Parameter song: <#song description#>
-    func onUpdateAllChooseSongs(songs: [AUiChooseMusicModel])
+    func onUpdateAllChooseSongs(songs: [AUIChooseMusicModel])
 }

@@ -1,6 +1,6 @@
 //
-//  AUiJukeBoxView.swift
-//  AUiKit
+//  AUIJukeBoxView.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/20.
 //
@@ -10,20 +10,20 @@ import AgoraRtcKit
 import MJRefresh
 import SwiftTheme
 
-public protocol AUiJukeBoxViewDelegate: NSObjectProtocol {
+public protocol AUIJukeBoxViewDelegate: NSObjectProtocol {
     //清除搜索框
-    func cleanSearchText(view: AUiJukeBoxView)
+    func cleanSearchText(view: AUIJukeBoxView)
     
     /// 开始搜索
     /// - Parameter text: 关键字
-    func search(view: AUiJukeBoxView, text: String, completion: @escaping ([AUiJukeBoxItemDataProtocol]?)->())
+    func search(view: AUIJukeBoxView, text: String, completion: @escaping ([AUIJukeBoxItemDataProtocol]?)->())
     
     
     /// 切换点歌/已点segmented
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - segmentIndex: <#segmentIndex description#>
-    func onSegmentedChanged(view: AUiJukeBoxView, segmentIndex: Int) -> Bool
+    func onSegmentedChanged(view: AUIJukeBoxView, segmentIndex: Int) -> Bool
     
     
     /// 切换榜单列表
@@ -31,38 +31,38 @@ public protocol AUiJukeBoxViewDelegate: NSObjectProtocol {
     ///   - view: <#view description#>
     ///   - tabIndex: <#tabIndex description#>
     /// - Returns: true: 已使用 false: 未使用，需要view默认实现
-    func onTabsDidChanged(view: AUiJukeBoxView, tabIndex: Int) -> Bool
+    func onTabsDidChanged(view: AUIJukeBoxView, tabIndex: Int) -> Bool
     
     /// 选中一首歌
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - tabIndex: 分类index
     ///   - index: 歌曲index
-    func onSelectSong(view: AUiJukeBoxView, tabIndex: Int, index: Int)
+    func onSelectSong(view: AUIJukeBoxView, tabIndex: Int, index: Int)
     
     /// 删除一首歌
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - index: <#index description#>
-    func onRemoveSong(view: AUiJukeBoxView, index: Int)
+    func onRemoveSong(view: AUIJukeBoxView, index: Int)
     
     /// 切换下一首歌
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - index: <#index description#>
-    func onNextSong(view: AUiJukeBoxView, index: Int)
+    func onNextSong(view: AUIJukeBoxView, index: Int)
     
     /// 置顶一首歌
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - index: <#index description#>
-    func onPinSong(view: AUiJukeBoxView, index: Int)
+    func onPinSong(view: AUIJukeBoxView, index: Int)
     
     /// 当前歌曲选中状态
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - songCode: <#songCode description#>
-    func songIsSelected(view: AUiJukeBoxView, songCode: String) -> Bool
+    func songIsSelected(view: AUIJukeBoxView, songCode: String) -> Bool
     
     
     /// 歌曲是否可以置顶
@@ -70,7 +70,7 @@ public protocol AUiJukeBoxViewDelegate: NSObjectProtocol {
     ///   - view: <#view description#>
     ///   - songCode: <#songCode description#>
     /// - Returns: <#description#>
-    func pingEnable(view: AUiJukeBoxView, songCode: String) -> Bool
+    func pingEnable(view: AUIJukeBoxView, songCode: String) -> Bool
     
     
     /// 歌曲是否可以被删除
@@ -78,45 +78,45 @@ public protocol AUiJukeBoxViewDelegate: NSObjectProtocol {
     ///   - view: <#view description#>
     ///   - songCode: <#songCode description#>
     /// - Returns: <#description#>
-    func deleteEnable(view: AUiJukeBoxView, songCode: String) -> Bool
+    func deleteEnable(view: AUIJukeBoxView, songCode: String) -> Bool
     
     /// 获取搜索歌曲列表
     /// - Parameter view: <#view description#>
     /// - Returns: <#description#>
-    func getSearchMusicList(view: AUiJukeBoxView) -> [AUiJukeBoxItemDataProtocol]?
+    func getSearchMusicList(view: AUIJukeBoxView) -> [AUIJukeBoxItemDataProtocol]?
     
     /// 根据榜单获取歌曲列表
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - tabIndex: <#tabIndex description#>
     /// - Returns: <#description#>
-    func getMusicList(view: AUiJukeBoxView, tabIndex: Int) -> [AUiJukeBoxItemDataProtocol]
+    func getMusicList(view: AUIJukeBoxView, tabIndex: Int) -> [AUIJukeBoxItemDataProtocol]
     
     /// 获取点歌列表
     /// - Parameter view: <#view description#>
     /// - Returns: <#description#>
-    func getSelectedSongList(view: AUiJukeBoxView) -> [AUiJukeBoxItemSelectedDataProtocol]
+    func getSelectedSongList(view: AUIJukeBoxView) -> [AUIJukeBoxItemSelectedDataProtocol]
     
     
     /// 下拉刷新歌曲列表
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - tabIndex: <#tabIndex description#>
-    func onRefreshMusicList(view: AUiJukeBoxView, tabIndex: Int, completion: @escaping ([AUiJukeBoxItemDataProtocol]?)->())
+    func onRefreshMusicList(view: AUIJukeBoxView, tabIndex: Int, completion: @escaping ([AUIJukeBoxItemDataProtocol]?)->())
     
     
     /// 上拉加载更多歌曲
     /// - Parameters:
     ///   - view: <#view description#>
     ///   - tabIndex: <#tabIndex description#>
-    func onLoadMoreMusicList(view: AUiJukeBoxView, tabIndex: Int, completion: @escaping ([AUiJukeBoxItemDataProtocol]?)->())
+    func onLoadMoreMusicList(view: AUIJukeBoxView, tabIndex: Int, completion: @escaping ([AUIJukeBoxItemDataProtocol]?)->())
     
     
     /// 下拉刷新点歌列表
     /// - Parameters:
     ///   - view: <#view description#>history
     ///   - completion: <#completion description#>
-    func onRefreshAddedMusicList(view: AUiJukeBoxView, completion: @escaping ([AUiJukeBoxItemSelectedDataProtocol]?)->())
+    func onRefreshAddedMusicList(view: AUIJukeBoxView, completion: @escaping ([AUIJukeBoxItemSelectedDataProtocol]?)->())
     
     
 }
@@ -127,7 +127,7 @@ private let kJukeBoxSegmentSize = CGSize(width: 160, height: 34)
 private let kSearchMusicListKey: Int = 10000
 
 /// 点歌器组件
-open class AUiJukeBoxView: UIView {
+open class AUIJukeBoxView: UIView {
     public var pageSize: Int = 10
     @objc var cellHeight: CGFloat = 84 {
         didSet {
@@ -135,7 +135,7 @@ open class AUiJukeBoxView: UIView {
             self.addedMusicTableView.reloadData()
         }
     }
-    public weak var uiDelegate: AUiJukeBoxViewDelegate? {
+    public weak var uiDelegate: AUIJukeBoxViewDelegate? {
         didSet {
             onSegmentAction()
         }
@@ -160,15 +160,15 @@ open class AUiJukeBoxView: UIView {
     }
     
     //点歌/已点
-    private lazy var segmentControl: AUiSegmented = {
-        let segmentView = AUiSegmented()
+    private lazy var segmentControl: AUISegmented = {
+        let segmentView = AUISegmented()
         segmentView.aui_size = kJukeBoxSegmentSize
-        segmentView.segments = AUiLabelSegment.segments(withTitles: [aui_localized("selectSong"), aui_localized("selectedSong")])
-        segmentView.theme_indicatorColor = AUiColor("JukeBox.segmentViewIndicatorColor")
+        segmentView.segments = AUILabelSegment.segments(withTitles: [aui_localized("selectSong"), aui_localized("selectedSong")])
+        segmentView.theme_indicatorColor = AUIColor("JukeBox.segmentViewIndicatorColor")
 //        segmentView.selectedSegmentIndex = 0
 //        segmentView.selectedSegmentTintColor = .red
         segmentView.backgroundColor = .clear
-        segmentView.layer.theme_borderColor = AUiCGColor("JukeBox.segmentViewBorderColor")
+        segmentView.layer.theme_borderColor = AUICGColor("JukeBox.segmentViewBorderColor")
         segmentView.layer.borderWidth = 2
         segmentView.cornerRadius = kJukeBoxSegmentSize.height / 2
         segmentView.clipsToBounds = true
@@ -176,16 +176,16 @@ open class AUiJukeBoxView: UIView {
         return segmentView
     }()
     
-    private lazy var searchTextField: AUiTextField = {
-        let textField = AUiTextField()
+    private lazy var searchTextField: AUITextField = {
+        let textField = AUITextField()
         textField.layer.theme_cornerRadius = "JukeBox.searchCornerRadius"
         textField.clipsToBounds = true
         textField.returnKeyType = .search
-        textField.theme_backgroundColor = AUiColor("JukeBox.searchBackgroundColor")
+        textField.theme_backgroundColor = AUIColor("JukeBox.searchBackgroundColor")
         textField.placeHolder = aui_localized("searchSong")
-        textField.theme_placeHolderColor = AUiColor("JukeBox.searchPlaceHolderColor")
+        textField.theme_placeHolderColor = AUIColor("JukeBox.searchPlaceHolderColor")
         textField.theme_placeHolderFont = "JukeBox.searchPlaceHolderFont"
-        textField.theme_textColor = AUiColor("JukeBox.searchTextColor")
+        textField.theme_textColor = AUIColor("JukeBox.searchTextColor")
         textField.theme_leftIconImage = "JukeBox.searchIcon"
         textField.theme_rightIconImage = "JukeBox.closeIcon"
         textField.theme_rightSelectedIconImage = "JukeBox.closeIcon"
@@ -214,15 +214,15 @@ open class AUiJukeBoxView: UIView {
         return textField
     }()
     
-    private lazy var tabsView: AUiTabs = {
-        let tabs = AUiTabs()
+    private lazy var tabsView: AUITabs = {
+        let tabs = AUITabs()
         tabs.titles = [aui_localized("songTabName1"), aui_localized("songTabName2"), aui_localized("songTabName3"), aui_localized("songTabName4")]
         tabs.style.indicatorStyle = .line
         tabs.style.indicatorHeight = 3
         tabs.theme_indicatorWidth = "JukeBox.tabsIndicatorWidth"
-        tabs.theme_indicatorColor = AUiColor("JukeBox.tabsIndicatorColor")
-        tabs.theme_selectedTitleColor = AUiColor("JukeBox.tabsSelectedTextColor")
-        tabs.theme_normalTitleColor = AUiColor("JukeBox.tabsNormalTextColor")
+        tabs.theme_indicatorColor = AUIColor("JukeBox.tabsIndicatorColor")
+        tabs.theme_selectedTitleColor = AUIColor("JukeBox.tabsSelectedTextColor")
+        tabs.theme_normalTitleColor = AUIColor("JukeBox.tabsNormalTextColor")
         tabs.theme_textFont = "JukeBox.tabsTextFont"
         tabs.valueChange = { [weak self] index in
             guard let self = self else {return}
@@ -243,7 +243,7 @@ open class AUiJukeBoxView: UIView {
     public lazy var allMusicTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = .clear
-        tableView.register(AUiJukeBoxCell.self, forCellReuseIdentifier: kJukeBoxCellId)
+        tableView.register(AUIJukeBoxCell.self, forCellReuseIdentifier: kJukeBoxCellId)
         tableView.mj_header = MJRefreshNormalHeader(refreshingBlock: { [weak self] in
             self?.onRefreshMusicList()
         })
@@ -254,7 +254,7 @@ open class AUiJukeBoxView: UIView {
     public lazy var addedMusicTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = .clear
-        tableView.register(AUiJukeBoxCell.self, forCellReuseIdentifier: kJukeBoxCellId)
+        tableView.register(AUIJukeBoxCell.self, forCellReuseIdentifier: kJukeBoxCellId)
         tableView.mj_header = MJRefreshNormalHeader(refreshingBlock: { [weak self] in
             self?.onRefreshAddedMusicList()
         })
@@ -300,7 +300,7 @@ open class AUiJukeBoxView: UIView {
     }
 }
 
-extension AUiJukeBoxView {
+extension AUIJukeBoxView {
      
     private func didClickAddButton(_ index: Int){
         uiDelegate?.onSelectSong(view: self, tabIndex: tabsView.selectIndex, index: index)
@@ -319,9 +319,9 @@ extension AUiJukeBoxView {
     }
 }
 
-extension AUiJukeBoxView {
+extension AUIJukeBoxView {
     private func onRefreshMusicList() {
-        aui_info("onRefreshMusicList", tag: "AUiJukeBoxView")
+        aui_info("onRefreshMusicList", tag: "AUIJukeBoxView")
         let idx = tabsView.selectIndex
         allMusicTableView.mj_footer = nil
         uiDelegate?.onRefreshMusicList(view: self,
@@ -342,7 +342,7 @@ extension AUiJukeBoxView {
     }
     
     private func onLoadMoreMusicList() {
-        aui_info("onLoadMoreMusicList", tag: "AUiJukeBoxView")
+        aui_info("onLoadMoreMusicList", tag: "AUIJukeBoxView")
         let idx = tabsView.selectIndex
         uiDelegate?.onLoadMoreMusicList(view: self,
                                         tabIndex: idx,
@@ -360,7 +360,7 @@ extension AUiJukeBoxView {
     }
     
     private func onRefreshAddedMusicList() {
-        aui_info("onRefreshAddedMusicList", tag: "AUiJukeBoxView")
+        aui_info("onRefreshAddedMusicList", tag: "AUIJukeBoxView")
         uiDelegate?.onRefreshAddedMusicList(view: self, completion: {[weak self] list in
             guard let self = self else {return}
             self.addedMusicTableView.mj_header?.endRefreshing()
@@ -369,7 +369,7 @@ extension AUiJukeBoxView {
     }
     
     @objc func onSegmentAction() {
-        aui_info("onSegmentAction: \(segmentControl.index)", tag: "AUiJukeBoxView")
+        aui_info("onSegmentAction: \(segmentControl.index)", tag: "AUIJukeBoxView")
         if self.uiDelegate?.onSegmentedChanged(view: self, segmentIndex: self.segmentControl.index) ?? false {
             return
         }
@@ -397,7 +397,7 @@ extension AUiJukeBoxView {
 }
 
 
-extension AUiJukeBoxView: UITableViewDelegate, UITableViewDataSource {
+extension AUIJukeBoxView: UITableViewDelegate, UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return cellHeight
@@ -415,9 +415,9 @@ extension AUiJukeBoxView: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell: AUiJukeBoxCell? = tableView.dequeueReusableCell(withIdentifier: kJukeBoxCellId, for: indexPath) as? AUiJukeBoxCell
+        var cell: AUIJukeBoxCell? = tableView.dequeueReusableCell(withIdentifier: kJukeBoxCellId, for: indexPath) as? AUIJukeBoxCell
         if cell == nil {
-            cell = AUiJukeBoxCell(style: .default, reuseIdentifier: kJukeBoxCellId)
+            cell = AUIJukeBoxCell(style: .default, reuseIdentifier: kJukeBoxCellId)
         }
         
         guard let cell = cell else {
@@ -483,7 +483,7 @@ extension AUiJukeBoxView: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension AUiJukeBoxView {
+extension AUIJukeBoxView {
     var theme_cellHeight: ThemeCGFloatPicker? {
         get { return aui_getThemePicker(self, "setCellHeight:") as? ThemeCGFloatPicker }
         set { aui_setThemePicker(self, "setCellHeight:", newValue) }

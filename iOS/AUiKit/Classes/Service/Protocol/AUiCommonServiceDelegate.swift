@@ -1,24 +1,24 @@
 //
-//  AUiCommonServiceDelegate.swift
-//  AUiKit
+//  AUICommonServiceDelegate.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/8.
 //
 
 import Foundation
 
-public protocol AUiCommonServiceDelegate: NSObjectProtocol {
+public protocol AUICommonServiceDelegate: NSObjectProtocol {
     
     func getChannelName() -> String
     
     /// 获取当前房间上下文
     /// - Returns: <#description#>
-    func getRoomContext() -> AUiRoomContext
+    func getRoomContext() -> AUIRoomContext
 }
 
-extension AUiCommonServiceDelegate {
-    public func getRoomContext() -> AUiRoomContext {
-        return AUiRoomContext.shared
+extension AUICommonServiceDelegate {
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
     }
     
     public func currentUserIsRoomOwner() -> Bool {

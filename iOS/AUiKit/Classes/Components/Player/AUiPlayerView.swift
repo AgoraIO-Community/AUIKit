@@ -1,6 +1,6 @@
 //
-//  AUiPlayerView.swift
-//  AUiKit
+//  AUIPlayerView.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/29.
 //
@@ -10,7 +10,7 @@ import SwiftTheme
 import AgoraRtcKit
 import AgoraLyricsScore
 
-@objc public enum AUiPlayerViewButtonType: Int {
+@objc public enum AUIPlayerViewButtonType: Int {
     case audioSetting = 0  //设置
     case audioEffect       //音效
     case selectSong        //点歌按钮
@@ -28,41 +28,41 @@ public enum JoinChorusState {
     case after //合唱
 }
 
-public protocol AUiKaraokeLrcViewDelegate: NSObjectProtocol {
+public protocol AUIKaraokeLrcViewDelegate: NSObjectProtocol {
     func didJoinChorus()
     func didLeaveChorus()
 }
 
-@objc public protocol AUiPlayerViewDelegate: NSObjectProtocol {
-    func onButtonTapAction(playerView: AUiPlayerView, actionType: AUiPlayerViewButtonType)
+@objc public protocol AUIPlayerViewDelegate: NSObjectProtocol {
+    func onButtonTapAction(playerView: AUIPlayerView, actionType: AUIPlayerViewButtonType)
     @objc optional func onVoiceConversionDidChanged(index: Int)
-    @objc optional func onSliderValueDidChanged(value: CGFloat, item: AUiPlayerAudioSettingItem)
-    @objc optional func onSwitchValueDidChanged(isSwitch: Bool, item: AUiPlayerAudioSettingItem)
+    @objc optional func onSliderValueDidChanged(value: CGFloat, item: AUIPlayerAudioSettingItem)
+    @objc optional func onSwitchValueDidChanged(isSwitch: Bool, item: AUIPlayerAudioSettingItem)
     @objc optional func onAudioMixDidChanged(audioMixIndex: Int)
-    @objc optional func onSliderCellWillLoad(playerView: AUiPlayerAudioSettingView, item: AUiPlayerAudioSettingItem)
-    @objc optional func onSwitchCellWillLoad(playerView: AUiPlayerAudioSettingView, item: AUiPlayerAudioSettingItem)
+    @objc optional func onSliderCellWillLoad(playerView: AUIPlayerAudioSettingView, item: AUIPlayerAudioSettingItem)
+    @objc optional func onSwitchCellWillLoad(playerView: AUIPlayerAudioSettingView, item: AUIPlayerAudioSettingItem)
 }
 
 
 /// 歌曲播放组件
-open class AUiPlayerView: UIView {
+open class AUIPlayerView: UIView {
     public var voiceConversionIdx: Int = 0
     public var audioMixinIdx: Int = 0
     private var mixIdx: Int = 0
     
-    public lazy var karaokeLrcView: AUiKaraokeLrcView = {
-        let karaokeLrcView = AUiKaraokeLrcView(frame: CGRect(x: 0, y: 0, width: aui_width, height: aui_height - 60))
+    public lazy var karaokeLrcView: AUIKaraokeLrcView = {
+        let karaokeLrcView = AUIKaraokeLrcView(frame: CGRect(x: 0, y: 0, width: aui_width, height: aui_height - 60))
         return karaokeLrcView
     }()
     
-    var seatInfo: AUiMicSeatInfo? {
+    var seatInfo: AUIMicSeatInfo? {
         didSet {
             self.userLabel.text = seatInfo?.seatAndUserDesc()
             setNeedsLayout()
         }
     }
     
-    public weak var delegate: AUiKaraokeLrcViewDelegate?
+    public weak var delegate: AUIKaraokeLrcViewDelegate?
     public var joinState: JoinChorusState = .none {
         didSet {
             switch joinState {
@@ -88,21 +88,21 @@ open class AUiPlayerView: UIView {
     
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
-    public func addActionHandler(playerViewActionHandler: AUiPlayerViewDelegate) {
+    public func addActionHandler(playerViewActionHandler: AUIPlayerViewDelegate) {
         if eventHandlers.contains(playerViewActionHandler) {
             return
         }
         eventHandlers.add(playerViewActionHandler)
     }
 
-    func removeEventHandler(playerViewActionHandler: AUiPlayerViewDelegate) {
+    func removeEventHandler(playerViewActionHandler: AUIPlayerViewDelegate) {
         eventHandlers.remove(playerViewActionHandler)
     }
     
-    private func getEventHander(callBack:((AUiPlayerViewDelegate)-> Void)) {
+    private func getEventHander(callBack:((AUIPlayerViewDelegate)-> Void)) {
         for obj in eventHandlers.allObjects {
-            if obj is AUiPlayerViewDelegate {
-                callBack(obj as! AUiPlayerViewDelegate)
+            if obj is AUIPlayerViewDelegate {
+                callBack(obj as! AUIPlayerViewDelegate)
             }
         }
     }
@@ -113,7 +113,7 @@ open class AUiPlayerView: UIView {
         }
     }
     
-    public var musicInfo: AUiChooseMusicModel? {
+    public var musicInfo: AUIChooseMusicModel? {
         didSet {
             guard let musicInfo = musicInfo
             else {
@@ -178,10 +178,10 @@ open class AUiPlayerView: UIView {
     }()
     
     //设置按钮
-    private lazy var audioSettingButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    private lazy var audioSettingButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.audioSettingIcon"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("设置", for: .normal)
@@ -190,10 +190,10 @@ open class AUiPlayerView: UIView {
     }()
     
     //音效按钮
-    private lazy var voiceConversionButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    private lazy var voiceConversionButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.voiceConversionIcon"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("音效", for: .normal)
@@ -202,17 +202,17 @@ open class AUiPlayerView: UIView {
     }()
 
     //点歌按钮 居中显示的按钮
-    public lazy var selectSongButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme()
+    public lazy var selectSongButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme()
         theme.iconWidth = "Player.selectSongButtonWidth"
         theme.iconHeight = "Player.selectSongButtonHeight"
         theme.buttonWitdth = "Player.selectSongButtonWidth"
         theme.buttonHeight = "Player.selectSongButtonHeight"
-        theme.backgroundColor = AUiColor("Player.selectSongBackgroundColor")
+        theme.backgroundColor = AUIColor("Player.selectSongBackgroundColor")
         theme.cornerRadius = "Player.selectSongButtonRadius"
         theme.icon = "Player.SelectSongIcon"
         theme.textAlpha = "Player.SelectSongTextAlpha"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
         button.setTitle(aui_localized("selectSong"), for: .normal)
@@ -221,13 +221,13 @@ open class AUiPlayerView: UIView {
     }()
     
     //加入合唱按钮
-    public lazy var joinChorusButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme()
+    public lazy var joinChorusButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme()
         theme.buttonWitdth = "Player.JoinChorusButtonWidth"
         theme.buttonHeight = "Player.JoinChorusButtonHeight"
         theme.icon = "Player.playerLrcItemIconJoinChorus"
         theme.cornerRadius = nil
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
         button.setTitle("加入合唱", for: .normal)
@@ -238,11 +238,11 @@ open class AUiPlayerView: UIView {
     }()
     
     //离开合唱按钮
-    public lazy var leaveChorusBtn: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    public lazy var leaveChorusBtn: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconLeaveChorus"
         theme.cornerRadius = nil
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("放麦", for: .normal)
@@ -252,11 +252,11 @@ open class AUiPlayerView: UIView {
     }()
     
     //暂停播放按钮
-    public lazy var playOrPauseButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    public lazy var playOrPauseButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.selectedIcon = "Player.playerLrcItemIconPlay"
         theme.icon = "Player.playerLrcItemIconPause"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("播放", for: .normal)
@@ -266,10 +266,10 @@ open class AUiPlayerView: UIView {
     }()
     
     //切歌按钮
-    public lazy var nextSongButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    public lazy var nextSongButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconNext"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("切歌", for: .normal)
@@ -278,10 +278,10 @@ open class AUiPlayerView: UIView {
     }()
     
     //点歌按钮
-    public lazy var chooseSongButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    public lazy var chooseSongButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconChooseSong"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("点歌", for: .normal)
@@ -290,11 +290,11 @@ open class AUiPlayerView: UIView {
     }()
     
     //原唱按钮
-    public lazy var originalButton: AUiButton = {
-        let theme = AUiButtonDynamicTheme.toolbarTheme()
+    public lazy var originalButton: AUIButton = {
+        let theme = AUIButtonDynamicTheme.toolbarTheme()
         theme.icon = "Player.playerLrcItemIconAcc"
         theme.selectedIcon = "Player.playerLrcItemIconOriginal"
-        let button = AUiButton()
+        let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
         button.setTitle("原唱", for: .normal)
@@ -318,7 +318,7 @@ open class AUiPlayerView: UIView {
     
     //MARK: private
     private func _loadSubViews() {
-        self.theme_backgroundColor = AUiColor("Player.backgroundColor")
+        self.theme_backgroundColor = AUIColor("Player.backgroundColor")
         self.layer.theme_cornerRadius = "Player.cornerRadius"
         self.clipsToBounds = true
 
@@ -407,7 +407,7 @@ open class AUiPlayerView: UIView {
 }
 
 //MARK: action
-extension AUiPlayerView {
+extension AUIPlayerView {
     /// 点击点歌按钮
     @objc func onSelectSong() {
         getEventHander { delegate in
@@ -417,15 +417,15 @@ extension AUiPlayerView {
     
     ///点击设置按钮
     @objc func onClickSetting() {
-        aui_info("onClickSetting", tag: "AUiPlayerView")
-        let dialogView = AUiPlayerAudioSettingView()
+        aui_info("onClickSetting", tag: "AUIPlayerView")
+        let dialogView = AUIPlayerAudioSettingView()
         dialogView.delegate = self
         dialogView.sizeToFit()
-        AUiCommonDialog.show(contentView: dialogView, theme: AUiCommonDialogTheme())
+        AUICommonDialog.show(contentView: dialogView, theme: AUICommonDialogTheme())
     }
     
     @objc func nextSong() {
-        AUiAlertView.theme_defaultAlert()
+        AUIAlertView.theme_defaultAlert()
             .isShowCloseButton(isShow: false)
             .title(title: aui_localized("switchToNextSong"))
             .rightButton(title: "确认")
@@ -439,14 +439,14 @@ extension AUiPlayerView {
             .show()
     }
     
-    @objc func playOrPause(btn: AUiButton) {
+    @objc func playOrPause(btn: AUIButton) {
         btn.isSelected = !btn.isSelected
         getEventHander { delegate in
             delegate.onButtonTapAction(playerView: self, actionType: btn.isSelected ? .pause : .play)
         }
     }
     
-    @objc func changeAudioTrack(btn: AUiButton){
+    @objc func changeAudioTrack(btn: AUIButton){
         btn.isSelected = !btn.isSelected
         getEventHander { delegate in
             delegate.onButtonTapAction(playerView: self, actionType: btn.isSelected ? .original : .acc)
@@ -455,16 +455,16 @@ extension AUiPlayerView {
 
     /// 点击变声按钮
     @objc func onClickVoiceConversion() {
-        aui_info("onClickEffect", tag: "AUiPlayerView")
+        aui_info("onClickEffect", tag: "AUIPlayerView")
         
-        var dialogItems = [AUiActionSheetItem]()
+        var dialogItems = [AUIActionSheetItem]()
         for i in 1...5 {
-            let item = AUiActionSheetThemeItem.vertical()
+            let item = AUIActionSheetThemeItem.vertical()
             item.backgroundIcon = "Player.voiceConversionDialogItemBackgroundIcon"
             item.icon = ThemeImagePicker(keyPath: "Player.voiceConversionDialogItemIcon\(i)")
             item.title = aui_localized("voiceConversionItem\(i)")
             item.callback = { [weak self] in
-                aui_info("onClickVoiceConversion click: \(i - 1)", tag: "AUiPlayerView")
+                aui_info("onClickVoiceConversion click: \(i - 1)", tag: "AUIPlayerView")
                 guard let self = self else {return}
                 self.voiceConversionIdx = i - 1
                 self.getEventHander { delegate in
@@ -477,15 +477,15 @@ extension AUiPlayerView {
             dialogItems.append(item)
         }
         
-        let theme = AUiActionSheetTheme()
+        let theme = AUIActionSheetTheme()
         theme.itemType = "Player.voiceConversionDialogItemType"
         theme.itemHeight = "Player.voiceConversionDialogItemHeight"
         theme.collectionViewTopEdge = "Player.collectionViewTopEdge"
-        let dialogView = AUiActionSheet(title: aui_localized("voiceConversion"),
+        let dialogView = AUIActionSheet(title: aui_localized("voiceConversion"),
                                         items: dialogItems,
                                         headerInfo: nil)
         dialogView.setTheme(theme: theme)
-        AUiCommonDialog.show(contentView: dialogView, theme: AUiCommonDialogTheme())
+        AUICommonDialog.show(contentView: dialogView, theme: AUICommonDialogTheme())
     }
     
     public func updateBtns(with role: KTVSingRole, isMainSinger: Bool, isOnSeat: Bool) {
@@ -541,40 +541,40 @@ extension AUiPlayerView {
     }
 }
 
-//MARK: AUiPlayerAudioSettingViewDelegate
-extension AUiPlayerView: AUiPlayerAudioSettingViewDelegate {
-    public func onSliderCellWillLoad(playerView: AUiPlayerAudioSettingView, item: AUiPlayerAudioSettingItem) {
+//MARK: AUIPlayerAudioSettingViewDelegate
+extension AUIPlayerView: AUIPlayerAudioSettingViewDelegate {
+    public func onSliderCellWillLoad(playerView: AUIPlayerAudioSettingView, item: AUIPlayerAudioSettingItem) {
         getEventHander { delegate in
             delegate.onSliderCellWillLoad?(playerView: playerView, item: item)
         }
     }
     
-    public func onSwitchCellWillLoad(playerView: AUiPlayerAudioSettingView, item: AUiPlayerAudioSettingItem) {
+    public func onSwitchCellWillLoad(playerView: AUIPlayerAudioSettingView, item: AUIPlayerAudioSettingItem) {
         getEventHander { delegate in
             delegate.onSwitchCellWillLoad?(playerView: playerView, item: item)
         }
     }
     
-    public func audioMixIsSelected(playerView: AUiPlayerAudioSettingView, audioMixIndex: Int) -> Bool {
+    public func audioMixIsSelected(playerView: AUIPlayerAudioSettingView, audioMixIndex: Int) -> Bool {
         return self.audioMixinIdx == audioMixIndex
     }
     
-    public func onSliderValueDidChanged(playerView: AUiPlayerAudioSettingView, value: CGFloat, item: AUiPlayerAudioSettingItem) {
-        aui_info("onSliderValueDidChanged: \(value)", tag: "AUiPlayerView")
+    public func onSliderValueDidChanged(playerView: AUIPlayerAudioSettingView, value: CGFloat, item: AUIPlayerAudioSettingItem) {
+        aui_info("onSliderValueDidChanged: \(value)", tag: "AUIPlayerView")
         getEventHander { delegate in
             delegate.onSliderValueDidChanged?( value: value, item: item)
         }
     }
     
-    public func onSwitchValueDidChanged(playerView: AUiPlayerAudioSettingView, isSwitch: Bool, item: AUiPlayerAudioSettingItem) {
-        aui_info("onSwitchValueDidChanged: \(isSwitch)", tag: "AUiPlayerView")
+    public func onSwitchValueDidChanged(playerView: AUIPlayerAudioSettingView, isSwitch: Bool, item: AUIPlayerAudioSettingItem) {
+        aui_info("onSwitchValueDidChanged: \(isSwitch)", tag: "AUIPlayerView")
         getEventHander { delegate in
             delegate.onSwitchValueDidChanged?(isSwitch: isSwitch, item: item)
         }
     }
     
-    public func onAudioMixDidChanged(playerView: AUiPlayerAudioSettingView, audioMixIndex: Int) {
-        aui_info("onAudioMixDidChanged: \(audioMixIndex)", tag: "AUiPlayerView")
+    public func onAudioMixDidChanged(playerView: AUIPlayerAudioSettingView, audioMixIndex: Int) {
+        aui_info("onAudioMixDidChanged: \(audioMixIndex)", tag: "AUIPlayerView")
         self.audioMixinIdx = audioMixIndex
         getEventHander { delegate in
             delegate.onAudioMixDidChanged?(audioMixIndex: audioMixIndex)

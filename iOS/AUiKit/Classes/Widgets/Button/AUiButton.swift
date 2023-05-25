@@ -1,6 +1,6 @@
 //
-//  AUiButton.swift
-//  AUiKit
+//  AUIButton.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/29.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftTheme
 
-@objc public enum AUiButtonTextImageAlignment: Int {
+@objc public enum AUIButtonTextImageAlignment: Int {
     case imageCenterTextCenter = 0
     case imageLeftTextRight
     case textLeftImageRight
@@ -16,15 +16,15 @@ import SwiftTheme
     case textTopImageBottom
 }
 
-public class AUiButtonStyle: NSObject {
-    public func setupStyle(button: AUiButton) {
+public class AUIButtonStyle: NSObject {
+    public func setupStyle(button: AUIButton) {
     }
     
-    public func layoutStyle(button: AUiButton) {
+    public func layoutStyle(button: AUIButton) {
     }
 }
 
-public class AUiButtonDynamicTheme: AUiButtonStyle {
+public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var icon: ThemeImagePicker?
     public var selectedIcon: ThemeImagePicker?
     public var iconWidth: ThemeCGFloatPicker?
@@ -39,8 +39,8 @@ public class AUiButtonDynamicTheme: AUiButtonStyle {
     public var cornerRadius: ThemeCGFloatPicker? = "Button.cornerRadius"
     public var textAlpha: ThemeCGFloatPicker = "Button.titleAlpha"
     
-    public static func toolbarTheme() -> AUiButtonDynamicTheme {
-        let theme = AUiButtonDynamicTheme()
+    public static func toolbarTheme() -> AUIButtonDynamicTheme {
+        let theme = AUIButtonDynamicTheme()
         theme.titleFont = "CommonFont.small"
         theme.iconWidth = "Player.toolIconWidth"
         theme.iconHeight = "Player.toolIconHeight"
@@ -50,7 +50,7 @@ public class AUiButtonDynamicTheme: AUiButtonStyle {
         return theme
     }
     
-    public override func setupStyle(button: AUiButton) {
+    public override func setupStyle(button: AUIButton) {
         button.theme_setImage(self.icon, forState: .normal)
         button.theme_setImage(self.selectedIcon, forState: .selected)
         button.imageView?.theme_image = self.icon
@@ -64,7 +64,7 @@ public class AUiButtonDynamicTheme: AUiButtonStyle {
         button.titleLabel?.theme_alpha = textAlpha
     }
     
-    public override func layoutStyle(button: AUiButton) {
+    public override func layoutStyle(button: AUIButton) {
         button.imageView?.theme_width = self.iconWidth
         button.imageView?.theme_height = self.iconHeight
         button.theme_width = self.buttonWitdth
@@ -74,7 +74,7 @@ public class AUiButtonDynamicTheme: AUiButtonStyle {
     }
 }
 
-public class AUiButtonNativeTheme: AUiButtonStyle {
+public class AUIButtonNativeTheme: AUIButtonStyle {
     public var icon: UIImage?
     public var selectedIcon: UIImage?
     public var iconWidth: CGFloat = 0
@@ -89,7 +89,7 @@ public class AUiButtonNativeTheme: AUiButtonStyle {
     public var cornerRadius: CGFloat = 25
     public var textAlpha: CGFloat = 1
     
-    public override func setupStyle(button: AUiButton) {
+    public override func setupStyle(button: AUIButton) {
         button.setImage(self.icon, for: .normal)
         button.setImage(self.selectedIcon, for: .selected)
         
@@ -101,7 +101,7 @@ public class AUiButtonNativeTheme: AUiButtonStyle {
         button.titleLabel?.alpha = textAlpha
     }
     
-    public override func layoutStyle(button: AUiButton) {
+    public override func layoutStyle(button: AUIButton) {
         button.imageView?.aui_width = self.iconWidth
         button.imageView?.aui_height = self.iconHeight
         button.aui_width = self.buttonWitdth
@@ -111,13 +111,13 @@ public class AUiButtonNativeTheme: AUiButtonStyle {
     }
 }
 
-open class AUiButton: UIButton {
-    @objc public var textImageAlignment: AUiButtonTextImageAlignment = .imageCenterTextCenter {
+open class AUIButton: UIButton {
+    @objc public var textImageAlignment: AUIButtonTextImageAlignment = .imageCenterTextCenter {
         didSet {
             setNeedsLayout()
         }
     }
-    public var style: AUiButtonStyle? {
+    public var style: AUIButtonStyle? {
         didSet {
             style?.setupStyle(button: self)
             style?.layoutStyle(button: self)
@@ -178,7 +178,7 @@ open class AUiButton: UIButton {
 }
 
 
-extension AUiButton {
+extension AUIButton {
     var theme_padding: ThemeCGFloatPicker? {
         get { return aui_getThemePicker(self, "setPadding:") as? ThemeCGFloatPicker }
         set { aui_setThemePicker(self, "setPadding:", newValue) }

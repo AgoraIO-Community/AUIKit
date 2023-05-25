@@ -1,5 +1,5 @@
 //
-//  UIView+AUiKit.swift
+//  UIView+AUIKit.swift
 //  AgoraLyricsScore
 //
 //  Created by wushengtao on 2023/3/24.

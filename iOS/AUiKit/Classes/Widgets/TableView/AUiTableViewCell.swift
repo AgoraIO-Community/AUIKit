@@ -1,6 +1,6 @@
 //
-//  AUiTableViewCell.swift
-//  AUiKit
+//  AUITableViewCell.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/1.
 //
@@ -9,8 +9,8 @@ import Foundation
 import SwiftTheme
 
 
-public protocol AUiTableViewItemProtocol: NSObjectProtocol {
-    var aui_style: AUiTableViewCellStyle {get}
+public protocol AUITableViewItemProtocol: NSObjectProtocol {
+    var aui_style: AUITableViewCellStyle {get}
     var aui_title: String? {get}
     var aui_subTitle: String? {get}
     var aui_Detail: String? {get}
@@ -22,11 +22,11 @@ public protocol AUiTableViewItemProtocol: NSObjectProtocol {
     var onCellSelected: ((IndexPath)->())? {set get}
 }
 
-open class AUiTableViewCellTheme: NSObject {
-    public func setUp(for cell: AUiTableViewCell){}
+open class AUITableViewCellTheme: NSObject {
+    public func setUp(for cell: AUITableViewCell){}
 }
 
-open class AUiTableViewCellDynamicTheme: AUiTableViewCellTheme {
+open class AUITableViewCellDynamicTheme: AUITableViewCellTheme {
     public var titleFont: ThemeFontPicker = "TableViewCell.titleFont"           //主标题字体
     public var titleColor: ThemeColorPicker = "CommonColor.normalTextColor"         //主标题字体颜色
     public var subTitleFont: ThemeFontPicker = "TableViewCell.subTitleFont"        //副标题字体
@@ -45,7 +45,7 @@ open class AUiTableViewCellDynamicTheme: AUiTableViewCellTheme {
     
     public var arrow: ThemeImagePicker = "TableViewCell.arrow"    //箭头图标
     
-    public override func setUp(for cell: AUiTableViewCell){
+    public override func setUp(for cell: AUITableViewCell){
         cell.aui_highlightView.theme_font = titleFont
         cell.aui_highlightView.theme_textColor = highlightColor
         
@@ -69,7 +69,7 @@ open class AUiTableViewCellDynamicTheme: AUiTableViewCellTheme {
     }
 }
 
-open class AUiTableViewCellNativeTheme: AUiTableViewCellTheme {
+open class AUITableViewCellNativeTheme: AUITableViewCellTheme {
     public var titleFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 17)!           //主标题字体
     public var titleColor: UIColor = .aui_normalTextColor         //主标题字体颜色
     public var subTitleFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 12)!       //副标题字体
@@ -88,7 +88,7 @@ open class AUiTableViewCellNativeTheme: AUiTableViewCellTheme {
     
     public var arrow: UIImage? = UIImage.aui_Image(named: "aui_common_tableview_arrow")    //箭头图标
     
-    public override func setUp(for cell: AUiTableViewCell){
+    public override func setUp(for cell: AUITableViewCell){
         cell.aui_highlightView.font = titleFont
         cell.aui_highlightView.textColor = highlightColor
         
@@ -113,29 +113,29 @@ open class AUiTableViewCellNativeTheme: AUiTableViewCellTheme {
 }
 
 //@objc
-public struct AUiTableViewCellStyle: OptionSet {
+public struct AUITableViewCellStyle: OptionSet {
     public let rawValue: Int
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }
     
-    public static let title = AUiTableViewCellStyle(rawValue: 1 << 0)
-    public static let subTitle = AUiTableViewCellStyle(rawValue: 1 << 1)
-    public static let detail = AUiTableViewCellStyle(rawValue: 1 << 2)
-    public static let badge = AUiTableViewCellStyle(rawValue: 1 << 3)
-    public static let uiswitch = AUiTableViewCellStyle(rawValue: 1 << 4)
-    public static let arrow = AUiTableViewCellStyle(rawValue: 1 << 5)
-    public static let highlight = AUiTableViewCellStyle(rawValue: 1 << 6)
+    public static let title = AUITableViewCellStyle(rawValue: 1 << 0)
+    public static let subTitle = AUITableViewCellStyle(rawValue: 1 << 1)
+    public static let detail = AUITableViewCellStyle(rawValue: 1 << 2)
+    public static let badge = AUITableViewCellStyle(rawValue: 1 << 3)
+    public static let uiswitch = AUITableViewCellStyle(rawValue: 1 << 4)
+    public static let arrow = AUITableViewCellStyle(rawValue: 1 << 5)
+    public static let highlight = AUITableViewCellStyle(rawValue: 1 << 6)
     
     
-    public static let singleLabel: AUiTableViewCellStyle = [.title]
-    public static let multiLabel: AUiTableViewCellStyle = [.title, .subTitle]
-    public static let singleLabelWithDetail: AUiTableViewCellStyle = [.title, .detail]
-    public static let singleLabelWithBadgeAndArrow: AUiTableViewCellStyle = [.title, .badge, .arrow]
-    public static let multiLabelWithArrow: AUiTableViewCellStyle = [.title, .subTitle, .arrow]
-    public static let singleLabelWithDetailAndArrow: AUiTableViewCellStyle = [.title, .detail, .arrow]
-    public static let singleLabelWithSwitch: AUiTableViewCellStyle = [.title, .uiswitch]
-    public static let multiLabelWithSwitch: AUiTableViewCellStyle = [.title, .subTitle, .uiswitch]
+    public static let singleLabel: AUITableViewCellStyle = [.title]
+    public static let multiLabel: AUITableViewCellStyle = [.title, .subTitle]
+    public static let singleLabelWithDetail: AUITableViewCellStyle = [.title, .detail]
+    public static let singleLabelWithBadgeAndArrow: AUITableViewCellStyle = [.title, .badge, .arrow]
+    public static let multiLabelWithArrow: AUITableViewCellStyle = [.title, .subTitle, .arrow]
+    public static let singleLabelWithDetailAndArrow: AUITableViewCellStyle = [.title, .detail, .arrow]
+    public static let singleLabelWithSwitch: AUITableViewCellStyle = [.title, .uiswitch]
+    public static let multiLabelWithSwitch: AUITableViewCellStyle = [.title, .subTitle, .uiswitch]
 }
 
 
@@ -143,14 +143,14 @@ private let kLeftPadding:CGFloat = 16
 private let kRightPadding:CGFloat = 25
 private let kArrowSize: CGSize = CGSize(width: 6, height: 12)
 private let kWidgetPadding: CGFloat = 9
-open class AUiTableViewCell: UITableViewCell {
-    public var theme: AUiTableViewCellTheme = AUiTableViewCellDynamicTheme() {
+open class AUITableViewCell: UITableViewCell {
+    public var theme: AUITableViewCellTheme = AUITableViewCellDynamicTheme() {
         didSet {
             theme.setUp(for: self)
         }
     }
     
-    public var item: AUiTableViewItemProtocol? {
+    public var item: AUITableViewItemProtocol? {
         didSet {
             _resetStyle()
         }
@@ -300,8 +300,8 @@ open class AUiTableViewCell: UITableViewCell {
     }
 }
 
-extension AUiTableViewCell{
-    public static func tableViewCellDefaultHeight(style: AUiTableViewCellStyle) -> CGFloat {
+extension AUITableViewCell{
+    public static func tableViewCellDefaultHeight(style: AUITableViewCellStyle) -> CGFloat {
         if style.contains(.subTitle) {
             return 65
         }

@@ -1,6 +1,6 @@
 //
-//  AUiSegmented+IBDesignable.swift
-//  AUiSegmented
+//  AUISegmented+IBDesignable.swift
+//  AUISegmented
 //
 //  Created by George Marmaridis on 20.10.20.
 //
@@ -9,7 +9,7 @@
 
 import UIKit
 
-extension AUiSegmented {
+extension AUISegmented {
     open override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
         

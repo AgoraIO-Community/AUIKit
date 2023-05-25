@@ -1,33 +1,33 @@
 //
-//  AUiJukeBoxCell.swift
-//  AUiKit
+//  AUIJukeBoxCell.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/4/3.
 //
 
 import Foundation
 
-public enum AUiJukeSongCellStyle: Int {
+public enum AUIJukeSongCellStyle: Int {
     case selectSong      //点歌
     case selectedSong    //已点
 }
 
 private let kRangeEdge: CGFloat = 16
 private let kRemoveAndPinButtonSize: CGSize = CGSize(width: 24, height: 24)
-open class AUiJukeBoxCell: UITableViewCell {
+open class AUIJukeBoxCell: UITableViewCell {
     public var selectSongClosure: (()->())?    //点歌
     public var pinClosure: (()->())?           //置顶
     public var deleteClosure: (()->())?        //删除
     public var nextClosure: (()->())?          //下一首
     
-    public var aui_style: AUiJukeSongCellStyle = .selectSong {
+    public var aui_style: AUIJukeSongCellStyle = .selectSong {
         didSet {
             _resetStyle()
             setNeedsLayout()
         }
     }
     
-    public var music: AUiJukeBoxItemDataProtocol? {
+    public var music: AUIJukeBoxItemDataProtocol? {
         didSet {
             self.songNameLabel.text = music?.title ?? ""
             self.descLabel.text = music?.subTitle ?? ""
@@ -53,12 +53,12 @@ open class AUiJukeBoxCell: UITableViewCell {
         didSet {
             selectButton.isSelected = isSelectedSong
             if isSelectedSong {
-                selectButton.theme_backgroundColor = AUiColor("JukeBoxCell.selectedButtonBackgroundColor")
-                selectButton.layer.theme_borderColor = AUiCGColor("JukeBoxCell.selectedButtonBorderColor")
+                selectButton.theme_backgroundColor = AUIColor("JukeBoxCell.selectedButtonBackgroundColor")
+                selectButton.layer.theme_borderColor = AUICGColor("JukeBoxCell.selectedButtonBorderColor")
                 selectButton.layer.theme_borderWidth = "JukeBoxCell.buttonSelectedBorderWidth"
             } else {
-                selectButton.theme_backgroundColor = AUiColor("JukeBoxCell.unselectedButtonBackgroundColor")
-                selectButton.layer.theme_borderColor = AUiCGColor("JukeBoxCell.normalButtonBorderColor")
+                selectButton.theme_backgroundColor = AUIColor("JukeBoxCell.unselectedButtonBackgroundColor")
+                selectButton.layer.theme_borderColor = AUICGColor("JukeBoxCell.normalButtonBorderColor")
                 selectButton.layer.theme_borderWidth = "JukeBoxCell.buttonNormalBorderWidth"
             }
         }
@@ -98,8 +98,8 @@ open class AUiJukeBoxCell: UITableViewCell {
         button.setTitle(aui_localized("selectSong"), for: .normal)
         button.setTitle(aui_localized("selectedSong"), for: .selected)
         button.titleLabel?.theme_font = "JukeBoxCell.buttonTitleFont"
-        button.theme_setTitleColor(AUiColor("JukeBoxCell.normalButtonTitleColor"), forState: .normal)
-        button.theme_setTitleColor(AUiColor("JukeBoxCell.selectedButtonTitleColor"), forState: .selected)
+        button.theme_setTitleColor(AUIColor("JukeBoxCell.normalButtonTitleColor"), forState: .normal)
+        button.theme_setTitleColor(AUIColor("JukeBoxCell.selectedButtonTitleColor"), forState: .selected)
         button.addTarget(self, action: #selector(onSelectSongAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -202,25 +202,25 @@ open class AUiJukeBoxCell: UITableViewCell {
 }
 
 
-extension AUiJukeBoxCell {
+extension AUIJukeBoxCell {
     @objc func onSelectSongAction(_ sender: UIButton) {
-        aui_info("onSelectSongAction", tag: "AUiJukeBoxCell")
+        aui_info("onSelectSongAction", tag: "AUIJukeBoxCell")
 //        self.isSelectedSong = !sender.isSelected
         self.selectSongClosure?()
     }
     
     @objc func onPinAction(_ sender: UIButton) {
-        aui_info("onPinAction", tag: "AUiJukeBoxCell")
+        aui_info("onPinAction", tag: "AUIJukeBoxCell")
         self.pinClosure?()
     }
     
     @objc func onDeleteAction(_ sender: UIButton) {
-        aui_info("onDeleteAction", tag: "AUiJukeBoxCell")
+        aui_info("onDeleteAction", tag: "AUIJukeBoxCell")
         self.deleteClosure?()
     }
     
     @objc func onNextAction(_ sender: UIButton) {
-        aui_info("onNextAction", tag: "AUiJukeBoxCell")
+        aui_info("onNextAction", tag: "AUIJukeBoxCell")
         self.nextClosure?()
     }
 }

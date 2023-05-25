@@ -1,6 +1,6 @@
 //
-//  AUiInvitationView.swift
-//  AUiKit
+//  AUIInvitationView.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/3.
 //
@@ -9,15 +9,15 @@ import Foundation
 
 
 /// 邀请列表组件
-class AUiInvitationView: UIView {
-    weak var invitationdelegate: AUiInvitationServiceDelegate? {
+class AUIInvitationView: UIView {
+    weak var invitationdelegate: AUIInvitationServiceDelegate? {
         didSet {
             oldValue?.unbindRespDelegate(delegate: self)
             invitationdelegate?.unbindRespDelegate(delegate: self)
         }
     }
     
-    weak var roomDelegate: AUiRoomManagerDelegate? {
+    weak var roomDelegate: AUIRoomManagerDelegate? {
         didSet {
             oldValue?.unbindRespDelegate(delegate: self)
             roomDelegate?.bindRespDelegate(delegate: self)
@@ -34,7 +34,7 @@ class AUiInvitationView: UIView {
     }()
     
     
-    private var userList: [AUiUserInfo] = []
+    private var userList: [AUIUserInfo] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,7 +57,7 @@ class AUiInvitationView: UIView {
     }
 }
 
-extension AUiInvitationView: AUiInvitationRespDelegate {
+extension AUIInvitationView: AUIInvitationRespDelegate {
     func onReceiveNewInvitation(userId: String, seatIndex: Int?) {
         
     }
@@ -93,8 +93,8 @@ extension AUiInvitationView: AUiInvitationRespDelegate {
     
 }
 
-extension AUiInvitationView: AUiRoomManagerRespDelegate {
-    func onRoomUserSnapshot(roomId: String, userList: [AUiUserInfo]) {
+extension AUIInvitationView: AUIRoomManagerRespDelegate {
+    func onRoomUserSnapshot(roomId: String, userList: [AUIUserInfo]) {
         self.userList = userList
         self.tableView.reloadData()
     }
@@ -103,22 +103,22 @@ extension AUiInvitationView: AUiRoomManagerRespDelegate {
         
     }
     
-    func onRoomInfoChange(roomId: String, roomInfo: AUiRoomInfo) {
+    func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo) {
         
     }
     
-    func onRoomUserEnter(roomId: String, userInfo: AUiUserInfo) {
+    func onRoomUserEnter(roomId: String, userInfo: AUIUserInfo) {
         self.userList = self.userList.filter({$0.userId != userInfo.userId})
         self.userList.append(userInfo)
         self.tableView.reloadData()
     }
     
-    func onRoomUserLeave(roomId: String, userInfo: AUiUserInfo) {
+    func onRoomUserLeave(roomId: String, userInfo: AUIUserInfo) {
         self.userList = self.userList.filter({$0.userId != userInfo.userId})
         self.tableView.reloadData()
     }
     
-    func onRoomUserUpdate(roomId: String, userInfo: AUiUserInfo) {
+    func onRoomUserUpdate(roomId: String, userInfo: AUIUserInfo) {
         self.userList = self.userList.filter({$0.userId != userInfo.userId})
         self.userList.append(userInfo)
         self.tableView.reloadData()
@@ -126,14 +126,14 @@ extension AUiInvitationView: AUiRoomManagerRespDelegate {
 }
 
 
-private let kAUiInvitationCellId = "invitation_cell"
-extension AUiInvitationView: UITableViewDelegate, UITableViewDataSource {
+private let kAUIInvitationCellId = "invitation_cell"
+extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.userList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: kAUiInvitationCellId) ?? UITableViewCell(style: .subtitle, reuseIdentifier: kAUiInvitationCellId)
+        let cell = tableView.dequeueReusableCell(withIdentifier: kAUIInvitationCellId) ?? UITableViewCell(style: .subtitle, reuseIdentifier: kAUIInvitationCellId)
         let user = userList[indexPath.row]
         cell.backgroundColor = .clear
         cell.textLabel?.text = "name: \(user.userName)"

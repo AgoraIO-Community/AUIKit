@@ -1,6 +1,6 @@
 //
-//  AUiKitModel.swift
-//  AUiKit
+//  AUIKitModel.swift
+//  AUIKit
 //
 //  Created by wushengtao on 2023/2/20.
 //
@@ -8,17 +8,17 @@
 import Foundation
 import YYModel
 
-public typealias AUiCallback = (Error?) -> ()
+public typealias AUICallback = (Error?) -> ()
 
-public typealias AUiCreateRoomCallback = (Error?, AUiRoomInfo?) -> ()
+public typealias AUICreateRoomCallback = (Error?, AUIRoomInfo?) -> ()
 
-public typealias AUiUserListCallback = (Error?, [AUiUserInfo]?) -> ()
+public typealias AUIUserListCallback = (Error?, [AUIUserInfo]?) -> ()
 
-public typealias AUiRoomListCallback = (Error?, [AUiRoomInfo]?) -> ()
+public typealias AUIRoomListCallback = (Error?, [AUIRoomInfo]?) -> ()
 
 @objcMembers
 /// 创建房间信息对象，用于创建房间时传递
-open class AUiCreateRoomInfo: NSObject {
+open class AUICreateRoomInfo: NSObject {
     public var roomName: String = ""    //房间名称
     public var thumbnail: String = ""   //房间列表上的缩略图
     public var seatCount: UInt = 0      //麦位个数
@@ -35,9 +35,9 @@ open class AUiCreateRoomInfo: NSObject {
 
 @objcMembers
 /// 房间列表展示数据
-open class AUiRoomInfo: AUiCreateRoomInfo {
+open class AUIRoomInfo: AUICreateRoomInfo {
     public var roomId: String = ""            //房间id
-    public var owner: AUiUserThumbnailInfo?   //房主信息
+    public var owner: AUIUserThumbnailInfo?   //房主信息
     public var memberCount: UInt = 0          //房间人数
     public var createTime: Int64 = 0          //创建时间
     
@@ -56,14 +56,14 @@ open class AUiRoomInfo: AUiCreateRoomInfo {
     
     class func modelContainerPropertyGenericClass() -> NSDictionary {
         return [
-            "roomOwner": AUiUserThumbnailInfo.self
+            "roomOwner": AUIUserThumbnailInfo.self
         ]
     }
 }
 
 @objcMembers
 ///用户简略信息，用于各个模型传递简单数据
-open class AUiUserThumbnailInfo: NSObject {
+open class AUIUserThumbnailInfo: NSObject {
     public var userId: String = ""      //用户Id
     public var userName: String = ""    //用户名
     public var userAvatar: String = ""  //用户头像
@@ -80,19 +80,19 @@ let kUserMuteVideoInitStatus = true
 
 @objcMembers
 //用户信息
-open class AUiUserInfo: AUiUserThumbnailInfo {
+open class AUIUserInfo: AUIUserThumbnailInfo {
     public var muteAudio: Bool = kUserMuteAudioInitStatus  //是否静音状态
     public var muteVideo: Bool = kUserMuteVideoInitStatus   //是否关闭视频状态
     
 }
 
 @objcMembers
-open class AUiMicSeatInfo: NSObject {
-    public var user: AUiUserThumbnailInfo?            //上麦用户
+open class AUIMicSeatInfo: NSObject {
+    public var user: AUIUserThumbnailInfo?            //上麦用户
     public var seatIndex: UInt = 0                    //麦位索引，可以不需要，根据麦位list可以计算出
     public var muteAudio: Bool = false                //麦位禁用声音
     public var muteVideo: Bool = false                //麦位禁用视频
-    public var lockSeat: AUiLockSeatStatus = .idle
+    public var lockSeat: AUILockSeatStatus = .idle
     public var micRole: MicRole = .offlineAudience
     
     class func modelCustomPropertyMapper()->NSDictionary {
@@ -108,7 +108,7 @@ open class AUiMicSeatInfo: NSObject {
     
     class func modelContainerPropertyGenericClass() -> NSDictionary {
         return [
-            "user": AUiUserThumbnailInfo.self
+            "user": AUIUserThumbnailInfo.self
         ]
     }
     
@@ -129,7 +129,7 @@ open class AUiMicSeatInfo: NSObject {
 }
 
 
-@objc public enum AUiLockSeatStatus: Int {
+@objc public enum AUILockSeatStatus: Int {
     case idle = 0
     case user = 1
     case locked = 2
