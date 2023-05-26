@@ -1,0 +1,104 @@
+PODS:
+  - AgoraLyricsScore (1.0.8.14):
+    - Zip
+  - AgoraRtcEngine_iOS (4.1.1):
+    - AgoraRtcEngine_iOS/AIAEC (= 4.1.1)
+    - AgoraRtcEngine_iOS/AINS (= 4.1.1)
+    - AgoraRtcEngine_iOS/AudioBeauty (= 4.1.1)
+    - AgoraRtcEngine_iOS/ClearVision (= 4.1.1)
+    - AgoraRtcEngine_iOS/ContentInspect (= 4.1.1)
+    - AgoraRtcEngine_iOS/DRM (= 4.1.1)
+    - AgoraRtcEngine_iOS/FaceDetection (= 4.1.1)
+    - AgoraRtcEngine_iOS/ReplayKit (= 4.1.1)
+    - AgoraRtcEngine_iOS/RtcBasic (= 4.1.1)
+    - AgoraRtcEngine_iOS/SpatialAudio (= 4.1.1)
+    - AgoraRtcEngine_iOS/VirtualBackground (= 4.1.1)
+    - AgoraRtcEngine_iOS/VQA (= 4.1.1)
+  - AgoraRtcEngine_iOS/AIAEC (4.1.1)
+  - AgoraRtcEngine_iOS/AINS (4.1.1)
+  - AgoraRtcEngine_iOS/AudioBeauty (4.1.1)
+  - AgoraRtcEngine_iOS/ClearVision (4.1.1)
+  - AgoraRtcEngine_iOS/ContentInspect (4.1.1)
+  - AgoraRtcEngine_iOS/DRM (4.1.1)
+  - AgoraRtcEngine_iOS/FaceDetection (4.1.1)
+  - AgoraRtcEngine_iOS/ReplayKit (4.1.1)
+  - AgoraRtcEngine_iOS/RtcBasic (4.1.1)
+  - AgoraRtcEngine_iOS/SpatialAudio (4.1.1)
+  - AgoraRtcEngine_iOS/VirtualBackground (4.1.1)
+  - AgoraRtcEngine_iOS/VQA (4.1.1)
+  - Alamofire (5.6.4)
+  - AUIKit (0.1.0):
+    - AgoraLyricsScore
+    - AgoraRtcEngine_iOS
+    - Alamofire
+    - AUIKit/AUIKit (= 0.1.0)
+    - Kingfisher (~> 7.6.2)
+    - MJRefresh
+    - ScoreEffectUI
+    - SwiftTheme
+    - SwiftyBeaver (~> 1.9.5)
+    - YYModel
+    - Zip
+  - AUIKit/AUIKit (0.1.0):
+    - AgoraLyricsScore
+    - AgoraRtcEngine_iOS
+    - Alamofire
+    - Kingfisher (~> 7.6.2)
+    - MJRefresh
+    - ScoreEffectUI
+    - SwiftTheme
+    - SwiftyBeaver (~> 1.9.5)
+    - YYModel
+    - Zip
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
+  - Kingfisher (7.6.2)
+  - MJRefresh (3.7.5)
+  - ScoreEffectUI (1.0.0)
+  - SwiftTheme (0.6.4)
+  - SwiftyBeaver (1.9.5)
+  - YYModel (1.0.4)
+  - Zip (2.1.2)
+
+DEPENDENCIES:
+  - AUIKit (from `../`)
+  - FBSnapshotTestCase (~> 2.1.4)
+
+SPEC REPOS:
+  trunk:
+    - AgoraLyricsScore
+    - AgoraRtcEngine_iOS
+    - Alamofire
+    - FBSnapshotTestCase
+    - Kingfisher
+    - MJRefresh
+    - ScoreEffectUI
+    - SwiftTheme
+    - SwiftyBeaver
+    - YYModel
+    - Zip
+
+EXTERNAL SOURCES:
+  AUIKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AgoraLyricsScore: 3a24384fa7384afb1332ae0a196ff41a3172c22f
+  AgoraRtcEngine_iOS: df216a18a01c30fba926565d889c9542319252ac
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
+  AUIKit: 9f035ff2a5c3245e44e5b92d605cc00b75d5b057
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
+  MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
+  ScoreEffectUI: 072afb2f77c952e2b4d757792cbf340c1a271651
+  SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
+  SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+  Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
+
+PODFILE CHECKSUM: 3b52db30701e0f5ac6871a8ca59af18aeb83ea47
+
+COCOAPODS: 1.12.0
