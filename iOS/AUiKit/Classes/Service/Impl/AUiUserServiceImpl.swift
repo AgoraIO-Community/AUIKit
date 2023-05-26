@@ -110,7 +110,7 @@ extension AUiUserServiceImpl: AUiRtmUserProxyDelegate {
         self.userList = userList.filter({$0.userId != userId})
         self.respDelegates.allObjects.forEach { obj in
             guard let obj = obj as? AUiUserRespDelegate else {return}
-            obj.onRoomUserLeave(roomId: channelName, userInfo: user)
+            obj.onUserBeKicked(roomId: channelName, userId: user.userId)
         }
     }
 }
@@ -194,6 +194,16 @@ extension AUiUserServiceImpl: AUiUserServiceDelegate {
                 guard let obj = obj as? AUiUserRespDelegate else {return}
                 obj.onUserVideoMute(userId: currentUserId, mute: isMute)
             }
+        }
+    }
+    
+    public func kickUser(roomId: String, userId: String, callback: @escaping AUiCallback) {
+        let model = AUiKickUserReqModel()
+        model.roomId = roomId
+        model.userId = userId
+        model.operatorId = getRoomContext().currentUserInfo.userId
+        model.request { error, obj in
+            callback(error as? NSError)
         }
     }
 }

@@ -62,6 +62,8 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
     lazy var response: AUIIMManagerServiceImplement = {
         AUIIMManagerServiceImplement()
     }()
+    
+    lazy var giftRequest = AUIGiftServiceImplement()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +96,10 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
         let user = AUiUserThumbnailInfo()
         user.userId = "z18811508778"
         user.userName = "zjc"
-        self.response.configIM(appKey: "1129210531094378#auikit-voiceroom", user: user) { [weak self] error in
+//        self.response.configIM(appKey: "1129210531094378#auikit-voiceroom", user: user) { [weak self] error in
+//            
+//        }
+        self.giftRequest.giftsFromService(roomId: "") { tabs, error in
             
         }
     }
