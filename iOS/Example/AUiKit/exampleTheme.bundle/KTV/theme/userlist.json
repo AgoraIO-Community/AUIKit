@@ -1,0 +1,17 @@
+{
+  "MemberList": {
+      "backgroundColor": "#00000000",
+      "separatorColor": "#C3C5FE59"
+  },
+  "MemberUserCell": {
+      "avatarWidth": 56,
+      "avatarHeight": 56,
+      "avatarCornerRadius": 28,
+      "titleColor": "#ffffff",
+      "bigTitleFont": "PingFangSC-Regular,17",
+      "smallTitleFont": "PingFangSC-Regular,14",
+      "subTitleColor": "#ffffff80",
+      "selectedButtonColor": "#00000000",
+      "defalut_avatar":"aui_micseat_dialog_avatar_idle",
+  }
+}

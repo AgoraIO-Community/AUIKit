@@ -15,6 +15,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		9787AE9724FC417DCCC1DA01 /* Pods_AUIKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97BABB1261AC1ADA94FCCA8B /* Pods_AUIKit_Example.framework */; };
+		A83E5F472A208FAF006DD8CE /* exampleTheme.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A83E5F462A208FAF006DD8CE /* exampleTheme.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		97BABB1261AC1ADA94FCCA8B /* Pods_AUIKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00EE7F19AC0D098CB0F3451 /* Pods-AUIKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		A83E5F462A208FAF006DD8CE /* exampleTheme.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = exampleTheme.bundle; sourceTree = "<group>"; };
 		BE9DD6D1D56AD10BF76D507F /* Pods-AUIKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E47586C18449883BE2FEEE4D /* Pods-AUIKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +104,7 @@
 		607FACD21AFB9204008FA782 /* Example for AUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				A83E5F462A208FAF006DD8CE /* exampleTheme.bundle */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
@@ -214,7 +217,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = YS397FG5PA;
+						DevelopmentTeam = JDPG69R49Z;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
@@ -225,7 +228,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUiKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -253,6 +256,7 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				A83E5F472A208FAF006DD8CE /* exampleTheme.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,8 +295,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUiKit/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AUiKit/Resource/auiTheme.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -576,7 +580,7 @@
 			baseConfigurationReference = BE9DD6D1D56AD10BF76D507F /* Pods-AUIKit_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = YS397FG5PA;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				INFOPLIST_FILE = AUIKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -592,7 +596,7 @@
 			baseConfigurationReference = 56CDCD3B7F33E75B41D7BC7C /* Pods-AUIKit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = YS397FG5PA;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				INFOPLIST_FILE = AUIKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -648,7 +652,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUiKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,
