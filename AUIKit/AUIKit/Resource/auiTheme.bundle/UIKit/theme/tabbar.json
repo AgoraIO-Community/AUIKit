@@ -1,9 +1,0 @@
-{
-  "tabbar": {
-      "tabbarFont": "PingFangSC-Semibold,17",
-      "tabbarNormalColor": "#ffffff80",
-      "tabbarSelectedColor": "#ffffff",
-      "indicatorHeight": 4,
-      "indicatorCornerRadius": 2
-  }
-}
