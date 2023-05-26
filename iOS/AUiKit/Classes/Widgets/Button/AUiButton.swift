@@ -27,9 +27,9 @@ public class AUIButtonStyle: NSObject {
 public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var icon: ThemeImagePicker?
     public var selectedIcon: ThemeImagePicker?
-    public var iconWidth: ThemeCGFloatPicker?
-    public var iconHeight: ThemeCGFloatPicker?
-    public var padding: ThemeCGFloatPicker?
+    public var iconWidth: ThemeCGFloatPicker = "Button.iconWidth"
+    public var iconHeight: ThemeCGFloatPicker = "Button.iconWidth"
+    public var padding: ThemeCGFloatPicker = "Button.padding"
     public var buttonWitdth: ThemeCGFloatPicker = "Button.buttonWidth"
     public var buttonHeight: ThemeCGFloatPicker = "Button.buttonHeight"
     public var titleFont: ThemeFontPicker = "Button.titleFont"
@@ -38,6 +38,44 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var backgroundColor: ThemeColorPicker = "Button.backgroundColor"
     public var cornerRadius: ThemeCGFloatPicker? = "Button.cornerRadius"
     public var textAlpha: ThemeCGFloatPicker = "Button.titleAlpha"
+    public var highlightedBackgroundColor: ThemeColorPicker?
+    public var selectedBackgroundColor: ThemeColorPicker?
+    public var disabledBackgroundColor: ThemeColorPicker?
+    public var borderColor: ThemeCGColorPicker?
+    public var highlightedBorderColor: ThemeCGColorPicker?
+    public var selectedBorderColor: ThemeCGColorPicker?
+    public var disabledBorderColor: ThemeCGColorPicker?
+    public var highlightedTitleColor: ThemeColorPicker?
+    public var disabledTitleColor: ThemeColorPicker?
+    public var highlightedIcon: ThemeImagePicker?
+    public var disabledIcon: ThemeImagePicker?
+    
+    public static func appearanceTheme(appearance: String) -> AUIButtonDynamicTheme  {
+        let theme = AUIButtonDynamicTheme()
+        theme.iconWidth = ThemeCGFloatPicker(keyPath: "\(appearance).iconWidth")
+        theme.iconHeight = ThemeCGFloatPicker(keyPath: "\(appearance).iconHeight")
+        theme.padding = ThemeCGFloatPicker(keyPath: "\(appearance).padding")
+        theme.buttonWitdth = ThemeCGFloatPicker(keyPath: "\(appearance).buttonWitdth")
+        theme.buttonHeight = ThemeCGFloatPicker(keyPath: "\(appearance).buttonHeight")
+        theme.titleFont = ThemeFontPicker(stringLiteral: "\(appearance).titleFont")
+        theme.titleColor = AUIColor("\(appearance).titleColor")
+        theme.selectedTitleColor = AUIColor("\(appearance).selectedTitleColor")
+        theme.backgroundColor = AUIColor("\(appearance).backgroundColor")
+        theme.cornerRadius = ThemeCGFloatPicker(keyPath: "\(appearance).cornerRadius")
+        theme.textAlpha = ThemeCGFloatPicker(keyPath: "\(appearance).textAlpha")
+        theme.highlightedBackgroundColor = AUIColor("\(appearance).highlightedBackgroundColor")
+        theme.selectedBackgroundColor = AUIColor("\(appearance).selectedBackgroundColor")
+        theme.disabledBackgroundColor = AUIColor("\(appearance).disabledBackgroundColor")
+        theme.borderColor = AUICGColor("\(appearance).borderColor")
+        theme.highlightedBorderColor = AUICGColor("\(appearance).highlightedBorderColor")
+        theme.selectedBorderColor = AUICGColor("\(appearance).selectedBorderColor")
+        theme.disabledBorderColor = AUICGColor("\(appearance).disabledBorderColor")
+        theme.highlightedTitleColor = AUIColor("\(appearance).highlightedTitleColor")
+        theme.disabledTitleColor = AUIColor("\(appearance).disabledTitleColor")
+        theme.highlightedIcon = auiThemeImage("\(appearance).highlightedIcon")
+        theme.disabledIcon = auiThemeImage("\(appearance).disabledIcon")
+        return theme
+    }
     
     public static func toolbarTheme() -> AUIButtonDynamicTheme {
         let theme = AUIButtonDynamicTheme()
@@ -53,14 +91,28 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public override func setupStyle(button: AUIButton) {
         button.theme_setImage(self.icon, forState: .normal)
         button.theme_setImage(self.selectedIcon, forState: .selected)
-        button.imageView?.theme_image = self.icon
+        button.theme_setImage(self.highlightedIcon, forState: .highlighted)
+        button.theme_setImage(self.disabledIcon, forState: .disabled)
         
         button.theme_setTitleColor(self.titleColor, forState: .normal)
         button.theme_setTitleColor(self.selectedTitleColor, forState: .selected)
+        button.theme_setTitleColor(self.highlightedTitleColor, forState: .highlighted)
+        button.theme_setTitleColor(self.disabledTitleColor, forState: .disabled)
         
-        button.theme_backgroundColor = self.backgroundColor
+        button.theme_backgroundColor = backgroundColor
+        button.layer.theme_borderColor = borderColor
+        if button.isHighlighted {
+            button.theme_backgroundColor = highlightedBackgroundColor
+            button.layer.theme_borderColor = highlightedBorderColor
+        } else if button.isSelected {
+            button.theme_backgroundColor = selectedBackgroundColor
+            button.layer.theme_borderColor = selectedBorderColor
+        } else if !button.isEnabled {
+            button.theme_backgroundColor = disabledBackgroundColor
+            button.layer.theme_borderColor = disabledBorderColor
+        }
+        
         button.theme_padding = padding
-        
         button.titleLabel?.theme_alpha = textAlpha
     }
     
@@ -89,14 +141,45 @@ public class AUIButtonNativeTheme: AUIButtonStyle {
     public var cornerRadius: CGFloat = 25
     public var textAlpha: CGFloat = 1
     
+    public var highlightedBackgroundColor: UIColor?
+    public var selectedBackgroundColor: UIColor?
+    public var disabledBackgroundColor: UIColor?
+    
+    public var borderColor: CGColor?
+    public var highlightedBorderColor: CGColor?
+    public var selectedBorderColor: CGColor?
+    public var disabledBorderColor: CGColor?
+    
+    public var highlightedTitleColor: UIColor?
+    public var disabledTitleColor: UIColor?
+    
+    public var highlightedIcon: UIImage?
+    public var disabledIcon: UIImage?
+    
     public override func setupStyle(button: AUIButton) {
         button.setImage(self.icon, for: .normal)
         button.setImage(self.selectedIcon, for: .selected)
+        button.setImage(self.highlightedIcon, for: .highlighted)
+        button.setImage(self.disabledIcon, for: .disabled)
         
         button.setTitleColor(self.titleColor, for: .normal)
         button.setTitleColor(self.selectedTitleColor, for: .selected)
+        button.setTitleColor(self.highlightedTitleColor, for: .highlighted)
+        button.setTitleColor(self.disabledTitleColor, for: .disabled)
         
-        button.backgroundColor = self.backgroundColor
+        button.backgroundColor = backgroundColor
+        button.layer.borderColor = borderColor
+        if button.isHighlighted {
+            button.backgroundColor = highlightedBackgroundColor
+            button.layer.borderColor = highlightedBorderColor
+        } else if button.isSelected {
+            button.backgroundColor = selectedBackgroundColor
+            button.layer.borderColor = selectedBorderColor
+        } else if !button.isEnabled {
+            button.backgroundColor = disabledBackgroundColor
+            button.layer.borderColor = disabledBorderColor
+        }
+        
         button.padding = padding
         button.titleLabel?.alpha = textAlpha
     }
@@ -112,6 +195,24 @@ public class AUIButtonNativeTheme: AUIButtonStyle {
 }
 
 open class AUIButton: UIButton {
+    open override var isEnabled: Bool {
+        didSet {
+            style?.setupStyle(button: self)
+        }
+    }
+    
+    open override var isSelected: Bool {
+        didSet {
+            style?.setupStyle(button: self)
+        }
+    }
+    
+    open override var isHighlighted: Bool {
+        didSet {
+            style?.setupStyle(button: self)
+        }
+    }
+    
     @objc public var textImageAlignment: AUIButtonTextImageAlignment = .imageCenterTextCenter {
         didSet {
             setNeedsLayout()
