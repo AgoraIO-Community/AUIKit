@@ -30,7 +30,7 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var iconWidth: ThemeCGFloatPicker = "Button.iconWidth"
     public var iconHeight: ThemeCGFloatPicker = "Button.iconWidth"
     public var padding: ThemeCGFloatPicker = "Button.padding"
-    public var buttonWitdth: ThemeCGFloatPicker = "Button.buttonWidth"
+    public var buttonWidth: ThemeCGFloatPicker = "Button.buttonWidth"
     public var buttonHeight: ThemeCGFloatPicker = "Button.buttonHeight"
     public var titleFont: ThemeFontPicker = "Button.titleFont"
     public var titleColor: ThemeColorPicker = "Button.titleColor"
@@ -55,14 +55,14 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
         theme.iconWidth = ThemeCGFloatPicker(keyPath: "\(appearance).iconWidth")
         theme.iconHeight = ThemeCGFloatPicker(keyPath: "\(appearance).iconHeight")
         theme.padding = ThemeCGFloatPicker(keyPath: "\(appearance).padding")
-        theme.buttonWitdth = ThemeCGFloatPicker(keyPath: "\(appearance).buttonWitdth")
+        theme.buttonWidth = ThemeCGFloatPicker(keyPath: "\(appearance).buttonWidth")
         theme.buttonHeight = ThemeCGFloatPicker(keyPath: "\(appearance).buttonHeight")
         theme.titleFont = ThemeFontPicker(stringLiteral: "\(appearance).titleFont")
         theme.titleColor = AUIColor("\(appearance).titleColor")
         theme.selectedTitleColor = AUIColor("\(appearance).selectedTitleColor")
         theme.backgroundColor = AUIColor("\(appearance).backgroundColor")
         theme.cornerRadius = ThemeCGFloatPicker(keyPath: "\(appearance).cornerRadius")
-        theme.textAlpha = ThemeCGFloatPicker(keyPath: "\(appearance).textAlpha")
+        theme.textAlpha = ThemeCGFloatPicker(keyPath: "\(appearance).titleAlpha")
         theme.highlightedBackgroundColor = AUIColor("\(appearance).highlightedBackgroundColor")
         theme.selectedBackgroundColor = AUIColor("\(appearance).selectedBackgroundColor")
         theme.disabledBackgroundColor = AUIColor("\(appearance).disabledBackgroundColor")
@@ -72,8 +72,6 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
         theme.disabledBorderColor = AUICGColor("\(appearance).disabledBorderColor")
         theme.highlightedTitleColor = AUIColor("\(appearance).highlightedTitleColor")
         theme.disabledTitleColor = AUIColor("\(appearance).disabledTitleColor")
-        theme.highlightedIcon = auiThemeImage("\(appearance).highlightedIcon")
-        theme.disabledIcon = auiThemeImage("\(appearance).disabledIcon")
         return theme
     }
     
@@ -82,7 +80,7 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
         theme.titleFont = "CommonFont.small"
         theme.iconWidth = "Player.toolIconWidth"
         theme.iconHeight = "Player.toolIconHeight"
-        theme.buttonWitdth = "Player.playButtonWidth"
+        theme.buttonWidth = "Player.playButtonWidth"
         theme.buttonHeight = "Player.playButtonHeight"
         theme.cornerRadius = nil
         return theme
@@ -119,7 +117,7 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public override func layoutStyle(button: AUIButton) {
         button.imageView?.theme_width = self.iconWidth
         button.imageView?.theme_height = self.iconHeight
-        button.theme_width = self.buttonWitdth
+        button.theme_width = self.buttonWidth
         button.theme_height = self.buttonHeight
         button.titleLabel?.theme_font = self.titleFont
         button.layer.theme_cornerRadius = self.cornerRadius
@@ -132,7 +130,7 @@ public class AUIButtonNativeTheme: AUIButtonStyle {
     public var iconWidth: CGFloat = 0
     public var iconHeight: CGFloat = 0
     public var padding: CGFloat = 0
-    public var buttonWitdth: CGFloat = 240
+    public var buttonWidth: CGFloat = 240
     public var buttonHeight: CGFloat = 50
     public var titleFont: UIFont = UIFont(name: "PingFangSC-Semibold", size: 17)!
     public var titleColor: UIColor = .white
@@ -187,7 +185,7 @@ public class AUIButtonNativeTheme: AUIButtonStyle {
     public override func layoutStyle(button: AUIButton) {
         button.imageView?.aui_width = self.iconWidth
         button.imageView?.aui_height = self.iconHeight
-        button.aui_width = self.buttonWitdth
+        button.aui_width = self.buttonWidth
         button.aui_height = self.buttonHeight
         button.layer.cornerRadius = self.cornerRadius
         button.titleLabel?.font = self.titleFont

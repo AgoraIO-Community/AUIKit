@@ -206,7 +206,7 @@ open class AUIPlayerView: UIView {
         let theme = AUIButtonDynamicTheme()
         theme.iconWidth = "Player.selectSongButtonWidth"
         theme.iconHeight = "Player.selectSongButtonHeight"
-        theme.buttonWitdth = "Player.selectSongButtonWidth"
+        theme.buttonWidth = "Player.selectSongButtonWidth"
         theme.buttonHeight = "Player.selectSongButtonHeight"
         theme.backgroundColor = AUIColor("Player.selectSongBackgroundColor")
         theme.cornerRadius = "Player.selectSongButtonRadius"
@@ -223,7 +223,7 @@ open class AUIPlayerView: UIView {
     //加入合唱按钮
     public lazy var joinChorusButton: AUIButton = {
         let theme = AUIButtonDynamicTheme()
-        theme.buttonWitdth = "Player.JoinChorusButtonWidth"
+        theme.buttonWidth = "Player.JoinChorusButtonWidth"
         theme.buttonHeight = "Player.JoinChorusButtonHeight"
         theme.icon = "Player.playerLrcItemIconJoinChorus"
         theme.cornerRadius = nil

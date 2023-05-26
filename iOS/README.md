@@ -306,7 +306,7 @@ AUIKit
 | selectedIcon | Select icon |
 | iconWidth | Button icon width |
 | iconHeight | Button icon height |
-| buttonWitdth | Button width |
+| buttonWidth | Button width |
 | buttonHeight | Button height |
 | titleFont | Button text font  |
 | titleColor | Button Text Color |
