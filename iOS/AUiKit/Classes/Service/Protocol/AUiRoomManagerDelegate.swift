@@ -52,6 +52,13 @@ public protocol AUiRoomManagerDelegate: NSObjectProtocol {
     ///   - pageSize: 分页大小
     ///   - callback: 操作完成回调
     func getRoomInfoList(lastCreateTime: Int64?, pageSize: Int, callback: @escaping AUiRoomListCallback)
+    
+    /// Description 修改房间公告
+    /// - Parameters:
+    ///   - roomId: 房间id
+    ///   - announcement: 房间公告内容
+    ///   - callback: callback ,error nil 表示成功，否则表示失败
+    func changeRoomAnnouncement(roomId: String, announcement: String, callback: @escaping AUiCallback)
 }
 
 /// 房间操作对应的响应
@@ -66,4 +73,11 @@ public protocol AUiRoomManagerRespDelegate: NSObjectProtocol {
     ///   - roomId: 房间id
     ///   - roomInfo: 房间信息
     func onRoomInfoChange(roomId: String, roomInfo: AUiRoomInfo)
+    
+    /// Description 房间公告发生变更
+    /// - Parameters:
+    ///   - roomId: 房间id
+    ///   - announcement: 公告变更内容
+    func onRoomAnnouncementChange(roomId: String, announcement: String)
+    
 }

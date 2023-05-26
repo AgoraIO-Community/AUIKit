@@ -141,6 +141,16 @@ extension AUiRoomManagerImpl: AUiRoomManagerDelegate {
             callback(error as NSError?, list as? [AUiRoomInfo])
         }
     }
+    
+    public func changeRoomAnnouncement(roomId: String, announcement: String, callback: @escaping AUiCallback) {
+        let model = AUiRoomAnnouncementNetworkModel()
+        model.notice = announcement
+        model.roomId = roomId
+        model.userId = AUiRoomContext.shared.currentUserInfo.userId
+        model.request { error, _ in
+            callback(error as NSError?)
+        }
+    }
 }
 
 extension AUiRoomManagerImpl: AUiRtmErrorProxyDelegate {

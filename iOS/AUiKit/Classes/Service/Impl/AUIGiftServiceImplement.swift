@@ -61,7 +61,24 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUiRtmMessageP
     }
     
     public func giftsFromService(roomId: String, completion: @escaping ([AUIGiftTabEntity], NSError?) -> Void) {
-        //TODO: - mock data
+        let model = AUIGiftNetworkModel()
+        model.method = .get
+        model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
+        model.request { error, obj in
+            if error == nil,obj != nil,let jsons = obj as? [[String:Any]] {
+                var tabs = [AUIGiftTabEntity]()
+                for json in jsons {
+                    guard let gift = AUIGiftTabEntity.yy_model(with: json) else {
+                        completion([], NSError(domain: "giftsFromService json error", code: 400))
+                        return
+                    }
+                    tabs.append(gift)
+                }
+                completion(tabs, nil)
+            } else {
+                completion([], error as? NSError)
+            }
+        }
     }
     
     public func sendGift(gift: AUIGiftEntity, completion: @escaping (NSError?) -> Void) {

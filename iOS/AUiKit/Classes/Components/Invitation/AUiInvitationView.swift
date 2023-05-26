@@ -94,6 +94,10 @@ extension AUiInvitationView: AUiInvitationRespDelegate {
 }
 
 extension AUiInvitationView: AUiRoomManagerRespDelegate {
+    func onRoomAnnouncementChange(roomId: String, announcement: String) {
+        //TODO: - update room announcement
+    }
+    
     func onRoomUserSnapshot(roomId: String, userList: [AUiUserInfo]) {
         self.userList = userList
         self.tableView.reloadData()

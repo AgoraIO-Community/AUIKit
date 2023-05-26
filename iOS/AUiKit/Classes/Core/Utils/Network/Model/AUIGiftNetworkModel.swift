@@ -11,11 +11,9 @@ class AUIGiftNetworkModel: AUiNetworkModel {
     
     public override init() {
         super.init()
-        interfaceName = "/v1/gifts"
+        interfaceName = "/v1/gifts/list"
     }
-    
-    public var appId: String?
-        
+            
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil
         do {
@@ -23,8 +21,7 @@ class AUIGiftNetworkModel: AUiNetworkModel {
         } catch let err {
             throw err
         }
-        guard let dic = dic as? [String: Any],
-              let result = dic["data"] as? [String: String] else {
+        guard let dic1 = dic as? [String: Any],let result = dic1["data"] as? [[String: Any]] else {
             throw AUiCommonError.networkParseFail.toNSError()
         }
         
