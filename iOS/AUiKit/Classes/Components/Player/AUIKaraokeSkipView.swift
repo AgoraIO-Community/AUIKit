@@ -30,7 +30,7 @@ open class AUIKaraokeSkipView: UIView {
     
     lazy var skipBtn: AUIButton = {
         let theme = AUIButtonDynamicTheme()
-        theme.buttonWitdth = "Player.skipButtonWidth"
+        theme.buttonWidth = "Player.skipButtonWidth"
         theme.buttonHeight = "Player.skipButtonHeight"
         theme.titleFont = "CommonFont.middleBold"
         theme.cornerRadius = nil
@@ -44,7 +44,7 @@ open class AUIKaraokeSkipView: UIView {
     
     lazy var cancleBtn: AUIButton = {
         let theme = AUIButtonDynamicTheme()
-        theme.buttonWitdth = "Player.skipCancleButtonWidth"
+        theme.buttonWidth = "Player.skipCancleButtonWidth"
         theme.buttonHeight = "Player.skipCancleButtonHeight"
         theme.icon = "Player.playerLrcItemSkipItem"
         theme.cornerRadius = nil

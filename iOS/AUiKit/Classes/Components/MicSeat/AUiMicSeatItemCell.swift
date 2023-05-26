@@ -68,7 +68,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     //角色标记
     lazy var micRoleBtn: UIButton = {
         let theme = AUIButtonDynamicTheme()
-        theme.buttonWitdth = "SeatItem.micRoleButtonWidth"
+        theme.buttonWidth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
         theme.icon = "SeatItem.micSeatItemIconMainSinger"
         theme.selectedIcon = "SeatItem.micSeatItemIconCoSinger"
@@ -90,7 +90,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
         theme.icon = "SeatItem.micSeatHostIcon"
-        theme.buttonWitdth = "SeatItem.micHostButtonWidth"
+        theme.buttonWidth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter

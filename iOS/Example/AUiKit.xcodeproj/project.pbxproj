@@ -217,7 +217,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = JDPG69R49Z;
+						DevelopmentTeam = YS397FG5PA;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
@@ -228,7 +228,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUiKit" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -295,8 +295,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AUiKit/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AUiKit/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/auiTheme.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -580,7 +580,7 @@
 			baseConfigurationReference = BE9DD6D1D56AD10BF76D507F /* Pods-AUIKit_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = JDPG69R49Z;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				INFOPLIST_FILE = AUIKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -596,7 +596,7 @@
 			baseConfigurationReference = 56CDCD3B7F33E75B41D7BC7C /* Pods-AUIKit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = JDPG69R49Z;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				INFOPLIST_FILE = AUIKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -652,7 +652,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUiKit" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,

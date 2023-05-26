@@ -147,7 +147,7 @@ extension ViewController {
 extension ViewController {
     func createButton()-> AUIButton {
         let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonMin")
-//        theme.buttonWitdth = "SeatItem.micRoleButtonWidth"
+//        theme.buttonWidth = "SeatItem.micRoleButtonWidth"
 //        theme.buttonHeight = "SeatItem.micRoleButtonHeight"
         theme.icon = auiThemeImage("Buttons.user")
 //        theme.selectedIcon = "SeatItem.micSeatItemIconCoSinger"
