@@ -66,7 +66,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         respDelegates.remove(delegate)
     }
     
-    public func createRoom(room: AUICreateRoomInfo, callback: @escaping (Error?, AUIRoomInfo?) -> ()) {
+    public func createRoom(room: AUICreateRoomInfo, callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
         let model = AUIRoomCreateNetworkModel()
         model.roomName = room.roomName
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
@@ -77,11 +77,11 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
 //            if let room = resp as? AUIRoomInfo {
 //                self.rtmManager.subscribeError(channelName: room.roomId, delegate: self)
 //            }
-            callback(error, resp as? AUIRoomInfo)
+            callback(error as? NSError, resp as? AUIRoomInfo)
         }
     }
     
-    public func destroyRoom(roomId: String, callback: @escaping (Error?) -> ()) {
+    public func destroyRoom(roomId: String, callback: @escaping (NSError?) -> ()) {
         aui_info("destroyRoom: \(roomId)", tag: "AUIRoomManagerImpl")
         self.rtmManager.unSubscribe(channelName: roomId)
         
@@ -89,20 +89,20 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
         model.roomId = roomId
         model.request { error, _ in
-            callback(error)
+            callback(error as? NSError)
         }
         rtmManager.unsubscribeError(channelName: roomId, delegate: self)
         rtmManager.logout()
     }
     
-    public func enterRoom(roomId: String, callback:@escaping (Error?) -> ()) {
+    public func enterRoom(roomId: String, callback:@escaping (NSError?) -> ()) {
         aui_info("enterRoom: \(roomId) ", tag: "AUIRoomManagerImpl")
         
         let rtmToken = AUIRoomContext.shared.roomConfigMap[roomId]?.rtmToken007 ?? ""
         guard rtmManager.isLogin else {
             rtmManager.login(token: rtmToken) {[weak self] err in
                 if let err = err {
-                    callback(err)
+                    callback(err as NSError)
                     return
                 }
                 self?.enterRoom(roomId: roomId, callback: callback)
@@ -120,13 +120,13 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         aui_info("enterRoom subscribe: \(roomId)", tag: "AUIRoomManagerImpl")
         rtmManager.subscribe(channelName: roomId, rtcToken: roomConfig.rtcToken007) { error in
             aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUIRoomManagerImpl")
-            callback(error)
+            callback(error as? NSError)
         }
         
         self.rtmManager.subscribeError(channelName: roomId, delegate: self)
     }
     
-    public func exitRoom(roomId: String, callback: (Error?) -> ()) {
+    public func exitRoom(roomId: String, callback: @escaping (NSError?) -> ()) {
         aui_info("exitRoom: \(roomId)", tag: "AUIRoomManagerImpl")
         self.rtmManager.unSubscribe(channelName: roomId)
         rtmManager.logout()
@@ -138,7 +138,17 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         model.lastCreateTime = lastCreateTime == nil ? nil : NSNumber(value: Int(lastCreateTime!))
         model.pageSize = pageSize
         model.request { error, list in
-            callback(error, list as? [AUIRoomInfo])
+            callback(error as NSError?, list as? [AUIRoomInfo])
+        }
+    }
+    
+    public func changeRoomAnnouncement(roomId: String, announcement: String, callback: @escaping AUICallback) {
+        let model = AUIRoomAnnouncementNetworkModel()
+        model.notice = announcement
+        model.roomId = roomId
+        model.userId = AUIRoomContext.shared.currentUserInfo.userId
+        model.request { error, _ in
+            callback(error as NSError?)
         }
     }
 }

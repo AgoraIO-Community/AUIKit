@@ -6,32 +6,44 @@
 //
 
 import UIKit
-
+import AudioToolbox
 
 public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
-    var images = [UIImage("finger_heart",.voiceRoom), UIImage("thunder",.voiceRoom), UIImage("thumbs_up",.voiceRoom), UIImage("No_of_the_beast",.voiceRoom), UIImage("lips",.voiceRoom), UIImage("heart",.voiceRoom)]
+    private var images = [UIImage("finger_heart",.voiceRoom), UIImage("thunder",.voiceRoom), UIImage("thumbs_up",.voiceRoom), UIImage("No_of_the_beast",.voiceRoom), UIImage("lips",.voiceRoom), UIImage("heart",.voiceRoom)]
 
-    var liveLayers = [CALayer]()
+    private var liveLayers = [CALayer]()
 
-    var deleteLayers = [CALayer]()
+    private var deleteLayers = [CALayer]()
 
-    var count = UInt(0)
+    public var count = UInt(0)
+    
+    public var touchFeedback: Bool = true
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
     }
     
-    convenience init(frame: CGRect,images: [UIImage]) {
+    convenience init(frame: CGRect,images: [UIImage], touchFeedback: Bool = true) {
         self.init(frame: frame)
-        self.images = images
+        if !images.isEmpty {
+            self.images = images
+        }
+        self.touchFeedback = touchFeedback
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func shakeDevice() {
+        AudioServicesPlaySystemSound(1519)
+    }
 
     func setupEmitter() {
+        if self.touchFeedback {
+            self.shakeDevice()
+        }
         self.count += 1
         if self.count == UInt.max {
             self.count = 0
@@ -45,7 +57,7 @@ public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
             let image = self.images[safe: Int(count) % images.count] ?? UIImage()
             shipLayer?.contents = image?.cgImage
             shipLayer?.contentsScale = UIScreen.main.scale
-            shipLayer?.frame = CGRect(x: bounds.width / 2.0, y: bounds.height, width: 40, height: 40)
+            shipLayer?.frame = CGRect(x: bounds.width / 2.0, y: bounds.height+55, width: 40, height: 40)
             shipLayer?.transform = CATransform3DRotate(CATransform3DIdentity, CGFloat(Double.pi / 2.0), 0, 0, 1)
         }
         shipLayer?.opacity = 1.0

@@ -48,3 +48,17 @@ open class AUIRoomDestoryNetworkModel: AUICommonNetworkModel {
     
     public var roomId: String?
 }
+
+
+open class AUIRoomAnnouncementNetworkModel: AUICommonNetworkModel {
+    public override init() {
+        super.init()
+        interfaceName = "/v1/room/notice"
+    }
+    
+    public var roomId: String?
+        
+    public var notice: String?
+    
+}
+

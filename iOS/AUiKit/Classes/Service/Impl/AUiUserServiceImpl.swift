@@ -103,6 +103,16 @@ extension AUIUserServiceImpl: AUIRtmUserProxyDelegate {
             obj.onRoomUserLeave(roomId: channelName, userInfo: user)
         }
     }
+    
+    public func onUserBeKicked(channelName: String, userId: String, userInfo: [String : Any]) {
+        aui_info("onUserBeKicked: \(userId)", tag: "AUIUserServiceImpl")
+        let user = userList.filter({$0.userId == userId}).first ?? AUIUserInfo.yy_model(withJSON: userInfo)!
+        self.userList = userList.filter({$0.userId != userId})
+        self.respDelegates.allObjects.forEach { obj in
+            guard let obj = obj as? AUIUserRespDelegate else {return}
+            obj.onUserBeKicked(roomId: channelName, userId: user.userId)
+        }
+    }
 }
 
 extension AUIUserServiceImpl: AUIUserServiceDelegate {
@@ -121,7 +131,7 @@ extension AUIUserServiceImpl: AUIUserServiceDelegate {
     public func getUserInfoList(roomId: String, userIdList: [String], callback:@escaping AUIUserListCallback) {
         self.rtmManager.whoNow(channelName: roomId) { error, userList in
             if let error = error {
-                callback(error, nil)
+                callback(error as NSError, nil)
                 return
             }
             
@@ -149,7 +159,7 @@ extension AUIUserServiceImpl: AUIUserServiceDelegate {
         self.rtmManager.setPresenceState(channelName: channelName, attr: userAttr) {[weak self] error in
             guard let self = self else {return}
             if let error = error {
-                callback(error)
+                callback(error as NSError)
                 return
             }
             
@@ -173,7 +183,7 @@ extension AUIUserServiceImpl: AUIUserServiceDelegate {
         self.rtmManager.setPresenceState(channelName: channelName, attr: userAttr) {[weak self] error in
             guard let self = self else {return}
             if let error = error {
-                callback(error)
+                callback(error as NSError)
                 return
             }
             
@@ -184,6 +194,16 @@ extension AUIUserServiceImpl: AUIUserServiceDelegate {
                 guard let obj = obj as? AUIUserRespDelegate else {return}
                 obj.onUserVideoMute(userId: currentUserId, mute: isMute)
             }
+        }
+    }
+    
+    public func kickUser(roomId: String, userId: String, callback: @escaping AUICallback) {
+        let model = AUIKickUserReqModel()
+        model.roomId = roomId
+        model.userId = userId
+        model.operatorId = getRoomContext().currentUserInfo.userId
+        model.request { error, obj in
+            callback(error as? NSError)
         }
     }
 }

@@ -18,6 +18,12 @@ public extension String {
 
 public extension AUIKitSwiftLib where Base == String {
     
+    /// Description jsonString convert dic
+    /// - Returns: Dictionary
+    func jsonToDictionary() -> Dictionary<String,Any> {
+        base.data(using: .utf8)?.a.toDictionary() ?? [:]
+    }
+    
     /// Description Localized string in current bundle
     /// - Parameter type: AUIBundleType
     /// - Returns: Localized result

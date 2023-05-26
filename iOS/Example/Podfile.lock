@@ -1,8 +1,10 @@
 PODS:
+  - Agora_Chat_iOS (1.1.0)
   - AgoraLyricsScore (1.1.1-beta-3)
   - AgoraRtcEngine_iOS (1.0)
   - Alamofire (5.6.4)
   - AUIKit (0.1.0):
+    - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_iOS
     - Alamofire
@@ -15,6 +17,7 @@ PODS:
     - YYModel
     - Zip
   - AUIKit/AUIKit (0.1.0):
+    - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_iOS
     - Alamofire
@@ -46,6 +49,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Agora_Chat_iOS
     - AgoraLyricsScore
     - Alamofire
     - FBSnapshotTestCase
@@ -64,10 +68,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
   AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
-  AUIKit: 9f035ff2a5c3245e44e5b92d605cc00b75d5b057
+  AUIKit: d0f0f87efe3cfcd5836dab395d86496fd68ee491
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961

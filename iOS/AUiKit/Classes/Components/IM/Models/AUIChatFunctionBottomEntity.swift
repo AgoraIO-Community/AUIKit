@@ -9,12 +9,12 @@ import Foundation
 
 public class AUIChatFunctionBottomEntity: NSObject {
     
-    var selected: Bool?
+    public var selected: Bool?
     
-    var selectedImage: UIImage?
+    public var selectedImage: UIImage?
     
-    var normalImage: UIImage?
+    public var normalImage: UIImage?
     
-    var index: Int?
+    public var index: Int?
     
 }

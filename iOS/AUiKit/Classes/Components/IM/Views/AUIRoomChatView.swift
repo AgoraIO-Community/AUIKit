@@ -15,21 +15,21 @@ public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource
 
     private var cellOffset = CGFloat(0)
 
-    var messages: [AUIChatEntity]? = [AUIChatEntity]()
+    public var messages: [AUIChatEntity]? = [AUIChatEntity]()
 
-    lazy var chatView: UITableView = {
-        UITableView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height), style: .plain).delegate(self).dataSource(self).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).registerCell(AUIChatCell.self, forCellReuseIdentifier: "AUIChatCell").showsVerticalScrollIndicator(false)
+    public lazy var chatView: UITableView = {
+        UITableView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height), style: .plain).delegate(self).dataSource(self).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).showsVerticalScrollIndicator(false)
     }()
 
-    lazy var emitter: AUIPraiseEmitterView = {
-        AUIPraiseEmitterView(frame: CGRect(x: AScreenWidth - 80, y: -40, width: 80, height: self.frame.height - 20))
+    public lazy var emitter: AUIPraiseEmitterView = {
+        AUIPraiseEmitterView(frame: CGRect(x: AScreenWidth - 80, y: 0, width: 80, height: self.frame.height - 20),images: []).backgroundColor(.clear)
     }()
 
-    lazy var gradientLayer: CAGradientLayer = {
+    public lazy var gradientLayer: CAGradientLayer = {
         CAGradientLayer().startPoint(CGPoint(x: 0, y: 0)).endPoint(CGPoint(x: 0, y: 0.1)).colors([UIColor.clear.withAlphaComponent(0).cgColor, UIColor.clear.withAlphaComponent(1).cgColor]).locations([NSNumber(0), NSNumber(1)]).rasterizationScale(UIScreen.main.scale).frame(self.blurView.frame)
     }()
 
-    lazy var blurView: UIView = {
+    public lazy var blurView: UIView = {
         UIView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height)).backgroundColor(.clear)
     }()
 
@@ -52,7 +52,7 @@ public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource
         item.height = item.height
         return item
     }
-
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -79,12 +79,12 @@ public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource
 }
 
 public extension AUIRoomChatView {
-    @objc public func showLikeAnimation() {
-        emitter.setupEmitter()
+    @objc func showLikeAnimation() {
+        self.emitter.setupEmitter()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messages?.count ?? 0
+        self.messages?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -95,7 +95,7 @@ public extension AUIRoomChatView {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "AUIChatCell") as? AUIChatCell
         if cell == nil {
-            cell = AUIChatCell(style: .default, reuseIdentifier: "AUIChatCell")
+            cell = AUIChatCell(reuseIdentifier: "AUIChatCell",config: AUIChatCellConfig())
         }
         guard let entity = self.messages?[safe: indexPath.row] else { return AUIChatCell() }
         cell?.refresh(chat: entity)

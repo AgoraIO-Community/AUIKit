@@ -21,7 +21,7 @@ open class AUIChorusServiceImpl: NSObject {
     
     deinit {
         aui_info("deinit AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
-        rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
+        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
     
     public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
@@ -31,7 +31,7 @@ open class AUIChorusServiceImpl: NSObject {
         self.channelName = channelName
         self.rtcKit = rtcKit
         self.ktvApi = ktvApi
-        rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
+        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
 }
 
@@ -54,7 +54,7 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
         model.request { err, _ in
-            completion(err)
+            completion(err as? NSError)
         }
     }
     
@@ -64,7 +64,7 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
         model.request { err, _ in
-            completion(err)
+            completion(err as? NSError)
         }
     }
     
@@ -75,8 +75,8 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
 }
 
 //MARK: AUIRtmMsgProxyDelegate
-extension AUIChorusServiceImpl: AUIRtmMsgProxyDelegate {
-    public func onMsgDidChanged(channelName: String, key: String, value: Any) {
+extension AUIChorusServiceImpl: AUIRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kChorusKey {
             aui_info("recv chorus attr did changed \(value)", tag: "AUIPlayerServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),

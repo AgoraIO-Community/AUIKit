@@ -24,47 +24,47 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
     /// - Returns: <#description#>
-    func sendInvitation(userId: String, seatIndex: Int?, callback: AUICallback)
+    func sendInvitation(userId: String, seatIndex: Int?, callback:@escaping AUICallback)
     
     /// 接受邀请
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - callback: <#callback description#>
-    func acceptInvitation(userId: String, seatIndex: Int?, callback: AUICallback)
+    func acceptInvitation(userId: String, seatIndex: Int?, callback:@escaping AUICallback)
     
     
     /// 拒绝邀请
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - callback: <#callback description#>
-    func rejectInvitation(userId: String, callback: AUICallback)
+    func rejectInvitation(userId: String, callback:@escaping AUICallback)
     
     /// 取消邀请
     /// - Parameters:
     ///   - id: <#id description#>
     ///   - callback: <#callback description#>
-    func cancelInvitation(userId: String, callback: AUICallback)
+    func cancelInvitation(userId: String, callback:@escaping AUICallback)
 
     /// 发送申请
     /// - Parameter callback: <#callback description#>
-    func sendApply(seatIndex: Int?, callback: AUICallback)
+    func sendApply(seatIndex: Int?, callback:@escaping AUICallback)
     
     /// 取消申请
     /// - Parameter callback: <#callback description#>
-    func cancelApply(callback: AUICallback)
+    func cancelApply(callback:@escaping AUICallback)
     
     /// 接受申请(房主同意)
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
-    func acceptApply(userId: String, seatIndex: Int?, callback: AUICallback)
+    func acceptApply(userId: String, seatIndex: Int?, callback:@escaping AUICallback)
     
     
     /// 拒绝申请(房主同意)
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
-    func rejectApply(userId: String, callback: AUICallback)
+    func rejectApply(userId: String, callback:@escaping AUICallback)
 }
 
 

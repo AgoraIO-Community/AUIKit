@@ -41,10 +41,18 @@ TODO: Add long description of the pod here.
 
   s.subspec 'AUIKit' do |chat|
       chat.source_files = 'AUIKit/Classes/Components/IM/**/*'
-      chat.resource = 'AUIKit/Classes/Components/IM/Resource/VoiceChatRoomResource.bundle'
+      chat.resource = 'AUIKit/Resource/VoiceChatRoomResource.bundle'
       chat.dependency 'Agora_Chat_iOS'
       chat.dependency 'AUIKit/Core'
       chat.dependency 'AUIKit/Service'
+  end
+  
+  s.subspec 'AUIKit' do |gift|
+      gift.source_files = 'AUIKit/Classes/Components/Gift/**/*'
+      gift.resource = 'AUIKit/Resource/Gift.bundle'
+      gift.dependency 'Agora_Chat_iOS'
+      gift.dependency 'AUIKit/Core'
+      gift.dependency 'AUIKit/Service'
   end
   
   s.subspec 'AUIKit' do |player|
@@ -56,12 +64,13 @@ TODO: Add long description of the pod here.
       player.dependency 'AUIKit/Service'
   end
   
-  s.source_files = 'AUIKit/Classes/**/*'
+  s.source_files = 'AUIKit/Classes/**/*.swift'
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = 'AUIKit/Resource/*.bundle'
+  s.resource = ['AUIKit/Resource/*.bundle', 'AUIKit/Classes/Components/**/Resources/*.bundle']
+
   
   # s.resource_bundles = {
   #   'AUIKit' => ['AUIKit/Assets/*.png']
@@ -79,4 +88,5 @@ TODO: Add long description of the pod here.
   s.dependency 'MJRefresh'
   s.dependency 'ScoreEffectUI'
   s.dependency 'AgoraLyricsScore'
+  s.dependency 'Agora_Chat_iOS'
 end

@@ -159,12 +159,20 @@ extension AUIRtmManager {
 
 //MARK: Channel Metadata
 extension AUIRtmManager {
-    public func subscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
-        proxy.subscribeMsg(channelName: channelName, itemKey: itemKey, delegate: delegate)
+    public func subscribeAttributes(channelName: String, itemKey: String, delegate: AUIRtmAttributesProxyDelegate) {
+        proxy.subscribeAttributes(channelName: channelName, itemKey: itemKey, delegate: delegate)
     }
     
-    public func unsubscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
-        proxy.unsubscribeMsg(channelName: channelName, itemKey: itemKey, delegate: delegate)
+    public func unsubscribeAttributes(channelName: String, itemKey: String, delegate: AUIRtmAttributesProxyDelegate) {
+        proxy.unsubscribeAttributes(channelName: channelName, itemKey: itemKey, delegate: delegate)
+    }
+    
+    public func subscribeMessage(channelName: String, delegate: AUIRtmMessageProxyDelegate) {
+        proxy.subscribeMessage(channelName: channelName, delegate: delegate)
+    }
+    
+    public func unsubscribeMessage(channelName: String, delegate: AUIRtmMessageProxyDelegate) {
+        proxy.unsubscribeMessage(channelName: channelName, delegate: delegate)
     }
     
     public func subscribeUser(channelName: String, delegate: AUIRtmUserProxyDelegate) {
@@ -184,44 +192,68 @@ extension AUIRtmManager {
     }
     
     func subscribe(channelName: String, rtcToken: String, completion:@escaping (Error?)->()) {
-        if kChannelType == .message {
-            let options = AgoraRtmSubscribeOptions()
-            options.withMetadata = true
-            options.withPresence = true
-            let ret =
-            rtmClient.subscribe(withChannel: channelName, option: options) { resp, error in
-                aui_info("subscribe '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
-                completion(error.toNSError())
-            }
-            aui_info("subscribe '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
-            if ret != 0 {
-                completion(AUICommonError.rtmError(ret).toNSError())
-            }
-        } else if kChannelType == .stream {
-            let option = AgoraRtmJoinChannelOption()
-            option.token = rtcToken
-            option.withMetadata = true
-            option.withPresence = true
-            if rtmStreamChannelMap[channelName] == nil {
-                let streamChannel = rtmClient.createStreamChannel(channelName)
-                rtmStreamChannelMap[channelName] = streamChannel
+        
+        let group = DispatchGroup()
+        
+        var messageError: Error? = nil
+        var streamError: Error? = nil
+        
+        defer {
+            group.notify(queue: DispatchQueue.main) {
+                if streamError == nil, messageError == nil {
+                    completion(nil)
+                    return
+                }
                 
+                completion(messageError ?? streamError)
             }
-            guard let streamChannel = rtmStreamChannelMap[channelName] else {
-                assert(false, "streamChannel not found")
-                return
-            }
-            
-            let ret = streamChannel.join(with: option) { resp, error in
-                aui_info("join '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
-                completion(error.toNSError())
-            }
-            aui_info("join '\(channelName)' rtcToken: \(rtcToken) ret: \(ret)", tag: "AUIRtmManager")
-            if ret != 0 {
-                completion(AUICommonError.rtmError(ret).toNSError())
-            }
-        } else {
-            assert(false, "unknown channel type")
+        }
+        
+        //1.subscribe message
+        group.enter()
+        let options = AgoraRtmSubscribeOptions()
+        options.withMetadata = true
+        options.withPresence = true
+        var ret =
+        rtmClient.subscribe(withChannel: channelName, option: options) { resp, error in
+            aui_info("subscribe '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+            messageError = error.toNSError()
+            group.leave()
+        }
+        aui_info("subscribe '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
+        if ret != 0 {
+            messageError = AUICommonError.rtmError(ret).toNSError()
+            group.leave()
+        }
+        
+        //2. join channel to use presence
+        group.enter()
+        let option = AgoraRtmJoinChannelOption()
+        option.token = rtcToken
+        option.withMetadata = true
+        option.withPresence = true
+        if rtmStreamChannelMap[channelName] == nil {
+            let streamChannel = rtmClient.createStreamChannel(channelName)
+            rtmStreamChannelMap[channelName] = streamChannel
+        }
+        guard let streamChannel = rtmStreamChannelMap[channelName] else {
+            assert(false, "streamChannel not found")
+            streamError = AUICommonError.rtmError(-1).toNSError()
+            group.leave()
+            return
+        }
+        
+        ret = streamChannel.join(with: option) { resp, error in
+            aui_info("join '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+//            completion(error.toNSError())
+            streamError = error.toNSError()
+            group.leave()
+        }
+        aui_info("join '\(channelName)' rtcToken: \(rtcToken) ret: \(ret)", tag: "AUIRtmManager")
+        if ret != 0 {
+//            completion(AUICommonError.rtmError(ret).toNSError())
+            streamError = AUICommonError.rtmError(ret).toNSError()
+            group.leave()
         }
     }
     
@@ -423,5 +455,22 @@ extension AUIRtmManager {
             aui_info("getUserMetadata: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
         }
         aui_info("getUserMetadata ret: \(ret)", tag: "AUIRtmManager")
+    }
+}
+
+//message
+extension AUIRtmManager {
+    public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
+        let options = AgoraRtmPublishOptions()
+        options.type = .string
+        let ret = rtmClient.publish(channelName, message: message, withOption: options) { resp, error in
+            var callbackError: NSError?
+            if error.errorCode != .OK {
+                callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
+            }
+            completion(callbackError)
+            aui_info("publish '\(message)' to '\(channelName)': \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        }
+        aui_info("publish '\(message)' to '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
     }
 }
