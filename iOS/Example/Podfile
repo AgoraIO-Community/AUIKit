@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '13.0'
+
+target 'AUIKit_Example' do
+  pod 'AUIKit', :path => '../'
+
+  target 'AUIKit_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+  end
+end
