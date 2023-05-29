@@ -40,7 +40,7 @@ PODS:
 
 DEPENDENCIES:
   - AgoraLyricsScore (= 1.1.1-beta-3)
-  - AgoraRtcEngine_iOS (from `./libs`)
+  - AgoraRtcEngine_iOS (from `/Users/fanpengpeng/Desktop/Demo/AUIKitKaraoke/iOS/Example/libs`)
   - AUIKit (from `../`)
   - FBSnapshotTestCase (~> 2.1.4)
 
@@ -59,7 +59,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   AgoraRtcEngine_iOS:
-    :path: "./libs"
+    :path: "/Users/fanpengpeng/Desktop/Demo/AUIKitKaraoke/iOS/Example/libs"
   AUIKit:
     :path: "../"
 
@@ -77,6 +77,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: d38c4f46db9e7e99bdf8feed4f373f5959efe5ce
+PODFILE CHECKSUM: 425746d655a1cf53099efdc2afd78d6e8a3db698
 
 COCOAPODS: 1.12.0

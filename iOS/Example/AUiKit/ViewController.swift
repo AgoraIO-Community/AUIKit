@@ -13,25 +13,30 @@ import SwiftTheme
 class ViewController: UIViewController {
     
     private let scrollView: UIScrollView = UIScrollView()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.bounds = CGRectMake(0, 0, 100, 30)
+        label.text = "基础组件"
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.theme_textColor = AUIColor("ExampleMainColor.normalTextColor")
+        return label
+    }()
     private lazy var rightItem: UIBarButtonItem = {
         let item = UIBarButtonItem(title: "更换主题", style: .plain, target: self, action: #selector(didClickRightBarButtonItem))
         return item
     }()
     
-    private let themeNames = ["Bright","Dark"]
-    private var currentIndex = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //设置皮肤路径
         if let folderPath = Bundle.main.path(forResource: "exampleTheme", ofType: "bundle") {
             AUIRoomContext.shared.addThemeFolderPath(path: URL(fileURLWithPath: folderPath) )
         }
-        self.title = "基础组件"
+        
+        self.navigationItem.titleView = self.titleLabel
         self.navigationItem.rightBarButtonItem = rightItem
-        scrollView.frame = view.bounds
-        view.addSubview(scrollView)
+        view.theme_backgroundColor = AUIColor("ExampleMainColor.background")
         
         addButtons()
         addDividers()
@@ -46,15 +51,16 @@ class ViewController: UIViewController {
     
     @objc private func didClickRightBarButtonItem(){
         AUIRoomContext.shared.switchThemeToNext()
-//        currentIndex += 1
-//        switchTheme(themeName: themeNames[currentIndex % themeNames.count])
     }
     
     private func layoutScrollView(){
+        scrollView.frame = view.bounds
+        view.addSubview(scrollView)
+        
         var y: CGFloat = 0
         scrollView.subviews.forEach { subview in
             subview.frame = CGRect(x: 0, y: y, width: subview.bounds.width, height: subview.bounds.height)
-            y += subview.bounds.height
+            y += subview.bounds.height + 20
         }
         scrollView.contentSize = CGSize(width: view.bounds.width, height: y)
     }
@@ -62,14 +68,61 @@ class ViewController: UIViewController {
     private func _addTitle(_ title: String) {
         let label = UILabel()
         label.text = title
+        label.theme_textColor = AUIColor("ExampleMainColor.normalTextColor")
         label.bounds = CGRect(x: 0, y: 0, width: view.bounds.width, height: 30)
         scrollView.addSubview(label)
     }
 
     private func addButtons(){
         _addTitle("Buttons")
-        let button = createButton()
-        scrollView.addSubview(button)
+        func addCommonButtons(){
+            let button = createBigButton(icon: "CustomButton.search")
+            let normalButton = createBigButton(icon: "CustomButton.user_normal")
+            let dangerButton = createBigButton(icon: "CustomButton.user_normal", bgColor: "CommonColor.danger")
+            let disableButton = createBigButton(icon: "CustomButton.user_normal")
+            disableButton.isEnabled = false
+            addCommonButtonRow(buttons: [button, normalButton, dangerButton, disableButton])
+            
+            let minibutton = createSmallButton()
+            let mininormalButton = createSmallButton(icon: "CustomButton.user_normal")
+            let minidangerButton = createSmallButton(icon: "CustomButton.user_normal", bgColor: "CommonColor.danger")
+            let minidisableButton = createSmallButton(icon: "CustomButton.user_normal")
+            minidisableButton.isEnabled = false
+            addCommonButtonRow(buttons: [minibutton, mininormalButton, minidangerButton, minidisableButton])
+            
+            let circlebutton = createCircleButton(icon: "CustomButton.chat")
+            let circlenormalButton = createCircleButton(icon: "CustomButton.chat")
+            let circleDisableButton = createCircleButton(icon: "CustomButton.chat")
+            circleDisableButton.isEnabled = false
+            addCommonButtonRow(buttons: [circlebutton, circlenormalButton, circleDisableButton])
+        }
+           
+        func addStrokeButtons(){
+            let userNormalIconStr = "CustomButton.user_normal_stroke"
+            let userDangerIconStr = "CustomButton.user_danger"
+            let chatIconStr = "CustomButton.chat_stroke"
+            let button = createBigStrokeButton()
+            let normalButton = createBigStrokeButton(icon: userNormalIconStr)
+            let dangerButton = createBigStrokeButton(icon: userDangerIconStr, tintColor: "CommonColor.danger")
+            let disableButton = createBigStrokeButton(icon: userNormalIconStr)
+            disableButton.isEnabled = false
+            addCommonButtonRow(buttons: [button, normalButton, dangerButton, disableButton])
+            
+            let minibutton = createSmallStrokeButton()
+            let mininormalButton = createSmallStrokeButton(icon: userNormalIconStr)
+            let minidangerButton = createSmallStrokeButton(icon: userDangerIconStr, tintColor: "CommonColor.danger")
+            let minidisableButton = createSmallStrokeButton(icon: userNormalIconStr)
+            minidisableButton.isEnabled = false
+            addCommonButtonRow(buttons: [minibutton, mininormalButton, minidangerButton, minidisableButton])
+            
+            let circlebutton = createCircleStrokeButton(icon: chatIconStr)
+            let circlenormalButton = createCircleStrokeButton(icon: chatIconStr)
+            let circleDisableButton = createCircleStrokeButton(icon: chatIconStr)
+            circleDisableButton.isEnabled = false
+            addCommonButtonRow(buttons: [circlebutton, circlenormalButton, circleDisableButton])
+        }
+        addCommonButtons()
+        addStrokeButtons()
     }
     
     private func addDividers(){
@@ -145,23 +198,121 @@ extension ViewController {
 }
 
 extension ViewController {
-    func createButton()-> AUIButton {
-        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonMin")
-//        theme.buttonWidth = "SeatItem.micRoleButtonWidth"
-//        theme.buttonHeight = "SeatItem.micRoleButtonHeight"
-        theme.icon = auiThemeImage("Buttons.user")
-//        theme.selectedIcon = "SeatItem.micSeatItemIconCoSinger"
-//        theme.titleFont = "CommonFont.small"
-//        theme.padding = "SeatItem.padding"
-//        theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
-//        theme.iconHeight = "SeatItem.micRoleButtonIconHeight"
-//        theme.backgroundColor = "CommonColor.primary"
-//        theme.cornerRadius = nil
+    func createButton(icon: String? = nil, title: String? = nil, bgColor: String? = nil,theme: AUIButtonDynamicTheme)-> AUIButton {
+        if let icon = icon, let themeIcon = auiThemeImage(icon) {
+            theme.icon = themeIcon
+        }else{
+            theme.iconWidth = "CustomButton.iconWidthNone"
+            theme.iconHeight = "CustomButton.iconHeightNone"
+        }
+        if bgColor != nil {
+            theme.backgroundColor = AUIColor(bgColor!)
+        }
         let button = AUIButton()
         button.textImageAlignment = .imageLeftTextRight
         button.style = theme
-        button.setTitle("主唱", for: .normal)
-        button.setTitle("副唱", for: .selected)
+        if let title = title, title.count > 0 {
+            button.setTitle(title, for: .normal)
+        }
         return button
+    }
+    
+    func createBigButton(icon: String? = nil, title: String? = nil, bgColor: String? = nil)-> AUIButton {
+        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"Button")
+        theme.iconWidth = "CustomButton.iconBigWidth"
+        theme.iconHeight = "CustomButton.iconBigHeight"
+        theme.backgroundColor = AUIColor("ExampleMainColor.primary")
+        theme.disabledBackgroundColor = AUIColor("ExampleMainColor.disableBackground")
+        return createButton(icon: icon, title: "Primary", bgColor: bgColor, theme: theme)
+    }
+    
+    func createSmallButton(icon: String? = nil, title: String? = nil, bgColor: String? = nil)-> AUIButton {
+        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonMin")
+        theme.iconWidth = "CustomButton.iconSmallWidth"
+        theme.iconHeight = "CustomButton.iconSmallHeight"
+        theme.backgroundColor = AUIColor("ExampleMainColor.primary")
+        theme.disabledBackgroundColor = AUIColor("ExampleMainColor.disableBackground")
+        return createButton(icon: icon, title: "Primary", bgColor: bgColor, theme: theme)
+    }
+    
+    func createCircleButton(icon: String? = nil)-> AUIButton {
+        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonCircle")
+        theme.iconWidth = "CustomButton.iconCircleWidth"
+        theme.iconHeight = "CustomButton.iconCircleHeight"
+        theme.disabledBackgroundColor = AUIColor("ExampleMainColor.primary")
+        theme.backgroundColor = AUIColor("ExampleMainColor.primary")
+        return createButton(icon: icon, bgColor: nil, theme: theme)
+    }
+    
+    func createBigStrokeButton(icon: String? = nil, title: String? = nil, tintColor: String? = nil)-> AUIButton {
+        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonStroke")
+        theme.iconWidth = "CustomButton.iconBigWidth"
+        theme.iconHeight = "CustomButton.iconBigHeight"
+        theme.backgroundColor = AUIColor("ExampleMainColor.strokeBackgroud")
+        theme.disabledBackgroundColor = AUIColor("ExampleMainColor.strokeBackgroud")
+        theme.disabledTitleColor = AUIColor("ExampleMainColor.disableBorderColor")
+        theme.disabledBorderColor = AUICGColor("ExampleMainColor.disableBorderColor")
+        if let tintColor = tintColor {
+            theme.borderColor = AUICGColor(tintColor)
+            theme.titleColor = AUIColor(tintColor)
+        }else{
+            theme.borderColor = AUICGColor("ExampleMainColor.borderColor")
+            theme.titleColor = AUIColor("ExampleMainColor.borderColor")
+        }
+        let button = createButton(icon: icon, title: "Primary", bgColor: nil, theme: theme)
+        button.layer.borderWidth = 1
+        return button
+    }
+    
+    func createSmallStrokeButton(icon: String? = nil, title: String? = nil, tintColor: String? = nil)-> AUIButton {
+        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonMinStroke")
+        theme.iconWidth = "CustomButton.iconSmallWidth"
+        theme.iconHeight = "CustomButton.iconSmallHeight"
+        theme.backgroundColor = AUIColor("ExampleMainColor.strokeBackgroud")
+        theme.disabledBackgroundColor = AUIColor("ExampleMainColor.strokeBackgroud")
+        theme.disabledTitleColor = AUIColor("ExampleMainColor.disableBorderColor")
+        theme.disabledBorderColor = AUICGColor("ExampleMainColor.disableBorderColor")
+        if let tintColor = tintColor {
+            theme.borderColor = AUICGColor(tintColor)
+            theme.titleColor = AUIColor(tintColor)
+        }else{
+            theme.borderColor = AUICGColor("ExampleMainColor.borderColor")
+            theme.titleColor = AUIColor("ExampleMainColor.borderColor")
+        }
+        let button = createButton(icon: icon, title: "Primary", bgColor: nil, theme: theme)
+        button.layer.borderWidth = 1
+        return button
+    }
+    
+    func createCircleStrokeButton(icon: String? = nil)-> AUIButton {
+        let theme = AUIButtonDynamicTheme.appearanceTheme(appearance:"AppearanceButtonCircleStroke")
+        theme.iconWidth = "CustomButton.iconCircleWidth"
+        theme.iconHeight = "CustomButton.iconCircleHeight"
+        theme.disabledBackgroundColor = AUIColor("ExampleMainColor.strokeBackgroud")
+        theme.backgroundColor = AUIColor("ExampleMainColor.strokeBackgroud")
+        theme.borderColor = AUICGColor("ExampleMainColor.borderColor")
+        let button = createButton(icon: icon, bgColor: nil, theme: theme)
+        button.layer.borderWidth = 1
+        return button
+    }
+    
+    
+    func addCommonButtonRow(buttons:[AUIButton]) {
+        let buttonScrollView = UIScrollView()
+        for button in buttons {
+            buttonScrollView.addSubview(button)
+        }
+        
+        var x: CGFloat = 0
+        var height: CGFloat = 0
+        buttonScrollView.subviews.forEach { subview in
+            subview.frame = CGRect(x: x, y: 0, width: subview.bounds.width, height: subview.bounds.height)
+            x += subview.bounds.width + 5
+            height = max(height, subview.bounds.height)
+        }
+        buttonScrollView.showsHorizontalScrollIndicator = false
+        buttonScrollView.contentSize = CGSize(width: x, height: height)
+        buttonScrollView.bounds = CGRect(x: 0, y: 0, width: view.bounds.width, height: height)
+        scrollView.addSubview(buttonScrollView)
     }
 }
