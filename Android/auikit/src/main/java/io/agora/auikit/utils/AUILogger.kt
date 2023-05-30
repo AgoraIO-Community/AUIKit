@@ -14,7 +14,7 @@ class AUILogger(private val config: Config) {
     companion object {
 
         private val dataFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.US)
-        private val logFileWriteThread by lazy { HandlerThread("AUiLogger").apply { start() } }
+        private val logFileWriteThread by lazy { HandlerThread("AUILogger").apply { start() } }
         private val logAdapters = mutableListOf<LogAdapter>()
         private var logger : AUILogger? = null
 
@@ -39,7 +39,7 @@ class AUILogger(private val config: Config) {
         }
 
         fun logger() : AUILogger {
-            return logger ?: throw RuntimeException("Before calling AUiLogger.logger(), the AUiLogger.initLogger(Config) method must be called firstly!")
+            return logger ?: throw RuntimeException("Before calling AUILogger.logger(), the AUILogger.initLogger(Config) method must be called firstly!")
         }
 
     }
