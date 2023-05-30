@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class AUIRoomBottomFunctionBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
+public class AUIRoomBottomFunctionBar: UIView {
 
     public var raiseKeyboard: (() -> Void)?
     
@@ -16,7 +16,7 @@ public class AUIRoomBottomFunctionBar: UIView, UICollectionViewDelegate, UIColle
 
     public var datas = [AUIChatFunctionBottomEntity]()
 
-    lazy var chatRaiser: UIButton = {
+    public lazy var chatRaiser: UIButton = {
         UIButton(type: .custom).frame(CGRect(x: 15, y: 5, width: (110 / 375.0) * AScreenWidth, height: self.frame.height - 10)).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).cornerRadius((self.frame.height - 10) / 2.0).font(.systemFont(ofSize: 12, weight: .regular)).textColor(UIColor(white: 1, alpha: 0.8), .normal).addTargetFor(self, action: #selector(raiseAction), for: .touchUpInside)
     }()
 
@@ -55,7 +55,7 @@ public class AUIRoomBottomFunctionBar: UIView, UICollectionViewDelegate, UIColle
     }
 }
 
-public extension AUIRoomBottomFunctionBar {
+extension AUIRoomBottomFunctionBar:UICollectionViewDelegate, UICollectionViewDataSource {
     
     @objc func raiseAction() {
         if self.raiseKeyboard != nil {
@@ -63,11 +63,11 @@ public extension AUIRoomBottomFunctionBar {
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         self.datas.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUIChatBarFunctionCell", for: indexPath) as? AUIChatBarFunctionCell
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
         let selected = entity.selected ?? false
@@ -77,7 +77,7 @@ public extension AUIRoomBottomFunctionBar {
         return cell ?? AUIChatBarFunctionCell()
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
         if self.actionClosure != nil {

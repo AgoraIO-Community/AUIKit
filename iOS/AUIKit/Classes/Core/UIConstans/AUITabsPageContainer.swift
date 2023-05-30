@@ -1,6 +1,6 @@
 //
 //  AUITabsPageContainer.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/22.
 //
@@ -47,6 +47,7 @@ public class AUITabsPageContainer: UIView {
         self.tabStyle.selectedTitleColor = UIColor(0x171a1c)
         self.tabStyle.normalTitleColor = UIColor(0xACB4B9)
         self.tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
+        
         return AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
     }()
     

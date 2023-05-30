@@ -1,6 +1,6 @@
 //
 //  AUIGiftServiceDelegate.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/18.
 //
@@ -13,28 +13,28 @@ import YYModel
  
     public func mutableCopy(with zone: NSZone? = nil) -> Any {
         let model = AUIGiftEntity()
-        model.gift_id = self.gift_id
-        model.gift_count = self.gift_count
-        model.gift_price = self.gift_price
-        model.gift_name = self.gift_name
-        model.gift_icon = self.gift_icon
-        model.gift_effect = self.gift_effect
+        model.giftId = self.giftId
+        model.giftCount = self.giftCount
+        model.giftPrice = self.giftPrice
+        model.giftName = self.giftName
+        model.giftIcon = self.giftIcon
+        model.giftEffect = self.giftEffect
         model.selected = self.selected
         model.sendUser = self.sendUser
         return model
     }
 
-    var gift_id: String? = ""
-    var gift_name: String? = ""
-    var gift_price: String? = ""
-    var gift_count: String? = "0"
-    var gift_icon: String? = ""
+    public var giftId: String? = ""
+    public var giftName: String? = ""
+    public var giftPrice: String? = ""
+    public var giftCount: String? = "1"
+    public var giftIcon: String? = ""
     /// Description 开发者可以上传服务器一个匹配礼物id的特效  特效名称为礼物的id  sdk会进入房间时拉取礼物资源并下载对应礼物id的特效，如果收到的礼物这个值为true 则会找到对应的特效全屏播放加广播，礼物资源以及特效资源下载服务端可做一个web页面供用户使用，每个app启动后加载场景之前预先去下载礼物资源缓存到磁盘供UIKit取用
-    var gift_effect: String? = ""
+    public var giftEffect: String? = ""
     
-    var selected = false
+    public var selected = false
     
-    var sendUser: AUIUserThumbnailInfo?
+    public var sendUser: AUIUserThumbnailInfo?
  
     class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
         return ["sendUser": AUIUserThumbnailInfo.self]
@@ -46,23 +46,27 @@ import YYModel
  
  
  
-public class AUIGiftTabEntity: NSObject {
+@objcMembers public class AUIGiftTabEntity: NSObject {
     
     /// Description 对应哪个tab index
-    var tabId: String?
+    public var tabId: Int64 = 0
     
     /// Description 显示名称
-    var displayName: String?
+    public var displayName: String?
     
     /// Description tab下礼物数据
-    var gifts: [AUIGiftEntity]?
-     
+    public var gifts: [AUIGiftEntity]?
+    
+    class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
+        return ["gifts": AUIGiftEntity.self]
+    }
  
 }
  
  
  
-public protocol AUIGiftsManagerServiceDelegate: NSObjectProtocol {
+public protocol AUIGiftsManagerServiceDelegate: AUICommonServiceDelegate {
+    
     /// 绑定响应回调
     /// - Parameter delegate: 需要回调的对象
     func bindRespDelegate(delegate: AUIGiftsManagerRespDelegate)

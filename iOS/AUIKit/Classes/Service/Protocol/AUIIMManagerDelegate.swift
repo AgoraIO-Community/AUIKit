@@ -1,6 +1,6 @@
 //
 //  AUIIMManagerDelegate.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/17.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import YYModel
 
-public class AgoraChatTextMessage:NSObject {
+@objc public class AgoraChatTextMessage:NSObject {
     
     public var messageId: String?
     
@@ -36,7 +36,7 @@ public enum AgoraChatroomBeKickedReason: Int {
 
 
 
-public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
+public protocol AUIMManagerServiceDelegate: AUICommonServiceDelegate {
     /// 绑定响应回调
     /// - Parameter delegate: 需要回调的对象
     func bindRespDelegate(delegate: AUIMManagerRespDelegate)
@@ -48,7 +48,7 @@ public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
     /// Description 配置IMSDK
     /// - Parameters:
     ///   - appKey: AgoraChat  app key
-    ///   - user: AUIUserThumbnailInfo instance
+    ///   - user: AUiUserThumbnailInfo instance
     /// - Returns: error
     func configIM(appKey: String, user:AUIUserThumbnailInfo,completion: @escaping (NSError?) -> Void)
     
@@ -69,7 +69,7 @@ public protocol AUIMManagerServiceDelegate: NSObjectProtocol {
     /// - Parameters:
     ///   - roomId: 聊天室id
     ///   - completion: 回调包含聊天室id以及错误
-    func joinedChatRoom(roomId: String, completion: @escaping ((String?, NSError?) -> Void))
+    func joinedChatRoom(roomId: String, completion: @escaping ((AgoraChatTextMessage?, NSError?) -> Void))
     
     /// Description 退出聊天室
     /// - Parameter completion: 错误为空即为成功

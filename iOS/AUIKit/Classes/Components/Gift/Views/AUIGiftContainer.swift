@@ -1,6 +1,6 @@
 //
 //  AUIGiftContainer.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/19.
 //
@@ -18,7 +18,7 @@ import YYModel
 //    }()
 //    
 //    lazy var giftsContainer: AUITabsPageContainer = {
-//        AUITabsPageContainer(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 316), barStyle: AUITabsStyle(), containers: [self.gifts,self.gifts], titles: ["Gifts","Gifts"])
+//        AUITabsPageContainer(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 316), barStyle: AUiTabsStyle(), containers: [self.gifts,self.gifts], titles: ["Gifts","Gifts"])
 //    }()
 //    
 //    lazy var contribution: UILabel = {

@@ -9,7 +9,7 @@ import UIKit
 
 let chatViewWidth = AScreenWidth * (287 / 375.0)
 
-public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource {
+public class AUIRoomChatView: UIView {
 
     private var lastOffsetY = CGFloat(0)
 
@@ -78,21 +78,28 @@ public class AUIRoomChatView: UIView, UITableViewDelegate, UITableViewDataSource
 //    [self.tableViewBackgroundView addSubview:self.tableView];
 }
 
-public extension AUIRoomChatView {
-    @objc func showLikeAnimation() {
+extension AUIRoomChatView:UITableViewDelegate, UITableViewDataSource {
+    
+    @objc public func scrollTableViewToBottom() {
+        if self.messages?.count ?? 0 > 1 {
+            self.chatView.scrollToRow(at: IndexPath(row: self.messages!.count-1, section: 0), at: .bottom, animated: true)
+        }
+    }
+    
+    @objc public func showLikeAnimation() {
         self.emitter.setupEmitter()
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.messages?.count ?? 0
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let height = self.messages?[safe: indexPath.row]?.height ?? 60
         return height
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "AUIChatCell") as? AUIChatCell
         if cell == nil {
             cell = AUIChatCell(reuseIdentifier: "AUIChatCell",config: AUIChatCellConfig())
@@ -103,11 +110,11 @@ public extension AUIRoomChatView {
         return cell!
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView.contentOffset.y - self.lastOffsetY < 0 {
             self.cellOffset -= cell.frame.height
         } else {
@@ -115,7 +122,7 @@ public extension AUIRoomChatView {
         }
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let indexPath = self.chatView.indexPathForRow(at: scrollView.contentOffset) ?? IndexPath(row: 0, section: 0)
         let cell = self.chatView.cellForRow(at: indexPath)
         let maxAlphaOffset = cell?.frame.height ?? 40

@@ -1,6 +1,6 @@
 //
 //  AUIGiftsView.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/17.
 //
@@ -15,7 +15,7 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
     
     public func create(frame: CGRect, datas: [NSObject]) -> UIView? {
         guard let dataSource = datas as? [AUIGiftEntity] else { return AUIGiftsView() }
-        return AUIGiftsView(frame: frame, gifts: dataSource)
+        return AUIGiftsView(frame: frame, gifts: dataSource,sentGift: self.sendClosure!)
     }
     
     public func rawFrame() -> CGRect {
@@ -38,7 +38,7 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
         layout.itemSize = CGSize(width: (AScreenWidth - 30) / 4.0, height: (110 / 84.0) * (AScreenWidth - 30) / 4.0)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.footerReferenceSize = CGSize(width: self.frame.width, height: CGFloat(ABottomBarHeight)+10)
+        layout.footerReferenceSize = CGSize(width: self.frame.width, height: CGFloat(ABottomBarHeight)+120)
         return layout
     }()
 
@@ -50,8 +50,9 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
         super.init(frame: frame)
     }
 
-    public convenience init(frame: CGRect, gifts: [AUIGiftEntity]) {
+    public convenience init(frame: CGRect, gifts: [AUIGiftEntity], sentGift: @escaping ((AUIGiftEntity) -> Void)) {
         self.init(frame: frame)
+        self.sendClosure = sentGift
         self.gifts = gifts
         self.giftList.bounces = false
         self.addSubViews([self.giftList])
@@ -78,7 +79,9 @@ public extension AUIGiftsView {
         cell?.refresh(item: self.gifts[safe: indexPath.row])
         cell?.sendCallback = { [weak self] in
             guard let entity = $0 else { return }
-            self?.sendClosure?(entity)
+            if self?.sendClosure != nil {
+                self?.sendClosure!(entity)
+            }
         }
         return cell ?? AUISendGiftCell()
     }
@@ -87,7 +90,6 @@ public extension AUIGiftsView {
         if kind == UICollectionView.elementKindSectionFooter {
             let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "AUIGiftsFooter", for: indexPath)
             reusableView.backgroundColor = .clear
-            reusableView.frame = CGRect(x: 0, y: 0, width: Int(self.frame.width), height: ABottomBarHeight+10)
             return reusableView
         }
         return UICollectionReusableView()

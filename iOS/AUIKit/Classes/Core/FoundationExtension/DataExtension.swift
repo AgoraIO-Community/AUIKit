@@ -1,6 +1,6 @@
 //
 //  DataExtension.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/18.
 //
@@ -24,4 +24,15 @@ public extension AUIKitSwiftLib where Base == Data {
         }
         return dic
     }
+
+    func toArray() -> [Dictionary<String,Any>]? {
+        var array: [Dictionary<String,Any>]?
+        do {
+            array = try JSONSerialization.jsonObject(with: base, options: .allowFragments) as? [Dictionary<String,Any>]
+        } catch {
+            assert(false, "\(error)")
+        }
+        return array
+    }
+    
 }

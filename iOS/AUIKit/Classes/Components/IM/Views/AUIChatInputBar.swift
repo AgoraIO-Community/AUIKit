@@ -20,7 +20,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }()
 
     lazy var inputContainer: UIView = {
-        UIView(frame: CGRect(x: 15, y: 13, width: AScreenWidth - 110, height: 36)).cornerRadius(18).layerProperties(UIColor(0xE4E3ED), 1).backgroundColor(.white)
+        UIView(frame: CGRect(x: 15, y: 13, width: AScreenWidth - 110, height: 36)).cornerRadius(18).layerProperties(UIColor(0xE4E3ED), 1).backgroundColor(self.config.backgroundColor)
     }()
 
     public lazy var inputField: PlaceHolderTextView = {
@@ -28,16 +28,18 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }()
 
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient([UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]).title("Send".a.localize(type: .voiceRoom), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient(config.sendGradientColors, config.sendGradientPoints).title("Send".a.localize(type: .voiceRoom), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
     }()
 
     private var limitCount: Int {
-        var count = 30
+        var count = self.config.zhLimitCount
         if NSLocale.preferredLanguages.first!.hasPrefix("en") {
-            count = 80
+            count = self.config.enLimitCount
         }
         return count
     }
+    
+    var config = AUIChatInputBarConfig()
 
     let line = UIView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 1)).backgroundColor(.white)
 
@@ -45,17 +47,21 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        self.rightView.setImage(UIImage("face",.voiceRoom), for: .normal)
-        self.rightView.setImage(UIImage("key",.voiceRoom), for: .selected)
+    }
+    
+    @objc public convenience init(frame: CGRect,config: AUIChatInputBarConfig) {
+        self.init(frame: frame)
+        self.config = config
+        self.rightView.setImage(config.emojiInputIcon, for: .normal)
+        self.rightView.setImage(config.textInputIcon, for: .selected)
         self.addSubViews([self.inputContainer, self.inputField, self.send, self.line])
-        self.inputField.tintColor = UIColor(0x009FFF)
-        self.inputField.placeHolder = "Aa"
-        self.inputField.placeHolderColor = UIColor(0xB6B8C9)
-        self.inputField.returnKeyType = .send
+        self.inputField.tintColor = config.cursorColor
+        self.inputField.placeHolder = config.placeHolder
+        self.inputField.placeHolderColor = config.placeHolderColor
+        self.inputField.returnKeyType = config.returnKeyType
         var orgContainerInset = self.inputField.textContainerInset
         orgContainerInset.left = 6
         self.inputField.textContainerInset = orgContainerInset
-        self.inputField.returnKeyType = .send
 
         let view = UIView(frame: CGRect(x: self.inputContainer.frame.width - self.inputField.frame.height, y: 0, width: self.inputField.frame.height, height: self.inputField.frame.height)).backgroundColor(.white)
         view.addSubview(self.rightView)
@@ -117,8 +123,9 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let frame = notification.a.keyboardEndFrame
         let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
+        print("AUIChatInputBar.keyboardWillShow")
         UIView.animate(withDuration: duration!) {
-            self.frame = CGRect(x: 0, y: AScreenHeight - 60 - frame!.height, width: AScreenWidth, height: 60)
+            self.frame = CGRect(x: 0, y: AScreenHeight - 60 - frame!.height, width: AScreenWidth, height: self.frame.height)
         }
     }
 
@@ -166,7 +173,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     func convertText(text: NSAttributedString?, key: String) -> NSAttributedString {
         let attribute = NSMutableAttributedString(attributedString: text!)
         let attachment = NSTextAttachment()
-        attachment.image = AUIChatEmojiManager.shared.emojiMap[key]
+        attachment.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage(key, .voiceRoom):AUIChatEmojiManager.shared.emojiMap[key]
         attachment.bounds = CGRect(x: 0, y: -3.5, width: 18, height: 18)
         let imageText = NSMutableAttributedString(attachment: attachment)
         if #available(iOS 11.0, *) {

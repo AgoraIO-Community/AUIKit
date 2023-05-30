@@ -1,6 +1,6 @@
 //
 //  AUISendGiftCell.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/17.
 //
@@ -14,13 +14,22 @@ public class AUISendGiftCell: UICollectionViewCell {
     
     public var sendCallback: ((AUIGiftEntity?)->Void)?
     
+    public var config = AUISendGiftCellConfig() {
+        didSet {
+            self.cover.layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientLocations)
+            self.send.setGradient(self.config.sendGradientColors, self.config.sendGradientLocations).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont)
+            self.name.font(self.config.nameFont).textColor(self.config.nameTextColor)
+            self.displayValue.font(self.config.priceFont).textColor(self.config.priceTextColor, .normal)
+        }
+    }
+    
 
     lazy var cover: UIView = {
-        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerRadius(12).layerProperties(UIColor(0x009EFF), 1).setGradient( [UIColor(red: 0.8, green: 0.924, blue: 1, alpha: 1),UIColor(red: 0.888, green: 0.8, blue: 1, alpha: 0)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]).backgroundColor(.clear)
+        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerRadius(self.config.coverCornerRadius).layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientLocations).backgroundColor(.clear)
     }()
     
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).setGradient([UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]).title("Send".a.localize(type: .gift), .normal).textColor(UIColor(0xF9FAFA), .normal).font(.systemFont(ofSize: 14, weight: .medium))
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).setGradient(self.config.sendGradientColors, self.config.sendGradientLocations).title("Send".a.localize(type: .gift), .normal).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside)
     }()
 
     lazy var icon: UIImageView = {
@@ -51,10 +60,10 @@ public class AUISendGiftCell: UICollectionViewCell {
     func refresh(item: AUIGiftEntity?) {
         self.gift = item
         self.contentView.isHidden = (item == nil)
-        self.icon.image = UIImage(item?.gift_id ?? "",.gift)
-        self.name.text = item?.gift_name
-        self.displayValue.setImage(UIImage("dollagora",.gift), for: .normal)
-        self.displayValue.setTitle(item?.gift_price ?? "100", for: .normal)
+        self.icon.kf.setImage(with: URL(string: item?.giftIcon ?? "")!,placeholder: UIImage(item?.giftName ?? "",.gift))
+        self.name.text = item?.giftName
+        self.displayValue.setImage(self.config.priceIcon, for: .normal)
+        self.displayValue.setTitle(item?.giftPrice ?? "100", for: .normal)
         self.cover.isHidden = !(item?.selected ?? false)
         self.displayValue.frame = CGRect(x: 0, y: item!.selected ? self.icon.frame.maxY + 4:self.name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)
         self.name.isHidden = item?.selected ?? false
@@ -69,3 +78,36 @@ public class AUISendGiftCell: UICollectionViewCell {
     }
 
 }
+
+public class AUISendGiftCellConfig: NSObject {
+    
+    public var coverLayerColor: UIColor = UIColor(0x009EFF)
+    
+    public var coverLayerWidth: CGFloat = 1
+    
+    public var coverCornerRadius: CGFloat = 12
+    
+    public var coverGradientColors: [UIColor] = [UIColor(red: 0.8, green: 0.924, blue: 1, alpha: 1),UIColor(red: 0.888, green: 0.8, blue: 1, alpha: 0)]
+    
+    public var coverGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    
+    public var sendGradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
+    
+    public var sendGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    
+    public var sendFont: UIFont = .systemFont(ofSize: 14, weight: .medium)
+    
+    public var sendTextColor: UIColor = UIColor(0xF9FAFA)
+    
+    public var nameFont: UIFont = .systemFont(ofSize: 12, weight: .regular)
+    
+    public var nameTextColor: UIColor = UIColor(0x040925)
+    
+    public var priceFont: UIFont = .systemFont(ofSize: 12, weight: .regular)
+    
+    public var priceTextColor: UIColor = UIColor(red: 0.425, green: 0.445, blue: 0.573, alpha: 0.5)
+    
+    public var priceIcon: UIImage? = UIImage("dollagora",.gift)
+    
+}
+

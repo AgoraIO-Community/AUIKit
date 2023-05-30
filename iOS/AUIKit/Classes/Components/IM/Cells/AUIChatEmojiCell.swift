@@ -8,12 +8,12 @@
 import UIKit
 
 public class AUIChatEmojiCell: UICollectionViewCell {
-    lazy var icon: UIImageView = .init(frame: CGRect(x: 7, y: 7, width: self.contentView.frame.width - 14, height: self.contentView.frame.height - 14)).contentMode(.scaleAspectFit).backgroundColor(.white)
+    lazy var icon: UIImageView = .init(frame: CGRect(x: 7, y: 7, width: self.contentView.frame.width - 14, height: self.contentView.frame.height - 14)).contentMode(.scaleAspectFit).backgroundColor(.clear)
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .white
-        contentView.addSubview(icon)
+        self.contentView.backgroundColor = .clear
+        self.contentView.addSubview(self.icon)
     }
 
     @available(*, unavailable)
@@ -23,7 +23,7 @@ public class AUIChatEmojiCell: UICollectionViewCell {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        icon.frame = CGRect(x: 7, y: 7, width: contentView.frame.width - 14, height: contentView.frame.height - 14)
+        self.icon.frame = CGRect(x: 7, y: 7, width: contentView.frame.width - 14, height: contentView.frame.height - 14)
     }
 }
 

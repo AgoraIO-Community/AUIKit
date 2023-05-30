@@ -54,7 +54,7 @@ public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
             self.deleteLayers.removeAll { $0 == shipLayer }
         } else {
             shipLayer = CALayer()
-            let image = self.images[safe: Int(count) % images.count] ?? UIImage()
+            let image = self.images[safe: Int(self.count) % self.images.count] ?? UIImage()
             shipLayer?.contents = image?.cgImage
             shipLayer?.contentsScale = UIScreen.main.scale
             shipLayer?.frame = CGRect(x: bounds.width / 2.0, y: bounds.height+55, width: 40, height: 40)

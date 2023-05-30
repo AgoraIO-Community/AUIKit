@@ -44,6 +44,8 @@ class AUIIMChatroomCreateNetworkModel: AUINetworkModel {
     
     public var roomId: String?
     
+    public var userName: String?
+    
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil
         do {

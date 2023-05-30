@@ -1,6 +1,6 @@
 //
 //  AUIReceiveGiftCell.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/17.
 //
@@ -16,7 +16,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
         UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).backgroundColor(.clear)
     }()
 
-    lazy var avatar: UIImageView = .init(frame: CGRect(x: 5, y: 5, width: self.frame.width / 5.0, height: self.frame.width / 5.0)).contentMode(.scaleAspectFit)
+    lazy var avatar: UIImageView = UIImageView(frame: CGRect(x: 5, y: 5, width: self.frame.width / 5.0, height: self.frame.width / 5.0)).contentMode(.scaleAspectFit)
 
     lazy var userName: UILabel = {
         UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: 8, width: self.frame.width / 5.0 * 2 - 12, height: 15)).font(.systemFont(ofSize: 12, weight: .semibold)).textColor(.white)
@@ -27,7 +27,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
     }()
 
     lazy var giftIcon: UIImageView = {
-        UIImageView(frame: CGRect(x: self.frame.width / 5.0 * 3, y: 0, width: self.frame.width / 5.0, height: self.contentView.frame.height)).contentMode(.scaleAspectFit).image(UIImage("heart",.gift)!)
+        UIImageView(frame: CGRect(x: self.frame.width / 5.0 * 3, y: 0, width: self.frame.width / 5.0, height: self.contentView.frame.height)).contentMode(.scaleAspectFit)
     }()
 
     lazy var giftNumbers: UILabel = {
@@ -36,6 +36,10 @@ public class AUIReceiveGiftCell: UITableViewCell {
 
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    convenience init(reuseIdentifier: String?,config: AUIReceiveGiftCellConfig) {
+        self.init(style: .default, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(container)
@@ -65,9 +69,31 @@ public class AUIReceiveGiftCell: UITableViewCell {
         }
         self.avatar.kf.setImage(with: URL(string: item.sendUser?.userAvatar ?? ""), placeholder:UIImage("mine_avatar_placeHolder",.gift))
         self.userName.text = item.sendUser?.userName ?? ""
-        self.giftName.text = "Sent ".a.localize(type: .gift) + (item.gift_name ?? "")
-        self.giftIcon.image = UIImage("\(item.gift_id ?? "")",.gift)
-        self.giftNumbers.text = "X \(item.gift_count ?? "1")"
+        self.giftName.text = "Sent ".a.localize(type: .gift) + (item.giftName ?? "")
+        self.giftIcon.kf.setImage(with: URL(string: item.giftIcon ?? ""),placeholder: UIImage("\(item.giftId ?? "")",.gift))
+        self.giftNumbers.text = "X \(item.giftCount ?? "1")"
     }
 }
 
+
+public class AUIReceiveGiftCellConfig: NSObject {
+    public var containerCornerRadius: CGFloat = 22
+    
+    public var containerGradientColors: [UIColor] = [UIColor(red: 0.05, green: 0, blue: 0.76, alpha: 0.24), UIColor(red: 0.71, green: 0.37, blue: 1, alpha: 0.64)]
+    
+    public var containerGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    
+    public var userNameFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .semibold)
+    
+    public var userNameColor: UIColor = .white
+    
+    public var giftNameFont: UIFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+    
+    public var giftNameColor: UIColor = .white
+    
+    public var giftNumbersFont: UIFont = UIFont(name: "HelveticaNeue-BoldItalic", size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .bold)
+    
+    public var giftNumbersColor: UIColor = .white
+    
+    
+}

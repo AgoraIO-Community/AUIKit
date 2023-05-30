@@ -52,7 +52,9 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
     }()
     
     lazy var gifts: AUIGiftsView = {
-        AUIGiftsView(frame: CGRect(x: 0, y: 0, width: Int(AScreenWidth), height: 390-ABottomBarHeight-50), gifts: self.giftList()).backgroundColor(.clear)
+        AUIGiftsView(frame: CGRect(x: 0, y: 0, width: Int(AScreenWidth), height: 390-ABottomBarHeight-50), gifts: self.giftList()) { gift in
+            
+        }.backgroundColor(.clear)
     }()
     
     lazy var giftsContainer: AUITabsPageContainer = {
@@ -60,7 +62,7 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
     }()
     
     lazy var response: AUIIMManagerServiceImplement = {
-        AUIIMManagerServiceImplement()
+        AUIIMManagerServiceImplement(channelName: "", rtmManager: AUIRtmManager(rtmClient: nil))
     }()
     
     lazy var giftRequest = AUIGiftServiceImplement()

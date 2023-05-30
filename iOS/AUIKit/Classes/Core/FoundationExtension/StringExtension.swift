@@ -24,6 +24,10 @@ public extension AUIKitSwiftLib where Base == String {
         base.data(using: .utf8)?.a.toDictionary() ?? [:]
     }
     
+    func jsonToDics() -> [Dictionary<String,Any>] {
+        base.data(using: .utf8)?.a.toArray() ?? []
+    }
+    
     /// Description Localized string in current bundle
     /// - Parameter type: AUIBundleType
     /// - Returns: Localized result

@@ -1,6 +1,6 @@
 //
 //  AUIReceiveGiftsView.swift
-//  AUIKit
+//  AUiKit
 //
 //  Created by 朱继超 on 2023/5/17.
 //
@@ -20,7 +20,7 @@ public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSo
     private var lastOffsetY = CGFloat(0)
 
     public lazy var giftList: UITableView = {
-        UITableView(frame: CGRect(x: 5, y: 0, width: self.frame.width - 20, height: self.frame.height), style: .plain).tableFooterView(UIView()).separatorStyle(.none).registerCell(AUIReceiveGiftCell.self, forCellReuseIdentifier: "AUIReceiveGiftCell").showsVerticalScrollIndicator(false).showsHorizontalScrollIndicator(false).delegate(self).dataSource(self).backgroundColor(.clear)
+        UITableView(frame: CGRect(x: 5, y: 0, width: self.frame.width - 20, height: self.frame.height), style: .plain).tableFooterView(UIView()).separatorStyle(.none).showsVerticalScrollIndicator(false).showsHorizontalScrollIndicator(false).delegate(self).dataSource(self).backgroundColor(.clear)
     }()
 
     override public init(frame: CGRect) {
@@ -55,9 +55,9 @@ public extension AUIReceiveGiftsView {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "AUIReceiveGiftCell", for: indexPath) as? AUIReceiveGiftCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: "AUIReceiveGiftCell") as? AUIReceiveGiftCell
         if cell == nil {
-            cell = AUIReceiveGiftCell(style: .default, reuseIdentifier: "AUIReceiveGiftCell")
+            cell = AUIReceiveGiftCell(reuseIdentifier: "AUIReceiveGiftCell",config: AUIReceiveGiftCellConfig())
         }
         cell?.refresh(item: self.gifts[safe: indexPath.row] ?? AUIGiftEntity())
         return cell ?? AUIReceiveGiftCell()
@@ -80,7 +80,7 @@ public extension AUIReceiveGiftsView {
             } completion: { finished in
                 if finished {
                     self.gifts.removeAll()
-                    self.removeFromSuperview()
+                    self.alpha = 0
                 }
             }
         }

@@ -25,7 +25,7 @@ open class AUIRtmManager: NSObject {
         aui_info("deinit AUIRtmManager", tag: "AUIRtmManager")
     }
     
-    init(rtmClient: AgoraRtmClientKit?) {
+    public init(rtmClient: AgoraRtmClientKit?) {
         self.rtmClient = rtmClient
         super.init()
         //TODO: 如果后续外部再修改rtmClient的delegate会有问题

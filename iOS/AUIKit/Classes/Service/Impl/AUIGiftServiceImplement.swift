@@ -38,6 +38,11 @@ public class AUIGiftServiceImplement: NSObject {
 }
 
 extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageProxyDelegate {
+    
+    public func getChannelName() -> String {
+        self.channelName
+    }
+    
     public func bindRespDelegate(delegate: AUIGiftsManagerRespDelegate) {
         self.responseDelegates.add(delegate)
     }
@@ -48,10 +53,13 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
     
     
     public func onMessageReceive(channelName: String, message: String) {
-        switch message {
+        let messageJson = message.a.jsonToDictionary()
+        guard let messageType = messageJson["messageType"] as? String,let messageInfo = messageJson["messageInfo"] as? Dictionary<String,Any> else { return }
+        
+        switch messageType {
         case AUIChatRoomGift:
             for response in self.responseDelegates.allObjects {
-                guard let gift = AUIGiftEntity.yy_model(with: message.a.jsonToDictionary()) else { return }
+                guard let gift = AUIGiftEntity.yy_model(with: messageInfo) else { return }
                 (response as? AUIGiftsManagerRespDelegate)?.receiveGift(gift: gift)
             }
         
@@ -65,16 +73,9 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
         model.method = .get
         model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
         model.request { error, obj in
-            if error == nil,obj != nil,let jsons = obj as? [[String:Any]] {
-                var tabs = [AUIGiftTabEntity]()
-                for json in jsons {
-                    guard let gift = AUIGiftTabEntity.yy_model(with: json) else {
-                        completion([], NSError(domain: "giftsFromService json error", code: 400))
-                        return
-                    }
-                    tabs.append(gift)
-                }
-                completion(tabs, nil)
+            if error == nil {
+                var tabs = NSArray.yy_modelArray(with: AUIGiftTabEntity.self, json: obj) as? [AUIGiftTabEntity]
+                completion(tabs!, nil)
             } else {
                 completion([], error as? NSError)
             }
@@ -82,7 +83,8 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
     }
     
     public func sendGift(gift: AUIGiftEntity, completion: @escaping (NSError?) -> Void) {
-        let json = gift.yy_modelToJSONString() ?? ""
+        gift.sendUser = AUIRoomContext.shared.currentUserInfo
+        let json = gift.yy_modelToJSONObject() ?? ""
         guard let message = ["messageType":AUIChatRoomGift,"messageInfo":json].a.toJsonString() else {
             completion(NSError(domain: "sendGift json error", code: 400))
             return
