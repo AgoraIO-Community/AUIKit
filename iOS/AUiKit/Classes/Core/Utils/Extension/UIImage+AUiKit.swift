@@ -23,3 +23,16 @@ extension UIImage {
         return nil
     }
 }
+
+extension String {
+    public static func aui_animatedImageFilePath(named: String) -> String? {
+        for path in AUIRoomContext.shared.themeResourcePaths {
+            let filePath = path.appendingPathComponent(named).path
+            return filePath
+        }
+        if let filePath = ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path {
+            return filePath
+        }
+        return nil
+    }
+}

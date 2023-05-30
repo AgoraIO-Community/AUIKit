@@ -16,3 +16,12 @@ public func auiThemeImage(_ keyPath: String) -> ThemeImagePicker? {
         return ThemeManager.image(for: keyPath)
     }
 }
+
+public func auiThemeAnimatedImagePath(_ keyPath: String) -> ThemeAnyPicker? {
+    ThemeAnyPicker {
+        if let fileUrl = String.aui_animatedImageFilePath(named: keyPath) {
+            return fileUrl
+        }
+        return nil
+    }
+}
