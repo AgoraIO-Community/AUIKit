@@ -15,7 +15,7 @@ import io.agora.auikit.service.http.seat.SeatInterface
 import io.agora.auikit.service.http.seat.SeatLeaveReq
 import io.agora.auikit.service.http.seat.SeatPickReq
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUiRtmMsgProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.DelegateHelper
 import io.agora.auikit.utils.GsonTools
 import retrofit2.Call
@@ -25,7 +25,7 @@ private const val kSeatAttrKey = "micSeat"
 class AUIMicSeatServiceImpl(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIMicSeatService, AUiRtmMsgProxyDelegate {
+) : IAUIMicSeatService, AUIRtmMsgProxyDelegate {
 
     private val delegateHelper = DelegateHelper<IAUIMicSeatService.AUIMicSeatRespDelegate>()
 

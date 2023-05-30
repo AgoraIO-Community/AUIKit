@@ -7,15 +7,15 @@ import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIUserListCallback
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUiRtmUserProxyDelegate
-import io.agora.auikit.utils.AUiLogger
+import io.agora.auikit.service.rtm.AUIRtmUserProxyDelegate
+import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.DelegateHelper
 import io.agora.auikit.utils.GsonTools
 
 class AUIUserServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIUserService, AUiRtmUserProxyDelegate {
+) : IAUIUserService, AUIRtmUserProxyDelegate {
 
     private val TAG = "AUiUserServiceImpl"
 
@@ -206,10 +206,10 @@ class AUIUserServiceImpl constructor(
         userInfo.userAvatar = AUIRoomContext.shared().currentUserInfo.userAvatar
 
         val userAttr = GsonTools.beanToMap(userInfo)
-        AUiLogger.logger().d(TAG, "setupUserAttr: $roomId : $userAttr")
+        AUILogger.logger().d(TAG, "setupUserAttr: $roomId : $userAttr")
         rtmManager.setPresenceState(roomId, userAttr) { error ->
             if(error != null){
-                AUiLogger.logger().d(TAG, "setupUserAttr: $roomId fail: ${error.reason}")
+                AUILogger.logger().d(TAG, "setupUserAttr: $roomId fail: ${error.reason}")
             }else{
                 //rtm不会返回自己更新的数据，需要手动处理
                 onUserDidUpdated(roomId, userId, userAttr)

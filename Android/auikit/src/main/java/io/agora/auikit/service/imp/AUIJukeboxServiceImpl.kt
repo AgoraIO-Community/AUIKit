@@ -25,7 +25,7 @@ import io.agora.auikit.service.http.song.SongRemoveReq
 import io.agora.auikit.service.http.song.SongStopReq
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUiRtmMsgProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.DelegateHelper
 import io.agora.rtc2.Constants
 import retrofit2.Call
@@ -35,7 +35,7 @@ class AUIJukeboxServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val ktvApi: KTVApi
-) : IAUIJukeboxService, AUiRtmMsgProxyDelegate {
+) : IAUIJukeboxService, AUIRtmMsgProxyDelegate {
 
     private val TAG: String = "Jukebox_LOG"
     private val kChooseSongKey = "song"

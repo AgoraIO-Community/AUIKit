@@ -9,14 +9,14 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AUiLogger(private val config: Config) {
+class AUILogger(private val config: Config) {
 
     companion object {
 
         private val dataFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.US)
         private val logFileWriteThread by lazy { HandlerThread("AUiLogger").apply { start() } }
         private val logAdapters = mutableListOf<LogAdapter>()
-        private var logger : AUiLogger? = null
+        private var logger : AUILogger? = null
 
         private fun addLogAdapterSafe(adapter: LogAdapter){
             if(!logAdapters.contains(adapter)){
@@ -35,10 +35,10 @@ class AUiLogger(private val config: Config) {
         }
 
         fun initLogger(config: Config){
-            logger = AUiLogger(config)
+            logger = AUILogger(config)
         }
 
-        fun logger() : AUiLogger {
+        fun logger() : AUILogger {
             return logger ?: throw RuntimeException("Before calling AUiLogger.logger(), the AUiLogger.initLogger(Config) method must be called firstly!")
         }
 

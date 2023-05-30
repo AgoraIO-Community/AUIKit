@@ -20,7 +20,7 @@ import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.ktv.KTVSingRole
 import io.agora.auikit.service.ktv.SwitchRoleFailReason
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUiRtmMsgProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.DelegateHelper
 import retrofit2.Call
 import retrofit2.Response
@@ -29,7 +29,7 @@ class AUIChorusServiceImpl constructor(
     private val channelName: String,
     private val ktvApi: KTVApi,
     private val rtmManager: AUIRtmManager
-) : IAUIChorusService, AUiRtmMsgProxyDelegate {
+) : IAUIChorusService, AUIRtmMsgProxyDelegate {
     private val TAG: String = "Chorus_LOG"
     private val kChorusKey = "chorus"
 

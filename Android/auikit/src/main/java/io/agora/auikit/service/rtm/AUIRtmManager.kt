@@ -1,7 +1,7 @@
 package io.agora.auikit.service.rtm
 
 import android.content.Context
-import io.agora.auikit.utils.AUiLogger
+import io.agora.auikit.utils.AUILogger
 import io.agora.rtm.ErrorInfo
 import io.agora.rtm.JoinChannelOptions
 import io.agora.rtm.Metadata
@@ -23,9 +23,9 @@ class AUIRtmManager(
     private val rtmClient: RtmClient,
 ) {
 
-    public val proxy = AUiRtmMsgProxy()
+    public val proxy = AUIRtmMsgProxy()
     private val rtmStreamChannelMap = mutableMapOf<String, StreamChannel>()
-    private val logger = AUiLogger(AUiLogger.Config(context, "AUiRtmManager"))
+    private val logger = AUILogger(AUILogger.Config(context, "AUIRtmManager"))
     @Volatile
     private var isLogin = false
 
@@ -86,19 +86,19 @@ class AUIRtmManager(
         isLogin = false
     }
 
-    fun subscribeMsg(channelName: String, itemKey: String, delegate: AUiRtmMsgProxyDelegate) {
+    fun subscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
         proxy.subscribeMsg(channelName, itemKey, delegate)
     }
 
-    fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUiRtmMsgProxyDelegate) {
+    fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
         proxy.unsubscribeMsg(channelName, itemKey, delegate)
     }
 
-    fun subscribeUser(delegate: AUiRtmUserProxyDelegate) {
+    fun subscribeUser(delegate: AUIRtmUserProxyDelegate) {
         proxy.subscribeUser(delegate)
     }
 
-    fun unsubscribeUser(delegate: AUiRtmUserProxyDelegate) {
+    fun unsubscribeUser(delegate: AUIRtmUserProxyDelegate) {
         proxy.unsubscribeUser(delegate)
     }
 

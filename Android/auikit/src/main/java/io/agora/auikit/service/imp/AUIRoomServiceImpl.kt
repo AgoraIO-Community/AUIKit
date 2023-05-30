@@ -21,8 +21,8 @@ import io.agora.auikit.service.http.room.RoomListReq
 import io.agora.auikit.service.http.room.RoomListResp
 import io.agora.auikit.service.http.room.RoomUserReq
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUiRtmMsgProxyDelegate
-import io.agora.auikit.utils.AUiLogger
+import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
+import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.AgoraEngineCreator
 import io.agora.auikit.utils.DelegateHelper
 import io.agora.auikit.utils.MapperUtils
@@ -31,10 +31,10 @@ import retrofit2.Call
 import retrofit2.Response
 
 private const val kRoomAttrKey = "room"
-class AUiRoomManagerImpl(
+class AUIRoomManagerImpl(
     private val commonConfig: AUICommonConfig,
     private val rtmClient: RtmClient? = null
-) : IAUIRoomManager, AUiRtmMsgProxyDelegate {
+) : IAUIRoomManager, AUIRtmMsgProxyDelegate {
 
     val rtmManager by lazy {
         val rtm = rtmClient ?: AgoraEngineCreator.createRtmClient(
@@ -128,7 +128,7 @@ class AUiRoomManagerImpl(
     override fun enterRoom(roomId: String, token: String, callback: AUICallback?) {
         val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, String>
         if (user == null) {
-            AUiLogger.logger().d("EnterRoom", "user == null")
+            AUILogger.logger().d("EnterRoom", "user == null")
             callback?.onResult(
                 AUIException(
                     -1,
@@ -147,9 +147,9 @@ class AUiRoomManagerImpl(
                     )
                 )
             } else {
-                AUiLogger.logger().d("EnterRoom", "subscribe room roomId=$roomId token=$token")
+                AUILogger.logger().d("EnterRoom", "subscribe room roomId=$roomId token=$token")
                 rtmManager.subscribe(roomId, token) { subscribeError ->
-                    AUiLogger.logger().d("EnterRoom", "subscribe room result : $subscribeError")
+                    AUILogger.logger().d("EnterRoom", "subscribe room result : $subscribeError")
                     if (subscribeError != null) {
                         callback?.onResult(
                             AUIException(

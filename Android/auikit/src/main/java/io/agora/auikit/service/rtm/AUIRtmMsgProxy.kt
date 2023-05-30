@@ -9,7 +9,7 @@ import io.agora.rtm.RtmEventListener
 import io.agora.rtm.StorageEvent
 import io.agora.rtm.TopicEvent
 
-interface AUiRtmErrorProxyDelegate {
+interface AUIRtmErrorProxyDelegate {
 
     /** token过期
      */
@@ -24,62 +24,62 @@ interface AUiRtmErrorProxyDelegate {
     fun onMsgRecvEmpty(channelName: String) {}
 }
 
-interface AUiRtmMsgProxyDelegate {
+interface AUIRtmMsgProxyDelegate {
     fun onMsgDidChanged(channelName: String, key: String, value: Any)
     fun onMsgRecvEmpty(channelName: String) {}
 }
 
-interface AUiRtmUserProxyDelegate {
+interface AUIRtmUserProxyDelegate {
     fun onUserSnapshotRecv(channelName: String, userId: String, userList: List<Map<String, Any>>)
     fun onUserDidJoined(channelName: String, userId: String, userInfo: Map<String, Any>)
     fun onUserDidLeaved(channelName: String, userId: String, userInfo: Map<String, Any>)
     fun onUserDidUpdated(channelName: String, userId: String, userInfo: Map<String, Any>)
 }
 
-class AUiRtmMsgProxy : RtmEventListener {
+class AUIRtmMsgProxy : RtmEventListener {
 
     var originEventListeners: RtmEventListener? = null
-    private val msgDelegates: MutableMap<String, ArrayList<AUiRtmMsgProxyDelegate>> = mutableMapOf()
+    private val msgDelegates: MutableMap<String, ArrayList<AUIRtmMsgProxyDelegate>> = mutableMapOf()
     private val msgCacheAttr: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
-    private val userDelegates: MutableList<AUiRtmUserProxyDelegate> = mutableListOf()
-    private val errorDelegates: MutableList<AUiRtmErrorProxyDelegate> = mutableListOf()
+    private val userDelegates: MutableList<AUIRtmUserProxyDelegate> = mutableListOf()
+    private val errorDelegates: MutableList<AUIRtmErrorProxyDelegate> = mutableListOf()
 
     fun cleanCache(channelName: String) {
         msgCacheAttr.remove(channelName)
     }
 
-    fun subscribeMsg(channelName: String, itemKey: String, delegate: AUiRtmMsgProxyDelegate) {
+    fun subscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
         val key = "${channelName}__${itemKey}"
         val delegates = msgDelegates[key] ?: ArrayList()
         delegates.add(delegate)
         msgDelegates[key] = delegates
     }
 
-    fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUiRtmMsgProxyDelegate) {
+    fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
         val key = "${channelName}_${itemKey}"
         val delegates = msgDelegates[key] ?: return
         delegates.remove(delegate)
     }
 
-    fun subscribeUser(delegate: AUiRtmUserProxyDelegate) {
+    fun subscribeUser(delegate: AUIRtmUserProxyDelegate) {
         if (userDelegates.contains(delegate)) {
             return
         }
         userDelegates.add(delegate)
     }
 
-    fun unsubscribeUser(delegate: AUiRtmUserProxyDelegate) {
+    fun unsubscribeUser(delegate: AUIRtmUserProxyDelegate) {
         userDelegates.remove(delegate)
     }
 
-    fun subscribeError(channelName: String, delegate: AUiRtmErrorProxyDelegate) {
+    fun subscribeError(channelName: String, delegate: AUIRtmErrorProxyDelegate) {
         if (errorDelegates.contains(delegate)) {
             return
         }
         errorDelegates.add(delegate)
     }
 
-    fun unsubscribeError(channelName: String, delegate: AUiRtmErrorProxyDelegate) {
+    fun unsubscribeError(channelName: String, delegate: AUIRtmErrorProxyDelegate) {
         errorDelegates.remove(delegate)
     }
 
