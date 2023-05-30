@@ -70,8 +70,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
-        theme.icon = "SeatItem.micSeatItemIconMainSinger"
-        theme.selectedIcon = "SeatItem.micSeatItemIconCoSinger"
+        theme.icon = auiThemeImage("SeatItem.micSeatItemIconMainSinger")
+        theme.selectedIcon = auiThemeImage("SeatItem.micSeatItemIconCoSinger")
         theme.titleFont = "CommonFont.small"
         theme.padding = "SeatItem.padding"
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
@@ -89,7 +89,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     lazy var hostIcon: AUIButton = {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
-        theme.icon = "SeatItem.micSeatHostIcon"
+        theme.icon = auiThemeImage("SeatItem.micSeatHostIcon")
         theme.buttonWidth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let button = AUIButton()

@@ -25,8 +25,8 @@ public class AUIButtonStyle: NSObject {
 }
 
 public class AUIButtonDynamicTheme: AUIButtonStyle {
-    public var icon: ThemeImagePicker?
-    public var selectedIcon: ThemeImagePicker?
+    public var icon: ThemePicker?
+    public var selectedIcon: ThemePicker?
     public var iconWidth: ThemeCGFloatPicker = "Button.iconWidth"
     public var iconHeight: ThemeCGFloatPicker = "Button.iconWidth"
     public var padding: ThemeCGFloatPicker = "Button.padding"
@@ -47,9 +47,9 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var disabledBorderColor: ThemeCGColorPicker?
     public var highlightedTitleColor: ThemeColorPicker?
     public var disabledTitleColor: ThemeColorPicker?
-    public var highlightedIcon: ThemeImagePicker?
-    public var disabledIcon: ThemeImagePicker?
-    public var animatedImage: ThemeAnyPicker?
+    public var highlightedIcon: ThemePicker?
+    public var disabledIcon: ThemePicker?
+//    public var animatedImage: ThemeAnyPicker?
     
     public static func appearanceTheme(appearance: String) -> AUIButtonDynamicTheme  {
         let theme = AUIButtonDynamicTheme()
@@ -88,17 +88,23 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     }
     
     public override func setupStyle(button: AUIButton) {
-        button.theme_setImage(self.icon, forState: .normal)
-        button.theme_setImage(self.selectedIcon, forState: .selected)
-        button.theme_setImage(self.highlightedIcon, forState: .highlighted)
-        button.theme_setImage(self.disabledIcon, forState: .disabled)
+        
+//        button.theme_setImage(self.icon as? ThemeImagePicker, forState: .normal)
+//        button.theme_setImage(self.selectedIcon, forState: .selected)
+//        button.theme_setImage(self.highlightedIcon, forState: .highlighted)
+//        button.theme_setImage(self.disabledIcon, forState: .disabled)
+        
+        button.aui_theme_setImage(self.icon, for: .normal)
+        button.aui_theme_setImage(self.selectedIcon, for: .selected)
+        button.aui_theme_setImage(self.highlightedIcon, for: .highlighted)
+        button.aui_theme_setImage(self.disabledIcon, for: .disabled)
         
         button.theme_setTitleColor(self.titleColor, forState: .normal)
         button.theme_setTitleColor(self.selectedTitleColor, forState: .selected)
         button.theme_setTitleColor(self.highlightedTitleColor, forState: .highlighted)
         button.theme_setTitleColor(self.disabledTitleColor, forState: .disabled)
         
-        button.theme_animatedImage = self.animatedImage
+//        button.theme_animatedImage = self.animatedImage
         
         button.theme_backgroundColor = backgroundColor
         button.layer.theme_borderColor = borderColor
@@ -234,15 +240,6 @@ open class AUIButton: UIButton {
         }
     }
     
-    @objc fileprivate var animatedImage: Any = 0 {
-        didSet {
-            if let imageName: String = animatedImage as? String, let path = auiThemeAnimatedImagePath(imageName)?.value() as? String {
-                let fileUrl = URL(fileURLWithPath: path)
-                self.sd_setImage(with: fileUrl, for: .normal)
-            }
-        }
-    }
-    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         _loadSubViews()
@@ -251,6 +248,18 @@ open class AUIButton: UIButton {
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         _loadSubViews()
+    }
+    
+    fileprivate func aui_theme_setImage(_ image: ThemePicker?, for state: UIControl.State) {
+        guard let image = image else { return }
+        if image is ThemeImagePicker {
+            theme_setImage(image as? ThemeImagePicker, forState: state)
+            return
+        }
+        if let path = auiThemeAnimatedImagePath(image.value() as? String ?? "")?.value() as? String {
+            let fileUrl = URL(fileURLWithPath: path)
+            self.sd_setImage(with: fileUrl, for: state)
+        }
     }
     
     open override func layoutSubviews() {
@@ -293,10 +302,5 @@ extension AUIButton {
     var theme_padding: ThemeCGFloatPicker? {
         get { return aui_getThemePicker(self, "setPadding:") as? ThemeCGFloatPicker }
         set { aui_setThemePicker(self, "setPadding:", newValue) }
-    }
-    
-    var theme_animatedImage: ThemeAnyPicker? {
-        get { return aui_getThemePicker(self, "setAnimatedImage:") as? ThemeAnyPicker }
-        set { aui_setThemePicker(self, "setAnimatedImage:", newValue) }
     }
 }

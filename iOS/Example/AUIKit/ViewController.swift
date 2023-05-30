@@ -216,7 +216,8 @@ extension AUIButtonDynamicTheme {
         if let icon = icon, let themeIcon = auiThemeImage(icon) {
             self.icon = themeIcon
         }else if let animatedImage = animatedImg {
-            self.animatedImage = ThemeAnyPicker(keyPath: animatedImage)
+//            self.animatedImage = ThemeAnyPicker(keyPath: animatedImage)
+            self.icon = ThemeAnyPicker(keyPath: animatedImage)
         }else{
             self.iconWidth = "CustomButton.iconWidthNone"
             self.iconHeight = "CustomButton.iconHeightNone"

@@ -46,7 +46,7 @@ open class AUIKaraokeSkipView: UIView {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "Player.skipCancleButtonWidth"
         theme.buttonHeight = "Player.skipCancleButtonHeight"
-        theme.icon = "Player.playerLrcItemSkipItem"
+        theme.icon = auiThemeImage("Player.playerLrcItemSkipItem")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
