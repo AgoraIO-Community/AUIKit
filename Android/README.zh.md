@@ -47,4 +47,4 @@ AUIKit是一套场景化应用的脚手架，提供Ui组件以及Service组件�
 
 ## 许可证
 版权所有 Agora, Inc. 保留所有权利。
-使用 [MIT 许可证](LICENSE)
+使用 [MIT 许可证](../LICENSE)

@@ -536,4 +536,4 @@ Bottom popup default style -> [AUIBottomDialogStyle](../auikit/src/main/java/io/
 
 ## License
 Copyright © Agora Corporation. All rights reserved.
-Licensed under the [MIT license](../LICENSE).
+Licensed under the [MIT license](../../LICENSE).

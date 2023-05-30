@@ -348,4 +348,4 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 
 ## License
 Copyright © Agora Corporation. All rights reserved.
-Licensed under the [MIT license](../LICENSE).
+Licensed under the [MIT license](../../LICENSE).

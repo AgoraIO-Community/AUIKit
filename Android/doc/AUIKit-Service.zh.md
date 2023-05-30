@@ -348,4 +348,4 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit/src/main/java/io/a
 
 ## License
 Copyright © Agora Corporation. All rights reserved.
-Licensed under the [MIT license](../LICENSE).
+Licensed under the [MIT license](../../LICENSE).

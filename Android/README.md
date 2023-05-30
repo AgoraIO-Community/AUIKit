@@ -47,4 +47,4 @@ AUIKit is a set of scaffolding for scenario-based applications. It provides UI c
 
 ## License
 Copyright © Agora Corporation. All rights reserved.
-Licensed under the [MIT license](LICENSE).
+Licensed under the [MIT license](../LICENSE).
