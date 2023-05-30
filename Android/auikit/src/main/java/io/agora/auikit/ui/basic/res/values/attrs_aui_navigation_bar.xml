@@ -3,7 +3,7 @@
 
     <attr name="aui_navigationBar_appearance" format="reference"/>
 
-    <declare-styleable name="AUiNavigationBar">
+    <declare-styleable name="AUINavigationBar">
         <!-- Menu配置 -->
         <attr name="aui_navigationBar_menu" format="reference" />
         <attr name="aui_navigationBar_menu_appearance" format="reference" />
@@ -22,7 +22,7 @@
 
     </declare-styleable>
 
-    <style name="AUiNavigationBar">
+    <style name="AUINavigationBar">
         <!-- 间距 -->
         <item name="aui_navigationBar_contentPadding">@null</item>
         <item name="aui_navigationBar_contentPaddingStart">@null</item>
@@ -32,7 +32,7 @@
 
         <!-- Menu配置 -->
         <item name="aui_navigationBar_menu">@menu/aui_navigation_menu</item>
-        <item name="aui_navigationBar_menu_appearance">@style/AUiNavigationBarMenu</item>
+        <item name="aui_navigationBar_menu_appearance">@style/AUINavigationBarMenu</item>
 
         <!-- 阴影背景配置 -->
         <item name="aui_navigationBar_backgroundColor">@android:color/white</item>
@@ -40,7 +40,7 @@
         <item name="aui_navigationBar_shadowWidth">2dp</item>
     </style>
 
-    <declare-styleable name="AUiNavigationBarMenu">
+    <declare-styleable name="AUINavigationBarMenu">
         <attr name="android:id" />
         <attr name="aui_navigationBarMenu_isActivated" format="boolean"/>
         <!-- 布局 -->
@@ -90,7 +90,7 @@
         <attr name="aui_navigationBarMenu_weight" format="integer" />
     </declare-styleable>
 
-    <style name="AUiNavigationBarMenu">
+    <style name="AUINavigationBarMenu">
         <!-- Menu Item 配置 -->
         <item name="aui_navigationBarMenu_isActivated">false</item>
         <!-- 布局 -->

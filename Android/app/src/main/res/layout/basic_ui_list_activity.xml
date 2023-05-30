@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buttons" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    app:aui_button_drawableStart="@mipmap/ic_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableRotateAnimEnable="true"
+                    app:aui_button_drawableStart="@mipmap/ic_loading"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_backgroundNormalColor="@android:color/holo_red_light"
+                    app:aui_button_backgroundPressedColor="@android:color/holo_red_dark"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableRotateAnimEnable="true"
+                    app:aui_button_drawableStart="@mipmap/ic_loading"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_backgroundNormalColor="@android:color/holo_red_light"
+                    app:aui_button_backgroundPressedColor="@android:color/holo_red_dark"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableCenter="@mipmap/ic_message" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_circle"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableCenter="@mipmap/ic_loading"
+                    app:aui_button_drawableRotateAnimEnable="true" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:aui_button_backgroundDisableColor="@color/aui_primary"
+                    app:aui_button_drawableCenter="@mipmap/ic_message"
+                    app:aui_button_drawableDisableTint="@color/aui_primary_light" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_stroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_stroke"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_backgroundMode="stroke"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_stroke"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_backgroundNormalColor="@android:color/holo_red_light"
+                    app:aui_button_backgroundPressedColor="@android:color/holo_red_dark"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_drawableTint="@android:color/holo_red_dark"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_stroke"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableRotateAnimEnable="true"
+                    app:aui_button_drawableStart="@mipmap/ic_loading"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_stroke"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min_stroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min_stroke"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min_stroke"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableRotateAnimEnable="true"
+                    app:aui_button_drawableStart="@mipmap/ic_loading"
+                    app:aui_button_text="Primary" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_min_stroke"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:aui_button_drawableStart="@mipmap/ic_member"
+                    app:aui_button_text="Primary" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_circle_stroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableCenter="@mipmap/ic_message" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_circle_stroke"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:aui_button_drawableCenter="@mipmap/ic_loading"
+                    app:aui_button_drawableRotateAnimEnable="true" />
+
+                <io.agora.auikit.ui.basic.AUIButton
+                    style="?attr/aui_button_appearance_circle_stroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:aui_button_drawableCenter="@mipmap/ic_message" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Dividers" />
+
+        <io.agora.auikit.ui.basic.AUIDividers
+            style="?attr/aui_dividers_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
+
+        <io.agora.auikit.ui.basic.AUIDividers
+            style="?attr/aui_dividers_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:aui_dividers_line_dash_gap="2dp"
+            app:aui_dividers_line_dash_width="2dp" />
+
+        <io.agora.auikit.ui.basic.AUIDividers
+            style="?attr/aui_dividers_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:aui_dividers_text="Text" />
+
+        <io.agora.auikit.ui.basic.AUIDividers
+            style="?attr/aui_dividers_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:aui_dividers_line_dash_gap="2dp"
+            app:aui_dividers_line_dash_width="2dp"
+            app:aui_dividers_line_insertEnd="30dp"
+            app:aui_dividers_line_insertStart="30dp"
+            app:aui_dividers_text="Text" />
+
+        <io.agora.auikit.ui.basic.AUIDividers
+            style="?attr/aui_dividers_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:aui_dividers_line_color="@android:color/transparent"
+            app:aui_dividers_text="已加载全部" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="EditText" />
+
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_input_hintText="PlaceHodler"
+            app:aui_edittext_icon_right="@drawable/aui_ic_close"
+            app:aui_edittext_icon_left="@mipmap/ic_world"
+            app:aui_edittext_title_text="小标题" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_input_type="password"
+            app:aui_edittext_tip_text="请输入xxx"
+            app:aui_edittext_title_text="密码" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_input_type="phone"
+            app:aui_edittext_tip_text="请输入xxx"
+            app:aui_edittext_title_text="手机号" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_status="error"
+            app:aui_edittext_tip_text="请输入xxx"
+            app:aui_edittext_title_text="小标题" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            style="?attr/aui_editText_appearance_outline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_tip_text="请输入xxx"
+            app:aui_edittext_title_text="小标题" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            style="?attr/aui_editText_appearance_outline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_input_type="password"
+            app:aui_edittext_tip_text="请输入xxx"
+            app:aui_edittext_title_text="密码" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            style="?attr/aui_editText_appearance_outline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_input_type="phone"
+            app:aui_edittext_tip_text="请输入xxx"
+            app:aui_edittext_title_text="手机号" />
+
+        <io.agora.auikit.ui.basic.AUIEditText
+            style="?attr/aui_editText_appearance_outline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_edittext_status="error"
+            app:aui_edittext_input_hintText="请输入xxxx"
+            app:aui_edittext_tip_text="值范围在......"
+            app:aui_edittext_title_text="小标题" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TitleBar"/>
+
+        <io.agora.auikit.ui.basic.AUITitleBar
+            style="?attr/aui_titleBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_titleBar_mode="home"
+            app:aui_titleBar_titleText="标题1"/>
+
+
+        <io.agora.auikit.ui.basic.AUITitleBar
+            style="?attr/aui_titleBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_titleBar_mode="home"
+            app:aui_titleBar_titleText="标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1"/>
+
+        <io.agora.auikit.ui.basic.AUITitleBar
+            style="?attr/aui_titleBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_titleBar_mode="back"
+            app:aui_titleBar_titleText="标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1"/>
+
+        <io.agora.auikit.ui.basic.AUITitleBar
+            style="?attr/aui_titleBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_titleBar_mode="step"
+            app:aui_titleBar_titleText="标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1标题1"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NavigationBar"/>
+
+        <io.agora.auikit.ui.basic.AUINavigationBar
+            style="?attr/aui_navigationBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_navigationBar_menu="@menu/aui_navigation_menu_01"/>
+
+        <io.agora.auikit.ui.basic.AUINavigationBar
+            style="?attr/aui_navigationBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_navigationBar_menu="@menu/aui_navigation_menu_02"/>
+
+        <io.agora.auikit.ui.basic.AUINavigationBar
+            style="?attr/aui_navigationBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_navigationBar_menu="@menu/aui_navigation_menu_03"/>
+
+        <io.agora.auikit.ui.basic.AUINavigationBar
+            style="?attr/aui_navigationBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_navigationBar_menu="@menu/aui_navigation_menu_04"/>
+
+        <io.agora.auikit.ui.basic.AUINavigationBar
+            style="?attr/aui_navigationBar_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_navigationBar_menu="@menu/aui_navigation_menu_05"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TabLayout"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_tabLayout_menu="@menu/aui_tab_menu_01"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_tabLayout_menu="@menu/aui_tab_menu_02"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_tabLayout_menu="@menu/aui_tab_menu_03"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_tabLayout_tabMode="scrollable"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            style="?attr/aui_tabLayout_appearance_round"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:aui_tabLayout_menu="@menu/aui_tab_menu_01"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            style="?attr/aui_tabLayout_appearance_round"
+            android:layout_width="300dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            app:aui_tabLayout_menu="@menu/aui_tab_menu_02"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            style="?attr/aui_tabLayout_appearance_round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:aui_tabLayout_menu="@menu/aui_tab_menu_03"
+            android:layout_marginVertical="6dp"/>
+
+        <io.agora.auikit.ui.basic.AUITabLayout
+            style="?attr/aui_tabLayout_appearance_round"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CellText"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_info_text="请戴上耳机获得更好的试听体验"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_asterisk_show="true"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_subtitle_text="附加说明"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_indicator_show="true"
+            app:aui_cellText_red_dot_num="10"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_info_text="请戴上耳机获得更好的试听体验"
+            app:aui_cellText_indicator_show="true"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_asterisk_show="true"
+            app:aui_cellText_indicator_show="true"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_indicator_show="true"
+            app:aui_cellText_subtitle_text="附加说明"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_checkBox_show="true"
+            />
+
+        <io.agora.auikit.ui.basic.AUICellText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aui_cellText_title_text="选项"
+            app:aui_cellText_checkBox_show="true"
+            app:aui_cellText_info_text="请戴上耳机获得更好的试听体验"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BottomDialog"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showBottomDialog01"
+            android:text="显示底部弹窗1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showBottomDialog02"
+            android:text="显示底部弹窗2"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showBottomDialog03"
+            android:text="显示底部弹窗3"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AlertDialog"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog01"
+            android:text="显示弹窗1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog02"
+            android:text="显示弹窗2"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog03"
+            android:text="显示弹窗3"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog04"
+            android:text="显示弹窗4"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog05"
+            android:text="显示弹窗5"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog06"
+            android:text="显示弹窗6"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog07"
+            android:text="显示弹窗7"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog08"
+            android:text="显示弹窗8"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog09"
+            android:text="显示弹窗9"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showAlertDialog10"
+            android:text="显示弹窗10"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

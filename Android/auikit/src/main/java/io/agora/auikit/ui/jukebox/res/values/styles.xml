@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AUiJukebox">
-        <item name="aui_jukebox_appearance">@style/AUiJukebox.Appearance</item>
+    <style name="AUIJukebox">
+        <item name="aui_jukebox_appearance">@style/AUIJukebox.Appearance</item>
     </style>
-    <style name="AUiJukeboxChoose">
-        <item name="aui_jukeboxChoose_appearance">@style/AUiJukeboxChoose.Appearance</item>
+    <style name="AUIJukeboxChoose">
+        <item name="aui_jukeboxChoose_appearance">@style/AUIJukeboxChoose.Appearance</item>
     </style>
-    <style name="AUiJukeboxChosen">
-        <item name="aui_jukeboxChosen_appearance">@style/AUiJukeboxChosen.Appearance</item>
+    <style name="AUIJukeboxChosen">
+        <item name="aui_jukeboxChosen_appearance">@style/AUIJukeboxChosen.Appearance</item>
     </style>
-    <style name="AUiJukeboxChooseItem">
-        <item name="aui_jukeboxChooseItem_appearance">@style/AUiJukeboxChooseItem.Appearance</item>
+    <style name="AUIJukeboxChooseItem">
+        <item name="aui_jukeboxChooseItem_appearance">@style/AUIJukeboxChooseItem.Appearance</item>
     </style>
-    <style name="AUiJukeboxChosenItem">
-        <item name="aui_jukeboxChosenItem_appearance">@style/AUiJukeboxChosenItem.Appearance</item>
+    <style name="AUIJukeboxChosenItem">
+        <item name="aui_jukeboxChosenItem_appearance">@style/AUIJukeboxChosenItem.Appearance</item>
     </style>
 
 
-    <style name="AUiJukebox.Appearance">
+    <style name="AUIJukebox.Appearance">
 
         <!-- 背景 -->
         <item name="aui_jukebox_background">@drawable/aui_bg_bottom_dialog</item>
@@ -48,7 +48,7 @@
 
     </style>
 
-    <style name="AUiJukeboxChoose.Appearance">
+    <style name="AUIJukeboxChoose.Appearance">
 
         <!-- 搜索输入框 -->
         <item name="aui_jukeboxChoose_searchBackground">@drawable/aui_jukebox_search_bg</item>
@@ -80,7 +80,7 @@
 
     </style>
 
-    <style name="AUiJukeboxChooseItem.Appearance">
+    <style name="AUIJukeboxChooseItem.Appearance">
         <item name="aui_jukeboxChooseItem_paddingHorizontal">0dp</item>
         <item name="aui_jukeboxChooseItem_paddingVertical">16dp</item>
 
@@ -112,7 +112,7 @@
 
     </style>
 
-    <style name="AUiJukeboxChosen.Appearance">
+    <style name="AUIJukeboxChosen.Appearance">
 
         <!-- 列表分隔线 -->
         <item name="aui_jukeboxChosen_listDivider">@drawable/aui_jukebox_divider</item>
@@ -120,7 +120,7 @@
 
     </style>
 
-    <style name="AUiJukeboxChosenItem.Appearance">
+    <style name="AUIJukeboxChosenItem.Appearance">
         <item name="aui_jukeboxChosenItem_paddingHorizontal">0dp</item>
         <item name="aui_jukeboxChosenItem_paddingVertical">16dp</item>
 
