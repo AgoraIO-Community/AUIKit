@@ -9,8 +9,6 @@
 import UIKit
 import AUIKit
 
-let giftMap = [["gift_id": "AUIKitGift1", "gift_name": "Sweet Heart", "gift_price": "1", "gift_count": "1", "selected": true], ["gift_id": "AUIKitGift2", "gift_name": "Flower", "gift_price": "5", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift3", "gift_name": "Crystal Box", "gift_price": "10", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift4", "gift_name": "Super Agora", "gift_price": "20", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift5", "gift_name": "Star", "gift_price": "50", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift6", "gift_name": "Lollipop", "gift_price": "100", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift7", "gift_name": "Diamond", "gift_price": "500", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift8", "gift_name": "Crown", "gift_price": "1000", "gift_count": "1", "selected": false], ["gift_id": "AUIKitGift9", "gift_name": "Rocket", "gift_price": "1500", "gift_count": "1", "selected": false]]
-
 class ViewController: UIViewController,AUIMManagerRespDelegate {
     func messageDidReceive(roomId: String, message: AgoraChatTextMessage) {
         
@@ -43,16 +41,18 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
         return entities
     }
     
+    var giftDatas = [AUIGiftEntity]()
+    
     lazy var testBottomBar: AUIRoomBottomFunctionBar = {
         AUIRoomBottomFunctionBar(frame: CGRect(x: 0, y: AScreenHeight - CGFloat(ABottomBarHeight) - 50, width: AScreenWidth, height: 50), datas: self.datas, hiddenChat: false)
     }()
     
     lazy var testInputBar: AUIChatInputBar = {
-        AUIChatInputBar(frame: CGRect(x: 0, y: AScreenHeight, width: AScreenWidth, height: 60)).backgroundColor(.white)
+        AUIChatInputBar(frame: CGRect(x: 0, y: AScreenHeight, width: AScreenWidth, height: 60),config: AUIChatInputBarConfig()).backgroundColor(.white)
     }()
     
     lazy var gifts: AUIGiftsView = {
-        AUIGiftsView(frame: CGRect(x: 0, y: 0, width: Int(AScreenWidth), height: 390-ABottomBarHeight-50), gifts: self.giftList()) { gift in
+        AUIGiftsView(frame: CGRect(x: 0, y: 0, width: Int(AScreenWidth), height: 390-ABottomBarHeight-50), gifts: self.giftDatas) { gift in
             
         }.backgroundColor(.clear)
     }()
@@ -98,11 +98,28 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
         let user = AUIUserThumbnailInfo()
         user.userId = "z18811508778"
         user.userName = "zjc"
+        let model = AUIRoomCreateNetworkModel()
+        model.roomName = "UIKit\(Date().timeIntervalSince1970)"
+        model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
+        model.userId = AUIRoomContext.shared.currentUserInfo.userId
+        model.userName = AUIRoomContext.shared.currentUserInfo.userName
+        model.userAvatar = AUIRoomContext.shared.currentUserInfo.userAvatar
+        model.request { [weak self] error, resp in
+            guard let room = resp as? AUIRoomInfo else { return }
+            self?.requestGift(roomId: room.roomId )
+            
+        }
 //        self.response.configIM(appKey: "1129210531094378#auikit-voiceroom", user: user) { [weak self] error in
 //            
 //        }
-        self.giftRequest.giftsFromService(roomId: "") { tabs, error in
-            
+        
+    }
+    
+    func requestGift(roomId: String) {
+        self.giftRequest.giftsFromService(roomId: roomId) { tabs, error in
+            if error == nil {
+                self.giftDatas = tabs.first?.gifts ?? []
+            }
         }
     }
     
@@ -134,13 +151,6 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
     }
 
     
-    func giftList() -> [AUIGiftEntity] {
-        var gifts = [AUIGiftEntity]()
-        for dic in giftMap {
-            guard let entity = AUIGiftEntity.yy_model(with: dic) else { continue }
-            gifts.append(entity)
-        }
-        return gifts
-    }
+    
 }
 

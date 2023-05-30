@@ -64,9 +64,9 @@ open class AUIRoomInfo: AUICreateRoomInfo {
 @objcMembers
 ///用户简略信息，用于各个模型传递简单数据
 open class AUIUserThumbnailInfo: NSObject {
-    public var userId: String = ""      //用户Id
-    public var userName: String = ""    //用户名
-    public var userAvatar: String = ""  //用户头像
+    public var userId: String = "1234567"      //用户Id
+    public var userName: String = "jack"    //用户名
+    public var userAvatar: String = "xxxxxx"  //用户头像
     
     public func isEmpty() -> Bool {
         guard userId.count > 0, userName.count > 0 else {return true}

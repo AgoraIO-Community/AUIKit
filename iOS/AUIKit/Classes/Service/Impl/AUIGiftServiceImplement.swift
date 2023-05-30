@@ -74,7 +74,7 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
         model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
         model.request { error, obj in
             if error == nil {
-                var tabs = NSArray.yy_modelArray(with: AUIGiftTabEntity.self, json: obj) as? [AUIGiftTabEntity]
+                let tabs = NSArray.yy_modelArray(with: AUIGiftTabEntity.self, json: obj) as? [AUIGiftTabEntity]
                 completion(tabs!, nil)
             } else {
                 completion([], error as? NSError)
