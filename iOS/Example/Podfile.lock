@@ -1,15 +1,15 @@
 PODS:
   - AgoraLyricsScore (1.1.1-beta-3)
   - AgoraRtcEngine_iOS (1.0)
-  - Alamofire (5.6.4)
+  - Alamofire (5.7.1)
   - AUIKit (0.1.0):
     - AgoraLyricsScore
     - AgoraRtcEngine_iOS
     - Alamofire
     - AUIKit/AUIKit (= 0.1.0)
-    - Kingfisher (~> 7.6.2)
     - MJRefresh
     - ScoreEffectUI
+    - SDWebImage (~> 5.12.6)
     - SwiftTheme
     - SwiftyBeaver (~> 1.9.5)
     - YYModel
@@ -18,9 +18,9 @@ PODS:
     - AgoraLyricsScore
     - AgoraRtcEngine_iOS
     - Alamofire
-    - Kingfisher (~> 7.6.2)
     - MJRefresh
     - ScoreEffectUI
+    - SDWebImage (~> 5.12.6)
     - SwiftTheme
     - SwiftyBeaver (~> 1.9.5)
     - YYModel
@@ -30,9 +30,11 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - Kingfisher (7.6.2)
   - MJRefresh (3.7.5)
-  - ScoreEffectUI (1.0.0)
+  - ScoreEffectUI (1.0.1)
+  - SDWebImage (5.12.6):
+    - SDWebImage/Core (= 5.12.6)
+  - SDWebImage/Core (5.12.6)
   - SwiftTheme (0.6.4)
   - SwiftyBeaver (1.9.5)
   - YYModel (1.0.4)
@@ -49,9 +51,9 @@ SPEC REPOS:
     - AgoraLyricsScore
     - Alamofire
     - FBSnapshotTestCase
-    - Kingfisher
     - MJRefresh
     - ScoreEffectUI
+    - SDWebImage
     - SwiftTheme
     - SwiftyBeaver
     - YYModel
@@ -66,17 +68,17 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
-  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
-  AUIKit: 9f035ff2a5c3245e44e5b92d605cc00b75d5b057
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  AUIKit: 8f7efec99a1f2c56e8458f65eb9cc897558c74d0
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
-  ScoreEffectUI: 072afb2f77c952e2b4d757792cbf340c1a271651
+  ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
+  SDWebImage: a47aea9e3d8816015db4e523daff50cfd294499d
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 425746d655a1cf53099efdc2afd78d6e8a3db698
+PODFILE CHECKSUM: d91831fcd153bf1964ba206bc0d4540340d3b7ab
 
 COCOAPODS: 1.12.0
