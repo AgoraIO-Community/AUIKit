@@ -93,6 +93,7 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
         self.testInputBar.sendClosure = { [weak self] in
             self?.testIMView.messages?.append((self?.startMessage($0))!)
             self?.testIMView.chatView.reloadData()
+            self?.testInputBar.inputField.text = ""
         }
         let appId = "8bcda27385ca4eeba3affcae55f55fe4"
         let user = AUIUserThumbnailInfo()
