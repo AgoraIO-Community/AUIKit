@@ -99,12 +99,13 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
         let user = AUIUserThumbnailInfo()
         user.userId = "z18811508778"
         user.userName = "zjc"
+        user.userAvatar = ""
         let model = AUIRoomCreateNetworkModel()
         model.roomName = "UIKit\(Date().timeIntervalSince1970)"
         model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
-        model.userId = AUIRoomContext.shared.currentUserInfo.userId
-        model.userName = AUIRoomContext.shared.currentUserInfo.userName
-        model.userAvatar = AUIRoomContext.shared.currentUserInfo.userAvatar
+        model.userId = user.userId
+        model.userName = user.userName
+        model.userAvatar = user.userAvatar
         model.request { [weak self] error, resp in
             guard let room = resp as? AUIRoomInfo else { return }
             self?.requestGift(roomId: room.roomId )
