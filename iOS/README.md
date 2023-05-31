@@ -313,6 +313,18 @@ AUIKit
 | selectedTitleColor | Select Text Color |
 | cornerRadius | The  corner radius of the button|
 | textAlpha | Transparency of button text |
+| padding | Icon and text spacing |
+| highlightedBackgroundColor | Background color when pressed |
+| selectedBackgroundColor | Background color when selected |
+| disabledBackgroundColor | Background color when disabled |
+| borderColor | Border color |
+| highlightedBorderColor | Border color when pressed |
+| selectedBorderColor | Border color when selected |
+| disabledBorderColor | Border color when disabled |
+| highlightedTitleColor | Text color when pressed |
+| disabledTitleColor | Text color when disabled |
+| highlightedIcon | Icon when pressed |
+| disabledIcon | Icon when disabled |
 
 
 ### AUISlider
