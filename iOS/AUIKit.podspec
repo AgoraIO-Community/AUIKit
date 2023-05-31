@@ -80,7 +80,7 @@ TODO: Add long description of the pod here.
   s.frameworks = 'UIKit', 'Foundation'
   s.dependency 'AgoraRtcEngine_iOS'
   s.dependency 'YYModel'
-  s.dependency 'SwiftyBeaver', '~>1.9.5'
+  s.dependency 'SwiftyBeaver', '1.9.5'
   s.dependency 'Zip'
   s.dependency 'Alamofire'
   s.dependency 'SwiftTheme'
