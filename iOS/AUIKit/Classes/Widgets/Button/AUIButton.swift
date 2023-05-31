@@ -89,11 +89,6 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     
     public override func setupStyle(button: AUIButton) {
         
-//        button.theme_setImage(self.icon as? ThemeImagePicker, forState: .normal)
-//        button.theme_setImage(self.selectedIcon, forState: .selected)
-//        button.theme_setImage(self.highlightedIcon, forState: .highlighted)
-//        button.theme_setImage(self.disabledIcon, forState: .disabled)
-        
         button.aui_theme_setImage(self.icon, for: .normal)
         button.aui_theme_setImage(self.selectedIcon, for: .selected)
         button.aui_theme_setImage(self.highlightedIcon, for: .highlighted)
@@ -103,8 +98,6 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
         button.theme_setTitleColor(self.selectedTitleColor, forState: .selected)
         button.theme_setTitleColor(self.highlightedTitleColor, forState: .highlighted)
         button.theme_setTitleColor(self.disabledTitleColor, forState: .disabled)
-        
-//        button.theme_animatedImage = self.animatedImage
         
         button.theme_backgroundColor = backgroundColor
         button.layer.theme_borderColor = borderColor
@@ -256,10 +249,7 @@ open class AUIButton: UIButton {
             theme_setImage(image as? ThemeImagePicker, forState: state)
             return
         }
-        if let path = auiThemeAnimatedImagePath(image.value() as? String ?? "")?.value() as? String {
-            let fileUrl = URL(fileURLWithPath: path)
-            self.sd_setImage(with: fileUrl, for: state)
-        }
+        theme_sd_setImage(image as? ThemeAnyPicker, forState: state)
     }
     
     open override func layoutSubviews() {
@@ -302,5 +292,10 @@ extension AUIButton {
     var theme_padding: ThemeCGFloatPicker? {
         get { return aui_getThemePicker(self, "setPadding:") as? ThemeCGFloatPicker }
         set { aui_setThemePicker(self, "setPadding:", newValue) }
+    }
+    
+    func theme_sd_setImage(_ picker: ThemeAnyPicker?, forState state: UIControl.State) {
+        let statePicker = ThemePicker.makeStatePicker(self, "sd_setImageWithURL:forState:", picker, state)
+        ThemePicker.setThemePicker(self, "sd_setImageWithURL:forState:", statePicker)
     }
 }
