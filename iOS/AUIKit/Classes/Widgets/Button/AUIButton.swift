@@ -25,8 +25,8 @@ public class AUIButtonStyle: NSObject {
 }
 
 public class AUIButtonDynamicTheme: AUIButtonStyle {
-    public var icon: ThemePicker?
-    public var selectedIcon: ThemePicker?
+    public var icon: ThemeAnyPicker?
+    public var selectedIcon: ThemeAnyPicker?
     public var iconWidth: ThemeCGFloatPicker = "Button.iconWidth"
     public var iconHeight: ThemeCGFloatPicker = "Button.iconWidth"
     public var padding: ThemeCGFloatPicker = "Button.padding"
@@ -47,9 +47,8 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var disabledBorderColor: ThemeCGColorPicker?
     public var highlightedTitleColor: ThemeColorPicker?
     public var disabledTitleColor: ThemeColorPicker?
-    public var highlightedIcon: ThemePicker?
-    public var disabledIcon: ThemePicker?
-//    public var animatedImage: ThemeAnyPicker?
+    public var highlightedIcon: ThemeAnyPicker?
+    public var disabledIcon: ThemeAnyPicker?
     
     public static func appearanceTheme(appearance: String) -> AUIButtonDynamicTheme  {
         let theme = AUIButtonDynamicTheme()
@@ -89,10 +88,10 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     
     public override func setupStyle(button: AUIButton) {
         
-        button.aui_theme_setImage(self.icon, for: .normal)
-        button.aui_theme_setImage(self.selectedIcon, for: .selected)
-        button.aui_theme_setImage(self.highlightedIcon, for: .highlighted)
-        button.aui_theme_setImage(self.disabledIcon, for: .disabled)
+        button.theme_sd_setImage(self.icon, forState: .normal)
+        button.theme_sd_setImage(self.selectedIcon, forState: .selected)
+        button.theme_sd_setImage(self.highlightedIcon, forState: .highlighted)
+        button.theme_sd_setImage(self.disabledIcon, forState: .disabled)
         
         button.theme_setTitleColor(self.titleColor, forState: .normal)
         button.theme_setTitleColor(self.selectedTitleColor, forState: .selected)
@@ -127,8 +126,8 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
 }
 
 public class AUIButtonNativeTheme: AUIButtonStyle {
-    public var icon: UIImage?
-    public var selectedIcon: UIImage?
+    public var icon: String?
+    public var selectedIcon: String?
     public var iconWidth: CGFloat = 0
     public var iconHeight: CGFloat = 0
     public var padding: CGFloat = 0
@@ -153,14 +152,14 @@ public class AUIButtonNativeTheme: AUIButtonStyle {
     public var highlightedTitleColor: UIColor?
     public var disabledTitleColor: UIColor?
     
-    public var highlightedIcon: UIImage?
-    public var disabledIcon: UIImage?
+    public var highlightedIcon: String?
+    public var disabledIcon: String?
     
     public override func setupStyle(button: AUIButton) {
-        button.setImage(self.icon, for: .normal)
-        button.setImage(self.selectedIcon, for: .selected)
-        button.setImage(self.highlightedIcon, for: .highlighted)
-        button.setImage(self.disabledIcon, for: .disabled)
+        button.aui_setImage(self.icon, for: .normal)
+        button.aui_setImage(self.selectedIcon, for: .selected)
+        button.aui_setImage(self.highlightedIcon, for: .highlighted)
+        button.aui_setImage(self.disabledIcon, for: .disabled)
         
         button.setTitleColor(self.titleColor, for: .normal)
         button.setTitleColor(self.selectedTitleColor, for: .selected)
@@ -243,13 +242,15 @@ open class AUIButton: UIButton {
         _loadSubViews()
     }
     
-    fileprivate func aui_theme_setImage(_ image: ThemePicker?, for state: UIControl.State) {
+    @objc fileprivate func aui_setImage(_ image: String?, for state: UIControl.State) {
         guard let image = image else { return }
-        if image is ThemeImagePicker {
-            theme_setImage(image as? ThemeImagePicker, forState: state)
-            return
+        if let filePath = String.aui_imageFilePath(named: image) {
+            var fileUrl = URL(fileURLWithPath: filePath)
+            if fileUrl.pathExtension.isEmpty {
+                fileUrl.appendPathExtension("png")
+            }
+            self.sd_setImage(with: fileUrl, for: state)
         }
-        theme_sd_setImage(image as? ThemeAnyPicker, forState: state)
     }
     
     open override func layoutSubviews() {
@@ -295,7 +296,7 @@ extension AUIButton {
     }
     
     func theme_sd_setImage(_ picker: ThemeAnyPicker?, forState state: UIControl.State) {
-        let statePicker = ThemePicker.makeStatePicker(self, "sd_setImageWithURL:forState:", picker, state)
-        ThemePicker.setThemePicker(self, "sd_setImageWithURL:forState:", statePicker)
+        let statePicker = ThemePicker.makeStatePicker(self, "aui_setImage:for:", picker, state)
+        ThemePicker.setThemePicker(self, "aui_setImage:for:", statePicker)
     }
 }

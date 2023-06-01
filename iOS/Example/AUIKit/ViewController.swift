@@ -79,10 +79,10 @@ class ViewController: UIViewController {
     private func addButtons(){
         _addTitle("Buttons")
         func addCommonButtons(){
-            let searchIcon = auiThemeImage("CustomButton.search")
-            let userNormalIcon = auiThemeImage("CustomButton.user_normal")
-            let loadingIcon = auiThemeAnimatedImagePath("CustomButton.loading")
-            let chatIcon = auiThemeImage("CustomButton.chat")
+            let searchIcon = ThemeAnyPicker(keyPath: "CustomButton.search")
+            let userNormalIcon =  ThemeAnyPicker(keyPath: "CustomButton.user_normal")
+            let loadingIcon =  ThemeAnyPicker(keyPath: "CustomButton.loading")
+            let chatIcon =  ThemeAnyPicker(keyPath: "CustomButton.chat")
             
             let button = createBigButton(icon: searchIcon)
             let normalButton = createBigButton(icon:userNormalIcon)
@@ -108,10 +108,10 @@ class ViewController: UIViewController {
         }
            
         func addStrokeButtons(){
-            let userNormalIconStr = auiThemeImage("CustomButton.user_normal_stroke")
-            let userDangerIconStr = auiThemeImage("CustomButton.user_danger")
-            let chatIconStr = auiThemeImage("CustomButton.chat_stroke")
-            let loadingIcon = auiThemeAnimatedImagePath("CustomButton.loading_stroke")
+            let userNormalIconStr =  ThemeAnyPicker(keyPath:"CustomButton.user_normal_stroke")
+            let userDangerIconStr =  ThemeAnyPicker(keyPath:"CustomButton.user_danger")
+            let chatIconStr =  ThemeAnyPicker(keyPath:"CustomButton.chat_stroke")
+            let loadingIcon =  ThemeAnyPicker(keyPath:"CustomButton.loading_stroke")
 
             let button = createBigStrokeButton()
             let normalButton = createBigStrokeButton(icon: userNormalIconStr)
@@ -220,7 +220,7 @@ extension AUIButtonDynamicTheme {
         }
         self.iconWidth = ThemeCGFloatPicker(keyPath: iconWidth)
         self.iconHeight = ThemeCGFloatPicker(keyPath: iconHeight)
-        self.icon = icon
+        self.icon = icon as? ThemeAnyPicker
     }
 }
 

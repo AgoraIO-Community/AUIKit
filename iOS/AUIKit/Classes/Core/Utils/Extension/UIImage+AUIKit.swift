@@ -25,7 +25,7 @@ extension UIImage {
 }
 
 extension String {
-    public static func aui_animatedImageFilePath(named: String) -> String? {
+    public static func aui_imageFilePath(named: String) -> String? {
         for path in AUIRoomContext.shared.themeResourcePaths {
             let filePath = path.appendingPathComponent(named).path
             return filePath
