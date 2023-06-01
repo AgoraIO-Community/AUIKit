@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_song_name"
         tools:text="SingerName" />
 
-    <io.agora.auikit.ui.basic.AUiCheckBox
+    <io.agora.auikit.ui.basic.AUICheckBox
         android:id="@+id/cb_choose"
         android:layout_width="?attr/aui_jukeboxChooseItem_buttonWidth"
         android:layout_height="?attr/aui_jukeboxChooseItem_buttonHeight"

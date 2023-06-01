@@ -9,11 +9,11 @@
         <item name="aui_micSeatDialog_appearance">@style/AUIMicSeatDialog.Appearance</item>
 
         <!-- 点歌器组件 -->
-        <item name="aui_jukebox_appearance">@style/AUiJukebox.Appearance</item>
-        <item name="aui_jukeboxChoose_appearance">@style/AUiJukeboxChoose.Appearance</item>
-        <item name="aui_jukeboxChosen_appearance">@style/AUiJukeboxChosen.Appearance</item>
-        <item name="aui_jukeboxChooseItem_appearance">@style/AUiJukeboxChooseItem.Appearance</item>
-        <item name="aui_jukeboxChosenItem_appearance">@style/AUiJukeboxChosenItem.Appearance</item>
+        <item name="aui_jukebox_appearance">@style/AUIJukebox.Appearance</item>
+        <item name="aui_jukeboxChoose_appearance">@style/AUIJukeboxChoose.Appearance</item>
+        <item name="aui_jukeboxChosen_appearance">@style/AUIJukeboxChosen.Appearance</item>
+        <item name="aui_jukeboxChooseItem_appearance">@style/AUIJukeboxChooseItem.Appearance</item>
+        <item name="aui_jukeboxChosenItem_appearance">@style/AUIJukeboxChosenItem.Appearance</item>
 
         <!--  播放器组件      -->
         <item name="aui_musicPlayer_appearance">@style/AUIMusicPlayer.Appearance</item>

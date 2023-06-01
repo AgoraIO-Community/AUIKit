@@ -8,7 +8,7 @@
     <attr name="aui_button_appearance_circle" format="reference"/>
     <attr name="aui_button_appearance_circle_stroke" format="reference"/>
 
-    <declare-styleable name="AUiButton">
+    <declare-styleable name="AUIButton">
         <!-- 圆角大小 -->
         <!--       java: setCornersRadius(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius) -->
         <attr name="aui_button_cornersRadius" format="dimension" />
@@ -74,7 +74,7 @@
     </declare-styleable>
 
 
-    <style name="AUiButton">
+    <style name="AUIButton">
         <item name="android:enabled">true</item>
         <item name="android:minWidth">120dp</item>
         <item name="android:minHeight">48dp</item>
@@ -126,7 +126,7 @@
 
     </style>
 
-    <style name="AUiButton.Stroke">
+    <style name="AUIButton.Stroke">
         <item name="aui_button_backgroundMode">stroke</item>
         <item name="aui_button_textNormalColor">@color/aui_primary</item>
         <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
@@ -137,7 +137,7 @@
         <item name="aui_button_drawableDisableTint">@color/aui_primary_light</item>
     </style>
 
-    <style name="AUiButton.Mini">
+    <style name="AUIButton.Mini">
         <item name="android:minWidth">80dp</item>
         <item name="android:minHeight">36dp</item>
 
@@ -147,7 +147,7 @@
         <item name="aui_button_drawableHeight">20dp</item>
     </style>
 
-    <style name="AUiButton.Mini.Stroke">
+    <style name="AUIButton.Mini.Stroke">
         <item name="aui_button_backgroundMode">stroke</item>
         <item name="aui_button_textNormalColor">@color/aui_primary</item>
         <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
@@ -158,7 +158,7 @@
         <item name="aui_button_drawableDisableTint">@color/aui_primary_light</item>
     </style>
 
-    <style name="AUiButton.Circle">
+    <style name="AUIButton.Circle">
         <item name="android:minWidth">48dp</item>
         <item name="android:maxWidth">48dp</item>
         <item name="android:minHeight">48dp</item>
@@ -171,7 +171,7 @@
         <item name="aui_button_drawableHeight">28dp</item>
     </style>
 
-    <style name="AUiButton.Circle.Stroke">
+    <style name="AUIButton.Circle.Stroke">
         <item name="aui_button_backgroundMode">stroke</item>
         <item name="aui_button_textNormalColor">@color/aui_primary</item>
         <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>

@@ -1,6 +1,6 @@
 package io.agora.auikit.service.http.room
 
-import io.agora.auikit.model.AUiRoomInfo
+import io.agora.auikit.model.AUIRoomInfo
 
 data class CreateRoomReq(
     val roomName: String,
@@ -30,5 +30,5 @@ data class RoomListReq(
 data class RoomListResp(
     val pageSize: Int,
     val count: Int,
-    val list: List<AUiRoomInfo>
+    val list: List<AUIRoomInfo>
 )

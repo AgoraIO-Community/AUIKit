@@ -3,7 +3,7 @@
 
     <attr name="aui_dividers_appearance" format="reference"/>
 
-    <declare-styleable name="AUiDividers">
+    <declare-styleable name="AUIDividers">
         <attr name="android:background" />
 
         <attr name="aui_dividers_line_width" format="dimension" />
@@ -20,7 +20,7 @@
 
     </declare-styleable>
 
-    <style name="AUiDividers">
+    <style name="AUIDividers">
         <item name="android:background">#F9F9F9</item>
 
         <item name="aui_dividers_line_width">1dp</item>

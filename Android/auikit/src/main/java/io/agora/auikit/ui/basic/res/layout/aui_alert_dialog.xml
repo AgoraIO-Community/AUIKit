@@ -101,7 +101,7 @@
                     android:layout_height="?attr/aui_alertDialog_inputSpaceTop"
                     android:visibility="?attr/aui_alertDialog_inputVisible" />
 
-                <io.agora.auikit.ui.basic.AUiEditText
+                <io.agora.auikit.ui.basic.AUIEditText
                     android:id="@+id/inputEditText"
                     style="?attr/aui_alertDialog_inputStyle"
                     android:layout_width="match_parent"
@@ -146,7 +146,7 @@
             android:orientation="horizontal">
 
 
-            <io.agora.auikit.ui.basic.AUiButton
+            <io.agora.auikit.ui.basic.AUIButton
                 android:id="@+id/buttonNegative"
                 style="?attr/aui_alertDialog_buttonNegativeStyle"
                 android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
                 android:layout_height="0dp"
                 android:visibility="?attr/aui_alertDialog_buttonNegativeVisible" />
 
-            <io.agora.auikit.ui.basic.AUiButton
+            <io.agora.auikit.ui.basic.AUIButton
                 android:id="@+id/buttonPositive"
                 style="?attr/aui_alertDialog_buttonPositiveStyle"
                 android:layout_width="wrap_content"
