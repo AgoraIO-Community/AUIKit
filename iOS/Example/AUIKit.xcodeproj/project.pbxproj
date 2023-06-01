@@ -288,8 +288,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUiKit/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AUiKit/Resource/auiTheme.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
