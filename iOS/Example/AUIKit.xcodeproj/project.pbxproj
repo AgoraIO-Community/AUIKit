@@ -15,7 +15,7 @@
 		A87C9B742A285A4D002D9BD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6C2A285A4D002D9BD5 /* Main.storyboard */; };
 		A87C9B762A285A4D002D9BD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6F2A285A4D002D9BD5 /* Images.xcassets */; };
 		A87C9B772A285A4D002D9BD5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87C9B702A285A4D002D9BD5 /* AppDelegate.swift */; };
-		A87C9B802A28977D002D9BD5 /* exampleTheme.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B7F2A28977D002D9BD5 /* exampleTheme.bundle */; };
+		A87C9B822A2899B2002D9BD5 /* exampleTheme.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +43,7 @@
 		A87C9B6D2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A87C9B6F2A285A4D002D9BD5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A87C9B702A285A4D002D9BD5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A87C9B7F2A28977D002D9BD5 /* exampleTheme.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = exampleTheme.bundle; sourceTree = "<group>"; };
+		A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = exampleTheme.bundle; sourceTree = "<group>"; };
 		B9CD0CD6559B14E3F0A33E06 /* Pods-AUIKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E9CAC8BDC6BC7995118FF6EC /* Pods-AUIKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FC714ADFC100525CBA50C370 /* AUIKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AUIKit.podspec; path = ../AUIKit.podspec; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 		A87C9B682A285A4D002D9BD5 /* AUIKit */ = {
 			isa = PBXGroup;
 			children = (
-				A87C9B7F2A28977D002D9BD5 /* exampleTheme.bundle */,
+				A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */,
 				A87C9B692A285A4D002D9BD5 /* ViewController.swift */,
 				A87C9B6A2A285A4D002D9BD5 /* LaunchScreen.xib */,
 				A87C9B6C2A285A4D002D9BD5 /* Main.storyboard */,
@@ -244,7 +244,7 @@
 			files = (
 				A87C9B762A285A4D002D9BD5 /* Images.xcassets in Resources */,
 				A87C9B732A285A4D002D9BD5 /* LaunchScreen.xib in Resources */,
-				A87C9B802A28977D002D9BD5 /* exampleTheme.bundle in Resources */,
+				A87C9B822A2899B2002D9BD5 /* exampleTheme.bundle in Resources */,
 				A87C9B742A285A4D002D9BD5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
