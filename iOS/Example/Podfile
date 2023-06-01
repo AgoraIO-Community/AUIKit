@@ -4,7 +4,7 @@ platform :ios, '13.0'
 
 target 'AUIKit_Example' do
   pod 'AUIKit', :path => '../'
-  pod 'AgoraRtcEngine_iOS', :path => './libs'
+  pod 'AgoraRtcEngine_iOS', :path => '/Users/fanpengpeng/Desktop/Demo/AUIKitKaraoke/iOS/Example/libs'
 #  pod 'LookinServer'
   pod 'AgoraLyricsScore', '1.1.1-beta-3'
 
