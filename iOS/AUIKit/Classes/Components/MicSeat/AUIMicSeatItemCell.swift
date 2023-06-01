@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftTheme
-import Kingfisher
+import SDWebImage
 
 public enum MicRole: Int {
     case mainSinger
@@ -70,8 +70,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
-        theme.icon = "SeatItem.micSeatItemIconMainSinger"
-        theme.selectedIcon = "SeatItem.micSeatItemIconCoSinger"
+        theme.icon =  ThemeAnyPicker(keyPath:"SeatItem.micSeatItemIconMainSinger")
+        theme.selectedIcon =  ThemeAnyPicker(keyPath:"SeatItem.micSeatItemIconCoSinger")
         theme.titleFont = "CommonFont.small"
         theme.padding = "SeatItem.padding"
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
@@ -89,7 +89,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     lazy var hostIcon: AUIButton = {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
-        theme.icon = "SeatItem.micSeatHostIcon"
+        theme.icon =  ThemeAnyPicker(keyPath:"SeatItem.micSeatHostIcon")
         theme.buttonWidth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let button = AUIButton()
@@ -177,7 +177,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     private func reloadData() {
         aui_info("reload seat name \(item?.seatName ?? "") url: \(item?.avatarUrl ?? "") mute video: \(item?.isMuteVideo ?? true)", tag: "AUIMicSeatItemCell")
-        avatarImageView.kf.setImage(with: URL(string: item?.avatarUrl ?? ""))
+        avatarImageView.sd_setImage(with: URL(string: item?.avatarUrl ?? ""))
         seatLabel.text = item?.seatName
         if let _ = item?.avatarUrl {
             avatarImageView.layer.theme_borderColor = "SeatItem.avatarBorderColor"

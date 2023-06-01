@@ -310,6 +310,18 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | selectedTitleColor | 选中文字颜色 |
 | cornerRadius | 按钮圆角 |
 | textAlpha | 按钮文字透明度 |
+| padding | 图标和文字间距 |
+| highlightedBackgroundColor | 按下时背景色 |
+| selectedBackgroundColor | 选中时的背景色 |
+| disabledBackgroundColor | 不可点击时的背景色 |
+| borderColor | 边框颜色 |
+| highlightedBorderColor | 按下时边框颜色 |
+| selectedBorderColor | 选中时边框颜色 |
+| disabledBorderColor | 不可点击时的边框颜色 |
+| highlightedTitleColor | 按下时文字颜色 |
+| disabledTitleColor | 不可点击时文字颜色 |
+| highlightedIcon | 按下时图标 |
+| disabledIcon | 不可点击时图标 |
 
 
 ### AUISlider
