@@ -17,11 +17,15 @@ public func auiThemeImage(_ keyPath: String) -> ThemeImagePicker? {
     }
 }
 
-public func auiThemeAnimatedImagePath(_ keyPath: String) -> ThemeAnyPicker? {
+public func auiThemeImageURL(_ keyPath: String) -> ThemeAnyPicker? {
     
     ThemeAnyPicker {
-        if let name = ThemeManager.string(for: keyPath), let fileUrl = String.aui_animatedImageFilePath(named: name) {
-            return  URL(fileURLWithPath: fileUrl)
+        if let name = ThemeManager.string(for: keyPath), let filePath = String.aui_animatedImageFilePath(named: name) {
+            var fileUrl = URL(fileURLWithPath: filePath)
+            if fileUrl.pathExtension.isEmpty {
+                fileUrl.appendPathExtension("png")
+            }
+            return fileUrl
         }
         return nil
     }

@@ -79,10 +79,10 @@ class ViewController: UIViewController {
     private func addButtons(){
         _addTitle("Buttons")
         func addCommonButtons(){
-            let searchIcon = auiThemeImage("CustomButton.search")
-            let userNormalIcon = auiThemeImage("CustomButton.user_normal")
-            let loadingIcon = auiThemeAnimatedImagePath("CustomButton.loading")
-            let chatIcon = auiThemeImage("CustomButton.chat")
+            let searchIcon = auiThemeImageURL("CustomButton.search")
+            let userNormalIcon = auiThemeImageURL("CustomButton.user_normal")
+            let loadingIcon = auiThemeImageURL("CustomButton.loading")
+            let chatIcon = auiThemeImageURL("CustomButton.chat")
             
             let button = createBigButton(icon: searchIcon)
             let normalButton = createBigButton(icon:userNormalIcon)
@@ -108,10 +108,10 @@ class ViewController: UIViewController {
         }
            
         func addStrokeButtons(){
-            let userNormalIconStr = auiThemeImage("CustomButton.user_normal_stroke")
-            let userDangerIconStr = auiThemeImage("CustomButton.user_danger")
-            let chatIconStr = auiThemeImage("CustomButton.chat_stroke")
-            let loadingIcon = auiThemeAnimatedImagePath("CustomButton.loading_stroke")
+            let userNormalIconStr = auiThemeImageURL("CustomButton.user_normal_stroke")
+            let userDangerIconStr = auiThemeImageURL("CustomButton.user_danger")
+            let chatIconStr = auiThemeImageURL("CustomButton.chat_stroke")
+            let loadingIcon = auiThemeImageURL("CustomButton.loading_stroke")
 
             let button = createBigStrokeButton()
             let normalButton = createBigStrokeButton(icon: userNormalIconStr)
