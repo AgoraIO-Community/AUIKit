@@ -180,7 +180,7 @@ open class AUIPlayerView: UIView {
     //设置按钮
     private lazy var audioSettingButton: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.icon = auiThemeImageURL("Player.audioSettingIcon")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.audioSettingIcon")
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
@@ -192,7 +192,7 @@ open class AUIPlayerView: UIView {
     //音效按钮
     private lazy var voiceConversionButton: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.icon = auiThemeImageURL("Player.voiceConversionIcon")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.voiceConversionIcon")
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
@@ -210,7 +210,7 @@ open class AUIPlayerView: UIView {
         theme.buttonHeight = "Player.selectSongButtonHeight"
         theme.backgroundColor = AUIColor("Player.selectSongBackgroundColor")
         theme.cornerRadius = "Player.selectSongButtonRadius"
-        theme.icon = auiThemeImageURL("Player.SelectSongIcon")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.SelectSongIcon")
         theme.textAlpha = "Player.SelectSongTextAlpha"
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
@@ -225,7 +225,7 @@ open class AUIPlayerView: UIView {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "Player.JoinChorusButtonWidth"
         theme.buttonHeight = "Player.JoinChorusButtonHeight"
-        theme.icon = auiThemeImageURL("Player.playerLrcItemIconJoinChorus")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconJoinChorus")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
@@ -240,7 +240,7 @@ open class AUIPlayerView: UIView {
     //离开合唱按钮
     public lazy var leaveChorusBtn: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.icon = auiThemeImageURL("Player.playerLrcItemIconLeaveChorus")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconLeaveChorus")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
@@ -254,8 +254,8 @@ open class AUIPlayerView: UIView {
     //暂停播放按钮
     public lazy var playOrPauseButton: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.selectedIcon = auiThemeImageURL("Player.playerLrcItemIconPlay")
-        theme.icon = auiThemeImageURL("Player.playerLrcItemIconPause")
+        theme.selectedIcon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconPlay")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconPause")
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
@@ -268,7 +268,7 @@ open class AUIPlayerView: UIView {
     //切歌按钮
     public lazy var nextSongButton: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.icon = auiThemeImageURL("Player.playerLrcItemIconNext")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconNext")
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
@@ -280,7 +280,7 @@ open class AUIPlayerView: UIView {
     //点歌按钮
     public lazy var chooseSongButton: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.icon = auiThemeImageURL("Player.playerLrcItemIconChooseSong")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconChooseSong")
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
@@ -292,8 +292,8 @@ open class AUIPlayerView: UIView {
     //原唱按钮
     public lazy var originalButton: AUIButton = {
         let theme = AUIButtonDynamicTheme.toolbarTheme()
-        theme.icon = auiThemeImageURL("Player.playerLrcItemIconAcc")
-        theme.selectedIcon = auiThemeImageURL("Player.playerLrcItemIconOriginal")
+        theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconAcc")
+        theme.selectedIcon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconOriginal")
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
