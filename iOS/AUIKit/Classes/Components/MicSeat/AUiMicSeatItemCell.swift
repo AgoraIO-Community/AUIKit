@@ -24,6 +24,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         }
     }
     
+    lazy var rippleView: AUIRippleAnimationView = {
+        let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: 56, height: 56)).backgroundColor(.clear)
+        ripple.minimumCircleRadius = 40
+        ripple.diskRadius = 30
+        return ripple
+    }()
+    
     public lazy var canvasView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -112,6 +119,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     private func _loadView() {
         addSubview(avatarView)
         addSubview(defaultImageView)
+        addSubview(rippleView)
         addSubview(avatarImageView)
         addSubview(seatLabel)
         addSubview(micRoleBtn)
@@ -182,7 +190,11 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         if let _ = item?.avatarUrl {
             avatarImageView.layer.theme_borderColor = "SeatItem.avatarBorderColor"
             avatarImageView.layer.theme_borderWidth = "SeatItem.avatarBorderWidth"
+            rippleView.isHidden = false
+            rippleView.startAnimation()
         } else {
+            rippleView.stopAnimation()
+            rippleView.isHidden = true
             avatarImageView.layer.theme_borderColor = nil
             avatarImageView.layer.theme_borderWidth = nil
             avatarImageView.layer.borderWidth = 0

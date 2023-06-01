@@ -8,6 +8,7 @@
 
 import UIKit
 import AUIKit
+import QuartzCore
 
 class ViewController: UIViewController,AUIMManagerRespDelegate {
     func messageDidReceive(roomId: String, message: AgoraChatTextMessage) {
@@ -66,12 +67,20 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
     }()
     
     lazy var giftRequest = AUIGiftServiceImplement()
+    
+    
+    lazy var ripple: AUIRippleAnimationView = {
+        let ripple = AUIRippleAnimationView(frame: CGRect(x: 100, y: 100, width: 100, height: 100)).backgroundColor(.white)
+        ripple.minimumCircleRadius = 50
+        ripple.diskRadius = 40
+        return ripple
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         AUIRoomContext.shared.switchTheme (themeName: "UIKit" )
         // Do any additional setup after loading the view, typically from a nib.
-        self.view.addSubViews([self.bg,self.testIMView,self.testBottomBar,self.testInputBar,])
+        self.view.addSubViews([self.bg,self.testIMView,self.testBottomBar,self.testInputBar,self.ripple])
     
         self.testInputBar.isHidden = true
         self.testIMView.messages?.append(self.startMessage(nil))
@@ -155,4 +164,6 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
     
     
 }
+
+
 
