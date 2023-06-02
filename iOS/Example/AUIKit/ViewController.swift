@@ -104,7 +104,7 @@ class ViewController: UIViewController,AUIMManagerRespDelegate {
             self?.testIMView.chatView.reloadData()
             self?.testInputBar.inputField.text = ""
         }
-        let appId = "8bcda27385ca4eeba3affcae55f55fe4"
+//        let appId = "8bcda27385ca4eeba3affcae55f55fe4"
         let user = AUIUserThumbnailInfo()
         user.userId = "z18811508778"
         user.userName = "zjc"

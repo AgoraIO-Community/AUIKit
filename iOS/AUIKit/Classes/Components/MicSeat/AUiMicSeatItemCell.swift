@@ -25,9 +25,9 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     }
     
     lazy var rippleView: AUIRippleAnimationView = {
-        let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: 56, height: 56)).backgroundColor(.clear)
-        ripple.minimumCircleRadius = 40
-        ripple.diskRadius = 30
+        let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: 56, height: 56)).backgroundColor(.clear)//"SeatItem.defaultImageWidth" 56
+        ripple.minimumCircleRadius = 38
+        ripple.diskRadius = 28
         return ripple
     }()
     

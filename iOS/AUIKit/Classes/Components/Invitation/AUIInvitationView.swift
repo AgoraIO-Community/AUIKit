@@ -9,15 +9,15 @@ import Foundation
 
 
 /// 邀请列表组件
-class AUIInvitationView: UIView {
-    weak var invitationdelegate: AUIInvitationServiceDelegate? {
+@objc open class AUIInvitationView: UIView {
+    public weak var invitationdelegate: AUIInvitationServiceDelegate? {
         didSet {
             oldValue?.unbindRespDelegate(delegate: self)
             invitationdelegate?.unbindRespDelegate(delegate: self)
         }
     }
     
-    weak var roomDelegate: AUIRoomManagerDelegate? {
+    public weak var roomDelegate: AUIRoomManagerDelegate? {
         didSet {
             oldValue?.unbindRespDelegate(delegate: self)
             roomDelegate?.bindRespDelegate(delegate: self)
@@ -36,12 +36,12 @@ class AUIInvitationView: UIView {
     
     private var userList: [AUIUserInfo] = []
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         _loadSubViews()
     }
     
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         super.init(coder: coder)
         _loadSubViews()
     }
@@ -51,42 +51,42 @@ class AUIInvitationView: UIView {
         backgroundColor = .clear
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         tableView.frame = bounds
     }
 }
 
 extension AUIInvitationView: AUIInvitationRespDelegate {
-    func onReceiveNewInvitation(userId: String, seatIndex: Int?) {
+    public func onReceiveNewInvitation(userId: String, seatIndex: Int?) {
         
     }
     
-    func onInviteeAccepted(userId: String) {
+    public func onInviteeAccepted(userId: String) {
         
     }
     
-    func onInviteeRejected(userId: String) {
+    public func onInviteeRejected(userId: String) {
         
     }
     
-    func onInvitationCancelled(userId: String) {
+    public func onInvitationCancelled(userId: String) {
         
     }
     
-    func onReceiveNewApply(userId: String, seatIndex: Int?) {
+    public func onReceiveNewApply(userId: String, seatIndex: Int?) {
         
     }
     
-    func onApplyAccepted(userId: String) {
+    public func onApplyAccepted(userId: String) {
         
     }
     
-    func onApplyRejected(userId: String) {
+    public func onApplyRejected(userId: String) {
         
     }
     
-    func onApplyCanceled(userId: String) {
+    public func onApplyCanceled(userId: String) {
         
     }
     
@@ -94,35 +94,35 @@ extension AUIInvitationView: AUIInvitationRespDelegate {
 }
 
 extension AUIInvitationView: AUIRoomManagerRespDelegate {
-    func onRoomAnnouncementChange(roomId: String, announcement: String) {
+    public func onRoomAnnouncementChange(roomId: String, announcement: String) {
         //TODO: - update room announcement
     }
     
-    func onRoomUserSnapshot(roomId: String, userList: [AUIUserInfo]) {
+    public func onRoomUserSnapshot(roomId: String, userList: [AUIUserInfo]) {
         self.userList = userList
         self.tableView.reloadData()
     }
     
-    func onRoomDestroy(roomId: String) {
+    public func onRoomDestroy(roomId: String) {
         
     }
     
-    func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo) {
+    public func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo) {
         
     }
     
-    func onRoomUserEnter(roomId: String, userInfo: AUIUserInfo) {
+    public func onRoomUserEnter(roomId: String, userInfo: AUIUserInfo) {
         self.userList = self.userList.filter({$0.userId != userInfo.userId})
         self.userList.append(userInfo)
         self.tableView.reloadData()
     }
     
-    func onRoomUserLeave(roomId: String, userInfo: AUIUserInfo) {
+    public func onRoomUserLeave(roomId: String, userInfo: AUIUserInfo) {
         self.userList = self.userList.filter({$0.userId != userInfo.userId})
         self.tableView.reloadData()
     }
     
-    func onRoomUserUpdate(roomId: String, userInfo: AUIUserInfo) {
+    public func onRoomUserUpdate(roomId: String, userInfo: AUIUserInfo) {
         self.userList = self.userList.filter({$0.userId != userInfo.userId})
         self.userList.append(userInfo)
         self.tableView.reloadData()
@@ -132,11 +132,11 @@ extension AUIInvitationView: AUIRoomManagerRespDelegate {
 
 private let kAUIInvitationCellId = "invitation_cell"
 extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.userList.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kAUIInvitationCellId) ?? UITableViewCell(style: .subtitle, reuseIdentifier: kAUIInvitationCellId)
         let user = userList[indexPath.row]
         cell.backgroundColor = .clear
