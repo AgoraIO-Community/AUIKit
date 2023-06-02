@@ -1,86 +1,86 @@
-# AUiKit组件介绍
+# AUIKit组件介绍
 
 *[English](README.md) | 中文*
 
 <!-- TOC START -->
 
-- [AUiKit基础组件](#auikit基础组件)
+- [AUIKit基础组件](#auikit基础组件)
 - [Service](#service)
-  * [AUiMicSeatServiceDelegate](#auimicseatservicedelegate)
-  * [AUiMicSeatRespDelegate](#auimicseatrespdelegate)
-  * [AUiUserServiceDelegate](#auiuserservicedelegate)
-  * [AUiUserRespDelegate](#auiuserrespdelegate)
-  * [AUiChorusServiceDelegate](#auichorusservicedelegate)
-  * [AUiChorusRespDelegate](#auichorusrespdelegate)
-  * [AUiMusicServiceDelegate](#auimusicservicedelegate)
-  * [AUiMusicRespDelegate](#auimusicrespdelegate)
-  * [AUiPlayerServiceDelegate](#auiplayerservicedelegate)
-  * [AUiPlayerRespDelegate](#auiplayerrespdelegate)
-  * [AUiRoomManagerDelegate](#auiroommanagerdelegate)
-  * [AUiRoomManagerRespDelegate](#auiroommanagerrespdelegate)
+  * [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
+  * [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
+  * [AUIUserServiceDelegate](#auiuserservicedelegate)
+  * [AUIUserRespDelegate](#auiuserrespdelegate)
+  * [AUIChorusServiceDelegate](#auichorusservicedelegate)
+  * [AUIChorusRespDelegate](#auichorusrespdelegate)
+  * [AUIMusicServiceDelegate](#auimusicservicedelegate)
+  * [AUIMusicRespDelegate](#auimusicrespdelegate)
+  * [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
+  * [AUIPlayerRespDelegate](#auiplayerrespdelegate)
+  * [AUIRoomManagerDelegate](#auiroommanagerdelegate)
+  * [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
 - [Widget](#widget)
-  * [AUiActionSheet](#auiactionsheet)
+  * [AUIActionSheet](#auiactionsheet)
     * [主容器配置](#主容器配置) 
     * [列表Item配置](#列表Item配置)
-  * [AUiAlertView](#auialertview)
-  * [AUiButton](#auibutton)
-  * [AUiSlider](#auislider)
-  * [AUiTableViewCell](#auitableviewcell)
-  * [AUiTabs](#auitabs)
-  * [AUiTextField](#auitextfield)
-  * [AUiToast](#auitoast)
+  * [AUIAlertView](#auialertview)
+  * [AUIButton](#auibutton)
+  * [AUISlider](#auislider)
+  * [AUITableViewCell](#auitableviewcell)
+  * [AUITabs](#auitabs)
+  * [AUITextField](#auitextfield)
+  * [AUIToast](#auitoast)
   <!-- TOC END -->
 
-# AUiKit基础组件
+# AUIKit基础组件
 ```
-AUiKit  
+AUIKit  
 ├─ Service                              // 基础服务组件
-│  ├─ AUiMicSeatServiceDelegate         // 麦位管理协议
-│  ├─ AUiMicSeatRespDelegate            // 麦位管理回调
-│  ├─ AUiMicSeatServiceImpl             // 麦位管理实现类         
-│  ├─ AUiUserServiceDelegate            // 用户管理协议       
-│  ├─ AUiUserRespDelegate               // 用户管理回调
-│  ├─ AUiUserServiceImpl                // 用户管理实现类
-│  ├─ AUiChorusServiceDelegate          // 合唱管理协议
-│  ├─ AUiChorusRespDelegate             // 合唱管理回调
-│  ├─ AUiChorusServiceImpl              // 合唱管理实现类
-│  ├─ AUiMusicServiceDelegate           // 音乐管理协议
-│  ├─ AUiMusicRespDelegate              // 音乐管理回调
-│  ├─ AUiMusicServiceImpl               // 音乐管理实现类
-│  ├─ AUiPlayerServiceDelegate          // k歌播放管理协议
-│  ├─ AUiPlayerRespDelegate             // k歌播放管理回调
-│  ├─ AUiPlayerServiceImpl              // K歌播放管理实现类
-│  ├─ AUiRoomManagerDelegate            // 房间管理协议
-│  ├─ AUiRoomManagerRespDelegate        // 房间管理回调
-│  └─ AUiRoomManagerImpl                // 房间管理实现类
+│  ├─ AUIMicSeatServiceDelegate         // 麦位管理协议
+│  ├─ AUIMicSeatRespDelegate            // 麦位管理回调
+│  ├─ AUIMicSeatServiceImpl             // 麦位管理实现类         
+│  ├─ AUIUserServiceDelegate            // 用户管理协议       
+│  ├─ AUIUserRespDelegate               // 用户管理回调
+│  ├─ AUIUserServiceImpl                // 用户管理实现类
+│  ├─ AUIChorusServiceDelegate          // 合唱管理协议
+│  ├─ AUIChorusRespDelegate             // 合唱管理回调
+│  ├─ AUIChorusServiceImpl              // 合唱管理实现类
+│  ├─ AUIMusicServiceDelegate           // 音乐管理协议
+│  ├─ AUIMusicRespDelegate              // 音乐管理回调
+│  ├─ AUIMusicServiceImpl               // 音乐管理实现类
+│  ├─ AUIPlayerServiceDelegate          // k歌播放管理协议
+│  ├─ AUIPlayerRespDelegate             // k歌播放管理回调
+│  ├─ AUIPlayerServiceImpl              // K歌播放管理实现类
+│  ├─ AUIRoomManagerDelegate            // 房间管理协议
+│  ├─ AUIRoomManagerRespDelegate        // 房间管理回调
+│  └─ AUIRoomManagerImpl                // 房间管理实现类
 │
 ├─ Widget                               // 无业务的基础UI组件
-│  ├─ AUiActionSheet                    // 动作面板
-│  ├─ AUiAlertView                      // 对话框
-│  ├─ AUiButton                         // 按钮
-│  ├─ AUiSlider                         // 滑动条
-│  ├─ AUiTableViewCell                  // 表格视图单元格 
-│  ├─ AUiTabs                           // 选项卡
-│  ├─ AUiTextField                      // 编辑框
-│  └─ AUiToast                          // 提示框
+│  ├─ AUIActionSheet                    // 动作面板
+│  ├─ AUIAlertView                      // 对话框
+│  ├─ AUIButton                         // 按钮
+│  ├─ AUISlider                         // 滑动条
+│  ├─ AUITableViewCell                  // 表格视图单元格 
+│  ├─ AUITabs                           // 选项卡
+│  ├─ AUITextField                      // 编辑框
+│  └─ AUIToast                          // 提示框
 │
 └─ Component                           // 包含具体业务的UI模块
    ├─ JukeBox                           // 点歌器组件 
-   │  ├─ AUiJukeBoxView                 // 点歌器View，不包含逻辑
-   │  └─ AUiJukeBoxViewBinder           // 点歌器View与Service绑定类
+   │  ├─ AUIJukeBoxView                 // 点歌器View，不包含逻辑
+   │  └─ AUIJukeBoxViewBinder           // 点歌器View与Service绑定类
    ├─ MicSeat                           // 麦位组件
-   │  ├─ AUiMicSeatView                 // 麦位View，不包含逻辑
-   │  └─ AUiMicSeatViewBinder           // 麦位View与Service绑定类
+   │  ├─ AUIMicSeatView                 // 麦位View，不包含逻辑
+   │  └─ AUIMicSeatViewBinder           // 麦位View与Service绑定类
    └─ Player                            // KTV歌曲播放器组件
-      ├─ AUiPlayerView                  // KTV歌曲播放器View，不包含逻辑
-      └─ AUiPlayerViewBinder            // KTV歌曲播放器View与Service绑定类
+      ├─ AUIPlayerView                  // KTV歌曲播放器View，不包含逻辑
+      └─ AUIPlayerViewBinder            // KTV歌曲播放器View与Service绑定类
    
 ```
 # API参考
 ## Service
 Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而成的组件
 
-### AUiMicSeatServiceDelegate 
+### AUIMicSeatServiceDelegate 
 #### 麦位管理协议
 
 | API                | 描述                              |
@@ -95,7 +95,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | muteVideoSeat      | 关闭/打开麦位摄像头（房主调用）   |
 | closeSeat          | 封禁/解禁某个麦位（房主调用）     |
 
-### AUiMicSeatRespDelegate
+### AUIMicSeatRespDelegate
 #### 麦位管理回调
 
 | API               | 描述                                |
@@ -106,7 +106,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | onSeatVideoMute   | 房主对麦位摄像头进行禁用/启用       |
 | onSeatClose       | 房主对麦位进行了封麦/解封           |
 
-### AUiUserServiceDelegate
+### AUIUserServiceDelegate
 #### 用户管理协议
 | API                | 描述                       |
 | ------------------ | -------------------------- |
@@ -116,7 +116,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | muteUserAudio      | 对自己静音/解除静音        |
 | muteUserVideo      | 对自己禁用/解禁摄像头  |
 
-### AUiUserRespDelegate
+### AUIUserRespDelegate
 #### 用户管理回调
 | API                | 描述                               |
 | ------------------ | ---------------------------------- |
@@ -127,7 +127,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | onUserAudioMute    | 用户关闭/开启了麦克风时的回调            |
 | onUserVideoMute    | 用户关闭/开启了摄像头时的回调            |
 
-### AUiChorusServiceDelegate
+### AUIChorusServiceDelegate
 #### 合唱管理协议
 | API                | 描述             |
 | ------------------ | ---------------- |
@@ -137,14 +137,14 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | joinChorus         | 加入合唱         |
 | leaveChorus        | 退出合唱         |
 
-### AUiChorusRespDelegate
+### AUIChorusRespDelegate
 #### 合唱管理回调
 | API                 | 描述       |
 | ------------------- | ---------- |
 | onChoristerDidEnter | 合唱者加入 |
 | onChoristerDidLeave | 合唱者离开 |
 
-### AUiMusicServiceDelegate
+### AUIMusicServiceDelegate
 #### 音乐管理协议
 | API                  | 描述               |
 | -------------------- | ------------------ |
@@ -158,7 +158,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | pinSong              | 置顶歌曲           |
 | updatePlayStatus     | 更新歌曲播放状态   |
 
-### AUiMusicRespDelegate
+### AUIMusicRespDelegate
 #### 音乐管理回调
 | API                    | 描述                                    |
 | ---------------------- | --------------------------------------- |
@@ -167,7 +167,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | onUpdateChooseSong     | 更新一首歌曲时的回调（例如修改play status） |
 | onUpdateAllChooseSongs | 更新所有歌曲时的回调（例如pin）             |
 
-### AUiPlayerServiceDelegate
+### AUIPlayerServiceDelegate
 #### k歌播放管理协议
 | API                            | 描述                               |
 | ------------------------------ | ---------------------------------- |
@@ -192,7 +192,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | setVoiceConversionPreset       | 变声                               |
 | enableEarMonitoring            | 耳返                               |
 
-### AUiPlayerRespDelegate
+### AUIPlayerRespDelegate
 #### k歌播放管理回调
 | API                       | 描述             |
 | ------------------------- | ---------------- |
@@ -203,7 +203,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | onPlayerPositionDidChange | 获取时间进度回调 |
 | onPlayerStateChanged      | 播放状态变化回调 |
 
-### AUiRoomManagerDelegate
+### AUIRoomManagerDelegate
 #### 房间管理协议
 | API                | 描述                 |
 | ------------------ | -------------------- |
@@ -215,7 +215,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | exitRoom           | 退出房间（听众调用） |
 | getRoomInfoList    | 获取房间列表         |
 
-### AUiRoomManagerRespDelegate
+### AUIRoomManagerRespDelegate
 #### 房间管理回调
 | API              | 描述             |
 | ---------------- | ---------------- |
@@ -223,7 +223,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | onRoomInfoChange | 房间信息变更回调 |
 
 ## Widget
-### AUiActionSheet
+### AUIActionSheet
 #### 主容器配置
 | 属性                 | 描述       |
 | ------------------- | ---------- |
@@ -255,7 +255,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | selectedBorderRadius | 选中框圆角 |
 
 
-### AUiAlertView
+### AUIAlertView
 | 属性                 | 描述       |
 | ------------------- | ---------- |
 | background(color: UIColor?) | 背景色 |
@@ -295,7 +295,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | rightButtonTapClosure(onTap: @escaping (String?) -> Void)   | 右边按钮点击回调(带输入框内容) |
 | rightButtonTapClosure(onTap: @escaping () -> Void)   | 右边按钮点击回调(不带输入框内容) |
 
-### AUiButton
+### AUIButton
 | API              | 描述             |
 | ---------------- | ---------------- |
 | backgroundColor | 背景色 |
@@ -310,9 +310,21 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | selectedTitleColor | 选中文字颜色 |
 | cornerRadius | 按钮圆角 |
 | textAlpha | 按钮文字透明度 |
+| padding | 图标和文字间距 |
+| highlightedBackgroundColor | 按下时背景色 |
+| selectedBackgroundColor | 选中时的背景色 |
+| disabledBackgroundColor | 不可点击时的背景色 |
+| borderColor | 边框颜色 |
+| highlightedBorderColor | 按下时边框颜色 |
+| selectedBorderColor | 选中时边框颜色 |
+| disabledBorderColor | 不可点击时的边框颜色 |
+| highlightedTitleColor | 按下时文字颜色 |
+| disabledTitleColor | 不可点击时文字颜色 |
+| highlightedIcon | 按下时图标 |
+| disabledIcon | 不可点击时图标 |
 
 
-### AUiSlider
+### AUISlider
 | API              | 描述             |
 | ---------------- | ---------------- |
 | backgroundColor    | 背景色 |
@@ -326,7 +338,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | titleLabelFont | 标题字体 |
 | titleLabelColor | 标题颜色 |
 
-### AUiTableViewCell
+### AUITableViewCell
 
 | API              | 描述             |
 | ---------------- | ---------------- |
@@ -344,7 +356,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | switchThumbColor    | 开关滑块颜色 |
 | arrow    | 箭头图标 |
 
-### AUiTabs
+### AUITabs
 
 | API              | 描述             |
 | ---------------- | ---------------- |
@@ -360,7 +372,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | selectedBorderColor    | 标签选中时边框颜色 |
 | indicatorWidth    | 选中标签指示条宽度 |
 
-### AUiTextField
+### AUITextField
 | API              | 描述             |
 | ---------------- | ---------------- |
 | backgroundColor    | 背景色 |
@@ -388,7 +400,7 @@ Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而
 | dividerColor    | 输入内容底部分割线颜色 |
 
 
-### AUiToast
+### AUIToast
 
 | API              | 描述             |
 | ---------------- | ---------------- |

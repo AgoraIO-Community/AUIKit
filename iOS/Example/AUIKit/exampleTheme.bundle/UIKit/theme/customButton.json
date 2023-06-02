@@ -1,0 +1,30 @@
+{
+    "CustomButton": {
+      "user_normal": "example_user_normal",
+      "user_normal_stroke": "example_user_normal_stroke",
+      "user_danger": "example_user_danger",
+      "search": "example_search",
+      "chat":"example_chat",
+      "chat_stroke":"example_chat_stroke",
+      "loading": "example_loading_white.png",
+      "loading_stroke":"example_loading_purple.png",
+      "iconBigWidth": 24,
+      "iconBigHeight": 24,
+      "iconSmallWidth": 20,
+      "iconSmallHeight": 20,
+      "iconCircleWidth": 24,
+      "iconCircleHeight": 24,
+      "iconWidthNone": 0,
+      "iconHeightNone":0
+    },
+    "ExampleMainColor": {
+        "normalTextColor": "#000000",
+        "background": "#ffffff",
+        "primary": "#7800ff",
+        "hightLight": "#4B00C0",
+        "disableBackground": "#7800ff5a",
+        "strokeBackgroud": "#ffffff",
+        "borderColor": "#7800ff",
+        "disableBorderColor": "#7800ff5a",
+    }
+}

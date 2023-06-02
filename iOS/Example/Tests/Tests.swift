@@ -1,5 +1,5 @@
 import XCTest
-import AUiKit
+import AUIKit
 
 class Tests: XCTestCase {
     
