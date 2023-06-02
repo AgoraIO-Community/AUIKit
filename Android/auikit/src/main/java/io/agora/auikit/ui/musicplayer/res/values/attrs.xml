@@ -7,7 +7,7 @@
     <attr name="aui_musicPlayerEffectPresetItem_appearance" format="reference" />
 
     <!--================= 样式属性 =================-->
-    <declare-styleable name="AUiMusicPlayerView">
+    <declare-styleable name="AUIMusicPlayerView">
         <attr name="aui_musicPlayer_appearance" />
         <!--  cardBackgroundColor      -->
         <attr name="aui_musicPlayer_backgroundColor" format="color" />
@@ -52,7 +52,7 @@
     </declare-styleable>
 
     <!-- 弹框样式 -->
-    <declare-styleable name="AUiMusicPlayerControllerDialogView">
+    <declare-styleable name="AUIMusicPlayerControllerDialogView">
         <attr name="aui_musicPlayerControllerDialog_appearance" />
 
         <!--   背景     -->
@@ -69,7 +69,7 @@
         <attr name="aui_musicPlayerControllerDialog_seekbarThumb" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="AUiMusicPlayerEffectPresetItem">
+    <declare-styleable name="AUIMusicPlayerEffectPresetItem">
         <attr name="aui_musicPlayerEffectPresetItem_appearance"/>
 
         <attr name="aui_musicPlayerEffectPresetItem_backgroundColor" format="color" />

@@ -8,7 +8,7 @@
     tools:background="?attr/aui_musicPlayer_backgroundColor"
     tools:theme="?attr/aui_musicPlayer_appearance">
 
-    <io.agora.auikit.ui.musicplayer.impl.AUiMusicPlayerGradeView
+    <io.agora.auikit.ui.musicplayer.impl.AUIMusicPlayerGradeView
         android:id="@+id/grade_view"
         android:layout_width="match_parent"
         android:layout_height="12dp"

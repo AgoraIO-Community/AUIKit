@@ -1,90 +1,90 @@
-# AUiKit-iOS
+# AUIKit-iOS
 
 *English | [中文](README_zh.md)*
 
 
 <!-- TOC START -->
 
-- [AUiKit Basic Components](#auikit-basic-components)
+- [AUIKit Basic Components](#auikit-basic-components)
 - [Service](#service)
-  * [AUiMicSeatServiceDelegate](#auimicseatservicedelegate)
-  * [AUiMicSeatRespDelegate](#auimicseatrespdelegate)
-  * [AUiUserServiceDelegate](#auiuserservicedelegate)
-  * [AUiUserRespDelegate](#auiuserrespdelegate)
-  * [AUiChorusServiceDelegate](#auichorusservicedelegate)
-  * [AUiChorusRespDelegate](#auichorusrespdelegate)
-  * [AUiMusicServiceDelegate](#auimusicservicedelegate)
-  * [AUiMusicRespDelegate](#auimusicrespdelegate)
-  * [AUiPlayerServiceDelegate](#auiplayerservicedelegate)
-  * [AUiPlayerRespDelegate](#auiplayerrespdelegate)
-  * [AUiRoomManagerDelegate](#auiroommanagerdelegate)
-  * [AUiRoomManagerRespDelegate](#auiroommanagerrespdelegate)
+  * [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
+  * [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
+  * [AUIUserServiceDelegate](#auiuserservicedelegate)
+  * [AUIUserRespDelegate](#auiuserrespdelegate)
+  * [AUIChorusServiceDelegate](#auichorusservicedelegate)
+  * [AUIChorusRespDelegate](#auichorusrespdelegate)
+  * [AUIMusicServiceDelegate](#auimusicservicedelegate)
+  * [AUIMusicRespDelegate](#auimusicrespdelegate)
+  * [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
+  * [AUIPlayerRespDelegate](#auiplayerrespdelegate)
+  * [AUIRoomManagerDelegate](#auiroommanagerdelegate)
+  * [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
 - [Widget](#widget)
-  * [AUiActionSheet](#auiactionsheet)
+  * [AUIActionSheet](#auiactionsheet)
     * [Main container configuration](#main-container-configuration)
     * [List Item Configuration](#list-item-configuration)
-  * [AUiAlertView](#auialertview)
-  * [AUiButton](#auibutton)
-  * [AUiSlider](#auislider)
-  * [AUiTableViewCell](#auitableviewcell)
-  * [AUiTabs](#auitabs)
-  * [AUiTextField](#auitextfield)
-  * [AUiToast](#auitoast)
+  * [AUIAlertView](#auialertview)
+  * [AUIButton](#auibutton)
+  * [AUISlider](#auislider)
+  * [AUITableViewCell](#auitableviewcell)
+  * [AUITabs](#auitabs)
+  * [AUITextField](#auitextfield)
+  * [AUIToast](#auitoast)
   
   
   <!-- TOC END -->
 
-# AUiKit Basic Components
+# AUIKit Basic Components
 ```
-AUiKit  
+AUIKit  
 ├─ Service                              // Basic service components
-│  ├─ AUiMicSeatServiceDelegate         // MicSeat management protocol
-│  ├─ AUiMicSeatRespDelegate            // MicSeat management response protocol
-│  ├─ AUiMicSeatServiceImpl             // MicSeat management implementation
-│  ├─ AUiUserServiceDelegate            // User management protocol      
-│  ├─ AUiUserRespDelegate               // User management response protocol
-│  ├─ AUiUserServiceImpl                // User management implementation
-│  ├─ AUiChorusServiceDelegate          // Chorus management protocol 
-│  ├─ AUiChorusRespDelegate             // Chorus management response protocol 
-│  ├─ AUiChorusServiceImpl              // Chorus management implementation
-│  ├─ AUiMusicServiceDelegate           // Music management protocol      
-│  ├─ AUiMusicRespDelegate              // User management response protocol      
-│  ├─ AUiMusicServiceImpl               // User management implementation
-│  ├─ AUiPlayerServiceDelegate          // Karaoke music player protocol      
-│  ├─ AUiPlayerRespDelegate             // Karaoke music player response protocol      
-│  ├─ AUiPlayerServiceImpl              // Karaoke music player implementation
-│  ├─ AUiRoomManagerDelegate            // Room management protocol 
-│  ├─ AUiRoomManagerRespDelegate        // Room management response protocol 
-│  └─ AUiRoomManagerImpl                // Room management implementation
+│  ├─ AUIMicSeatServiceDelegate         // MicSeat management protocol
+│  ├─ AUIMicSeatRespDelegate            // MicSeat management response protocol
+│  ├─ AUIMicSeatServiceImpl             // MicSeat management implementation
+│  ├─ AUIUserServiceDelegate            // User management protocol      
+│  ├─ AUIUserRespDelegate               // User management response protocol
+│  ├─ AUIUserServiceImpl                // User management implementation
+│  ├─ AUIChorusServiceDelegate          // Chorus management protocol 
+│  ├─ AUIChorusRespDelegate             // Chorus management response protocol 
+│  ├─ AUIChorusServiceImpl              // Chorus management implementation
+│  ├─ AUIMusicServiceDelegate           // Music management protocol      
+│  ├─ AUIMusicRespDelegate              // User management response protocol      
+│  ├─ AUIMusicServiceImpl               // User management implementation
+│  ├─ AUIPlayerServiceDelegate          // Karaoke music player protocol      
+│  ├─ AUIPlayerRespDelegate             // Karaoke music player response protocol      
+│  ├─ AUIPlayerServiceImpl              // Karaoke music player implementation
+│  ├─ AUIRoomManagerDelegate            // Room management protocol 
+│  ├─ AUIRoomManagerRespDelegate        // Room management response protocol 
+│  └─ AUIRoomManagerImpl                // Room management implementation
 │
 ├─ Widget                               // Basic UI components without business
-│  ├─ AUiActionSheet                    // Action sheet
-│  ├─ AUiAlert                          // Alert
-│  ├─ AUiButton                         // Button
-│  ├─ AUiSegmented                      // Segmented
-│  ├─ AUiSlider                         // Slider
-│  ├─ AUiTableView                      // TableView
-│  ├─ AUiTabs                           // Tabs
-│  ├─ AUiTextField                      // TextField
-│  └─ AUiToast                          // Toast
+│  ├─ AUIActionSheet                    // Action sheet
+│  ├─ AUIAlert                          // Alert
+│  ├─ AUIButton                         // Button
+│  ├─ AUISegmented                      // Segmented
+│  ├─ AUISlider                         // Slider
+│  ├─ AUITableView                      // TableView
+│  ├─ AUITabs                           // Tabs
+│  ├─ AUITextField                      // TextField
+│  └─ AUIToast                          // Toast
 │
 └─ Component                            // UI module containing specific business
    ├─ JukeBox                           // Jukebox component
-   │  ├─ AUiJukeBoxView                 // Jukebox view，without business
-   │  └─ AUiJukeBoxViewBinder           // View and Service binding class for Jukebox
+   │  ├─ AUIJukeBoxView                 // Jukebox view，without business
+   │  └─ AUIJukeBoxViewBinder           // View and Service binding class for Jukebox
    ├─ MicSeat                           // MicSeat component
-   │  ├─ AUiMicSeatView                 // MicSeat view，without business
-   │  └─ AUiMicSeatViewBinder           // View and Service binding class for MicSeat
+   │  ├─ AUIMicSeatView                 // MicSeat view，without business
+   │  └─ AUIMicSeatViewBinder           // View and Service binding class for MicSeat
    └─ Player                            // Karaoke player component
-      ├─ AUiPlayerView                  // Player view，without business
-      └─ AUiPlayerViewBinder            // View and Service binding class for Player
+      ├─ AUIPlayerView                  // Player view，without business
+      └─ AUIPlayerViewBinder            // View and Service binding class for Player
    
 ```
 # API reference
 
 ## Service
 
-### AUiMicSeatServiceDelegate 
+### AUIMicSeatServiceDelegate 
 #### MicSeat management protocol
 | API                | Describe                              |
 | ------------------ | --------------------------------- |
@@ -98,7 +98,7 @@ AUiKit
 | muteVideoSeat      | Turn off/on the camera for a seat（Invoked by owner）   |
 | closeSeat          | Disable/enable a seat（Invoked by owner）     |
 
-### AUiMicSeatRespDelegate
+### AUIMicSeatRespDelegate
 #### MicSeat management response protocol
 | API               | Describe                                |
 | ----------------- | ----------------------------------- |
@@ -108,7 +108,7 @@ AUiKit
 | onSeatVideoMute   | Camera did turn off/on for a seat     |
 | onSeatClose       | The micSeat has been disabled/enable        |
 
-### AUiUserServiceDelegate
+### AUIUserServiceDelegate
 #### User management protocol 
 | API                | Describe                       |
 | ------------------ | -------------------------- |
@@ -118,7 +118,7 @@ AUiKit
 | muteUserAudio      | Disable/enable the microphone for oneself  |
 | muteUserVideo      | Disable/enable the camera for oneself  |
 
-### AUiUserRespDelegate
+### AUIUserRespDelegate
 #### User management response protocol
 | API                | Describe                               |
 | ------------------ | ---------------------------------- |
@@ -129,7 +129,7 @@ AUiKit
 | onUserAudioMute    | Callback when the user turns off/on the microphone |
 | onUserVideoMute    | Callback when the user turns off/on the camera |
 
-### AUiChorusServiceDelegate
+### AUIChorusServiceDelegate
 #### Chorus management protocol
 | API                | Describe             |
 | ------------------ | ---------------- |
@@ -139,14 +139,14 @@ AUiKit
 | joinChorus         | join chorus         |
 | leaveChorus        | leave chorus         |
 
-### AUiChorusRespDelegate
+### AUIChorusRespDelegate
 #### Chorus management response protocol 
 | API                 | Describe       |
 | ------------------- | ---------- |
 | onChoristerDidEnter | chorus singer did enter |
 | onChoristerDidLeave | chorus singer did leave |
 
-### AUiMusicServiceDelegate
+### AUIMusicServiceDelegate
 #### Music management protocol
 | API                  | Describe               |
 | -------------------- | ------------------ |
@@ -160,7 +160,7 @@ AUiKit
 | pinSong              | Put the song at the top            |
 | updatePlayStatus     | Update song playback status    |
 
-### AUiMusicRespDelegate
+### AUIMusicRespDelegate
 #### Music management response protocol
 | API                    | Describe                                    |
 | ---------------------- | --------------------------------------- |
@@ -169,7 +169,7 @@ AUiKit
 | onUpdateChooseSong     | Callback when updating a song（For example, modifying the play status） |
 | onUpdateAllChooseSongs | Callback when updating all songs（For example, pin song）             |
 
-### AUiPlayerServiceDelegate
+### AUIPlayerServiceDelegate
 #### Karaoke music player protocol 
 
 | API                            | Describe                               |
@@ -195,7 +195,7 @@ AUiKit
 | setVoiceConversionPreset       | Set voice conversion             |
 | enableEarMonitoring            | Enables in-ear monitoring        |
 
-### AUiPlayerRespDelegate
+### AUIPlayerRespDelegate
 #### Karaoke music player response protocol
 | API                       | Describe             |
 | ------------------------- | ---------------- |
@@ -206,7 +206,7 @@ AUiKit
 | onPlayerPositionDidChange | Callback when playback progress changes |
 | onPlayerStateChanged      | Callback when playback status changes   |
 
-### AUiRoomManagerDelegate
+### AUIRoomManagerDelegate
 #### Room management protocol
 | API                | Describe                 |
 | ------------------ | -------------------- |
@@ -218,7 +218,7 @@ AUiKit
 | exitRoom           | Exit the room（Invoked by audience） |
 | getRoomInfoList    | Get room list         |
 
-### AUiRoomManagerRespDelegate
+### AUIRoomManagerRespDelegate
 #### Room management response protocol 
 | API              | Describe             |
 | ---------------- | ---------------- |
@@ -226,7 +226,7 @@ AUiKit
 | onRoomInfoChange | Callback when room information changes  |
 
 ## Widget
-### AUiActionSheet
+### AUIActionSheet
 #### Main container configuration
 | Attribute                 | Describe       |
 | ------------------- | ---------- |
@@ -258,7 +258,7 @@ AUiKit
 | selectedBorderRadius | Selected border radius |
 
 
-### AUiAlertView
+### AUIAlertView
 | Attribute                 | Describe       |
 | ------------------- | ---------- |
 | background(color: UIColor?) | Background color |
@@ -298,7 +298,7 @@ AUiKit
 | rightButtonTapClosure(onTap: @escaping (String?) -> Void)   | Callback when the right button is clicked (with text field content) |
 | rightButtonTapClosure(onTap: @escaping () -> Void)   | Callback when the right button is clicked (without text field content) |
 
-### AUiButton
+### AUIButton
 | API              | Describe             |
 | ---------------- | ---------------- |
 | backgroundColor | Background color |
@@ -306,16 +306,28 @@ AUiKit
 | selectedIcon | Select icon |
 | iconWidth | Button icon width |
 | iconHeight | Button icon height |
-| buttonWitdth | Button width |
+| buttonWidth | Button width |
 | buttonHeight | Button height |
 | titleFont | Button text font  |
 | titleColor | Button Text Color |
 | selectedTitleColor | Select Text Color |
 | cornerRadius | The  corner radius of the button|
 | textAlpha | Transparency of button text |
+| padding | Icon and text spacing |
+| highlightedBackgroundColor | Background color when pressed |
+| selectedBackgroundColor | Background color when selected |
+| disabledBackgroundColor | Background color when disabled |
+| borderColor | Border color |
+| highlightedBorderColor | Border color when pressed |
+| selectedBorderColor | Border color when selected |
+| disabledBorderColor | Border color when disabled |
+| highlightedTitleColor | Text color when pressed |
+| disabledTitleColor | Text color when disabled |
+| highlightedIcon | Icon when pressed |
+| disabledIcon | Icon when disabled |
 
 
-### AUiSlider
+### AUISlider
 | API              | Describe             |
 | ---------------- | ---------------- |
 | backgroundColor    | Background color |
@@ -329,7 +341,7 @@ AUiKit
 | titleLabelFont | Title Font |
 | titleLabelColor | Title Color |
 
-### AUiTableViewCell
+### AUITableViewCell
 
 | API              | Describe             |
 | ---------------- | ---------------- |
@@ -347,7 +359,7 @@ AUiKit
 | switchThumbColor    | Color of thumb |
 | arrow    | Arrow icon |
 
-### AUiTabs
+### AUITabs
 
 | API              | Describe             |
 | ---------------- | ---------------- |
@@ -363,7 +375,7 @@ AUiKit
 | selectedBorderColor    | Border color when label is selected |
 | indicatorWidth    | Indicates the width of the bar when selecting a label |
 
-### AUiTextField
+### AUITextField
 | API              | Describe             |
 | ---------------- | ---------------- |
 | backgroundColor    | Background color |
@@ -391,7 +403,7 @@ AUiKit
 | dividerColor    | The color of the bottom divider line |
 
 
-### AUiToast
+### AUIToast
 
 | API              | Describe             |
 | ---------------- | ---------------- |

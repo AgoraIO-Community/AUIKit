@@ -3,7 +3,7 @@
 
     <attr name="aui_cellText_appearance" format="reference"/>
 
-    <declare-styleable name="AUiCellText">
+    <declare-styleable name="AUICellText">
 
         <!-- Title -->
         <attr name="aui_cellText_title_text" format="string" />
@@ -37,7 +37,7 @@
         <attr name="aui_cellText_divider_color" format="color" />
     </declare-styleable>
 
-    <style name="AUiCellText">
+    <style name="AUICellText">
 
         <!-- Title -->
         <item name="aui_cellText_title_textColor">@color/aui_black</item>
