@@ -8,7 +8,7 @@
 
 import UIKit
 import AUIKit
-import QuartzCore
+
 
 class ViewController: UIViewController,AUIMManagerRespDelegate {
     func messageDidReceive(roomId: String, message: AgoraChatTextMessage) {
