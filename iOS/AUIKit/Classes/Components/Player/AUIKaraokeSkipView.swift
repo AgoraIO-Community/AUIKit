@@ -45,6 +45,8 @@ open class AUIKaraokeSkipView: UIView {
     
     lazy var cancleBtn: AUIButton = {
         let theme = AUIButtonDynamicTheme()
+        theme.iconWidth = "Player.skipCancleButtonWidth"
+        theme.iconHeight = "Player.skipCancleButtonHeight"
         theme.buttonWidth = "Player.skipCancleButtonWidth"
         theme.buttonHeight = "Player.skipCancleButtonHeight"
         theme.icon = ThemeAnyPicker(keyPath:"Player.playerLrcItemSkipItem")

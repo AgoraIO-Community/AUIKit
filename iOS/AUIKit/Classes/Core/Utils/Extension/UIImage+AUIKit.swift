@@ -27,12 +27,34 @@ extension UIImage {
 extension String {
     public static func aui_imageFilePath(named: String) -> String? {
         for path in AUIRoomContext.shared.themeResourcePaths {
-            let filePath = path.appendingPathComponent(named).path
-            return filePath
+            let filePath = path.appendingPathComponent(named).path.appendPngExentionIfEmpty()
+            if FileManager.default.fileExists(atPath: filePath) {
+                return filePath
+            }
         }
-        if let filePath = ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path {
+        if let filePath = ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path.appendPngExentionIfEmpty() {
             return filePath
         }
         return nil
     }
+    
+    private func appendPngExentionIfEmpty() -> String{
+        var url = URL(fileURLWithPath: self)
+        if url.pathExtension.isEmpty {
+            return appending(".png")
+        }
+        return self
+    }
+    
+}
+
+extension URL {
+    public static func aui_imageFileURL(named: String) -> URL? {
+        if let path = String.aui_imageFilePath(named: named) {
+            return URL(fileURLWithPath: path)
+        }
+        return nil
+    }
+    
+   
 }

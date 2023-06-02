@@ -244,11 +244,7 @@ open class AUIButton: UIButton {
     
     @objc fileprivate func aui_setImage(_ image: String?, for state: UIControl.State) {
         guard let image = image else { return }
-        if let filePath = String.aui_imageFilePath(named: image) {
-            var fileUrl = URL(fileURLWithPath: filePath)
-            if fileUrl.pathExtension.isEmpty {
-                fileUrl.appendPathExtension("png")
-            }
+        if let fileUrl = URL.aui_imageFileURL(named: image) {
             self.sd_setImage(with: fileUrl, for: state)
         }
     }
