@@ -67,11 +67,11 @@ public class AUIReceiveGiftCell: UITableViewCell {
         if self.gift == nil {
             self.gift = item
         }
-        self.avatar.kf.setImage(with: URL(string: item.sendUser?.userAvatar ?? ""), placeholder:UIImage("mine_avatar_placeHolder",.gift))
-        self.userName.text = item.sendUser?.userName ?? ""
-        self.giftName.text = "Sent ".a.localize(type: .gift) + (item.giftName ?? "")
-        self.giftIcon.kf.setImage(with: URL(string: item.giftIcon ?? ""),placeholder: UIImage("\(item.giftId ?? "")",.gift))
-        self.giftNumbers.text = "X \(item.giftCount ?? "1")"
+        self.avatar.kf.setImage(with: URL(string: item.sendUser.userAvatar), placeholder:UIImage("mine_avatar_placeHolder",.gift))
+        self.userName.text = item.sendUser.userName
+        self.giftName.text = "Sent ".a.localize(type: .gift) + (item.giftName)
+        self.giftIcon.kf.setImage(with: URL(string: item.giftIcon),placeholder: UIImage("\(item.giftId)",.gift))
+        self.giftNumbers.text = "X \(item.giftCount)"
     }
 }
 

@@ -17,6 +17,8 @@ let kUserMuteAttrKey = "mute"
 
 //房间Service实现
 open class AUIRoomManagerImpl: NSObject {
+    
+    @AUserDefault("MicSeatCount",defaultValue: 8) var seatCount
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private lazy var rtmClient: AgoraRtmClientKit = createRtmClient()
     public private(set) var commonConfig: AUICommonConfig!
@@ -72,6 +74,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
         model.userName = AUIRoomContext.shared.currentUserInfo.userName
         model.userAvatar = AUIRoomContext.shared.currentUserInfo.userAvatar
+        model.micSeatCount = UInt(self.seatCount)
         model.request {/*[weak self]*/ error, resp in
 //            guard let self = self else {return}
 //            if let room = resp as? AUIRoomInfo {

@@ -3,13 +3,11 @@
       "backgroundColor": "#00000000"
   },
   "SeatItem": {
+      "avatarSidesPadding":15,
+      "avatarTopPadding":5,
       "avatarCornerRadius": 28,
       "avatarBorderColor": "#00000000",
       "avatarBorderWidth": 0,
-      "avatarWidth": 56,
-      "avatarHeight": 56,
-      "defaultImageWidth": 24,
-      "defaultImageHeight": 24,
       "muteCenterX": 44,
       "muteCenterY": 44,
       "muteWidth": 24,

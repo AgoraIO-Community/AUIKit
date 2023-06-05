@@ -24,6 +24,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         }
     }
     
+    lazy var rippleView: AUIRippleAnimationView = {
+        let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)).backgroundColor(.clear)//"SeatItem.defaultImageWidth" 56
+        ripple.minimumCircleRadius = self.contentView.frame.width-48
+        ripple.diskRadius = (self.contentView.frame.width-30)/2.0
+        return ripple
+    }()
+    
     public lazy var canvasView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -112,6 +119,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     private func _loadView() {
         addSubview(avatarView)
         addSubview(defaultImageView)
+        addSubview(rippleView)
         addSubview(avatarImageView)
         addSubview(seatLabel)
         addSubview(micRoleBtn)
@@ -140,10 +148,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     open override func layoutSubviews() {
         super.layoutSubviews()
         
-        avatarView.theme_width = "SeatItem.avatarWidth"
-        avatarView.theme_height = "SeatItem.avatarHeight"
+        avatarView.aui_left = 15
+        avatarView.aui_right = 15
+        avatarView.aui_top = 5
+        avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
+        rippleView.aui_centerX = self.contentView.aui_centerX
+
 //        avatarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.frame.width)
-        
         defaultImageView.theme_width = "SeatItem.defaultImageWidth"
         defaultImageView.theme_height = "SeatItem.defaultImageHeight"
         let size = defaultImageView.aui_size
@@ -151,6 +162,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
                                         y: (avatarView.bounds.height - size.height) / 2,
                                         width: size.width,
                                         height: size.height)
+        defaultImageView.aui_centerX = self.contentView.aui_centerX
         avatarImageView.frame = avatarView.bounds
         
         statusImageView.aui_size = CGSize(width: size.width, height: size.height)
@@ -161,10 +173,12 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         
         seatLabel.frame = CGRect(x: 0, y: avatarView.frame.height + 4, width: frame.width, height: 20)
         
-        avatarView.layer.theme_cornerRadius = "SeatItem.avatarCornerRadius"
-        avatarImageView.layer.theme_cornerRadius = "SeatItem.avatarCornerRadius"
+        avatarView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0
+        avatarImageView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0
         avatarView.clipsToBounds = true
         avatarImageView.clipsToBounds = true
+        avatarView.aui_centerX = self.contentView.aui_centerX
+        avatarImageView.aui_centerX = self.contentView.aui_centerX
         
         micRoleBtn.aui_centerX = aui_width / 2.0
         micRoleBtn.aui_top = seatLabel.aui_bottom
@@ -173,6 +187,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         hostIcon.aui_centerX = aui_width / 2.0
         
         canvasView.frame = avatarImageView.bounds
+        canvasView.aui_centerX = self.contentView.aui_centerX
     }
     
     private func reloadData() {
@@ -182,7 +197,11 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         if let _ = item?.avatarUrl {
             avatarImageView.layer.theme_borderColor = "SeatItem.avatarBorderColor"
             avatarImageView.layer.theme_borderWidth = "SeatItem.avatarBorderWidth"
+            rippleView.isHidden = false
+            rippleView.startAnimation()
         } else {
+            rippleView.stopAnimation()
+            rippleView.isHidden = true
             avatarImageView.layer.theme_borderColor = nil
             avatarImageView.layer.theme_borderWidth = nil
             avatarImageView.layer.borderWidth = 0

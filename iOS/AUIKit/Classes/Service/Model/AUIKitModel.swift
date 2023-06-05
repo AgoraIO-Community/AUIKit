@@ -63,7 +63,7 @@ open class AUIRoomInfo: AUICreateRoomInfo {
 
 @objcMembers
 ///用户简略信息，用于各个模型传递简单数据
-open class AUIUserThumbnailInfo: NSObject {
+open class AUIUserThumbnailInfo: NSObject,AUIUserCellUserDataProtocol {
     public var userId: String = ""      //用户Id
     public var userName: String = ""    //用户名
     public var userAvatar: String = ""  //用户头像
