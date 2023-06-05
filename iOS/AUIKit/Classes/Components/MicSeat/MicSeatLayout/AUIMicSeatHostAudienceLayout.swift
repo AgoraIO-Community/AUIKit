@@ -14,7 +14,7 @@ import UIKit
     func rowSpace() -> CGFloat
 }
 
-fileprivate let columnSpace = 12
+fileprivate let columnSpace = 6
 
 @objcMembers public final class AUIMicSeatHostAudienceLayout: UICollectionViewLayout {
     

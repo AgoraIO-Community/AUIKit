@@ -8,7 +8,21 @@
 import Foundation
 import YYModel
 
-@objcMembers public class AUIGiftEntity:NSObject,NSMutableCopying {
+@objc public protocol AUIGiftEntityProtocol: NSObjectProtocol {
+    var giftId: String {get}
+    var giftName: String {get}
+    var giftPrice: String {get}
+    var giftCount: String {get}
+    var giftIcon: String {get}
+    /// Description 开发者可以上传服务器一个匹配礼物id的特效  特效名称为礼物的id  sdk会进入房间时拉取礼物资源并下载对应礼物id的特效，如果收到的礼物这个值为true 则会找到对应的特效全屏播放加广播，礼物资源以及特效资源下载服务端可做一个web页面供用户使用，每个app启动后加载场景之前预先去下载礼物资源缓存到磁盘供UIKit取用
+    var giftEffect: String {get}
+    
+    var selected: Bool {get}
+    
+    var sendUser: AUIUserCellUserDataProtocol {get}
+}
+
+@objcMembers public class AUIGiftEntity:NSObject,NSMutableCopying,AUIGiftEntityProtocol {
      
  
     public func mutableCopy(with zone: NSZone? = nil) -> Any {
@@ -24,17 +38,17 @@ import YYModel
         return model
     }
 
-    public var giftId: String? = ""
-    public var giftName: String? = ""
-    public var giftPrice: String? = ""
-    public var giftCount: String? = "1"
-    public var giftIcon: String? = ""
+    public var giftId: String = ""
+    public var giftName: String = ""
+    public var giftPrice: String = ""
+    public var giftCount: String = "1"
+    public var giftIcon: String = ""
     /// Description 开发者可以上传服务器一个匹配礼物id的特效  特效名称为礼物的id  sdk会进入房间时拉取礼物资源并下载对应礼物id的特效，如果收到的礼物这个值为true 则会找到对应的特效全屏播放加广播，礼物资源以及特效资源下载服务端可做一个web页面供用户使用，每个app启动后加载场景之前预先去下载礼物资源缓存到磁盘供UIKit取用
-    public var giftEffect: String? = ""
+    public var giftEffect: String = ""
     
     public var selected = false
     
-    public var sendUser: AUIUserThumbnailInfo?
+    public var sendUser: AUIUserCellUserDataProtocol = AUIUserThumbnailInfo()
  
     class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
         return ["sendUser": AUIUserThumbnailInfo.self]

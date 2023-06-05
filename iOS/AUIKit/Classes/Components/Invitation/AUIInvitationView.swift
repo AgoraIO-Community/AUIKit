@@ -5,26 +5,13 @@
 //  Created by wushengtao on 2023/3/3.
 //
 
-import Foundation
-
+import Kingfisher
+import UIKit
 
 /// 邀请列表组件
 @objc open class AUIInvitationView: UIView {
-    public weak var invitationdelegate: AUIInvitationServiceDelegate? {
-        didSet {
-            oldValue?.unbindRespDelegate(delegate: self)
-            invitationdelegate?.unbindRespDelegate(delegate: self)
-        }
-    }
     
-    public weak var roomDelegate: AUIRoomManagerDelegate? {
-        didSet {
-            oldValue?.unbindRespDelegate(delegate: self)
-            roomDelegate?.bindRespDelegate(delegate: self)
-        }
-    }
-    
-    private lazy var tableView: UITableView = {
+    public lazy var tableView: UITableView = {
         let tableView = UITableView(frame: bounds, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
@@ -34,7 +21,7 @@ import Foundation
     }()
     
     
-    private var userList: [AUIUserInfo] = []
+    public var userList: [AUIUserInfo] = []
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,91 +44,88 @@ import Foundation
     }
 }
 
-extension AUIInvitationView: AUIInvitationRespDelegate {
-    public func onReceiveNewInvitation(userId: String, seatIndex: Int?) {
-        
-    }
-    
-    public func onInviteeAccepted(userId: String) {
-        
-    }
-    
-    public func onInviteeRejected(userId: String) {
-        
-    }
-    
-    public func onInvitationCancelled(userId: String) {
-        
-    }
-    
-    public func onReceiveNewApply(userId: String, seatIndex: Int?) {
-        
-    }
-    
-    public func onApplyAccepted(userId: String) {
-        
-    }
-    
-    public func onApplyRejected(userId: String) {
-        
-    }
-    
-    public func onApplyCanceled(userId: String) {
-        
-    }
-    
-    
-}
-
-extension AUIInvitationView: AUIRoomManagerRespDelegate {
-    public func onRoomAnnouncementChange(roomId: String, announcement: String) {
-        //TODO: - update room announcement
-    }
-    
-    public func onRoomUserSnapshot(roomId: String, userList: [AUIUserInfo]) {
-        self.userList = userList
-        self.tableView.reloadData()
-    }
-    
-    public func onRoomDestroy(roomId: String) {
-        
-    }
-    
-    public func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo) {
-        
-    }
-    
-    public func onRoomUserEnter(roomId: String, userInfo: AUIUserInfo) {
-        self.userList = self.userList.filter({$0.userId != userInfo.userId})
-        self.userList.append(userInfo)
-        self.tableView.reloadData()
-    }
-    
-    public func onRoomUserLeave(roomId: String, userInfo: AUIUserInfo) {
-        self.userList = self.userList.filter({$0.userId != userInfo.userId})
-        self.tableView.reloadData()
-    }
-    
-    public func onRoomUserUpdate(roomId: String, userInfo: AUIUserInfo) {
-        self.userList = self.userList.filter({$0.userId != userInfo.userId})
-        self.userList.append(userInfo)
-        self.tableView.reloadData()
-    }
-}
 
 
-private let kAUIInvitationCellId = "invitation_cell"
+private let kAUIInvitationCellId = "AUIInvitationCell"
 extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.userList.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: kAUIInvitationCellId) ?? UITableViewCell(style: .subtitle, reuseIdentifier: kAUIInvitationCellId)
+        var cell = tableView.dequeueReusableCell(withIdentifier: kAUIInvitationCellId) as? AUIInvitationCell
+        if cell == nil {
+            cell = AUIInvitationCell(reuseIdentifier: kAUIInvitationCellId,config: AUIInvitationCellConfig())
+        }
         let user = userList[indexPath.row]
-        cell.backgroundColor = .clear
-        cell.textLabel?.text = "name: \(user.userName)"
-        cell.detailTextLabel?.text = "id: \(user.userId)"
-        return cell
+        cell?.refreshUser(user: user)
+        return cell ?? AUIInvitationCell()
     }
+}
+
+
+@objc public final class AUIInvitationCell: UITableViewCell {
+    
+    public var actionClosure: (() -> ())?
+    
+    lazy var config = AUIInvitationCellConfig()
+    
+    lazy var userIcon: UIImageView = {
+        UIImageView(frame: CGRect(x: 16, y: 10, width: 40, height: 40)).backgroundColor(.clear)
+    }()
+    
+    lazy var userName: UILabel = {
+        let label = UILabel(frame: CGRect(x: self.userIcon.frame.maxX+12, y: 19, width: self.contentView.frame.width - self.userIcon.frame.maxX - 12 - 98, height: 20))
+        label.theme_textColor = "MemberUserCell.titleColor"
+        label.theme_font = "MemberUserCell.bigTitleFont"
+        return label
+    }()
+    
+    lazy var action: UIButton = {
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.contentView.frame.height-28, width: 76, height: 28)).setGradient(self.config.gradientColors, self.config.gradientLocations).title("Invite".a.localize(type: .gift), .normal).textColor(self.config.textColor, .normal).font(self.config.textFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside).cornerRadius(14)
+    }()
+    
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    convenience init(reuseIdentifier: String?,config: AUIInvitationCellConfig) {
+        self.init(style: .default, reuseIdentifier: reuseIdentifier)
+        _loadSubViews()
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        _loadSubViews()
+    }
+    
+    private func _loadSubViews() {
+        self.backgroundColor = .clear
+        self.contentView.addSubViews([self.userIcon,self.userName,self.action])
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    
+    @objc private func sendAction() {
+        self.actionClosure?()
+    }
+    
+    public func refreshUser(user: AUIUserCellUserDataProtocol) {
+        self.userIcon.kf.setImage(with: URL(string: user.userAvatar)!,placeholder: UIImage("mine_avatar_placeHolder", .gift))
+        self.userName.text = user.userName
+    }
+
+}
+
+@objc public final class AUIInvitationCellConfig: NSObject {
+    public var gradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
+    
+    public var gradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    
+    public var textFont: UIFont = .systemFont(ofSize: 14, weight: .medium)
+    
+    public var textColor: UIColor = UIColor(0xF9FAFA)
+    
 }

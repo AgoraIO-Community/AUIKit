@@ -9,7 +9,7 @@ import UIKit
 
 private let headImageWidth: CGFloat = 32
 
-public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
+@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
     var userAvatar: String {get}
     var userId: String {get}
     var userName: String {get}
@@ -145,13 +145,4 @@ extension AUIRoomMembersView {
     }
 }
 
-//extension AUIRoomMembersView {
-//    @objc func didClickMoreMemberButton(){
-//        let listView = AUIRoomMemberListView()
-//        listView.aui_size =  CGSize(width: UIScreen.main.bounds.width, height: 562)
-//        listView.memberList = members
-//        listView.seatMap = seatMap
-//        AUICommonDialog.show(contentView: listView, theme: AUICommonDialogTheme())
-//        self.memberListView = listView
-//    }
-//}
+

@@ -18,7 +18,7 @@ open class AUIInvitationServiceImpl: NSObject {
         aui_info("deinit AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
     }
     
-    init(channelName: String, rtmManager: AUIRtmManager) {
+    public init(channelName: String, rtmManager: AUIRtmManager) {
         self.channelName = channelName
         self.rtmManager = rtmManager
         super.init()
@@ -42,42 +42,38 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func sendInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationNetworkModel()
-        model.roomId = channelName
-        model.userId = userId
-        model.micSeatNo = seatIndex
+        model.channelName = channelName
+        model.toUserId = userId
+        model.fromUserId = getRoomContext().currentUserInfo.userId
+        model.payload = AUIPayloadModel()
+        model.payload?.seatNo = seatIndex ?? 1
         model.request { error, _ in
             callback(error as? NSError)
         }
     }
     
     public func acceptInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationNetworkModel()
-        model.interfaceName = "/v1/invitation/user/accept/"
-        model.roomId = channelName
-        model.userId = userId
-        model.micSeatNo = seatIndex
+        let model = AUIInvitationAcceptNetworkModel()
+        model.channelName = channelName
+        model.fromUserId = userId
         model.request { error, _ in
             callback(error as? NSError)
         }
     }
     
     public func rejectInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationNetworkModel()
-        model.interfaceName = "/v1/invitation/user/reject/"
-        model.roomId = channelName
-        model.userId = userId
-        model.micSeatNo = nil
+        let model = AUIInvitationAcceptRejectNetworkModel()
+        model.channelName = channelName
+        model.fromUserId = userId
         model.request { error, _ in
             callback(error as? NSError)
         }
     }
     
     public func cancelInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationNetworkModel()
-        model.interfaceName = "/v1/invitation/user/cancel/"
-        model.roomId = channelName
+        let model = AUIInvitationAcceptCancelNetworkModel()
+        model.channelName = channelName
         model.userId = userId
-        model.micSeatNo = nil
         model.request { error, _ in
             callback(error as? NSError)
         }
@@ -85,41 +81,36 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func sendApply(seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIApplyNetworkModel()
-        model.roomId = channelName
-        model.userId = getRoomContext().currentUserInfo.userId
-        model.userName = getRoomContext().currentUserInfo.userName
-        model.userAvatar = getRoomContext().currentUserInfo.userAvatar
-        model.micSeatNo = seatIndex
+        model.channelName = channelName
+        model.fromUserId = getRoomContext().currentUserInfo.userId
+        model.payload = AUIPayloadModel()
+        model.payload?.seatNo = seatIndex ?? 1
         model.request { error, _ in
             callback(error as? NSError)
         }
     }
     
     public func cancelApply(callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyNetworkModel()
-        model.interfaceName = "/v1/apply/user/cancel/"
-        model.roomId = channelName
-        model.userId = getRoomContext().currentUserInfo.userId
+        let model = AUIApplyAcceptCancelNetworkModel()
+        model.channelName = channelName
+        model.fromUserId = getRoomContext().currentUserInfo.userId
         model.request { error, _ in
             callback(error as? NSError)
         }
     }
     
     public func acceptApply(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyNetworkModel()
-        model.interfaceName = "/v1/apply/user/accept/"
-        model.roomId = channelName
-        model.userId = userId
-        model.micSeatNo = seatIndex
+        let model = AUIApplyAcceptNetworkModel()
+        model.channelName = channelName
+        model.fromUserId = userId
         model.request { error, _ in
             callback(error as? NSError)
         }
     }
     
     public func rejectApply(userId: String, callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyNetworkModel()
-        model.interfaceName = "/v1/apply/user/reject/"
-        model.roomId = channelName
+        let model = AUIApplyAcceptRejectNetworkModel()
+        model.channelName = channelName
         model.userId = userId
         model.request { error, _ in
             callback(error as? NSError)
