@@ -69,13 +69,13 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
 
 
 /// 邀请相关操作的响应
-public protocol AUIInvitationRespDelegate: NSObjectProtocol {
+@objc public protocol AUIInvitationRespDelegate:AnyObject, NSObjectProtocol {
     
     /// 收到新的邀请请求(不动态显示content)
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - seatIndex: <#cmd description#>
-    func onReceiveNewInvitation(userId: String, seatIndex: Int?)
+    func onReceiveNewInvitation(userId: String, seatIndex: Int)
     
     
     /// 被邀请者接受邀请
@@ -103,7 +103,7 @@ public protocol AUIInvitationRespDelegate: NSObjectProtocol {
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - seatIndex: <#seatIndex description#>
-    func onReceiveNewApply(userId: String, seatIndex: Int?)
+    func onReceiveNewApply(userId: String, seatIndex: Int)
     
     
     /// 房主接受申请
@@ -119,4 +119,11 @@ public protocol AUIInvitationRespDelegate: NSObjectProtocol {
     /// 取消申请
     /// - Parameter userId: <#userId description#>
     func onApplyCanceled(userId: String)
+    
+    
+    /// Description 邀请列表数据更新
+    /// - Parameter inviteeList: 邀请列表
+    func onInviteeListUpdate(inviteeList: [AUIUserCellUserDataProtocol])
+    
+    
 }

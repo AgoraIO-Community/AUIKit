@@ -8,8 +8,25 @@
 import Kingfisher
 import UIKit
 
+@objc public protocol AUIInvitationViewEventsDelegate: NSObjectProtocol {
+    func inviteUser(user: AUIUserCellUserDataProtocol)
+}
+
 /// 邀请列表组件
 @objc open class AUIInvitationView: UIView {
+    
+    private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    
+    public func addActionHandler(actionHandler: AUIInvitationViewEventsDelegate) {
+        if self.eventHandlers.contains(actionHandler) {
+            return
+        }
+        self.eventHandlers.add(actionHandler)
+    }
+
+    public func removeEventHandler(actionHandler: AUIInvitationViewEventsDelegate) {
+        self.eventHandlers.remove(actionHandler)
+    }
     
     public lazy var tableView: UITableView = {
         let tableView = UITableView(frame: bounds, style: .plain)
@@ -21,7 +38,7 @@ import UIKit
     }()
     
     
-    public var userList: [AUIUserInfo] = []
+    public var userList: [AUIUserCellUserDataProtocol] = []
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,6 +76,12 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         }
         let user = userList[indexPath.row]
         cell?.refreshUser(user: user)
+        cell?.actionClosure = { [weak self] in
+            guard let user = $0 else { return }
+            self?.eventHandlers.allObjects.forEach({ delegate in
+                delegate.inviteUser(user: user)
+            })
+        }
         return cell ?? AUIInvitationCell()
     }
 }
@@ -66,7 +89,9 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
 
 @objc public final class AUIInvitationCell: UITableViewCell {
     
-    public var actionClosure: (() -> ())?
+    public var actionClosure: ((AUIUserCellUserDataProtocol?) -> ())?
+    
+    private var user: AUIUserCellUserDataProtocol?
     
     lazy var config = AUIInvitationCellConfig()
     
@@ -109,10 +134,11 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc private func sendAction() {
-        self.actionClosure?()
+        self.actionClosure?(self.user)
     }
     
     public func refreshUser(user: AUIUserCellUserDataProtocol) {
+        self.user = user
         self.userIcon.kf.setImage(with: URL(string: user.userAvatar)!,placeholder: UIImage("mine_avatar_placeHolder", .gift))
         self.userName.text = user.userName
     }
