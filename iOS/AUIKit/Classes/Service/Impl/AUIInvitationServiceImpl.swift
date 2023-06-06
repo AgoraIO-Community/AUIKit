@@ -8,9 +8,11 @@
 import Foundation
 import AgoraRtcKit
 
+fileprivate let AUIInviteKey = "invite"
+
 //邀请Service实现
 open class AUIInvitationServiceImpl: NSObject {
-    private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    private var respDelegates: NSHashTable<AUIInvitationRespDelegate> = NSHashTable<AUIInvitationRespDelegate>.weakObjects()
     private var channelName: String!
     private var rtmManager: AUIRtmManager!
     
@@ -22,8 +24,24 @@ open class AUIInvitationServiceImpl: NSObject {
         self.channelName = channelName
         self.rtmManager = rtmManager
         super.init()
+        rtmManager.subscribeAttributes(channelName: channelName, itemKey: AUIInviteKey, delegate: self)
         
         aui_info("init AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
+    }
+}
+
+extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+        if key == AUIInviteKey {
+            aui_info("recv invitation list attr did changed \(value)", tag: "AUIInvitationServiceImpl")
+            guard let invitations = (value as! NSObject).yy_modelToJSONObject(),
+                    let inviteList = NSArray.yy_modelArray(with: AUIUserThumbnailInfo.self, json: invitations) as? [AUIUserThumbnailInfo] else {
+                return
+            }
+            self.respDelegates.allObjects.forEach {
+                $0.onInviteeListUpdate(inviteeList: inviteList)
+            }
+        }
     }
 }
 
