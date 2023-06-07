@@ -163,6 +163,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
                 return
             }
             let delegateKey = "\(event.target)__\(item.key)"
+            print("itemValue: \(item.value)")
             if let value = self.attributesDelegates[delegateKey] {
                 value.objectEnumerator().forEach { element in
                     if let delegate = element as? AUIRtmAttributesProxyDelegate {
