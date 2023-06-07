@@ -34,6 +34,7 @@ import UIKit
     public func removeEventHandler(actionHandler: AUIUserOperationEventsDelegate) {
         self.eventHandlers.remove(actionHandler)
     }
+
     
     public lazy var tableView: UITableView = {
         let tableView = UITableView(frame: bounds, style: .plain)
@@ -43,7 +44,6 @@ import UIKit
         tableView.backgroundColor = .clear
         return tableView
     }()
-    
     
     public var userList: [AUIUserCellUserDataProtocol] = []
     
@@ -90,6 +90,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
             })
         }
         return cell ?? AUIUserOperationCell()
+
     }
 }
 
@@ -176,6 +177,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     public var actionClosure: ((AUIUserCellUserDataProtocol?) -> ())?
     
     private var user: AUIUserCellUserDataProtocol?
+
     
     lazy var config = AUIUserOperationCellConfig()
     
