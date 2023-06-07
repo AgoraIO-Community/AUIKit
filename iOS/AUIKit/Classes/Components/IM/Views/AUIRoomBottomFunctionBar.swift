@@ -80,6 +80,7 @@ extension AUIRoomBottomFunctionBar:UICollectionViewDelegate, UICollectionViewDat
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
+        entity.selected = !(entity.selected ?? false)
         if self.actionClosure != nil {
             self.actionClosure!(entity)
         }

@@ -99,6 +99,11 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     func onInvitationCancelled(userId: String)
     
     
+    /// Description 邀请列表数据更新
+    /// - Parameter inviteeList: 邀请列表
+    func onInviteeListUpdate(inviteeList: [AUIUserCellUserDataProtocol])
+    
+    
     /// 收到新的申请信息
     /// - Parameters:
     ///   - userId: <#userId description#>
@@ -120,10 +125,7 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     /// - Parameter userId: <#userId description#>
     func onApplyCanceled(userId: String)
     
-    
-    /// Description 邀请列表数据更新
-    /// - Parameter inviteeList: 邀请列表
-    func onInviteeListUpdate(inviteeList: [AUIUserCellUserDataProtocol])
-    
-    
+    /// Description 收到申请用户全量变更
+    /// - Parameter users: users
+    func onReceiveApplyUsersUpdate(users: [AUIUserCellUserDataProtocol])
 }

@@ -1,0 +1,92 @@
+//
+//  AUIMoreOperationCell.swift
+//  AUIKit
+//
+//  Created by 朱继超 on 2023/6/7.
+//
+
+import UIKit
+import Kingfisher
+
+@objc public protocol AUIMoreOperationCellDataProtocol: NSObjectProtocol {
+    var iconUrl: String {get set}
+    var placeHolder: UIImage {get set}
+    var operationName: String {get set}
+    var showRedDot: Bool {get set}
+}
+
+@objc public class AUIMoreOperationCellEntity: NSObject, AUIMoreOperationCellDataProtocol {
+    
+    public var iconUrl: String = ""
+    
+    public var placeHolder: UIImage = UIImage("hands",.voiceRoom)!
+    
+    public var operationName: String = "Apply List"
+    
+    public var showRedDot: Bool = true
+    
+
+}
+
+final public class AUIMoreOperationCell: UICollectionViewCell {
+    
+    private lazy var iconContainer: UIImageView = {
+        UIImageView(frame: CGRect(x: 5, y: 0, width: self.contentView.frame.width-10, height: self.contentView.frame.width-10)).contentMode(.scaleAspectFit).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).backgroundColor(.clear).cornerRadius((self.contentView.frame.width-10) / 2.0).setGradient(self.config.iconContainerGradientColors, self.config.iconContainerGradientLocations)
+    }()
+
+    private lazy var icon: UIImageView = {
+        UIImageView(frame: CGRect(x: 8, y: 7, width: self.iconContainer.frame.width-16, height: self.iconContainer.frame.width-16)).contentMode(.scaleAspectFill).backgroundColor(.clear)
+    }()
+
+    private let redDot = UIView().backgroundColor(.red).cornerRadius(3)
+    
+    public var config: AUIMoreOperationCellConfig = AUIMoreOperationCellConfig() {
+        willSet {
+            self.iconContainer.setGradient(newValue.iconContainerGradientColors, newValue.iconContainerGradientLocations)
+            self.title.font = newValue.titleFont
+            self.title.textColor = newValue.titleColor
+        }
+    }
+        
+    private lazy var title: UILabel = {
+        UILabel(frame: CGRect(x: 0, y: self.iconContainer.frame.maxY+4, width: self.frame.width, height: 32)).font(self.config.titleFont).textColor(self.config.titleColor).numberOfLines(0).textAlignment(.center)
+    }()
+
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        self.contentView.backgroundColor = .clear
+        self.contentView.addSubViews([self.iconContainer,self.title])
+        self.iconContainer.addSubViews([self.icon,self.redDot])
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        let r = self.iconContainer.frame.width / 2.0
+        let length = CGFloat(ceilf(Float(r) / sqrt(2)))
+        self.redDot.frame = CGRect(x: r + length, y: r - length, width: 6, height: 6)
+    }
+    
+    public func refresh(info: AUIMoreOperationCellDataProtocol) {
+        self.title.text = info.operationName
+        self.icon.kf.setImage(with: URL(string: info.iconUrl)!, placeholder: info.placeHolder)
+        self.redDot.isHidden = !info.showRedDot
+    }
+}
+
+@objc public class AUIMoreOperationCellConfig: NSObject {
+    
+    var iconContainerGradientColors: [UIColor] = [UIColor(red: 0.898, green: 0.961, blue: 1, alpha: 1),UIColor(red: 0.486, green: 0.357, blue: 1, alpha: 0)]
+    
+    var iconContainerGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0),CGPoint(x: 0, y: 1)]
+    
+    var titleFont: UIFont = .systemFont(ofSize: 12, weight: .regular)
+    
+    var titleColor: UIColor = UIColor(0x464E53)
+    
+    
+}
