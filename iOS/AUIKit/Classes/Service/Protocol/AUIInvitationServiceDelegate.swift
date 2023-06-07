@@ -128,4 +128,5 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     /// Description 收到申请用户全量变更
     /// - Parameter users: users
     func onReceiveApplyUsersUpdate(users: [AUIUserCellUserDataProtocol])
+
 }

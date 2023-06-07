@@ -15,6 +15,7 @@ import UIKit
 
 @objc public protocol AUIUserOperationEventsDelegate: NSObjectProtocol {
     func operationUser(user: AUIUserCellUserDataProtocol,source: AUIUserOperationEventsSource)
+
 }
 
 /// 邀请列表组件
@@ -25,6 +26,7 @@ import UIKit
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
     public func addActionHandler(actionHandler: AUIUserOperationEventsDelegate) {
+
         if self.eventHandlers.contains(actionHandler) {
             return
         }
@@ -32,6 +34,7 @@ import UIKit
     }
 
     public func removeEventHandler(actionHandler: AUIUserOperationEventsDelegate) {
+
         self.eventHandlers.remove(actionHandler)
     }
 

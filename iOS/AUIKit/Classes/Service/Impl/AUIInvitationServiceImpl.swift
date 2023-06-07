@@ -16,6 +16,7 @@ fileprivate let AUIApplyKey = "application"
 
 fileprivate let AUIApplyOperationKey = "AUIApply"
 
+
 //邀请Service实现
 open class AUIInvitationServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AUIInvitationRespDelegate> = NSHashTable<AUIInvitationRespDelegate>.weakObjects()
@@ -34,6 +35,7 @@ open class AUIInvitationServiceImpl: NSObject {
         rtmManager.subscribeAttributes(channelName: channelName, itemKey: AUIApplyOperationKey, delegate: self)
         rtmManager.subscribeAttributes(channelName: channelName, itemKey: AUIInviteKey, delegate: self)
         rtmManager.subscribeAttributes(channelName: channelName, itemKey: AUIApplyKey, delegate: self)
+
         aui_info("init AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
     }
 }
