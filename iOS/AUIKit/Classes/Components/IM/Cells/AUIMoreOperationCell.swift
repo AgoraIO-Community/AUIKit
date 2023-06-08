@@ -10,6 +10,7 @@ import Kingfisher
 
 @objc public protocol AUIMoreOperationCellDataProtocol: NSObjectProtocol {
     var index: Int {get set}
+
     var iconUrl: String {get set}
     var placeHolder: UIImage {get set}
     var operationName: String {get set}
@@ -102,6 +103,7 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
         }
     }
     
+
     var iconContainerGradientColors: [UIColor] = [UIColor(red: 0.898, green: 0.961, blue: 1, alpha: 1),UIColor(red: 0.486, green: 0.357, blue: 1, alpha: 0)]
     
     var iconContainerGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0),CGPoint(x: 0, y: 1)]

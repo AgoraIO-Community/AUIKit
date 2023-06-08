@@ -79,6 +79,7 @@ extension AUIMoreOperationView: UICollectionViewDelegate, UICollectionViewDataSo
             self.eventHandlers.allObjects.forEach {
                 $0.onItemSelected(entity: info)
             }
+
         }
     }
     

@@ -175,6 +175,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
 }
 
 
+
 @objc public final class AUIUserOperationCell: UITableViewCell {
     
     public var actionClosure: ((AUIUserCellUserDataProtocol?) -> ())?
@@ -253,6 +254,9 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     public var textFont: UIFont = .systemFont(ofSize: 14, weight: .medium)
     
     public var textColor: UIColor = UIColor(0x171A1C)
+    
+    public var actionTitle: String = "Invite".a.localize(type: .gift)
+    
     
     public var actionTitle: String = "Invite".a.localize(type: .gift)
     
