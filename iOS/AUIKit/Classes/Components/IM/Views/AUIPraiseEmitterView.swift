@@ -9,7 +9,7 @@ import UIKit
 import AudioToolbox
 
 public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
-    private var images = [UIImage("finger_heart",.voiceRoom), UIImage("thunder",.voiceRoom), UIImage("thumbs_up",.voiceRoom), UIImage("No_of_the_beast",.voiceRoom), UIImage("lips",.voiceRoom), UIImage("heart",.voiceRoom)]
+    private var images = [UIImage("finger_heart",.chat), UIImage("thunder",.chat), UIImage("thumbs_up",.chat), UIImage("No_of_the_beast",.chat), UIImage("lips",.chat), UIImage("heart",.chat)]
 
     private var liveLayers = [CALayer]()
 

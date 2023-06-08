@@ -12,7 +12,7 @@ import YYModel
 fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
 
 
-public class AUIGiftServiceImplement: NSObject {
+@objc public class AUIGiftServiceImplement: NSObject {
         
     private var responseDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
@@ -38,6 +38,10 @@ public class AUIGiftServiceImplement: NSObject {
 }
 
 extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageProxyDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
     
     public func getChannelName() -> String {
         self.channelName

@@ -36,8 +36,8 @@ public class AUIEmojisView: UIView, UICollectionViewDelegate, UICollectionViewDa
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubViews([self.emojiList, self.deleteEmoji, self.separaLine])
-        self.deleteEmoji.setImage(UIImage("backspace_clr",.voiceRoom), for: .normal)
-        self.deleteEmoji.setImage(UIImage("backspace",.voiceRoom), for: .disabled)
+        self.deleteEmoji.setImage(UIImage("backspace_clr",.chat), for: .normal)
+        self.deleteEmoji.setImage(UIImage("backspace",.chat), for: .disabled)
         self.deleteEmoji.isEnabled = false
         self.deleteEmoji.isUserInteractionEnabled = false
     }
@@ -61,7 +61,7 @@ public extension AUIEmojisView {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUIChatEmojiCell", for: indexPath) as? AUIChatEmojiCell
-        cell?.icon.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage(AUIChatEmojiManager.shared.emojis[indexPath.row],.voiceRoom):AUIChatEmojiManager.shared.emojiMap[AUIChatEmojiManager.shared.emojis[indexPath.row]]
+        cell?.icon.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage(AUIChatEmojiManager.shared.emojis[indexPath.row],.chat):AUIChatEmojiManager.shared.emojiMap[AUIChatEmojiManager.shared.emojis[indexPath.row]]
         return cell ?? AUIChatEmojiCell()
     }
 

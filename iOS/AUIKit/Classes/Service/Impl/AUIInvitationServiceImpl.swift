@@ -18,7 +18,7 @@ fileprivate let AUIApplyOperationKey = "AUIApply"
 
 
 //邀请Service实现
-open class AUIInvitationServiceImpl: NSObject {
+@objc open class AUIInvitationServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AUIInvitationRespDelegate> = NSHashTable<AUIInvitationRespDelegate>.weakObjects()
     private var channelName: String!
     private var rtmManager: AUIRtmManager!
@@ -130,6 +130,11 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
 }
 
 extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func getChannelName() -> String {
         return channelName
     }

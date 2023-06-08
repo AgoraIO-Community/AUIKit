@@ -118,6 +118,10 @@ extension AUIIMManagerServiceImplement: AUIRtmAttributesProxyDelegate {
 //MARK: - AUIMManagerServiceDelegate
 extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIMManagerRespDelegate) {
         self.responseDelegates.add(delegate)
     }
@@ -131,7 +135,11 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     ///   - appKey: AgoraChat  app key
     ///   - user: AUIUserThumbnailInfo instance
     /// - Returns: error
-    public func configIM(appKey: String, user:AUIUserThumbnailInfo, completion: @escaping (NSError?) -> Void) {
+    public func configIM(appKey: String, user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void) {
+        let userInfo = AUIUserThumbnailInfo()
+        userInfo.userId = user.userId
+        userInfo.userName = user.userName
+        userInfo.userAvatar = user.userAvatar
         var error: AgoraChatError?
         if !self.isLogin {
             let options = AgoraChatOptions(appkey: appKey.isEmpty ? "1129210531094378#auikit-voiceroom" : appKey)
@@ -154,7 +162,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
                 }
                 completion(callError)
             }
-            self.currentUser = user
+            self.currentUser = userInfo
         }
     }
     
@@ -180,7 +188,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
 
     }
     
-    public func sendMessage(roomId: String, text: String, userInfo: AUIUserThumbnailInfo, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void) {
+    public func sendMessage(roomId: String, text: String, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void) {
         if !self.isLogin {
             completion(nil, AUICommonError.httpError(400, "please login first.").toNSError())
             return

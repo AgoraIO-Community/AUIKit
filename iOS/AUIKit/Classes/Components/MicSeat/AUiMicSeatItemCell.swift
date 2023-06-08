@@ -151,8 +151,11 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         avatarView.aui_left = 15
         avatarView.aui_right = 15
         avatarView.aui_top = 5
+        rippleView.isHidden = true
         avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.aui_centerX = self.contentView.aui_centerX
+        rippleView.isHidden = true
+        rippleView.stopAnimation()
 
 //        avatarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.frame.width)
         defaultImageView.theme_width = "SeatItem.defaultImageWidth"
@@ -197,11 +200,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         if let _ = item?.avatarUrl {
             avatarImageView.layer.theme_borderColor = "SeatItem.avatarBorderColor"
             avatarImageView.layer.theme_borderWidth = "SeatItem.avatarBorderWidth"
-            rippleView.isHidden = false
-            rippleView.startAnimation()
         } else {
-            rippleView.stopAnimation()
-            rippleView.isHidden = true
             avatarImageView.layer.theme_borderColor = nil
             avatarImageView.layer.theme_borderWidth = nil
             avatarImageView.layer.borderWidth = 0
@@ -234,4 +233,18 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         updateRoleUI(with: item?.role ?? .offlineAudience)
         setNeedsLayout()
     }
+    
+    func updateVolume(_ volume: Int) {
+        if volume > 0 {
+            if !rippleView.isAnimating {
+                rippleView.startAnimation()
+            }
+        } else {
+            if rippleView.isAnimating {
+                rippleView.stopAnimation()
+            }
+        }
+        rippleView.isHidden = (volume == 0)
+    }
+    
 }

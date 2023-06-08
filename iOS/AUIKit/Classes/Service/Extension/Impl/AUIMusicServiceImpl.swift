@@ -136,6 +136,11 @@ extension AUIMusicServiceImpl: AUIRtmAttributesProxyDelegate {
 let jsonOption = "{\"needLyric\":true,\"pitchType\":1}"
 //MARK: AUIMusicServiceDelegate
 extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIMusicRespDelegate) {
         respDelegates.add(delegate)
     }

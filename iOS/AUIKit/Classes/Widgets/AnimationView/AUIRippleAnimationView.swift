@@ -112,6 +112,8 @@ extension CGRect {
 @IBDesignable
 public class AUIRippleAnimationView: UIView {
     
+    public var isAnimating: Bool = false
+    
     // MARK: Private Properties
     
     /// the center circle used for the scale animation
@@ -372,6 +374,7 @@ extension AUIRippleAnimationView {
         let timeInterval = CFTimeInterval(self.animationDuration) + self.circleAnimationDuration
         self.circlesAnimationTimer =  Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(animateCircles), userInfo: nil, repeats: true)
         self.diskAnimationTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(animateCentralDisk), userInfo: nil, repeats: true)
+        self.isAnimating = true
     }
     
     /// Stop the ripple animation
@@ -379,6 +382,7 @@ extension AUIRippleAnimationView {
         layer.removeAllAnimations()
         self.circlesAnimationTimer?.invalidate()
         self.diskAnimationTimer?.invalidate()
+        self.isAnimating = false
     }
 }
 

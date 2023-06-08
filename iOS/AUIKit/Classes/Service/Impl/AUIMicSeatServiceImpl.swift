@@ -11,7 +11,7 @@ import YYModel
 
 
 //麦位Service实现
-open class AUIMicSeatServiceImpl: NSObject {
+@objc open class AUIMicSeatServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
@@ -90,6 +90,11 @@ extension AUIMicSeatServiceImpl: AUIRtmAttributesProxyDelegate {
 
 
 extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func getChannelName() -> String {
         return channelName
     }

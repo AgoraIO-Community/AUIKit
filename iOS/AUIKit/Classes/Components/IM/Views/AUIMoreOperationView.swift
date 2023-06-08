@@ -7,7 +7,25 @@
 
 import UIKit
 
+@objc public protocol AUIMoreOperationViewEventsDelegate: NSObjectProtocol {
+    func onItemSelected(entity: AUIMoreOperationCellDataProtocol)
+}
+
 public final class AUIMoreOperationView: UIView {
+    
+    private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    
+    public func addActionHandler(actionHandler: AUIMoreOperationViewEventsDelegate) {
+        if self.eventHandlers.contains(actionHandler) {
+            return
+        }
+        self.eventHandlers.add(actionHandler)
+    }
+
+    public func removeEventHandler(actionHandler: AUIMoreOperationViewEventsDelegate) {
+        self.eventHandlers.remove(actionHandler)
+    }
+    
     
     private var datas = [AUIMoreOperationCellDataProtocol]()
     
@@ -58,6 +76,10 @@ extension AUIMoreOperationView: UICollectionViewDelegate, UICollectionViewDataSo
         if let info = self.datas[safe: indexPath.row] {
             info.showRedDot = !info.showRedDot
             collectionView.reloadData()
+            self.eventHandlers.allObjects.forEach {
+                $0.onItemSelected(entity: info)
+            }
+
         }
     }
     

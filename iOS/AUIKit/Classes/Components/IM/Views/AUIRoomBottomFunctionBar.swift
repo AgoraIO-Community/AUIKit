@@ -41,12 +41,12 @@ public class AUIRoomBottomFunctionBar: UIView {
         self.datas = datas
         self.chatRaiser.isHidden = hiddenChat
         self.addSubViews([chatRaiser, toolBar])
-        self.chatRaiser.setImage(UIImage("chatraise",.voiceRoom), for: .normal)
-        self.chatRaiser.setTitle(" " + "Let's Chat!".a.localize(type: .voiceRoom), for: .normal)
+        self.chatRaiser.setImage(UIImage("chatraise",.chat), for: .normal)
+        self.chatRaiser.setTitle(" " + "Let's Chat!".a.localize(type: .chat), for: .normal)
         self.chatRaiser.titleEdgeInsets = UIEdgeInsets(top: self.chatRaiser.titleEdgeInsets.top, left: 10, bottom: self.chatRaiser.titleEdgeInsets.bottom, right: 10)
         self.chatRaiser.imageEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 80)
         self.chatRaiser.contentHorizontalAlignment = .left
-        
+         
     }
 
     @available(*, unavailable)

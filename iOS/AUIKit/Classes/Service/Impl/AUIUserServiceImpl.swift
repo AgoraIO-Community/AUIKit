@@ -8,7 +8,7 @@
 import Foundation
 
 
-open class AUIUserServiceImpl: NSObject {
+@objc open class AUIUserServiceImpl: NSObject {
     private var userList: [AUIUserInfo] = []
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
@@ -116,6 +116,11 @@ extension AUIUserServiceImpl: AUIRtmUserProxyDelegate {
 }
 
 extension AUIUserServiceImpl: AUIUserServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func getChannelName() -> String {
         return channelName
     }
