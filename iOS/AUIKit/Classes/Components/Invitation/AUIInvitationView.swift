@@ -258,7 +258,4 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     public var actionTitle: String = "Invite".a.localize(type: .gift)
     
     
-    public var actionTitle: String = "Invite".a.localize(type: .gift)
-    
-    
 }
