@@ -41,7 +41,7 @@ TODO: Add long description of the pod here.
 
   s.subspec 'AUIKit' do |chat|
       chat.source_files = 'AUIKit/Classes/Components/IM/**/*'
-      chat.resource = 'AUIKit/Resource/VoiceChatRoomResource.bundle'
+      chat.resource = 'AUIKit/Resource/ChatResource.bundle'
       chat.dependency 'Agora_Chat_iOS'
       chat.dependency 'AUIKit/Core'
       chat.dependency 'AUIKit/Service'

@@ -24,8 +24,8 @@ public class AUIMicSeatView: UIView {
     
     private lazy var collectionLayout: UICollectionViewLayout = {
         let flowLayout = UICollectionViewFlowLayout()
-        let width: CGFloat = 56//min(bounds.size.width / 4.0, bounds.size.height / 2)
-        let height: CGFloat = 106
+        let width: CGFloat = 80//min(bounds.size.width / 4.0, bounds.size.height / 2)
+        let height: CGFloat = 92
         let hPadding = Int((bounds.width - width * 4) / 3)
         flowLayout.itemSize = CGSize(width: width, height: height)
         flowLayout.minimumLineSpacing = 0
@@ -79,7 +79,7 @@ public class AUIMicSeatView: UIView {
         case .one,.six:
             let layout = AUIMicSeatCircleLayout()
             layout.dataSource = self
-            let width: CGFloat = 56//min(bounds.size.width / 4.0, bounds.size.height / 2)
+            let width: CGFloat = 80//min(bounds.size.width / 4.0, bounds.size.height / 2)
             let height: CGFloat = 92
             layout.itemSize = CGSize(width: width, height: height)
             layout.minimumLineSpacing = 0
@@ -92,6 +92,11 @@ public class AUIMicSeatView: UIView {
         default:
             break
         }
+    }
+    
+    public func updateMicVolume(index: Int,volume: Int) {
+        let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? AUIMicSeatItemCell
+        cell?.updateVolume(volume)
     }
     
 }

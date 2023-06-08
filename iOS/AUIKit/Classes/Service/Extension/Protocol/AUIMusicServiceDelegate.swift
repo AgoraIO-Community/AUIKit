@@ -11,7 +11,7 @@ public typealias AUIMusicListCompletion = (Error?, [AUIMusicModel]?)->()
 public typealias AUIChooseSongListCompletion = (Error?, [AUIChooseMusicModel]?)->()
 public typealias AUILoadSongCompletion = (Error?, String?, String?)->()
 
-public enum AUIPlayStatus: Int {
+@objc public enum AUIPlayStatus: Int {
     case idle = 0      //待播放
     case playing       //播放中
 }
@@ -81,7 +81,7 @@ open class AUIChooseMusicModel: AUIMusicModel {
 }
 
 //歌曲管理Service协议
-public protocol AUIMusicServiceDelegate: AUICommonServiceDelegate {
+@objc public protocol AUIMusicServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应
     /// - Parameter delegate: 需要回调的对象
@@ -143,7 +143,7 @@ public protocol AUIMusicServiceDelegate: AUICommonServiceDelegate {
 }
 
 //歌曲管理操作相关响应
-public protocol AUIMusicRespDelegate: NSObjectProtocol {
+@objc public protocol AUIMusicRespDelegate: NSObjectProtocol {
     /// 新增一首歌曲回调
     /// - Parameter song: <#song description#>
     func onAddChooseSong(song: AUIChooseMusicModel)

@@ -37,6 +37,10 @@ open class AUIPlayerServiceImpl: NSObject {
 //MARK: AUIPlayerServiceDelegate
 extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIPlayerRespDelegate) {
         respDelegates.add(delegate)
     }

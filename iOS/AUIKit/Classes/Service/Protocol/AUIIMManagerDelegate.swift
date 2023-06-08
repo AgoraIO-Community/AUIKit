@@ -23,7 +23,7 @@ import YYModel
 }
 
 
-public enum AgoraChatroomBeKickedReason: Int {
+@objc public enum AgoraChatroomKickedReason: Int {
     
     case kicked
     
@@ -36,7 +36,7 @@ public enum AgoraChatroomBeKickedReason: Int {
 
 
 
-public protocol AUIMManagerServiceDelegate: AUICommonServiceDelegate {
+@objc public protocol AUIMManagerServiceDelegate: AUICommonServiceDelegate {
     /// 绑定响应回调
     /// - Parameter delegate: 需要回调的对象
     func bindRespDelegate(delegate: AUIMManagerRespDelegate)
@@ -45,12 +45,12 @@ public protocol AUIMManagerServiceDelegate: AUICommonServiceDelegate {
     /// - Parameter delegate: 需要回调的对象
     func unbindRespDelegate(delegate: AUIMManagerRespDelegate)
     
-    /// Description 配置IMSDK
+    /// Description 初始化IMSDK
     /// - Parameters:
-    ///   - appKey: AgoraChat  app key
-    ///   - user: AUiUserThumbnailInfo instance
-    /// - Returns: error
-    func configIM(appKey: String, user:AUIUserThumbnailInfo,completion: @escaping (NSError?) -> Void)
+    ///   - appKey: application key
+    ///   - user: user
+    ///   - completion: <#completion description#>
+    func configIM(appKey: String, user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void)
     
     /// Description 创建聊天室
     /// - Parameters:
@@ -63,7 +63,7 @@ public protocol AUIMManagerServiceDelegate: AUICommonServiceDelegate {
     ///   - text: 文本内容
     ///   - userInfo: 用户信息
     ///   - completion: 回调包含发送成功的文本消息，失败消息为空，错误不为空
-    func sendMessage(roomId: String, text: String, userInfo: AUIUserThumbnailInfo, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void)
+    func sendMessage(roomId: String, text: String, completion: @escaping (AgoraChatTextMessage?, NSError?) -> Void)
     
     /// Description 加入聊天室
     /// - Parameters:

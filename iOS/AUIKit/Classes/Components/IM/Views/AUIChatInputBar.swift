@@ -28,7 +28,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }()
 
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient(config.sendGradientColors, config.sendGradientPoints).title("Send".a.localize(type: .voiceRoom), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient(config.sendGradientColors, config.sendGradientPoints).title("Send".a.localize(type: .chat), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
     }()
 
     private var limitCount: Int {
@@ -173,7 +173,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     func convertText(text: NSAttributedString?, key: String) -> NSAttributedString {
         let attribute = NSMutableAttributedString(attributedString: text!)
         let attachment = NSTextAttachment()
-        attachment.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage(key, .voiceRoom):AUIChatEmojiManager.shared.emojiMap[key]
+        attachment.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage(key, .chat):AUIChatEmojiManager.shared.emojiMap[key]
         attachment.bounds = CGRect(x: 0, y: -3.5, width: 18, height: 18)
         let imageText = NSMutableAttributedString(attachment: attachment)
         if #available(iOS 11.0, *) {
@@ -204,9 +204,9 @@ public class AUIChatInputBarConfig: NSObject {
     
     var returnKeyType: UIReturnKeyType = .send
     
-    var textInputIcon: UIImage? = UIImage("key",.voiceRoom)
+    var textInputIcon: UIImage? = UIImage("key",.chat)
     
-    var emojiInputIcon: UIImage? = UIImage("face",.voiceRoom)
+    var emojiInputIcon: UIImage? = UIImage("face",.chat)
     
     /// Description Colors for gradient layer
     var sendGradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]

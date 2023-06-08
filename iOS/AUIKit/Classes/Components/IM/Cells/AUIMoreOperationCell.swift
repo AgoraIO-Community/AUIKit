@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 @objc public protocol AUIMoreOperationCellDataProtocol: NSObjectProtocol {
+    var index: Int {get set}
     var iconUrl: String {get set}
     var placeHolder: UIImage {get set}
     var operationName: String {get set}
@@ -17,9 +18,11 @@ import Kingfisher
 
 @objc public class AUIMoreOperationCellEntity: NSObject, AUIMoreOperationCellDataProtocol {
     
+    public var index: Int = 0
+    
     public var iconUrl: String = ""
     
-    public var placeHolder: UIImage = UIImage("hands",.voiceRoom)!
+    public var placeHolder: UIImage = UIImage("hands_light",.chat)!
     
     public var operationName: String = "Apply List"
     
@@ -35,7 +38,7 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
     }()
 
     private lazy var icon: UIImageView = {
-        UIImageView(frame: CGRect(x: 8, y: 7, width: self.iconContainer.frame.width-16, height: self.iconContainer.frame.width-16)).contentMode(.scaleAspectFill).backgroundColor(.clear)
+        UIImageView(frame: CGRect(x: 8, y: 7, width: self.iconContainer.frame.width-16, height: self.iconContainer.frame.width-16)).contentMode(.scaleAspectFit).backgroundColor(.clear)
     }()
 
     private let redDot = UIView().backgroundColor(.red).cornerRadius(3)
@@ -55,8 +58,8 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
-        self.contentView.addSubViews([self.iconContainer,self.title])
-        self.iconContainer.addSubViews([self.icon,self.redDot])
+        self.contentView.addSubViews([self.iconContainer,self.title,self.redDot])
+        self.iconContainer.addSubViews([self.icon])
     }
 
     @available(*, unavailable)
@@ -68,17 +71,36 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
         super.layoutSubviews()
         let r = self.iconContainer.frame.width / 2.0
         let length = CGFloat(ceilf(Float(r) / sqrt(2)))
-        self.redDot.frame = CGRect(x: r + length, y: r - length, width: 6, height: 6)
+        self.redDot.frame = CGRect(x: r + length + 3, y: r - length, width: 6, height: 6)
+        self.icon.frame = CGRect(x: 8, y: 7, width: self.iconContainer.frame.width-16, height: self.iconContainer.frame.width-16)
     }
     
     public func refresh(info: AUIMoreOperationCellDataProtocol) {
         self.title.text = info.operationName
-        self.icon.kf.setImage(with: URL(string: info.iconUrl)!, placeholder: info.placeHolder)
+        self.icon.kf.setImage(with: URL(string: info.iconUrl), placeholder: info.placeHolder)
         self.redDot.isHidden = !info.showRedDot
     }
 }
 
+@objc public enum AUIThemeMode: Int {
+    case light
+    case dark
+}
+
 @objc public class AUIMoreOperationCellConfig: NSObject {
+    
+    var mode: AUIThemeMode = .light {
+        willSet {
+            switch newValue {
+            case .light:
+                self.iconContainerGradientColors = [UIColor(red: 0.898, green: 0.961, blue: 1, alpha: 1),UIColor(red: 0.486, green: 0.357, blue: 1, alpha: 0)]
+                self.titleColor = UIColor(0x464E53)
+            case .dark:
+                self.iconContainerGradientColors = [UIColor(red: 0, green: 0.248, blue: 0.4, alpha: 1),UIColor(red: 0.104, green: 0, blue: 0.4, alpha: 0.2)]
+                self.titleColor = UIColor(0xACB4B9)
+            }
+        }
+    }
     
     var iconContainerGradientColors: [UIColor] = [UIColor(red: 0.898, green: 0.961, blue: 1, alpha: 1),UIColor(red: 0.486, green: 0.357, blue: 1, alpha: 0)]
     

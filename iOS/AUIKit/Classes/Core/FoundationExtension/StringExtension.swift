@@ -32,7 +32,7 @@ public extension AUIKitSwiftLib where Base == String {
     /// - Parameter type: AUIBundleType
     /// - Returns: Localized result
     func localize(type: AUIBundleType) -> Base {
-        LanguageManager.localValue(key: base, type: .voiceRoom)
+        LanguageManager.localValue(key: base, type: .chat)
     }
     
     

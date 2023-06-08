@@ -180,7 +180,6 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     public var actionClosure: ((AUIUserCellUserDataProtocol?) -> ())?
     
     private var user: AUIUserCellUserDataProtocol?
-
     
     lazy var config = AUIUserOperationCellConfig()
     
@@ -235,13 +234,25 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
 }
 
 @objc public final class AUIUserOperationCellConfig: NSObject {
+    
+    var mode: AUIThemeMode = .light {
+        willSet {
+            switch newValue {
+            case .light:
+                self.textColor = UIColor(0x171A1C)
+            case .dark:
+                self.textColor = UIColor(0xF9FAFA)
+            }
+        }
+    }
+    
     public var gradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
     
     public var gradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
     
     public var textFont: UIFont = .systemFont(ofSize: 14, weight: .medium)
     
-    public var textColor: UIColor = UIColor(0xF9FAFA)
+    public var textColor: UIColor = UIColor(0x171A1C)
     
     public var actionTitle: String = "Invite".a.localize(type: .gift)
     

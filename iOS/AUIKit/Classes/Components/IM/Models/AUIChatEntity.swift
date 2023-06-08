@@ -66,12 +66,12 @@ import UIKit
             return text
         } else {
             let attachment = NSTextAttachment()
-            attachment.image = UIImage("shaking_hand",.voiceRoom)
+            attachment.image = UIImage("shaking_hand",.chat)
             attachment.bounds = CGRect(x: 0, y: -4.5, width: 18, height: 18)
             let attributeText = NSMutableAttributedString {
                 AttributedText(self.userName!).foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 13, weight: .semibold)).lineSpacing(5)
                 Space()
-                AttributedText("Joined".a.localize(type: .voiceRoom)).foregroundColor(self.joined! == false ? Color.white : Color(0xFCF0B3)).font(.systemFont(ofSize: 13, weight: .semibold)).lineSpacing(5)
+                AttributedText("Joined".a.localize(type: .chat)).foregroundColor(self.joined! == false ? Color.white : Color(0xFCF0B3)).font(.systemFont(ofSize: 13, weight: .semibold)).lineSpacing(5)
                 Space()
             }
             attributeText.append(NSMutableAttributedString(attachment: attachment))

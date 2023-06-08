@@ -16,7 +16,7 @@ let kUserInfoAttrKey = "basic"
 let kUserMuteAttrKey = "mute"
 
 //房间Service实现
-open class AUIRoomManagerImpl: NSObject {
+@objc open class AUIRoomManagerImpl: NSObject {
     
     @AUserDefault("MicSeatCount",defaultValue: 8) var seatCount
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()

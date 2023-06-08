@@ -11,7 +11,7 @@ import YYModel
 
 private let kChorusKey = "chorus"
 
-open class AUIChorusServiceImpl: NSObject {
+@objc open class AUIChorusServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var ktvApi: KTVApiDelegate!
     private var rtcKit: AgoraRtcEngineKit!
@@ -24,7 +24,7 @@ open class AUIChorusServiceImpl: NSObject {
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
     
-    public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
+    @objc public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
         aui_info("init AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
         super.init()
         self.rtmManager = rtmManager
@@ -36,6 +36,11 @@ open class AUIChorusServiceImpl: NSObject {
 }
 
 extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIChorusRespDelegate) {
         respDelegates.add(delegate)
     }
