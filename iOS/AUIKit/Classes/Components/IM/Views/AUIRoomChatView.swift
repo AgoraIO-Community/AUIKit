@@ -41,17 +41,6 @@ public class AUIRoomChatView: UIView {
         self.chatView.bounces = false
         self.chatView.allowsSelection = false
     }
-
-    func getItem(dic: [String: String], join: Bool) -> AUIChatEntity {
-        let item = AUIChatEntity()
-        item.userName = dic["userName"]
-        item.content = dic["content"]
-        item.joined = join
-        item.attributeContent = item.attributeContent
-        item.width = item.width
-        item.height = item.height
-        return item
-    }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {

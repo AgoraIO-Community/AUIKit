@@ -131,7 +131,7 @@ extension AUIMicSeatView: UICollectionViewDelegate, UICollectionViewDataSource,A
         let cell: AUIMicSeatItemCell = collectionView.dequeueReusableCell(withReuseIdentifier: kMicSeatCellId, for: indexPath) as! AUIMicSeatItemCell
         let seatInfo = uiDelegate?.seatItems(view: self)[indexPath.item]
         cell.item = seatInfo
-        uiDelegate?.onMuteVideo(view: self, seatIndex: indexPath.item, canvas: cell.canvasView, isMuteVideo: seatInfo?.isMuteVideo ?? true)
+        uiDelegate?.onMuteVideo(view: self, seatIndex: indexPath.item, canvas: cell.canvasView, isMuteVideo: seatInfo?.isMuteAudio ?? true)
         return cell
     }
     

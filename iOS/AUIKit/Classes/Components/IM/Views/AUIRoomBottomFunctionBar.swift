@@ -70,17 +70,20 @@ extension AUIRoomBottomFunctionBar:UICollectionViewDelegate, UICollectionViewDat
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUIChatBarFunctionCell", for: indexPath) as? AUIChatBarFunctionCell
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
-        let selected = entity.selected ?? false
+        let selected = entity.selected
         entity.index = indexPath.row
         cell?.icon.image = selected ? (entity.selectedImage != nil ? entity.selectedImage:entity.normalImage):entity.normalImage
-        cell?.redDot.isHidden = !selected
+        cell?.redDot.isHidden = !entity.showRedDot
         return cell ?? AUIChatBarFunctionCell()
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
-        entity.selected = !(entity.selected ?? false)
+        if entity.showRedDot {
+            entity.showRedDot = false
+        }
+        entity.selected = !entity.selected
         if self.actionClosure != nil {
             self.actionClosure!(entity)
         }

@@ -13,7 +13,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
     var gift: AUIGiftEntity?
 
     lazy var container: UIView = {
-        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).backgroundColor(.clear)
+        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).backgroundColor(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1))
     }()
 
     lazy var avatar: UIImageView = UIImageView(frame: CGRect(x: 5, y: 5, width: self.frame.width / 5.0, height: self.frame.width / 5.0)).contentMode(.scaleAspectFit)
@@ -41,9 +41,9 @@ public class AUIReceiveGiftCell: UITableViewCell {
     convenience init(reuseIdentifier: String?,config: AUIReceiveGiftCellConfig) {
         self.init(style: .default, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .clear
-        backgroundColor = .clear
-        contentView.addSubview(container)
-        container.addSubViews([avatar, userName, giftName, giftIcon, giftNumbers])
+        self.backgroundColor = .clear
+        contentView.addSubview(self.container)
+        self.container.addSubViews([self.avatar, self.userName, self.giftName, self.giftIcon, self.giftNumbers])
     }
 
     @available(*, unavailable)
@@ -53,14 +53,14 @@ public class AUIReceiveGiftCell: UITableViewCell {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        container.frame = CGRect(x: 0, y: 5, width: contentView.frame.width, height: contentView.frame.height - 5)
-        container.cornerRadius(22).setGradient([UIColor(red: 0.05, green: 0, blue: 0.76, alpha: 0.24), UIColor(red: 0.71, green: 0.37, blue: 1, alpha: 0.64)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
-        avatar.frame = CGRect(x: 5, y: 5, width: contentView.frame.height - 15, height: contentView.frame.height - 15)
-        avatar.cornerRadius((contentView.frame.height - 15) / 2.0)
-        userName.frame = CGRect(x: avatar.frame.maxX + 6, y: 5, width: frame.width / 5.0 * 2 - 12, height: 15)
-        giftName.frame = CGRect(x: avatar.frame.maxX + 6, y: userName.frame.maxY + 2, width: frame.width / 5.0 * 2 - 12, height: 15)
-        giftIcon.frame = CGRect(x: frame.width / 5.0 * 3, y: 0, width: container.frame.height, height: container.frame.height)
-        giftNumbers.frame = CGRect(x: giftIcon.frame.maxX + 5, y: 5, width: container.frame.width - giftIcon.frame.maxX - 5, height: container.frame.height - 5)
+        self.container.frame = CGRect(x: 0, y: 5, width: contentView.frame.width, height: contentView.frame.height - 5)
+        self.container.cornerRadius(self.container.frame.height/2.0).setGradient([UIColor(red: 0.05, green: 0, blue: 0.76, alpha: 0.24), UIColor(red: 0.71, green: 0.37, blue: 1, alpha: 0.64)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
+        self.avatar.frame = CGRect(x: 5, y: 5, width: contentView.frame.height - 15, height: contentView.frame.height - 15)
+        self.avatar.cornerRadius((contentView.frame.height - 15) / 2.0)
+        self.userName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: 5, width: frame.width / 5.0 * 2 - 12, height: 15)
+        self.giftName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: self.userName.frame.maxY + 2, width: frame.width / 5.0 * 2 - 12, height: 15)
+        self.giftIcon.frame = CGRect(x: frame.width / 5.0 * 3, y: 0, width: container.frame.height, height: self.container.frame.height)
+        self.giftNumbers.frame = CGRect(x: self.giftIcon.frame.maxX + 5, y: 5, width: self.container.frame.width - self.giftIcon.frame.maxX - 5, height: self.container.frame.height - 5)
     }
 
     func refresh(item: AUIGiftEntity) {
@@ -77,6 +77,9 @@ public class AUIReceiveGiftCell: UITableViewCell {
 
 
 public class AUIReceiveGiftCellConfig: NSObject {
+    
+    
+    
     public var containerCornerRadius: CGFloat = 22
     
     public var containerGradientColors: [UIColor] = [UIColor(red: 0.05, green: 0, blue: 0.76, alpha: 0.24), UIColor(red: 0.71, green: 0.37, blue: 1, alpha: 0.64)]
@@ -95,5 +98,14 @@ public class AUIReceiveGiftCellConfig: NSObject {
     
     public var giftNumbersColor: UIColor = .white
     
-    
+    public var mode: AUIThemeMode = .light {
+        willSet {
+            switch newValue {
+            case .light:
+                self.containerGradientColors = [UIColor(red: 1, green: 1, blue: 1, alpha: 1),UIColor(red: 0.486, green: 0.357, blue: 1, alpha: 1)]
+            case .dark:
+                self.containerGradientColors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0.3),UIColor(red: 0.004, green: 0.122, blue: 0.678, alpha: 0.3)]
+            }
+        }
+    }
 }

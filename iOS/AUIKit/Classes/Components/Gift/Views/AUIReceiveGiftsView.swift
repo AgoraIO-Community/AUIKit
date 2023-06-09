@@ -7,11 +7,20 @@
 
 import UIKit
 
+@objc public protocol AUIReceiveGiftsViewDataSource: NSObjectProtocol {
+    @objc optional func rowHeight() -> CGFloat
+    @objc optional func zoomScaleX() -> CGFloat
+    @objc optional func zoomScaleY() -> CGFloat
+}
+
 public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSource {
+    
+    private var dataSource: AUIReceiveGiftsViewDataSource?
     
     public var gifts = [AUIGiftEntity]() {
         didSet {
             if self.gifts.count > 0 {
+                self.viewWithTag(11)?.isHidden = false
                 self.cellAnimation()
             }
         }
@@ -25,7 +34,12 @@ public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSo
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(giftList)
+    }
+    
+    @objc public convenience init(frame: CGRect, source: AUIReceiveGiftsViewDataSource?) {
+        self.init(frame: frame)
+        self.dataSource = source
+        self.addSubview(self.giftList)
         self.giftList.isScrollEnabled = false
         self.giftList.isUserInteractionEnabled = false
     }
@@ -42,7 +56,7 @@ public extension AUIReceiveGiftsView {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        44
+        self.dataSource?.rowHeight?() ?? 54
     }
 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -68,10 +82,11 @@ public extension AUIReceiveGiftsView {
         self.giftList.reloadData()
         let indexPath = IndexPath(row: self.gifts.count - 2, section: 0)
         let cell = self.giftList.cellForRow(at: indexPath) as? AUIReceiveGiftCell
-        cell?.refresh(item: self.gifts[indexPath.row])
+        guard let gift = self.gifts[safe: indexPath.row] else { return }
+        cell?.refresh(item: gift)
         UIView.animate(withDuration: 0.3) {
             cell?.alpha = 0.35
-            cell?.contentView.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            cell?.contentView.transform = CGAffineTransform(scaleX: self.dataSource?.zoomScaleX?() ?? 0.75, y: self.dataSource?.zoomScaleY?() ?? 0.75)
             self.giftList.scrollToRow(at: IndexPath(row: self.gifts.count - 1, section: 0), at: .top, animated: false)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {

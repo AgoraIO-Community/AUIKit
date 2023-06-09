@@ -26,8 +26,6 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     lazy var rippleView: AUIRippleAnimationView = {
         let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)).backgroundColor(.clear)//"SeatItem.defaultImageWidth" 56
-        ripple.minimumCircleRadius = self.contentView.frame.width-48
-        ripple.diskRadius = (self.contentView.frame.width-30)/2.0
         return ripple
     }()
     
@@ -152,6 +150,10 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         avatarView.aui_right = 15
         avatarView.aui_top = 5
         rippleView.isHidden = true
+        rippleView.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
+        rippleView.minimumCircleRadius = self.contentView.frame.width-48
+        rippleView.diskRadius = (self.contentView.frame.width-30)/2.0
+
         avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.aui_centerX = self.contentView.aui_centerX
         rippleView.isHidden = true
@@ -166,13 +168,16 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
                                         width: size.width,
                                         height: size.height)
         defaultImageView.aui_centerX = self.contentView.aui_centerX
+        defaultImageView.aui_centerY = self.avatarView.aui_centerY
         avatarImageView.frame = avatarView.bounds
-        
-        statusImageView.aui_size = CGSize(width: size.width, height: size.height)
-        statusImageView.theme_centerX = "SeatItem.muteCenterX"
-        statusImageView.theme_centerY = "SeatItem.muteCenterY"
-        statusImageView.theme_width = "SeatItem.muteWidth"
-        statusImageView.theme_height = "SeatItem.muteHeight"
+        let r = self.rippleView.frame.width / 4.0
+        let length = CGFloat(ceilf(Float(r) / sqrt(2)))
+        self.statusImageView.frame = CGRect(x: r + length + size.width + 5, y: r + length + size.height, width: size.width, height: size.height)
+//        statusImageView.aui_size = CGSize(width: size.width, height: size.height)
+//        statusImageView.theme_centerX = "SeatItem.muteCenterX"
+//        statusImageView.theme_centerY = "SeatItem.muteCenterY"
+//        statusImageView.theme_width = "SeatItem.muteWidth"
+//        statusImageView.theme_height = "SeatItem.muteHeight"
         
         seatLabel.frame = CGRect(x: 0, y: avatarView.frame.height + 4, width: frame.width, height: 20)
         

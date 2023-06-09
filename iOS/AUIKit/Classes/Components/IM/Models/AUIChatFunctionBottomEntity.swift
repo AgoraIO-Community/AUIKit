@@ -7,14 +7,16 @@
 
 import Foundation
 
-public class AUIChatFunctionBottomEntity: NSObject {
+@objcMembers public class AUIChatFunctionBottomEntity: NSObject {
     
-    public var selected: Bool?
+    public var showRedDot: Bool = false
+    
+    public var selected: Bool = false
     
     public var selectedImage: UIImage?
     
     public var normalImage: UIImage?
     
-    public var index: Int?
+    public var index: Int = 0
     
 }
