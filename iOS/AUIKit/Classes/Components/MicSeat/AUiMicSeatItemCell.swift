@@ -153,6 +153,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         rippleView.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.minimumCircleRadius = self.contentView.frame.width-48
         rippleView.diskRadius = (self.contentView.frame.width-30)/2.0
+
         avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.aui_centerX = self.contentView.aui_centerX
         rippleView.isHidden = true
