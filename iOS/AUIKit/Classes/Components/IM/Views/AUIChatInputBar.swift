@@ -218,6 +218,25 @@ public class AUIChatInputBarConfig: NSObject {
     
     var zhLimitCount: Int = 30
     
+    var mode: AUIThemeMode = .light {
+        willSet {
+            if newValue == .dark {
+                backgroundColor = UIColor(0x1A1A1A)
+                placeHolderColor = UIColor(0x666666)
+                cursorColor = UIColor(0x009FFF)
+                textColor = .white
+                textInputIcon = UIImage("key_dark",.chat)
+                emojiInputIcon = UIImage("face_dark",.chat)
+            } else {
+                backgroundColor = .white
+                placeHolderColor = UIColor(0xF9FAFA)
+                cursorColor = UIColor(0x009FFF)
+                textColor = .black
+                textInputIcon = UIImage("key",.chat)
+                emojiInputIcon = UIImage("face",.chat)
+            }
+        }
+    }
     
     public override init() {
         super.init()

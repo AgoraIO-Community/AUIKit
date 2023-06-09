@@ -11,7 +11,7 @@ import YYModel
 @objc public class AgoraChatTextMessage:NSObject {
     
     public var messageId: String?
-    
+        
     public var content: String?
     
     public var user: AUIUserThumbnailInfo?
@@ -96,8 +96,8 @@ import YYModel
     /// Description 用户加入聊天室
     /// - Parameters:
     ///   - roomId: 聊天室id
-    ///   - user: 用户信息
-    func onUserDidJoinRoom(roomId: String, user: AUIUserThumbnailInfo)
+    ///   - message: 用户消息
+    func onUserDidJoinRoom(roomId: String, message: AgoraChatTextMessage)
     
     
 }

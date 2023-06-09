@@ -10,9 +10,9 @@ import UIKit
 
 @objcMembers open class AUIChatEntity: NSObject {
     
-    public var chatId: String? = ""
-    
-    public var userName: String? = ""
+    public var messageId: String? = ""
+            
+    public var user: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     
     public var content: String? = ""
     
@@ -21,7 +21,7 @@ import UIKit
     public var attachmentImages: [UIImage]?
     
     public var fullText: String? {
-        (self.userName ?? "") + (self.content ?? "")
+        (self.user.userName) + (self.content ?? "")
     }
 
     public lazy var height: CGFloat? = UILabel(frame: CGRect(x: 0, y: 0, width: chatViewWidth - 54, height: 15)).backgroundColor(.clear).numberOfLines(0).lineBreakMode(.byWordWrapping).attributedText(self.attributeContent).sizeThatFits(CGSize(width: chatViewWidth - 54, height: 9999)).height + 26
@@ -48,7 +48,7 @@ import UIKit
             }
             
             var text = NSMutableAttributedString {
-                AttributedText(self.userName! + " : ").foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 14, weight: .semibold)).lineSpacing(5)
+                AttributedText(self.user.userName + " : ").foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 14, weight: .semibold)).lineSpacing(5)
                 AttributedText(self.content!).foregroundColor(self.joined! == false ? Color.white : Color(0xFCF0B3)).font(.systemFont(ofSize: 14, weight: .regular)).lineSpacing(5)
             }
             var string = text.string as NSString
@@ -69,7 +69,7 @@ import UIKit
             attachment.image = UIImage("shaking_hand",.chat)
             attachment.bounds = CGRect(x: 0, y: -4.5, width: 18, height: 18)
             let attributeText = NSMutableAttributedString {
-                AttributedText(self.userName!).foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 13, weight: .semibold)).lineSpacing(5)
+                AttributedText(self.user.userName).foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 13, weight: .semibold)).lineSpacing(5)
                 Space()
                 AttributedText("Joined".a.localize(type: .chat)).foregroundColor(self.joined! == false ? Color.white : Color(0xFCF0B3)).font(.systemFont(ofSize: 13, weight: .semibold)).lineSpacing(5)
                 Space()
