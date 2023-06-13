@@ -231,6 +231,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
                     var textMessage: AgoraChatTextMessage?
                     if error == nil {
                         guard let responseMessage = message else { return }
+                        textMessage = AgoraChatTextMessage()
                         textMessage?.messageId = responseMessage.messageId
                         textMessage?.content = "Joined".a.localize(type: .chat)
                         textMessage?.user = self.currentUser
