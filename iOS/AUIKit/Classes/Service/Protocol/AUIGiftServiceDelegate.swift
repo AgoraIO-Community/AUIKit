@@ -19,12 +19,11 @@ import YYModel
     
     var selected: Bool {get}
     
-    var sendUser: AUIUserCellUserDataProtocol {get}
+    var sendUser: AUIUserThumbnailInfo {get}
 }
 
 @objcMembers public class AUIGiftEntity:NSObject,NSMutableCopying,AUIGiftEntityProtocol {
-     
- 
+      
     public func mutableCopy(with zone: NSZone? = nil) -> Any {
         let model = AUIGiftEntity()
         model.giftId = self.giftId
@@ -48,7 +47,7 @@ import YYModel
     
     public var selected = false
     
-    public var sendUser: AUIUserCellUserDataProtocol = AUIUserThumbnailInfo()
+    public var sendUser: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
  
     class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
         return ["sendUser": AUIUserThumbnailInfo.self]
