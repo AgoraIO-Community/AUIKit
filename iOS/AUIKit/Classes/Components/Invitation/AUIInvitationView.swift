@@ -250,7 +250,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
 @objc public final class AUIUserOperationCellConfig: NSObject {
     
     public var iconCornerRadius: CGFloat = 20
-    
+
     public var gradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
     
     public var gradientLocations: [CGPoint] = [ CGPoint(x: 0, y: 0.25),  CGPoint(x: 1, y: 0.75)]
