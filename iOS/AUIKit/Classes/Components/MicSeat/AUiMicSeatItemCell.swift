@@ -192,6 +192,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
 //        statusImageView.theme_height = "SeatItem.muteHeight"
         
         seatLabel.frame = CGRect(x: 5, y: avatarView.frame.height + 4, width: frame.width-10, height: 20)
+
         
         subTitle.frame = CGRect(x: 5, y: self.seatLabel.frame.maxY, width: self.seatLabel.frame.width, height: 14)
         avatarView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0

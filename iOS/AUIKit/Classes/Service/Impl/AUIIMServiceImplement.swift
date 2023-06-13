@@ -262,6 +262,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         self.removeListener()
         self.logout()
         self.currentUser = nil
+
     }
  
     public func userDestroyedChatroom() {
