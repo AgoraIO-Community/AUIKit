@@ -68,6 +68,13 @@ import UIKit
     public override func layoutSubviews() {
         super.layoutSubviews()
     }
+    
+    public func refreshUsers(users: [AUIUserCellUserDataProtocol]) {
+        self.userList.removeAll()
+        self.userList = users
+        self.tableView.reloadData()
+    }
+    
 }
 
 
@@ -157,6 +164,12 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+    }
+    
+    public func refreshUsers(users: [AUIUserCellUserDataProtocol]) {
+        self.userList.removeAll()
+        self.userList = users
+        self.tableView.reloadData()
     }
 }
 
