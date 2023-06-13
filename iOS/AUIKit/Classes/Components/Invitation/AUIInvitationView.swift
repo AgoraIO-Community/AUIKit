@@ -40,10 +40,10 @@ import UIKit
 
     
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: bounds, style: .plain)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 40, width: self.frame.width, height: self.frame.height-40), style: .plain).backgroundColor(.orange)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = 60
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -67,8 +67,14 @@ import UIKit
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        tableView.frame = bounds
     }
+    
+    public func refreshUsers(users: [AUIUserCellUserDataProtocol]) {
+        self.userList.removeAll()
+        self.userList = users
+        self.tableView.reloadData()
+    }
+    
 }
 
 
@@ -100,9 +106,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
 
 /// 邀请列表组件
 @objc open class AUIApplyView: UIView {
-    
-    public var index: Int?
-    
+        
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
     public func addActionHandler(actionHandler: AUIUserOperationEventsDelegate) {
@@ -116,11 +120,25 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         self.eventHandlers.remove(actionHandler)
     }
     
+    public lazy var tabs: AUITabs = {
+        var tabStyle = AUITabsStyle()
+        tabStyle.indicatorHeight = 4
+        tabStyle.indicatorWidth = 28
+        tabStyle.indicatorCornerRadius = 2
+        tabStyle.indicatorStyle = .line
+        tabStyle.indicatorColor = UIColor(0x009EFF)
+        tabStyle.selectedTitleColor = UIColor(0x171a1c)
+        tabStyle.normalTitleColor = UIColor(0xACB4B9)
+        tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
+        
+        return AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+    }()
+    
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: bounds, style: .plain)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 44, width: self.frame.width, height: self.frame.height-44), style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = 60
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -139,13 +157,19 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func _loadSubViews() {
+        addSubview(tabs)
         addSubview(tableView)
         backgroundColor = .clear
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        tableView.frame = bounds
+    }
+    
+    public func refreshUsers(users: [AUIUserCellUserDataProtocol]) {
+        self.userList.removeAll()
+        self.userList = users
+        self.tableView.reloadData()
     }
 }
 
@@ -185,7 +209,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     lazy var config = AUIUserOperationCellConfig()
     
     lazy var userIcon: UIImageView = {
-        UIImageView(frame: CGRect(x: 16, y: 10, width: 40, height: 40)).backgroundColor(.clear)
+        UIImageView(frame: CGRect(x: 16, y: 10, width: 40, height: 40)).backgroundColor(.clear).cornerRadius(self.config.iconCornerRadius)
     }()
     
     lazy var userName: UILabel = {
@@ -196,7 +220,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     }()
     
     lazy var action: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.contentView.frame.height-28, width: 76, height: 28)).setGradient(self.config.gradientColors, self.config.gradientLocations).title(self.config.actionTitle, .normal).textColor(self.config.textColor, .normal).font(self.config.textFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside).cornerRadius(14)
+        UIButton(type: .custom).frame(CGRect(x: self.contentView.frame.width - 80, y: (self.contentView.frame.height-28)/2.0, width: 80, height: 28)).setGradient(self.config.gradientColors, self.config.gradientLocations).title(self.config.actionTitle, .normal).textColor(self.config.textColor, .normal).font(self.config.textFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside).cornerRadius(14)
     }()
     
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -220,6 +244,8 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+        self.action.frame = CGRect(x: self.contentView.frame.width - 90, y: (self.contentView.frame.height-28)/2.0, width: 80, height: 28)
+        self.action.aui_centerY = self.contentView.aui_centerY
     }
     
     @objc private func sendAction() {
@@ -228,7 +254,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     public func refreshUser(user: AUIUserCellUserDataProtocol) {
         self.user = user
-        self.userIcon.kf.setImage(with: URL(string: user.userAvatar)!,placeholder: UIImage("mine_avatar_placeHolder", .gift))
+        self.userIcon.kf.setImage(with: URL(string: user.userAvatar),placeholder: UIImage("mine_avatar_placeHolder", .gift))
         self.userName.text = user.userName
     }
 
@@ -236,10 +262,11 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
 
 @objc public final class AUIUserOperationCellConfig: NSObject {
     
+    public var iconCornerRadius: CGFloat = 20
 
     public var gradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
     
-    public var gradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    public var gradientLocations: [CGPoint] = [ CGPoint(x: 0, y: 0.25),  CGPoint(x: 1, y: 0.75)]
     
     public var textFont: UIFont = .systemFont(ofSize: 14, weight: .medium)
     

@@ -91,6 +91,17 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     }()
     
     //房主标记
+    lazy var subTitle: UILabel = {
+//        theme.icon = "SeatItem.micSeatHostIcon"
+//        theme.buttonWidth = "SeatItem.micHostButtonWidth"
+//        theme.buttonHeight = "SeatItem.micHostButtonHeight"
+        let label = UILabel(frame: CGRect(x: 5, y: self.avatarView.frame.maxY + 5, width: self.contentView.frame.width-10, height: 14)).backgroundColor(.clear).textAlignment(.center)
+        label.theme_font = "CommonFont.small"
+        label.theme_textColor = "SeatItem.labelTextColor"
+        return label
+    }()
+    
+    //房主标记
     lazy var hostIcon: AUIButton = {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
@@ -124,6 +135,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         addSubview(hostIcon)
         addSubview(statusImageView)
         avatarImageView.addSubview(canvasView)
+        addSubview(subTitle)
         micRoleBtn.isHidden = true
         hostIcon.isHidden = true
     }
@@ -179,8 +191,10 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
 //        statusImageView.theme_width = "SeatItem.muteWidth"
 //        statusImageView.theme_height = "SeatItem.muteHeight"
         
-        seatLabel.frame = CGRect(x: 0, y: avatarView.frame.height + 4, width: frame.width, height: 20)
+        seatLabel.frame = CGRect(x: 5, y: avatarView.frame.height + 4, width: frame.width-10, height: 20)
+
         
+        subTitle.frame = CGRect(x: 5, y: self.seatLabel.frame.maxY, width: self.seatLabel.frame.width, height: 14)
         avatarView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0
         avatarImageView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0
         avatarView.clipsToBounds = true
@@ -202,6 +216,18 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         aui_info("reload seat name \(item?.seatName ?? "") url: \(item?.avatarUrl ?? "") mute video: \(item?.isMuteVideo ?? true)", tag: "AUIMicSeatItemCell")
         avatarImageView.kf.setImage(with: URL(string: item?.avatarUrl ?? ""))
         seatLabel.text = item?.seatName
+        if let subIcon = item?.subIcon,let subtitle = item?.subTitle {
+            KF.url(URL(string: subIcon), cacheKey: subIcon).onSuccess { [weak self] result in
+                guard let data = result.data(),let image = UIImage(data: data) else { return }
+                self?.subTitle.attributedText = NSAttributedString({
+                    ImageAttachment(image,size: CGSize(width: 14, height: 14))
+                    AttributedText(subtitle).font(.systemFont(ofSize: 11, weight: .regular)).foregroundColor(Color(0xFFFFFF))
+                })
+            }
+        } else {
+            subTitle.text = item?.subTitle
+        }
+        
         if let _ = item?.avatarUrl {
             avatarImageView.layer.theme_borderColor = "SeatItem.avatarBorderColor"
             avatarImageView.layer.theme_borderWidth = "SeatItem.avatarBorderWidth"

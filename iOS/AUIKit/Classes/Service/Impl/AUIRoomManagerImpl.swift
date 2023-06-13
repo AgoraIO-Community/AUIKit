@@ -57,6 +57,7 @@ let kUserMuteAttrKey = "mute"
         let rtmClient = AgoraRtmClientKit(config: rtmConfig, delegate: nil)!
         return rtmClient
     }
+    
 }
 
 extension AUIRoomManagerImpl: AUIRoomManagerDelegate {

@@ -231,6 +231,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
                     var textMessage: AgoraChatTextMessage?
                     if error == nil {
                         guard let responseMessage = message else { return }
+                        textMessage = AgoraChatTextMessage()
                         textMessage?.messageId = responseMessage.messageId
                         textMessage?.content = "Joined".a.localize(type: .chat)
                         textMessage?.user = self.currentUser
@@ -258,8 +259,11 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         }
         AgoraChatClient.shared().roomManager?.leaveChatroom(self.currentRoomId, completion:nil)
         self.currentRoomId = ""
+        self.channelName = ""
         self.removeListener()
         self.logout()
+        self.currentUser = nil
+
     }
  
     public func userDestroyedChatroom() {
@@ -270,6 +274,9 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         AgoraChatClient.shared().roomManager?.destroyChatroom(self.currentRoomId)
         self.removeListener()
         self.logout()
+        self.channelName = ""
+        self.currentUser = nil
+        self.currentRoomId = ""
     }
     
     private func convertTextMessage(message: AgoraChatMessage,receive: Bool) -> AgoraChatTextMessage {
@@ -318,6 +325,9 @@ extension AUIIMManagerServiceImplement: AgoraChatManagerDelegate, AgoraChatroomM
         }
     }
     
+    public func didDismiss(from aChatroom: AgoraChatroom, reason aReason: AgoraChatroomBeKickedReason) {
+        AUIToast.show(text: "You were kicked out of the chatroom".a.localize(type: .chat))
+    }
 }
 
 

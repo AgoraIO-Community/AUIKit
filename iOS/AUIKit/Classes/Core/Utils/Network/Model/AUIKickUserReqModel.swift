@@ -20,7 +20,7 @@ import UIKit
     public var roomId: String?
     
     /// Description 被踢用户id
-    public var userId: String?
+    public var uid: Int = 0
     
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil

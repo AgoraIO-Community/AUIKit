@@ -14,9 +14,29 @@ open class AUIInvitationNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/invitation/create"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     public var toUserId: String?
+    public var payload: AUIPayloadModel?
+    
+    class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
+        return ["payload": AUIPayloadModel.self]
+    }
+    
+//    class func modelCustomPropertyMapper() -> Dictionary<String,String> {
+//        ["fromUserId":"userId"]
+//    }
+    
+}
+
+
+@objcMembers
+open class AUIInvitationCallbackModel: AUICommonNetworkModel {
+    public override init() {
+        super.init()
+        interfaceName = "/v1/invitation/create"
+    }
+    
     public var payload: AUIPayloadModel?
     
     class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
@@ -32,7 +52,7 @@ open class AUIInvitationAcceptNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/invitation/accept"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     
 }
@@ -44,7 +64,7 @@ open class AUIInvitationAcceptRejectNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/invitation/accept/reject"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     
 }
@@ -56,7 +76,7 @@ open class AUIInvitationAcceptCancelNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/invitation/accept/cancel"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     
 }
@@ -68,7 +88,7 @@ open class AUIApplyNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/application/create"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     public var payload: AUIPayloadModel?
     
@@ -85,8 +105,9 @@ open class AUIApplyAcceptNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/application/accept"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
+    public var toUserId: String?
     
 }
 
@@ -97,7 +118,7 @@ open class AUIApplyAcceptRejectNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/application/accept/reject"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     
 }
@@ -109,7 +130,7 @@ open class AUIApplyAcceptCancelNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/application/accept/cancel"
     }
     
-    public var channelName: String?
+    public var roomId: String?
     public var fromUserId: String?
     
 }
