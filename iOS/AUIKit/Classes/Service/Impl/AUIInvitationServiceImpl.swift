@@ -42,9 +42,18 @@ fileprivate let AUIApplyOperationKey = "AUIApply"
 
 extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
     public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
-        guard let object = value as? [String:Any],let seat = object["seat"] as? [String:Any] else { return }
         aui_info("recv invitation list attr did changed \(value)", tag: "AUIInvitationServiceImpl")
-        if key == AUIInviteKey {
+        if AUIInvitationKey == key {
+            //TODO: - 根据返回数据判断邀请的是否是自己
+            guard let object = value as? [String:Any],let seat = object["micSeat"] as? [String:Any] else { return }
+            guard let queue = seat["queue"] as? [Dictionary<String,Any>], let inviteList = NSArray.yy_modelArray(with: AUIInvitationCallbackModel.self, json: queue) as? [AUIInvitationCallbackModel] else {
+                return
+            }
+            self.respDelegates.allObjects.forEach {
+                if let userId = inviteList.first?.userId,userId == AUIRoomContext.shared.currentUserInfo.userId {
+                    $0.onReceiveNewInvitation(userId: inviteList.first?.userId ?? "", seatIndex: inviteList.first?.payload?.seatNo ?? 1)
+                }
+            }
             guard let actionList = seat["removed"] as? [Dictionary<String,Any>],let actions = NSArray.yy_modelArray(with: AUIInvitationNetworkModel.self, json: actionList) as? [AUIInvitationNetworkModel] else { return }
             if let actionType = actionList.first?["actionType"] as? Int {
                 switch actionType {
@@ -70,7 +79,20 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
                     break
                 }
             }
-        } else if key == AUIApplyOperationKey {
+        } else if AUIApplyKey == key {
+            guard let object = value as? [String:Any],let seat = object["micSeat"] as? [String:Any] else { return }
+            guard let queue = seat["queue"] as? [Dictionary<String,Any>], let inviteList = NSArray.yy_modelArray(with: AUIInvitationCallbackModel.self, json: queue) as? [AUIInvitationCallbackModel] else {
+                return
+            }
+            var userAttributes = [String:Int]()
+            for item in inviteList {
+                if let userId = item.userId,let index = item.payload?.seatNo {
+                    userAttributes[userId] = index
+                }
+            }
+            self.respDelegates.allObjects.forEach {//全量回调
+                $0.onReceiveApplyUsersUpdate(users: userAttributes)
+            }
             guard let actionList = seat["removed"] as? [Dictionary<String,Any>],let actions = NSArray.yy_modelArray(with: AUIInvitationNetworkModel.self, json: actionList) as? [AUIInvitationNetworkModel] else { return }
             if let actionType = actionList.first?["actionType"] as? Int {
                 switch actionType {
@@ -96,36 +118,9 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
                     break
                 }
             }
-        } else if AUIInvitationKey == key {
-            //TODO: - 根据返回数据判断邀请的是否是自己
-            guard let queue = seat["queue"] as? [Dictionary<String,Any>], let inviteList = NSArray.yy_modelArray(with: AUIInvitationNetworkModel.self, json: queue) as? [AUIInvitationNetworkModel] else {
-                return
-            }
-            self.respDelegates.allObjects.forEach {
-                if let userId = inviteList.first?.fromUserId,userId == AUIRoomContext.shared.currentUserInfo.userId {
-                    $0.onReceiveNewInvitation(userId: userId, seatIndex: 0)
-                }
-//                $0.onInviteeListUpdate(inviteeList: inviteList)
-            }
-        } else if AUIApplyOperationKey == key {
-            guard let queue = seat["queue"] as? [Dictionary<String,Any>], let inviteList = NSArray.yy_modelArray(with: AUIInvitationNetworkModel.self, json: queue) as? [AUIInvitationNetworkModel] else {
-                return
-            }
-            self.respDelegates.allObjects.forEach {//全量回调
-                $0.onReceiveNewApply(userId: "", seatIndex: 0)
-//                $0.onReceiveApplyUsersUpdate(users: inviteList)
-            }
         }
     }
-    
-    private func convertInvitationToUser(models: [AUIInvitationNetworkModel]) -> [AUIUserCellUserDataProtocol] {
-        return models.map({ model in
-            let userInfo = AUIUserThumbnailInfo()
-            userInfo.userId = model.toUserId ?? ""
-//            userInfo.seatIndex = model.payload?.seatNo ?? 0
-            return userInfo
-        })
-    }
+
     
 }
 
@@ -149,7 +144,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func sendInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.toUserId = userId
         model.fromUserId = getRoomContext().currentUserInfo.userId
         model.payload = AUIPayloadModel()
@@ -161,7 +156,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func acceptInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationAcceptNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.fromUserId = userId
         model.request { error, _ in
             callback(error as? NSError)
@@ -170,7 +165,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func rejectInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationAcceptRejectNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.fromUserId = userId
         model.request { error, _ in
             callback(error as? NSError)
@@ -179,7 +174,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func cancelInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationAcceptCancelNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.userId = userId
         model.request { error, _ in
             callback(error as? NSError)
@@ -188,7 +183,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func sendApply(seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIApplyNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.fromUserId = getRoomContext().currentUserInfo.userId
         model.payload = AUIPayloadModel()
         model.payload?.seatNo = seatIndex ?? 1
@@ -199,7 +194,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func cancelApply(callback: @escaping (NSError?) -> ()) {
         let model = AUIApplyAcceptCancelNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.fromUserId = getRoomContext().currentUserInfo.userId
         model.request { error, _ in
             callback(error as? NSError)
@@ -208,8 +203,9 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func acceptApply(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIApplyAcceptNetworkModel()
-        model.channelName = channelName
-        model.fromUserId = userId
+        model.roomId = channelName
+        model.fromUserId = AUIRoomContext.shared.currentUserInfo.userId
+        model.toUserId = userId
         model.request { error, _ in
             callback(error as? NSError)
         }
@@ -217,7 +213,7 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func rejectApply(userId: String, callback: @escaping (NSError?) -> ()) {
         let model = AUIApplyAcceptRejectNetworkModel()
-        model.channelName = channelName
+        model.roomId = channelName
         model.userId = userId
         model.request { error, _ in
             callback(error as? NSError)

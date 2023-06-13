@@ -9,7 +9,7 @@ import Foundation
 
 
 @objc open class AUIUserServiceImpl: NSObject {
-    private var userList: [AUIUserInfo] = []
+    public var userList: [AUIUserInfo] = []
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
@@ -205,7 +205,7 @@ extension AUIUserServiceImpl: AUIUserServiceDelegate {
     public func kickUser(roomId: String, userId: String, callback: @escaping AUICallback) {
         let model = AUIKickUserReqModel()
         model.roomId = roomId
-        model.userId = userId
+        model.uid = Int(userId) ?? 0
         model.operatorId = getRoomContext().currentUserInfo.userId
         model.request { error, obj in
             callback(error as? NSError)

@@ -7,6 +7,13 @@
 
 import Foundation
 
+@objc public protocol AUIInvitationUserDataProtocol: NSObjectProtocol {
+    var userAvatar: String {get}
+    var userId: String {get}
+    var userName: String {get}
+    var seatIndex: Int {get}
+}
+
 
 /// 邀请Service抽象协议
 public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
@@ -101,7 +108,7 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// Description 邀请列表数据更新
     /// - Parameter inviteeList: 邀请列表
-    func onInviteeListUpdate(inviteeList: [AUIUserCellUserDataProtocol])
+    func onInviteeListUpdate(inviteeList: [String:Int])
     
     
     /// 收到新的申请信息
@@ -126,7 +133,7 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     func onApplyCanceled(userId: String)
     
     /// Description 收到申请用户全量变更
-    /// - Parameter users: users
-    func onReceiveApplyUsersUpdate(users: [AUIUserCellUserDataProtocol])
+    /// - Parameter users info: users key is userId,value is apply index
+    func onReceiveApplyUsersUpdate(users: [String:Int])
 
 }

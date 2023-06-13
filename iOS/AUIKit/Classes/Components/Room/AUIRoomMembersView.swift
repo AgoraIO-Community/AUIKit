@@ -13,13 +13,15 @@ private let headImageWidth: CGFloat = 32
     var userAvatar: String {get}
     var userId: String {get}
     var userName: String {get}
+    var seatIndex: Int {get}
+//    var isOwner: Bool {get}
 }
 
-public typealias AUIRoomMembersViewMoreBtnAction = (_ members: [AUIUserInfo])->()
+public typealias AUIRoomMembersViewMoreBtnAction = (_ members: [AUIUserCellUserDataProtocol])->()
 
 //用户头像展示
 public class AUIRoomMembersView: UIView {
-    private var onClickMoreButtonAction: AUIRoomMembersViewMoreBtnAction?
+    public var onClickMoreButtonAction: AUIRoomMembersViewMoreBtnAction?
     
     public var members: [AUIUserCellUserDataProtocol] = [] {
         didSet {
@@ -140,8 +142,8 @@ public class AUIRoomMembersView: UIView {
 
 extension AUIRoomMembersView {
     
-    @objc public func clickMoreButtonAction(_ action: AUIRoomMembersViewMoreBtnAction?) {
-        onClickMoreButtonAction = action
+    @objc public func clickMoreButtonAction() {
+        self.onClickMoreButtonAction?(self.members)
     }
 }
 

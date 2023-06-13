@@ -36,7 +36,7 @@ import UIKit
     func renderAttributeText() -> NSAttributedString {
         if self.joined! == false {
             
-            var imageText = NSMutableAttributedString()
+            let imageText = NSMutableAttributedString()
             if let images = self.attachmentImages {
                 for image in images {
                     let attachment = NSTextAttachment()
