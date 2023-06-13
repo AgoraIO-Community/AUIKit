@@ -80,6 +80,7 @@ extension AUIRoomBottomFunctionBar:UICollectionViewDelegate, UICollectionViewDat
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let entity = self.datas[safe:indexPath.row] else { return }
+
         if entity.showRedDot {
             entity.showRedDot = false
         }
