@@ -40,8 +40,26 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
         self.channelName = channelName
         self.rtmManager = rtmManager
         super.init()
-        self.requestDelegate = self
+        self.configIM(appKey: "", user: AUIRoomContext.shared.currentUserInfo, completion: { [weak self] error in
+            guard let `self` = self else { return }
+            AUIToast.show(text: error != nil ? "IM initialize failed!":"IM initialize successful!")
+            if error == nil {
+                let channelName = self.channelName
+                if AUIRoomContext.shared.isRoomOwner(channelName: channelName) {
+                    self.login { error in
+                        if error == nil {
+                            self.createChatRoom(roomId: channelName) { id, error in
+                                AUIToast.show(text: error == nil ? "Create chatroom successful!":"Create chatroom failed!")
+                            }
+                        }
+                        AUIToast.show(text: "login IM \(error == nil ? "successful!":"failed!")")
+                    }
+                    
+                }
+            }
+        })
         self.subscribeChatroomId()
+        self.requestDelegate = self
         aui_info("init AUIIMManagerServiceImplement", tag: "AUIIMManagerServiceImplement")
     }
     /// Description judge login state
@@ -53,14 +71,9 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
     /// - Parameters:
     ///   - completion: 回调
     private func login(completion: @escaping (NSError?) -> Void) {
-        if self.isLogin {
-            completion(nil)
-        } else {
-            AgoraChatClient.shared().login(withUsername: self.chatId, token: self.chatToken) { _, error in
-                completion(error == nil ? nil:AUICommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError())
-            }
+        AgoraChatClient.shared().login(withUsername: self.chatId, token: self.chatToken) { _, error in
+            completion(error == nil ? nil:AUICommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError())
         }
-        
     }
     
     private func subscribeChatroomId() {
@@ -113,13 +126,20 @@ extension AUIIMManagerServiceImplement: AUIRtmAttributesProxyDelegate {
     }
     
     public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
-        print("IM.onAttributesDidChanged:\(value as? [String:String]) channelName:\(channelName)")
+        aui_info("IM.onAttributesDidChanged:\(value as? [String:String]) channelName:\(channelName)")
         if let attributes = value as? [String:String],let chatroomId = attributes["chatRoomId"]{
-            print("IM.onAttributesDidChanged chatroomId:\(chatroomId)")
+            aui_info("IM.onAttributesDidChanged chatroomId:\(chatroomId)")
             self.currentRoomId = "\(chatroomId)"
             if !AUIRoomContext.shared.isRoomOwner(channelName: self.channelName) {
-                self.joinedChatRoom(roomId: self.currentRoomId) { message, error in
-                    
+                self.login { error in
+                    if error == nil {
+                        self.joinedChatRoom(roomId: self.currentRoomId) { message, error in
+                            AUIToast.show(text: "Join chatroom\(error == nil ? "successful!":"failed!")")
+                            aui_info("IM.onAttributesDidChanged joinedChatRoom:\(error == nil ? "successful!":"failed!")")
+                        }
+                    }
+                    AUIToast.show(text: "login IM \(error == nil ? "successful!":"failed!")")
+                    aui_info("IM.onAttributesDidChanged login:\(error == nil ? "successful!":"failed!")")
                 }
             }
         }
@@ -152,22 +172,17 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         userInfo.userName = user.userName
         userInfo.userAvatar = user.userAvatar
         var error: AgoraChatError?
-        if !self.isLogin {
-            let options = AgoraChatOptions(appkey: appKey.isEmpty ? "1129210531094378#auikit-voiceroom" : appKey)
-            options.enableConsoleLog = true
-            error = AgoraChatClient.shared().initializeSDK(with: options)
-        }
+        let options = AgoraChatOptions(appkey: appKey.isEmpty ? "1129210531094378#auikit-voiceroom" : appKey)
+        options.enableConsoleLog = true
+        error = AgoraChatClient.shared().initializeSDK(with: options)
         if error == nil {
             let model = AUIIMUserCreateNetworkModel()
             model.userName = user.userId
-            model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
             model.request { error, obj in
                 var callError: NSError?
                 if error == nil,obj != nil,let data = obj as? Dictionary<String,String>,let userId = data["userName"],let accessToken = data["accessToken"] {
                     self.chatId = userId
                     self.chatToken = accessToken
-                    self.login(completion: completion)
-                    return
                 } else {
                     callError = error as? NSError
                 }
