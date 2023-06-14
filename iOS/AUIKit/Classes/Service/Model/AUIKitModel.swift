@@ -71,6 +71,7 @@ open class AUIUserThumbnailInfo: NSObject,AUIUserCellUserDataProtocol {
     public var userAvatar: String = ""  //用户头像
     public var seatIndex: Int = -1 //用户是否在麦上
     public var isOwner: Bool = false //是否是owner
+
     public func isEmpty() -> Bool {
         guard userId.count > 0, userName.count > 0 else {return true}
         

@@ -38,6 +38,7 @@ open class AUIInvitationCallbackModel: AUICommonNetworkModel {
     }
     
     public var fromUserId: String?
+
     public var payload: AUIPayloadModel?
     
     class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
