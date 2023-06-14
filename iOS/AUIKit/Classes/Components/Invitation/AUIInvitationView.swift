@@ -37,10 +37,22 @@ import UIKit
 
         self.eventHandlers.remove(actionHandler)
     }
-
     
+    public lazy var tabs: AUITabs = {
+        var tabStyle = AUITabsStyle()
+        tabStyle.indicatorHeight = 4
+        tabStyle.indicatorWidth = 28
+        tabStyle.indicatorCornerRadius = 2
+        tabStyle.indicatorStyle = .line
+        tabStyle.indicatorColor = UIColor(0x009EFF)
+        tabStyle.selectedTitleColor = UIColor(0x171a1c)
+        tabStyle.normalTitleColor = UIColor(0xFFFFFF)
+        tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
+        
+        return AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+    }()
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 40, width: self.frame.width, height: self.frame.height-40), style: .plain).backgroundColor(.orange)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain).backgroundColor(.orange)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
@@ -128,14 +140,14 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         tabStyle.indicatorStyle = .line
         tabStyle.indicatorColor = UIColor(0x009EFF)
         tabStyle.selectedTitleColor = UIColor(0x171a1c)
-        tabStyle.normalTitleColor = UIColor(0xACB4B9)
+        tabStyle.normalTitleColor = UIColor(0xFFFFFF)
         tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
         
-        return AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+        return AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
     }()
     
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 44, width: self.frame.width, height: self.frame.height-44), style: .plain)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60

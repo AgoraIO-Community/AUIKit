@@ -167,7 +167,9 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
 
         avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.aui_centerX = self.contentView.aui_centerX
+//        rippleView.isHidden = true
         rippleView.animationDuration = 0.35
+//        rippleView.stopAnimation()
 //        avatarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.frame.width)
         defaultImageView.theme_width = "SeatItem.defaultImageWidth"
         defaultImageView.theme_height = "SeatItem.defaultImageHeight"
@@ -188,7 +190,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
 //        statusImageView.theme_width = "SeatItem.muteWidth"
 //        statusImageView.theme_height = "SeatItem.muteHeight"
         
-        seatLabel.frame = CGRect(x: 5, y: avatarView.frame.height + 4, width: frame.width-10, height: 20)
+        seatLabel.frame = CGRect(x: 5, y: avatarView.frame.height + 5, width: frame.width-10, height: 20)
 
         
         subTitle.frame = CGRect(x: 5, y: self.seatLabel.frame.maxY, width: self.seatLabel.frame.width, height: 14)
@@ -198,7 +200,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         avatarImageView.clipsToBounds = true
         avatarView.aui_centerX = self.contentView.aui_centerX
         avatarImageView.aui_centerX = self.contentView.aui_centerX
-        
+        avatarImageView.aui_centerY = avatarView.aui_centerY
+        rippleView.aui_centerY = avatarView.aui_centerY
         micRoleBtn.aui_centerX = aui_width / 2.0
         micRoleBtn.aui_top = seatLabel.aui_bottom
         
@@ -260,24 +263,22 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         guard let mic = item else { return }
         if mic.role == .onlineAudience,mic.isMuteAudio == false,mic.isLock == false {
             rippleView.isHidden = false
-            rippleView.startAnimation()
+//            rippleView.startAnimation()
         } else {
             rippleView.isHidden = true
-            rippleView.stopAnimation()
+//            rippleView.stopAnimation()
         }
         updateRoleUI(with: mic.role)
         setNeedsLayout()
     }
     
     func updateVolume(_ volume: Int) {
-        if volume > 0 {
+        if volume > 5 {
             if !rippleView.isAnimating {
                 rippleView.startAnimation()
             }
         } else {
-            if rippleView.isAnimating {
-                rippleView.stopAnimation()
-            }
+            rippleView.stopAnimation()
         }
     }
     
