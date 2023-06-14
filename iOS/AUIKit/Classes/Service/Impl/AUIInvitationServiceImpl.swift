@@ -92,6 +92,7 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
                             if let userId = actions.first?.fromUserId {
                                 $0.onInviteeAccepted(userId: userId)
                             }
+
                         }
                     case .refuse:
                         self.respDelegates.allObjects.forEach {
@@ -151,6 +152,7 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
                     }
                 }
             }
+
         }
     }
 
