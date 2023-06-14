@@ -263,10 +263,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         guard let mic = item else { return }
         if mic.role == .onlineAudience,mic.isMuteAudio == false,mic.isLock == false {
             rippleView.isHidden = false
-//            rippleView.startAnimation()
         } else {
             rippleView.isHidden = true
-//            rippleView.stopAnimation()
         }
         updateRoleUI(with: mic.role)
         setNeedsLayout()

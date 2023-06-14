@@ -1,6 +1,6 @@
 //
 //  AUIError.swift
-//  AgoraLyricsScore
+//  AUIKit
 //
 //  Created by wushengtao on 2023/3/29.
 //
