@@ -60,7 +60,7 @@ public class AUISendGiftCell: UICollectionViewCell {
     func refresh(item: AUIGiftEntity?) {
         self.gift = item
         self.contentView.isHidden = (item == nil)
-        self.icon.kf.setImage(with: URL(string: item?.giftIcon ?? "")!,placeholder: UIImage(item?.giftName ?? "",.gift))
+        self.icon.kf.setImage(with: URL(string: self.icon.ossPictureCrop(url: item?.giftIcon ?? ""))!,placeholder: UIImage(item?.giftName ?? "",.gift))
         self.name.text = item?.giftName
         self.displayValue.setImage(self.config.priceIcon, for: .normal)
         self.displayValue.setTitle(item?.giftPrice ?? "100", for: .normal)
@@ -111,3 +111,14 @@ public class AUISendGiftCellConfig: NSObject {
     
 }
 
+extension UIImageView {
+    func ossPictureCrop(url: String) -> String {
+        var text = url
+        if text.contains("?") {
+            text += "&x-oss-process=image/crop.w_\(UIScreen.main.scale*self.width),h_\(UIScreen.main.scale*self.height)"
+        } else {
+            text += "?x-oss-process=image/crop.w_\(UIScreen.main.scale*self.width),h_\(UIScreen.main.scale*self.height)"
+        }
+        return text
+    }
+}

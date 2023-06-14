@@ -13,8 +13,8 @@ private let headImageWidth: CGFloat = 32
     var userAvatar: String {get}
     var userId: String {get}
     var userName: String {get}
-    var seatIndex: Int {get}
-//    var isOwner: Bool {get}
+    var seatIndex: Int {set get}
+    var isOwner: Bool {set get}
 }
 
 public typealias AUIRoomMembersViewMoreBtnAction = (_ members: [AUIUserCellUserDataProtocol])->()

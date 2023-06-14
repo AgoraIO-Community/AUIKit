@@ -60,10 +60,10 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
         let messageJson = message.a.jsonToDictionary()
         guard let messageType = messageJson["messageType"] as? String,let messageInfo = messageJson["messageInfo"] as? Dictionary<String,Any> else { return }
         
+        guard let gift = AUIGiftEntity.yy_model(with: messageInfo) else { return }
         switch messageType {
         case AUIChatRoomGift:
             for response in self.responseDelegates.allObjects {
-                guard let gift = AUIGiftEntity.yy_model(with: messageInfo) else { return }
                 (response as? AUIGiftsManagerRespDelegate)?.receiveGift(gift: gift)
             }
         
@@ -75,7 +75,6 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
     public func giftsFromService(roomId: String, completion: @escaping ([AUIGiftTabEntity], NSError?) -> Void) {
         let model = AUIGiftNetworkModel()
         model.method = .get
-        model.host = "https://uikit-voiceroom-staging.bj2.agoralab.co"
         model.request { error, obj in
             if error == nil,obj != nil {
                 let tabs = NSArray.yy_modelArray(with: AUIGiftTabEntity.self, json: obj!) as? [AUIGiftTabEntity]

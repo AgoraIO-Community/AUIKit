@@ -11,7 +11,7 @@ import Foundation
     var userAvatar: String {get}
     var userId: String {get}
     var userName: String {get}
-    var seatIndex: Int {get}
+    var seatIndex: Int {set get}
 }
 
 
@@ -108,7 +108,7 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// Description 邀请列表数据更新
     /// - Parameter inviteeList: 邀请列表
-    func onInviteeListUpdate(inviteeList: [String:Int])
+    func onInviteeListUpdate(inviteeList: [String:AUIInvitationCallbackModel])
     
     
     /// 收到新的申请信息
@@ -134,6 +134,6 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// Description 收到申请用户全量变更
     /// - Parameter users info: users key is userId,value is apply index
-    func onReceiveApplyUsersUpdate(users: [String:Int])
+    func onReceiveApplyUsersUpdate(users: [String:AUIInvitationCallbackModel])
 
 }

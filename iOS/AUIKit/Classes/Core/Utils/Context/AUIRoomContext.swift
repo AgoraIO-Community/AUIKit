@@ -25,6 +25,10 @@ open class AUIRoomContext: NSObject {
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
     
+    public var seatType: AUIMicSeatViewLayoutType = .eight
+    
+    public var seatCount: UInt = 8
+    
     public func isRoomOwner(channelName: String) ->Bool {
         return roomInfoMap[channelName]?.owner?.userId == currentUserInfo.userId
     }

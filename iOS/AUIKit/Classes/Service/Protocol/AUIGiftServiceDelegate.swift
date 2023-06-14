@@ -33,7 +33,12 @@ import YYModel
         model.giftIcon = self.giftIcon
         model.giftEffect = self.giftEffect
         model.selected = self.selected
-        model.sendUser = self.sendUser
+        let user = AUIUserThumbnailInfo()
+        user.userId = self.sendUser.userId
+        user.userName = self.sendUser.userName
+        user.userAvatar = self.sendUser.userAvatar
+        user.seatIndex = self.sendUser.seatIndex
+        model.sendUser = user
         return model
     }
 

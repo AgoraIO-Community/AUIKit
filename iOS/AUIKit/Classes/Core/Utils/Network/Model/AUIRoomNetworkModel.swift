@@ -19,6 +19,7 @@ open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
     public var userName: String?
     public var userAvatar: String?
     public var micSeatCount: UInt = 8
+    public var micSeatStyle: UInt = 8
     
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil

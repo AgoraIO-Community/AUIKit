@@ -37,6 +37,7 @@ open class AUIInvitationCallbackModel: AUICommonNetworkModel {
         interfaceName = "/v1/invitation/create"
     }
     
+    public var fromUserId: String?
     public var payload: AUIPayloadModel?
     
     class func modelContainerPropertyGenericClass() -> Dictionary<String,Any> {
@@ -137,7 +138,7 @@ open class AUIApplyAcceptCancelNetworkModel: AUICommonNetworkModel {
 
 
 @objcMembers public class AUIPayloadModel: NSObject {
-    var desc: String?
-    var seatNo: Int = 1
+    public var desc: String?
+    public var seatNo: Int = 1
 }
  

@@ -161,16 +161,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         avatarView.aui_left = 15
         avatarView.aui_right = 15
         avatarView.aui_top = 5
-        rippleView.isHidden = true
         rippleView.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.minimumCircleRadius = self.contentView.frame.width-48
         rippleView.diskRadius = (self.contentView.frame.width-30)/2.0
 
         avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.aui_centerX = self.contentView.aui_centerX
-        rippleView.isHidden = true
-        rippleView.stopAnimation()
-
+        rippleView.animationDuration = 0.35
 //        avatarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.frame.width)
         defaultImageView.theme_width = "SeatItem.defaultImageWidth"
         defaultImageView.theme_height = "SeatItem.defaultImageHeight"
@@ -260,8 +257,15 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         }
         
         hostIcon.isHidden = item?.micSeat != 0
-        
-        updateRoleUI(with: item?.role ?? .offlineAudience)
+        guard let mic = item else { return }
+        if mic.role == .onlineAudience,mic.isMuteAudio == false,mic.isLock == false {
+            rippleView.isHidden = false
+            rippleView.startAnimation()
+        } else {
+            rippleView.isHidden = true
+            rippleView.stopAnimation()
+        }
+        updateRoleUI(with: mic.role)
         setNeedsLayout()
     }
     
@@ -275,7 +279,6 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
                 rippleView.stopAnimation()
             }
         }
-        rippleView.isHidden = (volume == 0)
     }
     
 }
