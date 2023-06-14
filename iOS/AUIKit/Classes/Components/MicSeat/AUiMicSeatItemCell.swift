@@ -167,9 +167,9 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
 
         avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
         rippleView.aui_centerX = self.contentView.aui_centerX
-//        rippleView.isHidden = true
+
         rippleView.animationDuration = 0.35
-//        rippleView.stopAnimation()
+
 //        avatarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.frame.width)
         defaultImageView.theme_width = "SeatItem.defaultImageWidth"
         defaultImageView.theme_height = "SeatItem.defaultImageHeight"
