@@ -73,6 +73,9 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        inputField.removeFromSuperview()
+        emoji?.removeFromSuperview()
+        emoji = nil
     }
 
     @available(*, unavailable)

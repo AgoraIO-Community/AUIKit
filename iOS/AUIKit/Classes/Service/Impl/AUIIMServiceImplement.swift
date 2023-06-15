@@ -172,7 +172,8 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         userInfo.userName = user.userName
         userInfo.userAvatar = user.userAvatar
         var error: AgoraChatError?
-        let options = AgoraChatOptions(appkey: appKey.isEmpty ? "1129210531094378#auikit-voiceroom" : appKey)
+        let options = AgoraChatOptions(appkey: appKey)
+        //TODO: - assert appkey empty
         options.enableConsoleLog = true
         error = AgoraChatClient.shared().initializeSDK(with: options)
         if error == nil {
@@ -325,7 +326,8 @@ extension AUIIMManagerServiceImplement: AgoraChatManagerDelegate, AgoraChatroomM
                 switch body.event {
                 case AUIChatRoomJoinedMember:
                     for response in self.responseDelegates.allObjects {
-                        if let ext = body.customExt["user"]?.a.jsonToDictionary(), let user = AUIUserThumbnailInfo.yy_model(with: ext) {
+                        if let ext = body.customExt["user"], !ext.isEmpty{
+                            let user = AUIUserThumbnailInfo.yy_model(with: ext.a.jsonToDictionary()) 
                             let textMessage = AgoraChatTextMessage()
                             textMessage.messageId = message.messageId
                             textMessage.content = "Joined".a.localize(type: .chat)
