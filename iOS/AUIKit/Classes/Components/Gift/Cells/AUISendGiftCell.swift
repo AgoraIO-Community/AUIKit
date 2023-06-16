@@ -61,6 +61,7 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.gift = item
         self.contentView.isHidden = (item == nil)
         self.cover.cornerRadius(self.contentView.frame.height/2.0)
+
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
         self.icon.kf.setImage(with: URL(string: item?.giftIcon ?? "")!,placeholder: UIImage(item?.giftName ?? "",.gift))
         self.name.text = item?.giftName
