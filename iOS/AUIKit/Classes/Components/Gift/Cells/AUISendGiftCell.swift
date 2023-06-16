@@ -62,7 +62,7 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.contentView.isHidden = (item == nil)
         self.cover.cornerRadius(self.contentView.frame.height/2.0)
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
-        self.icon.kf.setImage(with: URL(string: item?.giftIcon ?? "")!,placeholder: UIImage(item?.giftName ?? "",.gift))
+        self.icon.kf.setImage(with: URL(string: url)!,placeholder: UIImage(item?.giftName ?? "",.gift))
         self.name.text = item?.giftName
         self.displayValue.setImage(self.config.priceIcon, for: .normal)
         self.displayValue.setTitle(item?.giftPrice ?? "100", for: .normal)
@@ -117,9 +117,9 @@ extension UIImageView {
     func ossPictureCrop(url: String) -> String {
         var text = url
         if text.contains("?") {
-            text += "&x-oss-process=image/crop.w_\(Int(UIScreen.main.scale*self.width)),h_\(Int(UIScreen.main.scale*self.height))"
+            text += "x-oss-process=image/resize,w_\(Int(UIScreen.main.scale*self.width)),h_\(Int(UIScreen.main.scale*self.height))"
         } else {
-            text += "?x-oss-process=image/crop.w_\(Int(UIScreen.main.scale*self.width)),h_\(Int(UIScreen.main.scale*self.height))"
+            text += "?x-oss-process=image/resize,w_\(Int(UIScreen.main.scale*self.width)),h_\(Int(UIScreen.main.scale*self.height))"
         }
         return text
     }
