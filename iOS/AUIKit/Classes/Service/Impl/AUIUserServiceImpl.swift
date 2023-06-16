@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import AgoraRtcKit
 
 @objc open class AUIUserServiceImpl: NSObject {
     public var userList: [AUIUserInfo] = []
@@ -18,6 +18,7 @@ import Foundation
     deinit {
         aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
         rtmManager.unsubscribeUser(channelName: channelName, delegate: self)
+        rtmManager.unsubscribeError(channelName: channelName, delegate: self)
     }
     
     public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {
@@ -26,6 +27,7 @@ import Foundation
         self.roomManager = roomManager
         super.init()
         self.rtmManager.subscribeUser(channelName: channelName, delegate: self)
+        self.rtmManager.subscribeError(channelName: channelName, delegate: self)
         aui_info("init AUIUserServiceImpl", tag: "AUIUserServiceImpl")
     }
 }
@@ -236,6 +238,21 @@ extension AUIUserServiceImpl {
             
             //rtm不会返回自己更新的数据，需要手动处理
             self.onUserDidUpdated(channelName: roomId, userId: userId, userInfo: userAttr)
+        }
+    }
+}
+
+extension AUIUserServiceImpl: AUIRtmErrorProxyDelegate {
+    @objc public func onConnectionStateChanged(channelName: String,
+                                               connectionStateChanged state: AgoraRtmClientConnectionState,
+                                               result reason: AgoraRtmClientConnectionChangeReason) {
+        guard state == .failed, reason == .changedBannedByServer else {
+            return
+        }
+        
+        for obj in self.respDelegates.allObjects {
+            guard let obj = obj as? AUIUserRespDelegate else {return}
+            obj.onUserBeKicked(roomId: channelName, userId: getRoomContext().currentUserInfo.userId)
         }
     }
 }
