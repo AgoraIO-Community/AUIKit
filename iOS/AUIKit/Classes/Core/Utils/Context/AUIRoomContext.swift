@@ -8,10 +8,10 @@
 import Foundation
 import SwiftTheme
 
-private let themeNames = ["UIKit", "KTV"]
 open class AUIRoomContext: NSObject {
     public static let shared: AUIRoomContext = AUIRoomContext()
     
+    public var themeNames = ["UIKit", "KTV"]
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {
