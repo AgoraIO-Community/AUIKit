@@ -79,4 +79,11 @@ public protocol AUIRoomManagerRespDelegate: NSObjectProtocol {
     ///   - roomId: 房间id
     ///   - announcement: 公告变更内容
     func onRoomAnnouncementChange(roomId: String, announcement: String)
+    
+    /// Description 房间用户被踢出房间
+    ///
+    /// - Parameters:
+    ///   - roomId: 房间id
+    ///   - userId: 用户id
+    func onRoomUserBeKicked(roomId: String,userId: String)
 }

@@ -1,0 +1,24 @@
+{
+    "Barrage": {
+        "containerBackgroundColor": "#00000014",
+        "containerLayerWidth": 1,
+        "containerLayerColor": "#009EFF",
+        "containerLayerCornerRadius": 12
+    },
+    "BottomBar": {
+        "containerBackgroundColor": "#00000014",
+    },
+    "InputBar": {
+        "backgroundColor": "#FFFFFF",
+        "textFont":"PingFangSC-Regular,15",
+        "placeHolder": "Aa",
+        "placeHolderColor":"#B6B8C9",
+        "cursorColor":"#009FFF",
+        "textColor":"#000000",
+        "textInputCornerRadius":5,
+        "sendGradientColors":["#33B1FF","#7C5BFF"],
+        "enLimitCount": 80,
+        "zhLimitCount": 30
+    }
+        
+}

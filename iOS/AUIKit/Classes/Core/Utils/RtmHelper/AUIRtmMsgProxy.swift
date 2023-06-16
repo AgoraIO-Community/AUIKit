@@ -41,7 +41,7 @@ public protocol AUIRtmUserProxyDelegate: NSObjectProtocol {
     func onUserDidJoined(channelName: String, userId:String, userInfo: [String: Any])
     func onUserDidLeaved(channelName: String, userId:String, userInfo: [String: Any])
     func onUserDidUpdated(channelName: String, userId:String, userInfo: [String: Any])
-    func onUserBeKicked(channelName: String, userId:String, userInfo: [String: Any])
+//    func onUserBeKicked(channelName: String, userId:String, userInfo: [String: Any])
 }
 
 
@@ -129,7 +129,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
                        channel channelName: String,
                        connectionStateChanged state: AgoraRtmClientConnectionState,
                        result reason: AgoraRtmClientConnectionChangeReason) {
-        aui_info("connectionStateChanged: \(state.rawValue)", tag: "AUIRtmMsgProxy")
+        aui_info("connectionStateChanged: \(state.rawValue) reason：\(reason)", tag: "AUIRtmMsgProxy")
         origRtmDelegate?.rtmKit?(kit, channel: channelName, connectionStateChanged: state, result: reason)
         
         errorDelegates.objectEnumerator().forEach { element in

@@ -81,6 +81,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
 //            if let room = resp as? AUIRoomInfo {
 //                self.rtmManager.subscribeError(channelName: room.roomId, delegate: self)
 //            }
+            
             callback(error as? NSError, resp as? AUIRoomInfo)
         }
     }
@@ -133,6 +134,8 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
     public func exitRoom(roomId: String, callback: @escaping (NSError?) -> ()) {
         aui_info("exitRoom: \(roomId)", tag: "AUIRoomManagerImpl")
         self.rtmManager.unSubscribe(channelName: roomId)
+        
+        self.rtmManager.unsubscribeError(channelName: roomId, delegate: self)
         rtmManager.logout()
         callback(nil)
     }
@@ -164,4 +167,18 @@ extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
             delegate.onRoomDestroy(roomId: channelName)
         }
     }
+    
+    @objc public func onConnectionStateChanged(channelName: String,
+                                               connectionStateChanged state: AgoraRtmClientConnectionState,
+                                               result reason: AgoraRtmClientConnectionChangeReason) {
+        guard state == .failed, reason == .changedBannedByServer else {
+            return
+        }
+        
+        for obj in self.respDelegates.allObjects {
+            (obj as? AUIRoomManagerRespDelegate)?.onRoomUserBeKicked(roomId: channelName, userId: AUIRoomContext.shared.currentUserInfo.userId)
+        }
+    }
 }
+
+
