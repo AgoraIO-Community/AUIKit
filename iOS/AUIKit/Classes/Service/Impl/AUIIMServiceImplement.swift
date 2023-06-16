@@ -40,7 +40,7 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
         self.channelName = channelName
         self.rtmManager = rtmManager
         super.init()
-        self.configIM(appKey: "", user: AUIRoomContext.shared.currentUserInfo, completion: { [weak self] error in
+        self.configIM(appKey: "1129210531094378#auikit-voiceroom", user: AUIRoomContext.shared.currentUserInfo, completion: { [weak self] error in
             guard let `self` = self else { return }
             AUIToast.show(text: error != nil ? "IM initialize failed!":"IM initialize successful!")
             if error == nil {

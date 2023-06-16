@@ -5,6 +5,8 @@
       "avatarWidth": 40,
       "avatarHeight": 40,
       "backgroundColor": "#180e5c",
+      "titleFont": "PingFangSC-Semibold,17",
+      "titleColor": "#000000",
       "normalFont": "PingFangSC-Semibold,17",
       "normalColor": "#ffffff",
       "seatLabelFont": "PingFangSC-Semibold,12",

@@ -42,6 +42,7 @@ public class AUIChatBarFunctionCell: UICollectionViewCell {
     override public func layoutSubviews() {
         super.layoutSubviews()
         let r = contentView.frame.width / 2.0
+        self.container.cornerRadius(r)
         let length = CGFloat(ceilf(Float(r) / sqrt(2)))
         self.redDot.frame = CGRect(x: frame.width / 2.0 + length, y: contentView.frame.height / 2.0 - length, width: 6, height: 6)
         self.icon.frame = CGRect(x: 7, y: 7, width: contentView.frame.width - 14, height: contentView.frame.height - 14)

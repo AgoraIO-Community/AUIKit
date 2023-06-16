@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import AgoraRtcKit
 
 @objc open class AUIUserServiceImpl: NSObject {
     public var userList: [AUIUserInfo] = []
@@ -239,3 +239,5 @@ extension AUIUserServiceImpl {
         }
     }
 }
+
+

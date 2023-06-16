@@ -60,9 +60,9 @@ public class AUISendGiftCell: UICollectionViewCell {
     func refresh(item: AUIGiftEntity?) {
         self.gift = item
         self.contentView.isHidden = (item == nil)
-        self.cover.cornerRadius(self.contentView.frame.height/2.0)
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
         self.icon.kf.setImage(with: URL(string: url)!,placeholder: UIImage(item?.giftName ?? "",.gift))
+
         self.name.text = item?.giftName
         self.displayValue.setImage(self.config.priceIcon, for: .normal)
         self.displayValue.setTitle(item?.giftPrice ?? "100", for: .normal)
