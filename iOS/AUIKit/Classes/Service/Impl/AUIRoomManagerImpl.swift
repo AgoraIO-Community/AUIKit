@@ -74,8 +74,8 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
         model.userName = AUIRoomContext.shared.currentUserInfo.userName
         model.userAvatar = AUIRoomContext.shared.currentUserInfo.userAvatar
-        model.micSeatCount = room.seatCount
-        model.micSeatStyle = room.seatStyle
+        model.micSeatCount = room.micSeatCount
+        model.micSeatStyle = "\(room.micSeatStyle)"
         model.request {/*[weak self]*/ error, resp in
 //            guard let self = self else {return}
 //            if let room = resp as? AUIRoomInfo {

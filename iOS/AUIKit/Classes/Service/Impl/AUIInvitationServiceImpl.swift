@@ -42,7 +42,7 @@ fileprivate let AUIMicSeat = "micSeat"
     case refuse
     case cancel
     case timeout
-    case concurrency
+    case failed
 }
 
 
@@ -106,6 +106,12 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
                                 $0.onInvitationCancelled(userId: userId)
                             }
                         }
+                    case .failed:
+                        self.respDelegates.allObjects.forEach {
+                            if let userId = actions.first?.fromUserId {
+                                $0.onInviteeAcceptedButFailed(userId: userId)
+                            }
+                        }
                     default:
                         break
                     }
@@ -147,6 +153,13 @@ extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
                                 $0.onApplyCanceled(userId: userId)
                             }
                         }
+                    case .failed:
+                        self.respDelegates.allObjects.forEach {
+                            if let userId = actions.first?.fromUserId {
+                                $0.onApplyAcceptedButFailed(userId: userId)
+                            }
+                        }
+                    
                     default:
                         break
                     }

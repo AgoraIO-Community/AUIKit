@@ -21,6 +21,7 @@ public extension UIView {
         let startPoint = points[0]
         let endPoint = points[1]
         let gradientLayer = CAGradientLayer().colors(gradientColors).startPoint(startPoint).endPoint(endPoint).frame(bounds).backgroundColor(UIColor.clear.cgColor).locations([0,1])
+//        gradientLayer.theme_colors = ["#FFD700", "#FF8C00"]
         layer.insertSublayer(gradientLayer, at: 0)
         return self
     }

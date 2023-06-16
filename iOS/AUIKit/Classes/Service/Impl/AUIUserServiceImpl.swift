@@ -17,7 +17,7 @@ import Foundation
     
     deinit {
         aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
-        self.rtmManager.unsubscribeUser(channelName: channelName, delegate: self)
+        rtmManager.unsubscribeUser(channelName: channelName, delegate: self)
     }
     
     public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {

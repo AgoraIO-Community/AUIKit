@@ -183,12 +183,12 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         avatarImageView.frame = avatarView.bounds
         let r = self.rippleView.frame.width / 4.0
         let length = CGFloat(ceilf(Float(r) / sqrt(2)))
-        self.statusImageView.frame = CGRect(x: r + length + size.width + 5, y: r + length + size.height, width: size.width, height: size.height)
+        self.statusImageView.frame = CGRect(x: r + length + size.width, y: r + length + size.height/2.0, width: size.width, height: size.height)
 //        statusImageView.aui_size = CGSize(width: size.width, height: size.height)
 //        statusImageView.theme_centerX = "SeatItem.muteCenterX"
 //        statusImageView.theme_centerY = "SeatItem.muteCenterY"
-//        statusImageView.theme_width = "SeatItem.muteWidth"
-//        statusImageView.theme_height = "SeatItem.muteHeight"
+        statusImageView.theme_width = "SeatItem.muteWidth"
+        statusImageView.theme_height = "SeatItem.muteHeight"
         
         seatLabel.frame = CGRect(x: 5, y: avatarView.frame.height + 5, width: frame.width-10, height: 20)
 

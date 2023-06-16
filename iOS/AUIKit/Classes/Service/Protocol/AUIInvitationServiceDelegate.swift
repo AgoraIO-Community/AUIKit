@@ -86,12 +86,14 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     func onReceiveNewInvitation(userId: String, seatIndex: Int)
     
     
-    /// 被邀请者接受邀请
+    /// 被邀请者接受邀请且上麦成功
     /// - Parameters:
-    ///   - userId: <#id description#>
-    ///   - inviteeId: <#inviteeId description#>
+    ///   - userId: 用户id
     func onInviteeAccepted(userId: String)
     
+    /// 被邀请者接受邀请但是上麦失败
+    /// - Parameter userId: 用户id
+    func onInviteeAcceptedButFailed(userId: String)
     
     /// 被邀请者拒绝邀请
     /// - Parameters:
@@ -120,9 +122,13 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     func onReceiveNewApply(userId: String, seatIndex: Int)
     
     
-    /// 房主接受申请
-    /// - Parameter userId: <#userId description#>
+    /// 房主接受申请且上麦成功
+    /// - Parameter userId: 用户id
     func onApplyAccepted(userId: String)
+    
+    /// Description 房主接受上麦申请但是上麦失败
+    /// - Parameter userId: 用户id
+    func onApplyAcceptedButFailed(userId: String)
     
     
     /// 房主拒接申请
