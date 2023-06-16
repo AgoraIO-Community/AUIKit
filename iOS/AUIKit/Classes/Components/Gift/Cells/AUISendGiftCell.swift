@@ -16,8 +16,8 @@ public class AUISendGiftCell: UICollectionViewCell {
     
     public var config = AUISendGiftCellConfig() {
         didSet {
-            self.cover.layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientLocations)
-            self.send.setGradient(self.config.sendGradientColors, self.config.sendGradientLocations).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont)
+            self.cover.layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientPoints)
+            self.send.setGradient(self.config.sendGradientColors, self.config.sendGradientPoints).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont)
             self.name.font(self.config.nameFont).textColor(self.config.nameTextColor)
             self.displayValue.font(self.config.priceFont).textColor(self.config.priceTextColor, .normal)
         }
@@ -25,11 +25,11 @@ public class AUISendGiftCell: UICollectionViewCell {
     
 
     lazy var cover: UIView = {
-        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerRadius(self.config.coverCornerRadius).layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientLocations).backgroundColor(.clear)
+        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerRadius(self.config.coverCornerRadius).layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientPoints).backgroundColor(.clear)
     }()
     
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).setGradient(self.config.sendGradientColors, self.config.sendGradientLocations).title("Send".a.localize(type: .gift), .normal).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).setGradient(self.config.sendGradientColors, self.config.sendGradientPoints).title("Send".a.localize(type: .gift), .normal).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside)
     }()
 
     lazy var icon: UIImageView = {
@@ -37,11 +37,11 @@ public class AUISendGiftCell: UICollectionViewCell {
     }()
 
     lazy var name: UILabel = {
-        UILabel(frame: CGRect(x: 0, y: self.icon.frame.maxY + 4, width: self.contentView.frame.width, height: 18)).textAlignment(.center).font(.systemFont(ofSize: 12, weight: .regular)).textColor(UIColor(0x040925)).backgroundColor(.clear)
+        UILabel(frame: CGRect(x: 0, y: self.icon.frame.maxY + 4, width: self.contentView.frame.width, height: 18)).textAlignment(.center).font(self.config.nameFont).textColor(self.config.nameTextColor).backgroundColor(.clear)
     }()
 
     lazy var displayValue: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)).font(.systemFont(ofSize: 12, weight: .regular)).textColor(UIColor(red: 0.425, green: 0.445, blue: 0.573, alpha: 0.5), .normal).isUserInteractionEnabled(false).backgroundColor(.clear)
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)).font(self.config.priceFont).textColor(self.config.priceTextColor, .normal).isUserInteractionEnabled(false).backgroundColor(.clear)
     }()
 
     override public init(frame: CGRect) {
@@ -60,6 +60,8 @@ public class AUISendGiftCell: UICollectionViewCell {
     func refresh(item: AUIGiftEntity?) {
         self.gift = item
         self.contentView.isHidden = (item == nil)
+        self.cover.cornerRadius(self.contentView.frame.height/2.0)
+
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
         self.icon.kf.setImage(with: URL(string: item?.giftIcon ?? "")!,placeholder: UIImage(item?.giftName ?? "",.gift))
         self.name.text = item?.giftName
@@ -90,11 +92,11 @@ public class AUISendGiftCellConfig: NSObject {
     
     public var coverGradientColors: [UIColor] = [UIColor(red: 0.8, green: 0.924, blue: 1, alpha: 1),UIColor(red: 0.888, green: 0.8, blue: 1, alpha: 0)]
     
-    public var coverGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    public var coverGradientPoints: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
     
     public var sendGradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
     
-    public var sendGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
+    public var sendGradientPoints: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
     
     public var sendFont: UIFont = .systemFont(ofSize: 14, weight: .medium)
     

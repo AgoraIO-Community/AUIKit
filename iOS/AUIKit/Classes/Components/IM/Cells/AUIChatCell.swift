@@ -58,6 +58,18 @@ public class AUIChatCell: UITableViewCell {
     
     public var contentLineBreakMode: NSLineBreakMode = .byWordWrapping
     
+    public var mode: AUIThemeMode = .dark {
+        willSet {
+            switch newValue {
+            case .dark:
+                self.containerBackgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)
+            case .light:
+                self.containerBackgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
+            }
+        }
+    
+    }
+    
     public override init() {
         super.init()
     }

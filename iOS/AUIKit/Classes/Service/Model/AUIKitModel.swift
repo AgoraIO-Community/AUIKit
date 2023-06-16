@@ -21,8 +21,8 @@ public typealias AUIRoomListCallback = (NSError?, [AUIRoomInfo]?) -> ()
 open class AUICreateRoomInfo: NSObject {
     public var roomName: String = ""    //房间名称
     public var thumbnail: String = ""   //房间列表上的缩略图
-    public var seatCount: UInt = 8      //麦位个数
-    public var seatStyle: UInt = 3    //麦位样式 1、6为6麦位环形样式 8麦位为长方形Collection 9为特殊layout的Collection
+    public var micSeatCount: UInt = 8      //麦位个数
+    public var micSeatStyle: UInt = 3    //麦位样式 1、6为6麦位环形样式 8麦位为长方形Collection 9为特殊layout的Collection
     public var password: String?        //房间密码
     
     class func modelCustomPropertyMapper()->NSDictionary {
