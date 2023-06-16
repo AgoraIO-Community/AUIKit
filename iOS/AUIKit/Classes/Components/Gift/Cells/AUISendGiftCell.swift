@@ -60,6 +60,7 @@ public class AUISendGiftCell: UICollectionViewCell {
     func refresh(item: AUIGiftEntity?) {
         self.gift = item
         self.contentView.isHidden = (item == nil)
+
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
         self.icon.kf.setImage(with: URL(string: url)!,placeholder: UIImage(item?.giftName ?? "",.gift))
 
