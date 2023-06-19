@@ -13,7 +13,7 @@ PODS:
     - MJRefresh
     - ScoreEffectUI
     - SwiftTheme
-    - SwiftyBeaver (~> 1.9.5)
+    - SwiftyBeaver (= 1.9.5)
     - YYModel
     - Zip
   - AUIKit/AUIKit (0.1.0):
@@ -25,7 +25,7 @@ PODS:
     - MJRefresh
     - ScoreEffectUI
     - SwiftTheme
-    - SwiftyBeaver (~> 1.9.5)
+    - SwiftyBeaver (= 1.9.5)
     - YYModel
     - Zip
   - FBSnapshotTestCase (2.1.4):
@@ -72,7 +72,7 @@ SPEC CHECKSUMS:
   AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
-  AUIKit: d0f0f87efe3cfcd5836dab395d86496fd68ee491
+  AUIKit: e1b7d24dd907407a96ea6401667783f2c50483ff
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
@@ -84,4 +84,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d38c4f46db9e7e99bdf8feed4f373f5959efe5ce
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0
