@@ -140,8 +140,8 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         tabStyle.indicatorStyle = .line
         tabStyle.indicatorColor = UIColor(0x009EFF)
         tabStyle.selectedTitleColor = UIColor(0x171a1c)
-        tabStyle.normalTitleColor = UIColor(0xFFFFFF)
-        tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
+        tabStyle.normalTitleColor = .white
+        tabStyle.titleFont = .systemFont(ofSize: 16, weight: .semibold)
         
         return AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
     }()

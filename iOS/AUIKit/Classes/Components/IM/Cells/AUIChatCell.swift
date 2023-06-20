@@ -12,7 +12,7 @@ public class AUIChatCell: UITableViewCell {
     private var config = AUIChatCellConfig()
 
     public lazy var container: UIImageView = {
-        UIImageView(frame: CGRect(x: 15, y: 6, width: self.contentView.frame.width - 30, height: self.frame.height - 6)).backgroundColor(self.config.containerBackgroundColor    ).layerProperties(self.config.containerLayerColor, self.config.containerLayerWidth).cornerRadius(self.config.containerLayerCornerRadius)
+        UIImageView(frame: CGRect(x: 15, y: 6, width: self.contentView.frame.width - 30, height: self.frame.height - 6)).theme_backgroundColor(color: "Barrage.containerBackgroundColor").layerThemeProperties("Barrage.containerLayerColor", "Barrage.containerLayerWidth").cornerThemeRadius("Barrage.containerLayerCornerRadius")
     }()
 
     public lazy var content: UILabel = {

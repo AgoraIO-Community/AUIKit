@@ -12,18 +12,18 @@ public class AUIReceiveGiftCell: UITableViewCell {
     
     var gift: AUIGiftEntity?
 
-    lazy var container: UIView = {
-        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).backgroundColor(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1))
+    lazy var container: UIToolbar = {
+        UIToolbar(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).backgroundColor(.clear).setThemeGradient("ReceiveGift.containerGradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
     }()
 
     lazy var avatar: UIImageView = UIImageView(frame: CGRect(x: 5, y: 5, width: self.frame.width / 5.0, height: self.frame.width / 5.0)).contentMode(.scaleAspectFit)
 
     lazy var userName: UILabel = {
-        UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: 8, width: self.frame.width / 5.0 * 2 - 12, height: 15)).font(.systemFont(ofSize: 12, weight: .semibold)).textColor(.white)
+        UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: 8, width: self.frame.width / 5.0 * 2 - 12, height: 15)).theme_font(font: "ReceiveGift.userNameFont").theme_textColor(color: "ReceiveGift.userNameColor")
     }()
 
     lazy var giftName: UILabel = {
-        UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: self.userName.frame.maxY, width: self.frame.width / 5.0 * 2 - 12, height: 15)).font(.systemFont(ofSize: 12, weight: .regular)).textColor(.white)
+        UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: self.userName.frame.maxY, width: self.frame.width / 5.0 * 2 - 12, height: 15)).theme_font(font: "ReceiveGift.giftNameFont").theme_textColor(color: "ReceiveGift.giftNameColor")
     }()
 
     lazy var giftIcon: UIImageView = {
@@ -31,7 +31,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
     }()
 
     lazy var giftNumbers: UILabel = {
-        UILabel(frame: CGRect(x: self.frame.width / 5.0 * 4 + 8, y: 10, width: self.frame.width / 5.0 - 16, height: self.frame.height - 20)).font(UIFont(name: "HelveticaNeue-BoldItalic", size: 18)).textColor(.white)
+        UILabel(frame: CGRect(x: self.frame.width / 5.0 * 4 + 8, y: 10, width: self.frame.width / 5.0 - 16, height: self.frame.height - 20)).theme_font(font: "ReceiveGift.giftNumbersFont").theme_textColor(color: "ReceiveGift.giftNumbersColor")
     }()
 
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -44,6 +44,9 @@ public class AUIReceiveGiftCell: UITableViewCell {
         self.backgroundColor = .clear
         contentView.addSubview(self.container)
         self.container.addSubViews([self.avatar, self.userName, self.giftName, self.giftIcon, self.giftNumbers])
+        self.container.barStyle = .default
+        self.container.isTranslucent = true
+        self.container.isOpaque = false
     }
 
     @available(*, unavailable)
@@ -54,7 +57,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
     override public func layoutSubviews() {
         super.layoutSubviews()
         self.container.frame = CGRect(x: 0, y: 5, width: contentView.frame.width, height: contentView.frame.height - 5)
-        self.container.cornerRadius(self.container.frame.height/2.0).setGradient([UIColor(red: 0.05, green: 0, blue: 0.76, alpha: 0.24), UIColor(red: 0.71, green: 0.37, blue: 1, alpha: 0.64)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
+        self.container.cornerRadius(self.container.frame.height/2.0)
         self.avatar.frame = CGRect(x: 5, y: 5, width: contentView.frame.height - 15, height: contentView.frame.height - 15)
         self.avatar.cornerRadius((contentView.frame.height - 15) / 2.0)
         self.userName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: 5, width: frame.width / 5.0 * 2 - 12, height: 15)
@@ -77,12 +80,10 @@ public class AUIReceiveGiftCell: UITableViewCell {
 
 
 public class AUIReceiveGiftCellConfig: NSObject {
-    
-    
-    
+        
     public var containerCornerRadius: CGFloat = 22
     
-    public var containerGradientColors: [UIColor] = [UIColor(red: 0.05, green: 0, blue: 0.76, alpha: 0.24), UIColor(red: 0.71, green: 0.37, blue: 1, alpha: 0.64)]
+    public var containerGradientColors: [UIColor] = [UIColor(red: 0.004, green: 0.122, blue: 0.678, alpha: 0.25),UIColor(red: 0.341, green: 0.004, blue: 0.678, alpha: 0.35)]
     
     public var containerGradientLocations: [CGPoint] = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)]
     
@@ -102,9 +103,9 @@ public class AUIReceiveGiftCellConfig: NSObject {
         willSet {
             switch newValue {
             case .light:
-                self.containerGradientColors = [UIColor(red: 1, green: 1, blue: 1, alpha: 1),UIColor(red: 0.486, green: 0.357, blue: 1, alpha: 1)]
+                self.containerGradientColors = [UIColor(red: 0.004, green: 0.122, blue: 0.678, alpha: 0.25),UIColor(red: 0.341, green: 0.004, blue: 0.678, alpha: 0.35)]
             case .dark:
-                self.containerGradientColors = [UIColor(red: 0, green: 0, blue: 0, alpha: 0.3),UIColor(red: 0.004, green: 0.122, blue: 0.678, alpha: 0.3)]
+                self.containerGradientColors = [UIColor(red: 0.004, green: 0.122, blue: 0.678, alpha: 0.25),UIColor(red: 0.341, green: 0.004, blue: 0.678, alpha: 0.35)]
             }
         }
     }

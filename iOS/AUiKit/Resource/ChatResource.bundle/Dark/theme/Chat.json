@@ -1,7 +1,7 @@
 
 {
     "Barrage": {
-        "containerBackgroundColor": "#00000014",
+        "containerBackgroundColor": "#0000001F",
         "containerLayerWidth": 1,
         "containerLayerColor": "#009EFF",
         "containerLayerCornerRadius": 12
@@ -12,6 +12,8 @@
     "InputBar": {
         "backgroundColor": "#FFFFFF",
         "textFont":"PingFangSC-Regular,15",
+        "inputContainerLayerColor": "#E4E3ED",
+        "inputContainerLayerWidth": 1,
         "placeHolder": "Aa",
         "placeHolderColor":"#B6B8C9",
         "cursorColor":"#009FFF",

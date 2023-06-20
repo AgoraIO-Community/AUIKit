@@ -20,7 +20,7 @@
       "micRoleButtonIconHeight": 16,
       "micHostButtonWidth": 50,
       "micHostButtonHeight": 20,
-      "backgroundColor": "#4230c880",
+      "backgroundColor": "#F9FAFA14",
       "backgroundImage": "aui_transparent_icon",
       "defaultImage": "aui_micseat_item_icon_idle",
       "labelFont": "PingFangSC-Regular,14",

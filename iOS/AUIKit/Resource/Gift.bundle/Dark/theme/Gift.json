@@ -1,5 +1,6 @@
 {
   "SendGift": {
+      "backgroundColor": "#00000000",
       "coverGradientColors": ["#003F66FF","#2C006600"],
       "coverLayerWidth": 1,
       "coverLayerColor": "#009EFF",
@@ -14,7 +15,7 @@
       "priceIcon": "dollagora"
   },
   "ReceiveGift": {
-      "containerGradientColors": ["#011F1914","#5701AD15"],
+      "containerGradientColors": ["#011FAD19","#5701AD24"],
       "userNameFont": "PingFangSC-Semibold,12",
       "userNameColor": "#FFFFFF",
       "giftNameFont": "PingFangSC-Regular,12",

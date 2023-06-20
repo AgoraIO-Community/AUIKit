@@ -22,26 +22,25 @@ public class AUISendGiftCell: UICollectionViewCell {
             self.displayValue.font(self.config.priceFont).textColor(self.config.priceTextColor, .normal)
         }
     }
-    
 
     lazy var cover: UIView = {
-        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerRadius(self.config.coverCornerRadius).layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientPoints).backgroundColor(.clear)
+        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerThemeRadius("SendGift.coverCornerRadius").layerThemeProperties("SendGift.coverLayerColor", "SendGift.coverLayerWidth").setThemeGradient("SendGift.coverGradientColors", self.config.coverGradientPoints).theme_backgroundColor(color: "SendGift.backgroundColor")
     }()
     
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).setGradient(self.config.sendGradientColors, self.config.sendGradientPoints).title("Send".a.localize(type: .gift), .normal).textColor(self.config.sendTextColor, .normal).font(self.config.sendFont).addTargetFor(self, action: #selector(sendAction), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).setThemeGradient("SendGift.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .gift), .normal).themeTitleColor("SendGift.sendTextColor", forState: .normal).theme_font("SendGift.sendFont").addTargetFor(self, action: #selector(sendAction), for: .touchUpInside)
     }()
 
     lazy var icon: UIImageView = {
-        UIImageView(frame: CGRect(x: self.contentView.frame.width / 2.0 - 24, y: 16.5, width: 48, height: 48)).contentMode(.scaleAspectFit).backgroundColor(.clear)
+        UIImageView(frame: CGRect(x: self.contentView.frame.width / 2.0 - 24, y: 16.5, width: 48, height: 48)).contentMode(.scaleAspectFit).theme_backgroundColor(color: "SendGift.backgroundColor")
     }()
 
     lazy var name: UILabel = {
-        UILabel(frame: CGRect(x: 0, y: self.icon.frame.maxY + 4, width: self.contentView.frame.width, height: 18)).textAlignment(.center).font(self.config.nameFont).textColor(self.config.nameTextColor).backgroundColor(.clear)
+        UILabel(frame: CGRect(x: 0, y: self.icon.frame.maxY + 4, width: self.contentView.frame.width, height: 18)).textAlignment(.center).theme_font(font: "SendGift.nameFont").theme_textColor(color: "SendGift.nameTextColor").theme_backgroundColor(color: "SendGift.backgroundColor")
     }()
 
     lazy var displayValue: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)).font(self.config.priceFont).textColor(self.config.priceTextColor, .normal).isUserInteractionEnabled(false).backgroundColor(.clear)
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)).theme_font("SendGift.priceFont").themeTitleColor("SendGift.priceTextColor", forState: .normal).isUserInteractionEnabled(false).backgroundColor(.clear)
     }()
 
     override public init(frame: CGRect) {
