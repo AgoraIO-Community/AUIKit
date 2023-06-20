@@ -49,9 +49,14 @@ import UIKit
             attributes.center = self.center
         } else {
             if self.rows%2 == 0 {
+                var angle = Float(2 * indexPath.item) * Float(Double.pi) / Float(self.rows)
+                if let degree = self.dataSource?.degree?(),degree > 0 {
+                    angle = Float(degree)
+                }
+                
                 attributes.center = CGPoint(
-                    x: self.center.x + self.radius * CGFloat(cosf(Float(2 * indexPath.item) * Float(Double.pi) / Float(self.rows))),
-                    y: self.center.y + self.radius * CGFloat(sinf(Float(2 * indexPath.item) * Float(Double.pi) / Float(self.rows))))
+                    x: self.center.x + self.radius * CGFloat(cosf(angle)),
+                    y: self.center.y + self.radius * CGFloat(sinf(angle)))
             } else {
                 var angle = 2 * CGFloat(Double.pi) / CGFloat(self.rows) * CGFloat(indexPath.row)
                 if let degree = self.dataSource?.degree?(),degree > 0 {
