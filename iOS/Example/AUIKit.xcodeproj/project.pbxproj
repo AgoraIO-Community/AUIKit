@@ -214,12 +214,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 3Y5B6D2XFS;
+						DevelopmentTeam = YS397FG5PA;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 3Y5B6D2XFS;
+						DevelopmentTeam = YS397FG5PA;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -291,15 +291,17 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AUiKit/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AUiKit/Resource/auiTheme.bundle",
-				"${PODS_ROOT}/../../AUiKit/Resource/Gift.bundle",
-				"${PODS_ROOT}/../../AUiKit/Resource/VoiceChatRoomResource.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/ChatResource.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/Gift.bundle",
+				"${PODS_ROOT}/../../AUIKit/Resource/VoiceChatRoomResource.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiLocalizable.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ChatResource.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gift.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/VoiceChatRoomResource.bundle",
 			);
@@ -582,7 +584,7 @@
 			baseConfigurationReference = BE9DD6D1D56AD10BF76D507F /* Pods-AUIKit_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3Y5B6D2XFS;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				INFOPLIST_FILE = AUIKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -598,7 +600,7 @@
 			baseConfigurationReference = 56CDCD3B7F33E75B41D7BC7C /* Pods-AUIKit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3Y5B6D2XFS;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				INFOPLIST_FILE = AUIKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -613,7 +615,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A00EE7F19AC0D098CB0F3451 /* Pods-AUIKit_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 3Y5B6D2XFS;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -636,7 +638,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E47586C18449883BE2FEEE4D /* Pods-AUIKit_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 3Y5B6D2XFS;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
