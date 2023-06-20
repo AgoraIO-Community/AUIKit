@@ -2,11 +2,11 @@
   "Alert": {
       "backgroundColor": "CommonColor.black",
       "leftBackgroundColor": "#ffffff",
-      "leftTextColor": "CommonColor.primary",
-      "leftBorderColor": "CommonColor.primary",
+      "leftTextColor": "#7800ff",
+      "leftBorderColor": "#7800ff",
       "rightBackgroundColor": "CommonColor.primary",
       "rightTextColor": "#ffffff",
-      "titleColor": "#000000",
-      "contentTextColor": "#000000"
+      "titleColor": "#1b1067",
+      "contentTextColor": "#1b106780"
   }
 }
