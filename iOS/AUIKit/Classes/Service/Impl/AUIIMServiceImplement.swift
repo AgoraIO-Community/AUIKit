@@ -71,6 +71,10 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
     /// - Parameters:
     ///   - completion: 回调
     private func login(completion: @escaping (NSError?) -> Void) {
+        if isLogin {
+            completion(nil)
+            return
+        }
         AgoraChatClient.shared().login(withUsername: self.chatId, token: self.chatToken) { _, error in
             completion(error == nil ? nil:AUICommonError.httpError(error?.code.rawValue ?? 400, error?.errorDescription ?? "unknown error").toNSError())
         }
@@ -173,6 +177,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         userInfo.userAvatar = user.userAvatar
         var error: AgoraChatError?
         let options = AgoraChatOptions(appkey: appKey)
+        options.isAutoLogin = false
         //TODO: - assert appkey empty
         options.enableConsoleLog = true
         error = AgoraChatClient.shared().initializeSDK(with: options)
