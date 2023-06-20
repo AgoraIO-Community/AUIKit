@@ -1,9 +1,9 @@
 
 {
   "Room": {
-      "roomInfoBackgroundColor": "#ffffff14",
+      "roomInfoBackgroundColor": "#ffffff33",
       "roomInfoTitleColor": "#ffffff",
-      "roomInfoSubTitleColor": "#ffffff50",
+      "roomInfoSubTitleColor": "#ffffffcc",
       "membersMoreIcon": "aui_members_right_arrow",
       "membersMoreIconWidth": 24,
       "membersMoreIconHeight": 24,
