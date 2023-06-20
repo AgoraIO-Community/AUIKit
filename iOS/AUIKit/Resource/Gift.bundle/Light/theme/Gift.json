@@ -1,6 +1,7 @@
 
 {
-  "SendGiftLight": {
+  "SendGift": {
+      "backgroundColor": "#00000000",
       "coverGradientColors": ["#CCECFFFF","#E2CCFF00"],
       "coverLayerWidth": 1,
       "coverLayerColor": "#009EFF",

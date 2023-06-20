@@ -10,6 +10,7 @@
     },
     "InputBar": {
         "backgroundColor": "#FFFFFF",
+        "gradientColors": ["FFFFFF","#F9FAFA"],
         "textFont":"PingFangSC-Regular,15",
         "placeHolder": "Aa",
         "placeHolderColor":"#B6B8C9",
@@ -17,6 +18,8 @@
         "textColor":"#000000",
         "textInputCornerRadius":5,
         "sendGradientColors":["#33B1FF","#7C5BFF"],
+        "sendFont": "PingFangSC-Regular,16",
+        "sendColor": "#FFFFFF",
         "enLimitCount": 80,
         "zhLimitCount": 30
     }

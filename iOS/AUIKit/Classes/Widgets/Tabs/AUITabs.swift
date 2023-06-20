@@ -128,7 +128,7 @@ public struct AUITabsStyle {
         self.init(frame: frame, segmentStyle: AUITabsStyle(), titles: titles)
     }
 
-    public init(frame: CGRect, segmentStyle: AUITabsStyle = .init(), titles: [String]) {
+    public init(frame: CGRect, segmentStyle: AUITabsStyle , titles: [String]) {
         self.style = segmentStyle
         self._titleElements = titles.map({ TitleElement(title: $0)})
         super.init(frame: frame)

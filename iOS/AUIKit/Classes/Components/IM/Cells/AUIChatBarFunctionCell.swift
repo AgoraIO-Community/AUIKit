@@ -18,7 +18,7 @@ public class AUIChatBarFunctionCell: UICollectionViewCell {
     
     
     lazy var container: UIImageView = {
-        UIImageView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height)).contentMode(.scaleAspectFit).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).cornerRadius(self.contentView.frame.height / 2.0)
+        UIImageView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height)).contentMode(.scaleAspectFit).theme_backgroundColor(color: "BottomBar.containerBackgroundColor").cornerRadius(self.contentView.frame.height / 2.0)
     }()
 
     lazy var icon: UIImageView = {

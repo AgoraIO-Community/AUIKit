@@ -28,7 +28,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }()
 
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setGradient(config.sendGradientColors, config.sendGradientPoints).title("Send".a.localize(type: .chat), .normal).textColor(.white, .normal).font(.systemFont(ofSize: 16, weight: .regular)).addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setThemeGradient("InputBar.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .chat), .normal).themeTitleColor("InputBar.sendColor", forState: .normal).theme_font("InputBar.sendFont").addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
     }()
 
     private var limitCount: Int {
@@ -51,11 +51,12 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     
     @objc public convenience init(frame: CGRect,config: AUIChatInputBarConfig) {
         self.init(frame: frame)
+        self.theme_backgroundColor = "InputBar.backgroundColor"
         self.config = config
         self.rightView.setImage(config.emojiInputIcon, for: .normal)
         self.rightView.setImage(config.textInputIcon, for: .selected)
         self.addSubViews([self.inputContainer, self.inputField, self.send, self.line])
-        self.inputField.tintColor = config.cursorColor
+        self.inputField.theme_tintColor = "InputBar.cursorColor"
         self.inputField.placeHolder = config.placeHolder
         self.inputField.placeHolderColor = config.placeHolderColor
         self.inputField.returnKeyType = config.returnKeyType
@@ -66,7 +67,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let view = UIView(frame: CGRect(x: self.inputContainer.frame.width - self.inputField.frame.height, y: 0, width: self.inputField.frame.height, height: self.inputField.frame.height)).backgroundColor(.white)
         view.addSubview(self.rightView)
         self.inputContainer.addSubview(view)
-        self.setGradient([UIColor(red: 0.929, green: 0.906, blue: 1, alpha: 1), UIColor(red: 1, green: 1, blue: 1, alpha: 0)], [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
+        self.setThemeGradient("InputBar.gradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIApplication.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIApplication.keyboardWillHideNotification, object: nil)
     }
@@ -126,7 +127,6 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let frame = notification.a.keyboardEndFrame
         let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
-        print("AUIChatInputBar.keyboardWillShow")
         UIView.animate(withDuration: duration!) {
             self.frame = CGRect(x: 0, y: AScreenHeight - 60 - frame!.height, width: AScreenWidth, height: self.frame.height)
         }

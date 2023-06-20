@@ -75,8 +75,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
-        theme.icon = "SeatItem.micSeatItemIconMainSinger"
-        theme.selectedIcon = "SeatItem.micSeatItemIconCoSinger"
+        theme.icon = auiThemeImage("SeatItem.micSeatItemIconMainSinger")
+        theme.selectedIcon = auiThemeImage("SeatItem.micSeatItemIconCoSinger")
         theme.titleFont = "CommonFont.small"
         theme.padding = "SeatItem.padding"
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
@@ -92,9 +92,6 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     //房主标记
     lazy var subTitle: UILabel = {
-//        theme.icon = "SeatItem.micSeatHostIcon"
-//        theme.buttonWidth = "SeatItem.micHostButtonWidth"
-//        theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let label = UILabel(frame: CGRect(x: 5, y: self.avatarView.frame.maxY + 5, width: self.contentView.frame.width-10, height: 14)).backgroundColor(.clear).textAlignment(.center)
         label.theme_font = "CommonFont.small"
         label.theme_textColor = "SeatItem.labelTextColor"
@@ -105,7 +102,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     lazy var hostIcon: AUIButton = {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
-        theme.icon = "SeatItem.micSeatHostIcon"
+        theme.icon = auiThemeImage("SeatItem.micSeatHostIcon")
         theme.buttonWidth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let button = AUIButton()
@@ -157,7 +154,6 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        
         avatarView.aui_left = 15
         avatarView.aui_right = 15
         avatarView.aui_top = 5
