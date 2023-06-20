@@ -69,7 +69,7 @@ TODO: Add long description of the pod here.
   
   s.swift_version = '5.0'
   
-  s.resource = ['AUIKit/Resource/*.bundle', 'AUIKit/Classes/Components/**/Resources/*.bundle']
+  s.resource = ['AUIKit/Resource/*.bundle']
 
   
   # s.resource_bundles = {

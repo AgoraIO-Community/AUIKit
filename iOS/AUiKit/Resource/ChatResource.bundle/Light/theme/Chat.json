@@ -10,7 +10,7 @@
     },
     "InputBar": {
         "backgroundColor": "#FFFFFF",
-        "gradientColors": ["FFFFFF","#F9FAFA"],
+        "gradientColors": ["FFFFFF","#000000"],
         "textFont":"PingFangSC-Regular,15",
         "placeHolder": "Aa",
         "placeHolderColor":"#B6B8C9",
