@@ -20,8 +20,8 @@ extension UIImage {
            let image = UIImage(contentsOfFile: filePath) {
             return image
         }
-        
-        assert(false, "image[\(named)] not found")
+        aui_warn("image[\(named)] not found!")
+//        assert(false, "image[\(named)] not found")
         return nil
     }
 }
