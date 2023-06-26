@@ -16,10 +16,12 @@ extension UIImage {
                 return image
             }
         }
-        if let filePath = ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path {
-            return UIImage(contentsOfFile: filePath)
+        if let filePath = ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path,
+           let image = UIImage(contentsOfFile: filePath) {
+            return image
         }
         
+        assert(false, "image[\(named)] not found")
         return nil
     }
 }
