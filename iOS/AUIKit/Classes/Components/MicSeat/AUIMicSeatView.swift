@@ -16,9 +16,22 @@ private let kMicSeatCellId = "kMicSeatCellId"
     case nine
 }
 
+@objc public protocol IAUIMicSeatView: NSObjectProtocol {
+    
+    /// Description 刷新AUIMicSeatView
+    /// - Parameter index: 正整数刷新局部 负整数刷新全部
+    func refresh(index: Int)
+    
+    /// Description 更新麦位音量
+    /// - Parameters:
+    ///   - index: 麦位位置
+    ///   - volume: 音量大小
+    func updateMicVolume(index: Int,volume: Int)
+}
+
 
 /// 麦位管理组件
-public class AUIMicSeatView: UIView {
+public class AUIMicSeatView: UIView,IAUIMicSeatView {
     
     public weak var uiDelegate: AUIMicSeatViewDelegate?
         
@@ -64,6 +77,13 @@ public class AUIMicSeatView: UIView {
         cell?.updateVolume(volume)
     }
     
+    public func refresh(index: Int) {
+        if index < 0 {
+            self.collectionView.reloadData()
+        } else {
+            collectionView.reloadItems(at: [IndexPath(item: Int(index), section: 0)])
+        }
+    }
 }
 
 extension AUIMicSeatView: UICollectionViewDelegate, UICollectionViewDataSource {

@@ -35,6 +35,15 @@ TODO: Add long description of the pod here.
       core.source_files = 'AUIKit/Classes/Core/**/*'
   end
   
+  s.subspec 'AUIKit' do |invitation|
+    invitation.source_files = 'AUIKit/Classes/Components/Invitation/*'
+    invitation.resource = 'AUIKit/Resource/Invitation.bundle'
+  end
+  
+  s.subspec 'AUIKit' do |room|
+    room.source_files = 'AUIKit/Classes/Components/Room/*'
+  end
+  
   s.subspec 'AUIKit' do |service|
       service.source_files = 'AUIKit/Classes/Service/**/*'
   end

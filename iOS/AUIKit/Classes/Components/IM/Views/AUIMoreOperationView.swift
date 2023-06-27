@@ -27,7 +27,7 @@ public final class AUIMoreOperationView: UIView {
     }
     
     
-    private var datas = [AUIMoreOperationCellDataProtocol]()
+    public var datas = [AUIMoreOperationCellDataProtocol]()
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()

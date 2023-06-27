@@ -71,7 +71,7 @@ public final class AUIRoomInfoView: UIView {
             headImageView.heightAnchor.constraint(equalToConstant: avatarHeight)
         ])
         headImageView.cornerRadius(avatarHeight/2.0)
-        let width = (44/185.0)*self.frame.width
+        var width = (44/185.0)*self.frame.width
         NSLayoutConstraint.activate([
             roomNameLabel.topAnchor.constraint(equalTo: headImageView.topAnchor),
             roomNameLabel.leftAnchor.constraint(equalTo: headImageView.rightAnchor, constant: 8),

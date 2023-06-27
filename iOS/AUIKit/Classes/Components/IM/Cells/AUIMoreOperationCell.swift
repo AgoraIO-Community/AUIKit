@@ -23,7 +23,7 @@ import Kingfisher
     
     public var iconUrl: String = ""
     
-    public var placeHolder: UIImage = UIImage.aui_Image(named: "hands_light")!
+    public var placeHolder: UIImage = UIImage.aui_Image(named: "hands")!
     
     public var operationName: String = "Apply List"
     

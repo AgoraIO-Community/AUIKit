@@ -7,15 +7,19 @@
 
 import UIKit
 
-@objc public protocol AUIReceiveGiftsViewDataSource: NSObjectProtocol {
+@objc public protocol IAUIGiftBarrageView: NSObjectProtocol {
+    func receiveGift(gift: AUIGiftEntity)
+}
+
+@objc public protocol AUIGiftBarrageViewDataSource: NSObjectProtocol {
     @objc optional func rowHeight() -> CGFloat
     @objc optional func zoomScaleX() -> CGFloat
     @objc optional func zoomScaleY() -> CGFloat
 }
 
-public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSource {
+public class AUIGiftBarrageView: UIView, UITableViewDelegate, UITableViewDataSource,IAUIGiftBarrageView {
     
-    private var dataSource: AUIReceiveGiftsViewDataSource?
+    public var dataSource: AUIGiftBarrageViewDataSource?
     
     public var gifts = [AUIGiftEntity]() {
         didSet {
@@ -36,7 +40,7 @@ public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSo
         super.init(frame: frame)
     }
     
-    @objc public convenience init(frame: CGRect, source: AUIReceiveGiftsViewDataSource?) {
+    @objc public convenience init(frame: CGRect, source: AUIGiftBarrageViewDataSource?) {
         self.init(frame: frame)
         self.dataSource = source
         self.addSubview(self.giftList)
@@ -48,15 +52,19 @@ public class AUIReceiveGiftsView: UIView, UITableViewDelegate, UITableViewDataSo
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func receiveGift(gift: AUIGiftEntity) {
+        self.gifts.append(gift)
+    }
 }
 
-public extension AUIReceiveGiftsView {
+public extension AUIGiftBarrageView {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.gifts.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        self.dataSource?.rowHeight?() ?? 54
+        self.dataSource?.rowHeight?() ?? 64
     }
 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -80,23 +88,25 @@ public extension AUIReceiveGiftsView {
     internal func cellAnimation() {
         self.alpha = 1
         self.giftList.reloadData()
-        let indexPath = IndexPath(row: self.gifts.count - 2, section: 0)
-        let cell = self.giftList.cellForRow(at: indexPath) as? AUIReceiveGiftCell
-        guard let gift = self.gifts[safe: indexPath.row] else { return }
-        cell?.refresh(item: gift)
-        UIView.animate(withDuration: 0.3) {
-            cell?.alpha = 0.35
-            cell?.contentView.transform = CGAffineTransform(scaleX: self.dataSource?.zoomScaleX?() ?? 0.75, y: self.dataSource?.zoomScaleY?() ?? 0.75)
-            self.giftList.scrollToRow(at: IndexPath(row: self.gifts.count - 1, section: 0), at: .top, animated: false)
+        var indexPath = IndexPath(row: 0, section: 0)
+        if self.gifts.count >= 2 {
+            indexPath = IndexPath(row: self.gifts.count - 2, section: 0)
+        }
+        if self.gifts.count > 1{
+            let cell = self.giftList.cellForRow(at: indexPath) as? AUIReceiveGiftCell
+            guard let gift = self.gifts[safe: indexPath.row] else { return }
+            cell?.refresh(item: gift)
+            UIView.animate(withDuration: 0.3) {
+                cell?.alpha = 0.35
+                cell?.contentView.transform = CGAffineTransform(scaleX: self.dataSource?.zoomScaleX?() ?? 0.75, y: self.dataSource?.zoomScaleY?() ?? 0.75)
+                self.giftList.scrollToRow(at: IndexPath(row: self.gifts.count - 1, section: 0), at: .top, animated: false)
+            }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseInOut) {
                 self.alpha = 0
-            } completion: { finished in
-                if finished {
-                    self.gifts.removeAll()
-                    self.alpha = 0
-                }
+            } completion: { _ in
+                self.gifts.removeAll()
             }
         }
     }

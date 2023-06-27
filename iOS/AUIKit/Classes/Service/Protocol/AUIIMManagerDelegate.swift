@@ -50,7 +50,7 @@ import YYModel
     ///   - appKey: application key
     ///   - user: user
     ///   - completion: <#completion description#>
-    func configIM(appKey: String, user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void)
+    func configIM(user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void)
     
     /// Description 创建聊天室
     /// - Parameters:

@@ -40,7 +40,7 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
         self.channelName = channelName
         self.rtmManager = rtmManager
         super.init()
-        self.configIM(appKey: "1129210531094378#auikit-voiceroom", user: AUIRoomContext.shared.currentUserInfo, completion: { [weak self] error in
+        self.configIM(user: AUIRoomContext.shared.currentUserInfo, completion: { [weak self] error in
             guard let `self` = self else { return }
             AUIToast.show(text: error != nil ? "IM initialize failed!":"IM initialize successful!")
             if error == nil {
@@ -167,35 +167,32 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     
     /// Description 配置IMSDK
     /// - Parameters:
-    ///   - appKey: AgoraChat  app key
     ///   - user: AUIUserThumbnailInfo instance
     /// - Returns: error
-    public func configIM(appKey: String, user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void) {
+    public func configIM(user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void) {
         let userInfo = AUIUserThumbnailInfo()
         userInfo.userId = user.userId
         userInfo.userName = user.userName
         userInfo.userAvatar = user.userAvatar
-        var error: AgoraChatError?
-        let options = AgoraChatOptions(appkey: appKey)
-        options.isAutoLogin = false
-        //TODO: - assert appkey empty
-        options.enableConsoleLog = true
-        error = AgoraChatClient.shared().initializeSDK(with: options)
-        if error == nil {
-            let model = AUIIMUserCreateNetworkModel()
-            model.userName = user.userId
-            model.request { error, obj in
-                var callError: NSError?
-                if error == nil,obj != nil,let data = obj as? Dictionary<String,String>,let userId = data["userName"],let accessToken = data["accessToken"] {
-                    self.chatId = userId
-                    self.chatToken = accessToken
-                } else {
-                    callError = error as? NSError
-                }
-                completion(callError)
+        let model = AUIIMUserCreateNetworkModel()
+        model.userName = user.userId
+        model.request { error, obj in
+            var callError: NSError?
+            if error == nil,obj != nil,let data = obj as? Dictionary<String,String>,let userId = data["userName"],let accessToken = data["accessToken"],let appKey = data["appKey"] {
+                self.chatId = userId
+                self.chatToken = accessToken
+                let options = AgoraChatOptions(appkey: appKey)
+                options.isAutoLogin = false
+                //TODO: - assert appkey empty
+                options.enableConsoleLog = true
+                let initializeError = AgoraChatClient.shared().initializeSDK(with: options)
+                callError = self.mapError(error: initializeError)
+            } else {
+                callError = error as? NSError
             }
-            self.currentUser = userInfo
+            completion(callError)
         }
+        self.currentUser = userInfo
     }
     
     public func createChatRoom(roomId: String,completion: @escaping (String,NSError?) -> Void) {

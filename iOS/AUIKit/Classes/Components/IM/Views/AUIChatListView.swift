@@ -9,7 +9,7 @@ import UIKit
 
 let chatViewWidth = AScreenWidth * (287 / 375.0)
 
-public class AUIRoomChatView: UIView {
+public class AUIChatListView: UIView {
 
     private var lastOffsetY = CGFloat(0)
 
@@ -19,10 +19,6 @@ public class AUIRoomChatView: UIView {
 
     public lazy var chatView: UITableView = {
         UITableView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height), style: .plain).delegate(self).dataSource(self).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).showsVerticalScrollIndicator(false)
-    }()
-
-    public lazy var emitter: AUIPraiseEmitterView = {
-        AUIPraiseEmitterView(frame: CGRect(x: AScreenWidth - 80, y: 0, width: 80, height: self.frame.height - 20),images: []).backgroundColor(.clear)
     }()
 
     public lazy var gradientLayer: CAGradientLayer = {
@@ -35,7 +31,7 @@ public class AUIRoomChatView: UIView {
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubViews([self.blurView, self.emitter])
+        self.addSubViews([self.blurView])
         self.blurView.layer.mask = self.gradientLayer
         self.blurView.addSubview(self.chatView)
         self.chatView.bounces = false
@@ -67,16 +63,12 @@ public class AUIRoomChatView: UIView {
 //    [self.tableViewBackgroundView addSubview:self.tableView];
 }
 
-extension AUIRoomChatView:UITableViewDelegate, UITableViewDataSource {
+extension AUIChatListView:UITableViewDelegate, UITableViewDataSource {
     
     @objc public func scrollTableViewToBottom() {
         if self.messages?.count ?? 0 > 1 {
             self.chatView.scrollToRow(at: IndexPath(row: self.messages!.count-1, section: 0), at: .bottom, animated: true)
         }
-    }
-    
-    @objc public func showLikeAnimation() {
-        self.emitter.setupEmitter()
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

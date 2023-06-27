@@ -9,10 +9,18 @@ import UIKit
 
 private let headImageWidth: CGFloat = 32
 
+@objc public protocol IAUIRoomMembersView: NSObjectProtocol {
+    func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String)
+    func appendMember(member: AUIUserCellUserDataProtocol)
+    func removeMember(member: AUIUserCellUserDataProtocol)
+    func updateMember(member: AUIUserCellUserDataProtocol)
+    func updateSeatInfo(member: AUIUserCellUserDataProtocol,seatIndex: Int)
+}
+
 @objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
-    var userAvatar: String {get}
-    var userId: String {get}
-    var userName: String {get}
+    var userAvatar: String {set get}
+    var userId: String {set get}
+    var userName: String {set get}
     var seatIndex: Int {set get}
     var isOwner: Bool {set get}
 
@@ -141,7 +149,39 @@ public class AUIRoomMembersView: UIView {
 //    }
 }
 
-extension AUIRoomMembersView {
+extension AUIRoomMembersView:IAUIRoomMembersView {
+    public func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String) {
+        self.members = members
+        self.members.forEach {
+            if $0.userId == AUIRoomContext.shared.roomInfoMap[channelName]?.owner?.userId ?? "" {
+                $0.isOwner = true
+            }
+        }
+    }
+    
+    public func appendMember(member: AUIUserCellUserDataProtocol) {
+        members.append(member)
+    }
+    
+    public func removeMember(member: AUIUserCellUserDataProtocol) {
+        self.members.removeAll(where: {$0.userId == member.userId})
+    }
+    
+    public func updateMember(member: AUIUserCellUserDataProtocol) {
+        if let index = members.firstIndex(where: {$0.userId == member.userId}) {
+            self.members[index] = member
+        } else {
+            self.members.append(member)
+        }
+    }
+    
+    public func updateSeatInfo(member: AUIUserCellUserDataProtocol, seatIndex: Int) {
+        seatMap[member.userId] = seatIndex
+        members.first(where: {
+            $0.userId == member.userId
+        })?.seatIndex = seatIndex
+    }
+    
     
     @objc public func clickMoreButtonAction() {
         self.onClickMoreButtonAction?(self.members)

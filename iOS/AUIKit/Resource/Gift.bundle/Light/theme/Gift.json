@@ -2,7 +2,7 @@
 {
   "SendGift": {
       "backgroundColor": "#00000000",
-      "coverGradientColors": ["#CCECFFFF","#E2CCFF00"],
+      "coverGradientColors": ["#CCECFF","##E2CCFF00"],
       "coverLayerWidth": 1,
       "coverLayerColor": "#009EFF",
       "sendGradientColors": ["#009EFF","#7C5BFF"],
@@ -16,11 +16,11 @@
       "priceIcon": "dollagora"
   },
   "ReceiveGift": {
-      "containerGradientColors": ["#7C5BFF14","#FDE8FF15"],
+      "containerGradientColors": ["#7C5BFF33","#FDE8FF3F"],
       "userNameFont": "PingFangSC-Semibold,12",
       "userNameColor": "#FFFFFF",
       "giftNameFont": "PingFangSC-Regular,12",
-      "giftNameColor": "#FFFFF",
+      "giftNameColor": "#FFFFFF",
       "giftNumbersFont": "HelveticaNeue-BoldItalic,18",
       "giftNumbersColor": "#FFFFFF"
   }

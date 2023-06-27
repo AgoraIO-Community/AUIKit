@@ -7,15 +7,15 @@
 
 import UIKit
 
-public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,AUITabsPageContainerCellDelegate {
+public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,AUITabsPageContainerCellDelegate {
     
     public func viewIdentity() -> String {
         self.a.swiftClassName ?? "AUIKit.AUIGiftsView"
     }
     
     public func create(frame: CGRect, datas: [NSObject]) -> UIView? {
-        guard let dataSource = datas as? [AUIGiftEntity] else { return AUIGiftsView() }
-        return AUIGiftsView(frame: frame, gifts: dataSource,sentGift: self.sendClosure!)
+        guard let dataSource = datas as? [AUIGiftEntity] else { return AUiGiftListView() }
+        return AUiGiftListView(frame: frame, gifts: dataSource,sentGift: self.sendClosure!)
     }
     
     public func rawFrame() -> CGRect {
@@ -68,7 +68,7 @@ public class AUIGiftsView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }
 }
 
-public extension AUIGiftsView {
+public extension AUiGiftListView {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         gifts.count

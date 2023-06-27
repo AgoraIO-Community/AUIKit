@@ -8,8 +8,8 @@
 import UIKit
 import AudioToolbox
 
-public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
-    private var images = [UIImage("finger_heart",.chat), UIImage("thunder",.chat), UIImage("thumbs_up",.chat), UIImage("No_of_the_beast",.chat), UIImage("lips",.chat), UIImage("heart",.chat)]
+public class AUIPraiseEffectView: UIView, CAAnimationDelegate {
+    private var images = [UIImage.aui_Image(named: "finger_heart"), UIImage.aui_Image(named: "thunder"), UIImage.aui_Image(named: "thumbs_up"), UIImage.aui_Image(named: "No_of_the_beast"), UIImage.aui_Image(named: "lips"), UIImage.aui_Image(named: "heart")]
 
     private var liveLayers = [CALayer]()
 
@@ -23,7 +23,7 @@ public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
         super.init(frame: frame)
     }
     
-    convenience init(frame: CGRect,images: [UIImage], touchFeedback: Bool = true) {
+    public convenience init(frame: CGRect,images: [UIImage], touchFeedback: Bool = true) {
         self.init(frame: frame)
         if !images.isEmpty {
             self.images = images
@@ -40,7 +40,7 @@ public class AUIPraiseEmitterView: UIView, CAAnimationDelegate {
         AudioServicesPlaySystemSound(1519)
     }
 
-    func setupEmitter() {
+    public func setupEmitter() {
         if self.touchFeedback {
             self.shakeDevice()
         }
