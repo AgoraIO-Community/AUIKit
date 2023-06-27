@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu01"
+        android:title="上麦"/>
+
+    <item
+        android:id="@+id/menu02"
+        android:title="抱人上麦"/>
+
+    <item
+        android:id="@+id/menu03"
+        android:title="Disable"
+        android:enabled="false"/>
+
+    <item
+        android:id="@+id/menu04"
+        android:title="取消"/>
+</menu>
