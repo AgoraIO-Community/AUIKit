@@ -28,7 +28,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }()
 
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).setThemeGradient("InputBar.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .chat), .normal).themeTitleColor("InputBar.sendColor", forState: .normal).theme_font("InputBar.sendFont").addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).createThemeGradient("InputBar.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .chat), .normal).themeTitleColor("InputBar.sendColor", forState: .normal).theme_font("InputBar.sendFont").addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
     }()
 
     private var limitCount: Int {
@@ -43,7 +43,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
 
     let line = UIView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 1)).backgroundColor(.white)
 
-    var emoji: AUIEmojisView?
+    var emoji: AUIEmojiView?
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -67,7 +67,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let view = UIView(frame: CGRect(x: self.inputContainer.frame.width - self.inputField.frame.height, y: 0, width: self.inputField.frame.height, height: self.inputField.frame.height)).backgroundColor(.white)
         view.addSubview(self.rightView)
         self.inputContainer.addSubview(view)
-        self.setThemeGradient("InputBar.gradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
+        self.createThemeGradient("InputBar.gradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIApplication.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIApplication.keyboardWillHideNotification, object: nil)
     }
@@ -137,7 +137,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
         self.frame = CGRect(x: 0, y: self.frame.origin.y, width: AScreenWidth, height: self.keyboardHeight + 5 + 60)
-        let emoji = AUIEmojisView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124)
+        let emoji = AUIEmojiView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124)
         self.emoji = emoji
         emoji.emojiClosure = { [weak self] in
             guard let self = self else { return }
@@ -207,9 +207,9 @@ public class AUIChatInputBarConfig: NSObject {
     
     var returnKeyType: UIReturnKeyType = .send
     
-    var textInputIcon: UIImage? = UIImage("key",.chat)
+    var textInputIcon: UIImage? = UIImage.aui_Image(named: "key")
     
-    var emojiInputIcon: UIImage? = UIImage("face",.chat)
+    var emojiInputIcon: UIImage? = UIImage.aui_Image(named: "face")
     
     /// Description Colors for gradient layer
     var sendGradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
@@ -228,15 +228,11 @@ public class AUIChatInputBarConfig: NSObject {
                 placeHolderColor = UIColor(0x666666)
                 cursorColor = UIColor(0x009FFF)
                 textColor = .white
-                textInputIcon = UIImage("key_dark",.chat)
-                emojiInputIcon = UIImage("face_dark",.chat)
             } else {
                 backgroundColor = .white
                 placeHolderColor = UIColor(0xF9FAFA)
                 cursorColor = UIColor(0x009FFF)
                 textColor = .black
-                textInputIcon = UIImage("key",.chat)
-                emojiInputIcon = UIImage("face",.chat)
             }
         }
     }

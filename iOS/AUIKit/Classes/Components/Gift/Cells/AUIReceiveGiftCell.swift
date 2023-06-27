@@ -13,7 +13,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
     var gift: AUIGiftEntity?
 
     lazy var container: UIToolbar = {
-        UIToolbar(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).backgroundColor(.clear).setThemeGradient("ReceiveGift.containerGradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
+        UIToolbar(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 10)).backgroundColor(.clear)
     }()
 
     lazy var avatar: UIImageView = UIImageView(frame: CGRect(x: 5, y: 5, width: self.frame.width / 5.0, height: self.frame.width / 5.0)).contentMode(.scaleAspectFit)
@@ -56,10 +56,11 @@ public class AUIReceiveGiftCell: UITableViewCell {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        self.container.frame = CGRect(x: 0, y: 5, width: contentView.frame.width, height: contentView.frame.height - 5)
+        self.container.frame = CGRect(x: 0, y: 5, width: contentView.frame.width, height: contentView.frame.height - 10)
+        self.container.createThemeGradient("ReceiveGift.containerGradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
         self.container.cornerRadius(self.container.frame.height/2.0)
-        self.avatar.frame = CGRect(x: 5, y: 5, width: contentView.frame.height - 15, height: contentView.frame.height - 15)
-        self.avatar.cornerRadius((contentView.frame.height - 15) / 2.0)
+        self.avatar.frame = CGRect(x: 5, y: 5, width: self.container.frame.height - 10, height: self.container.frame.height - 10)
+        self.avatar.cornerRadius((self.container.frame.height - 10) / 2.0)
         self.userName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: 5, width: frame.width / 5.0 * 2 - 12, height: 15)
         self.giftName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: self.userName.frame.maxY + 2, width: frame.width / 5.0 * 2 - 12, height: 15)
         self.giftIcon.frame = CGRect(x: frame.width / 5.0 * 3, y: 0, width: container.frame.height, height: self.container.frame.height)
@@ -70,7 +71,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
         if self.gift == nil {
             self.gift = item
         }
-        self.avatar.kf.setImage(with: URL(string: item.sendUser.userAvatar), placeholder:UIImage("mine_avatar_placeHolder",.gift))
+        self.avatar.kf.setImage(with: URL(string: item.sendUser.userAvatar), placeholder:UIImage.aui_Image(named: "mine_avatar_placeHolder"))
         self.userName.text = item.sendUser.userName
         self.giftName.text = "Sent ".a.localize(type: .gift) + (item.giftName)
         self.giftIcon.kf.setImage(with: URL(string: item.giftIcon),placeholder: UIImage("\(item.giftId)",.gift))

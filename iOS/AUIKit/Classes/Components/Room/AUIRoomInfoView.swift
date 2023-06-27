@@ -24,7 +24,7 @@ public final class AUIRoomInfoView: UIView {
         let label = UILabel()
         label.numberOfLines = 1
         label.theme_textColor = AUIColor("Room.roomInfoTitleColor")
-        label.theme_font = "CommonFont.large"
+        label.theme_font = "CommonFont.big"
         label.text =  aui_localized("roomInfoRoomName")
         return label
     }()
@@ -53,7 +53,7 @@ public final class AUIRoomInfoView: UIView {
     }
     
     private func _createSubviews(){
-        self.theme_backgroundColor = "Room.roomInfoBackgrounfColor"
+        self.theme_backgroundColor = "Room.roomInfoBackgroundColor"
         layer.masksToBounds = true
         
         addSubview(headImageView)
@@ -71,7 +71,7 @@ public final class AUIRoomInfoView: UIView {
             headImageView.heightAnchor.constraint(equalToConstant: avatarHeight)
         ])
         headImageView.cornerRadius(avatarHeight/2.0)
-        let width = (44/185.0)*self.frame.width
+        var width = (44/185.0)*self.frame.width
         NSLayoutConstraint.activate([
             roomNameLabel.topAnchor.constraint(equalTo: headImageView.topAnchor),
             roomNameLabel.leftAnchor.constraint(equalTo: headImageView.rightAnchor, constant: 8),

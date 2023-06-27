@@ -1,0 +1,13 @@
+
+{
+    "Invitation": {
+        "backgroundColor":"#FFFFFF",
+        "titleColor":"#171A1C",
+        "cellTitleColor":"#171A1C"
+    },
+    "Apply": {
+        "backgroundColor":"#FFFFFF",
+        "titleColor":"#171A1C",
+        "cellTitleColor":"#171A1C"
+    }
+}

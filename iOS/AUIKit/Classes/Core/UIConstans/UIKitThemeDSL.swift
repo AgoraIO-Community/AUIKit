@@ -26,7 +26,7 @@ import SwiftTheme
     }
     
     @discardableResult
-    func setThemeGradient(_ color: String, _ points: [CGPoint]) -> Self {
+    func createThemeGradient(_ color: String, _ points: [CGPoint]) -> Self {
         let startPoint = points[0]
         let endPoint = points[1]
         let gradientLayer = CAGradientLayer().startPoint(startPoint).endPoint(endPoint).frame(bounds).backgroundColor(UIColor.clear.cgColor).locations([0,1])

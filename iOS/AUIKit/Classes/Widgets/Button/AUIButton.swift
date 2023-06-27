@@ -27,8 +27,8 @@ public class AUIButtonStyle: NSObject {
 public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var icon: ThemeImagePicker?
     public var selectedIcon: ThemeImagePicker?
-    public var iconWidth: ThemeCGFloatPicker = "Button.iconWidth"
-    public var iconHeight: ThemeCGFloatPicker = "Button.iconWidth"
+    public var iconWidth: ThemeCGFloatPicker = "Button.buttonWidth"
+    public var iconHeight: ThemeCGFloatPicker = "Button.buttonWidth"
     public var padding: ThemeCGFloatPicker = "Button.padding"
     public var buttonWidth: ThemeCGFloatPicker = "Button.buttonWidth"
     public var buttonHeight: ThemeCGFloatPicker = "Button.buttonHeight"

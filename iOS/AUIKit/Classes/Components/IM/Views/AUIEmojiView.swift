@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class AUIEmojisView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
+public class AUIEmojiView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     @objc public var deleteClosure: (() -> Void)?
 
     @objc public var emojiClosure: ((String) -> Void)?
@@ -54,7 +54,7 @@ public class AUIEmojisView: UIView, UICollectionViewDelegate, UICollectionViewDa
     }
 }
 
-public extension AUIEmojisView {
+public extension AUIEmojiView {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         AUIChatEmojiManager.shared.emojis.count
     }

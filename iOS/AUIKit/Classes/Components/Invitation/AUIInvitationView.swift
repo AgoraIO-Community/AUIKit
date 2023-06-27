@@ -8,6 +8,14 @@
 import Kingfisher
 import UIKit
 
+@objc public protocol IAUIListViewBinderRefresh: NSObjectProtocol {
+    func filter(userId: String)
+    
+    func refreshUsers(users: [AUIUserCellUserDataProtocol])
+    
+    func updateUser(user: AUIUserCellUserDataProtocol)
+}
+
 @objc public enum AUIUserOperationEventsSource: Int {
     case invite
     case apply
@@ -19,7 +27,7 @@ import UIKit
 }
 
 /// 邀请列表组件
-@objc open class AUIInvitationView: UIView {
+@objc open class AUIInvitationView: UIView,IAUIListViewBinderRefresh {
     
     public var index: Int?
     
@@ -51,13 +59,18 @@ import UIKit
         
         return AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
     }()
+    
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain).backgroundColor(.orange)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain).backgroundColor(.clear)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
         tableView.backgroundColor = .clear
         return tableView
+    }()
+    
+    private lazy var empty: AUIEmptyView = {
+        AUIEmptyView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
     }()
     
     public var userList: [AUIUserCellUserDataProtocol] = []
@@ -73,8 +86,10 @@ import UIKit
     }
     
     private func _loadSubViews() {
+        addSubview(empty)
+        addSubview(tabs)
         addSubview(tableView)
-        backgroundColor = .clear
+        self.theme_backgroundColor = "Invitation.backgroundColor"
     }
     
     public override func layoutSubviews() {
@@ -85,8 +100,28 @@ import UIKit
         self.userList.removeAll()
         self.userList = users
         self.tableView.reloadData()
+        if self.userList.count == 0 {
+            self.bringSubviewToFront(self.empty)
+        } else {
+            self.sendSubviewToBack(self.empty)
+        }
     }
     
+    public func filter(userId: String) {
+        userList = userList.filter({
+            $0.userId != userId
+        })
+        self.tableView.reloadData()
+    }
+    
+    public func updateUser(user: AUIUserCellUserDataProtocol) {
+        let userInfo = self.userList.first {
+            $0.userId == user.userId
+        }
+        userInfo?.userAvatar = user.userAvatar
+        userInfo?.userName = user.userName
+        self.tableView.reloadData()
+    }
 }
 
 
@@ -104,6 +139,8 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         }
         let user = userList[indexPath.row]
         cell?.refreshUser(user: user)
+        cell?.userName.theme_textColor = "Invitation.cellTitleColor"
+        cell?.userName.theme_font = "Invitation.bigTitleFont"
         cell?.actionClosure = { [weak self] in
             guard let user = $0 else { return }
             self?.eventHandlers.allObjects.forEach({ delegate in
@@ -117,7 +154,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
 
 
 /// 邀请列表组件
-@objc open class AUIApplyView: UIView {
+@objc open class AUIApplyView: UIView,IAUIListViewBinderRefresh {
         
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
@@ -155,6 +192,10 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         return tableView
     }()
     
+    private lazy var empty: AUIEmptyView = {
+        AUIEmptyView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height),title: "", image: nil)
+    }()
+    
     
     public var userList: [AUIUserCellUserDataProtocol] = []
     
@@ -169,9 +210,10 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func _loadSubViews() {
+        addSubview(empty)
         addSubview(tabs)
         addSubview(tableView)
-        backgroundColor = .clear
+        self.theme_backgroundColor = "Apply.backgroundColor"
     }
     
     public override func layoutSubviews() {
@@ -181,6 +223,27 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     public func refreshUsers(users: [AUIUserCellUserDataProtocol]) {
         self.userList.removeAll()
         self.userList = users
+        self.tableView.reloadData()
+        if self.userList.count == 0 {
+            self.bringSubviewToFront(self.empty)
+        } else {
+            self.sendSubviewToBack(self.empty)
+        }
+    }
+    
+    public func filter(userId: String) {
+        userList = userList.filter({
+            $0.userId != userId
+        })
+        self.tableView.reloadData()
+    }
+    
+    public func updateUser(user: AUIUserCellUserDataProtocol) {
+        let userInfo = self.userList.first {
+            $0.userId == user.userId
+        }
+        userInfo?.userAvatar = user.userAvatar
+        userInfo?.userName = user.userName
         self.tableView.reloadData()
     }
 }
@@ -200,6 +263,8 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
         }
         let user = userList[indexPath.row]
         cell?.refreshUser(user: user)
+        cell?.userName.theme_textColor = "Apply.cellTitleColor"
+        cell?.userName.theme_font = "Apply.bigTitleFont"
         cell?.actionClosure = { [weak self] in
             guard let user = $0 else { return }
             self?.eventHandlers.allObjects.forEach({ delegate in
@@ -226,8 +291,6 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     lazy var userName: UILabel = {
         let label = UILabel(frame: CGRect(x: self.userIcon.frame.maxX+12, y: 19, width: self.contentView.frame.width - self.userIcon.frame.maxX - 12 - 98, height: 20))
-        label.theme_textColor = "MemberUserCell.titleColor"
-        label.theme_font = "MemberUserCell.bigTitleFont"
         return label
     }()
     
@@ -250,7 +313,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func _loadSubViews() {
-        self.backgroundColor = .clear
+        self.theme_backgroundColor = "Invitation.backgroundColor"
         self.contentView.addSubViews([self.userIcon,self.userName,self.action])
     }
     
