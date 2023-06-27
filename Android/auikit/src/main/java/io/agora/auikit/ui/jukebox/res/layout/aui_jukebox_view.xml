@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tabMode="?attr/aui_jukebox_titleTabMode"
         app:tabSelectedTextColor="?attr/aui_jukebox_titleTabSelectedTextColor"
-        app:tabTextAppearance="@style/TextAppearance.Design.Tab.AUiJukeboxTitle"
+        app:tabTextAppearance="@style/TextAppearance.Design.Tab.AUIJukeboxTitle"
         app:tabTextColor="?attr/aui_jukebox_titleTabTextColor">
 
         <com.google.android.material.tabs.TabItem

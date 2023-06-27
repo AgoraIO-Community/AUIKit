@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import io.agora.auikit.R;
-import io.agora.auikit.model.AUiMicSeatStatus;
+import io.agora.auikit.model.AUIMicSeatStatus;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
 
 public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView {
@@ -128,7 +128,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
 
     @Override
     public void setMicSeatState(int state) {
-        if (state == AUiMicSeatStatus.locked) {
+        if (state == AUIMicSeatStatus.locked) {
             ivStateLock.setVisibility(View.VISIBLE);
             ivStateIdle.setVisibility(View.INVISIBLE);
         } else {

@@ -72,7 +72,7 @@
                 app:tabIndicatorFullWidth="false"
                 app:tabMode="?attr/aui_jukeboxChoose_categoryTabMode"
                 app:tabSelectedTextColor="?attr/aui_jukeboxChoose_categoryTabSelectedTextColor"
-                app:tabTextAppearance="@style/TextAppearance.Design.Tab.AUiJukeboxChooseCategory"
+                app:tabTextAppearance="@style/TextAppearance.Design.Tab.AUIJukeboxChooseCategory"
                 app:tabTextColor="?attr/aui_jukeboxChoose_categoryTabTextColor" />
 
             <View

@@ -2,7 +2,11 @@
 //  AppDelegate.swift
 //  AUIKit
 //
+<<<<<<< HEAD
 //  Created by wushengtao on 05/25/2023.
+=======
+//  Created by wushengtao on 05/26/2023.
+>>>>>>> main
 //  Copyright (c) 2023 wushengtao. All rights reserved.
 //
 

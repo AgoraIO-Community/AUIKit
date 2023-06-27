@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import io.agora.auikit.R;
-import io.agora.auikit.model.AUiUserThumbnailInfo;
+import io.agora.auikit.model.AUIUserThumbnailInfo;
 import io.agora.auikit.ui.micseats.IMicSeatDialogView;
 
 public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogView {
@@ -129,7 +129,7 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         tvEnterSeat.setVisibility(View.VISIBLE);
     }
 
-    public void setUserInfo(@Nullable AUiUserThumbnailInfo userInfo) {
+    public void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo) {
         if (userInfo == null || userInfo.userId.isEmpty()) {
             vMicInfo.setVisibility(View.GONE);
             return;
