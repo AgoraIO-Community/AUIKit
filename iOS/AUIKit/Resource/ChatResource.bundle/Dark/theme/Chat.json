@@ -1,0 +1,27 @@
+
+{
+    "Barrage": {
+        "containerBackgroundColor": "#00000050",
+        "containerLayerWidth": 1,
+        "containerLayerColor": "#009EFF",
+        "containerLayerCornerRadius": 12
+    },
+    "BottomBar": {
+        "containerBackgroundColor": "#00000050",
+    },
+    "InputBar": {
+        "backgroundColor": "#FFFFFF",
+        "textFont":"PingFangSC-Regular,15",
+        "inputContainerLayerColor": "#E4E3ED",
+        "inputContainerLayerWidth": 1,
+        "placeHolder": "Aa",
+        "placeHolderColor":"#B6B8C9",
+        "cursorColor":"#009FFF",
+        "textColor":"#000000",
+        "textInputCornerRadius":5,
+        "sendGradientColors":["#33B1FF","#7C5BFF"],
+        "enLimitCount": 80,
+        "zhLimitCount": 30
+    }
+        
+}
