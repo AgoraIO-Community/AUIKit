@@ -25,7 +25,16 @@ open class AUIRoomContext: NSObject {
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
     
-    public var seatType: AUIMicSeatViewLayoutType = .eight
+    public var seatType: AUIMicSeatViewLayoutType = .eight {
+        willSet {
+            switch newValue {
+            case .one: self.seatCount = 1
+            case .six: self.seatCount = 6
+            case .eight: self.seatCount = 8
+            case .nine: self.seatCount = 9
+            }
+        }
+    }
     
     public var seatCount: UInt = 8
     
