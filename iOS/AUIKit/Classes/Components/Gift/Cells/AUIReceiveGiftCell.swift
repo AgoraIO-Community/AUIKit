@@ -74,7 +74,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
         self.avatar.kf.setImage(with: URL(string: item.sendUser.userAvatar), placeholder:UIImage.aui_Image(named: "mine_avatar_placeHolder"))
         self.userName.text = item.sendUser.userName
         self.giftName.text = "Sent ".a.localize(type: .gift) + (item.giftName)
-        self.giftIcon.kf.setImage(with: URL(string: item.giftIcon),placeholder: UIImage("\(item.giftId)",.gift))
+        self.giftIcon.kf.setImage(with: URL(string: item.giftIcon),placeholder: UIImage.aui_Image(named: "\(item.giftId)"))
         self.giftNumbers.text = "X \(item.giftCount)"
     }
 }
