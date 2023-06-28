@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftTheme
 
 public enum SkipActionType: Int {
     case down = 0
@@ -44,9 +45,11 @@ open class AUIKaraokeSkipView: UIView {
     
     lazy var cancleBtn: AUIButton = {
         let theme = AUIButtonDynamicTheme()
+        theme.iconWidth = "Player.skipCancleButtonWidth"
+        theme.iconHeight = "Player.skipCancleButtonHeight"
         theme.buttonWidth = "Player.skipCancleButtonWidth"
         theme.buttonHeight = "Player.skipCancleButtonHeight"
-        theme.icon = "Player.playerLrcItemSkipItem"
+        theme.icon = ThemeAnyPicker(keyPath:"Player.playerLrcItemSkipItem")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter

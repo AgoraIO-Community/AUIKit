@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SDWebImage
 
 public enum AUIJukeSongCellStyle: Int {
     case selectSong      //点歌
@@ -32,7 +33,7 @@ open class AUIJukeBoxCell: UITableViewCell {
             self.songNameLabel.text = music?.title ?? ""
             self.descLabel.text = music?.subTitle ?? ""
             self.avatarImageView.theme_image = "JukeBoxCell.avatarPlaceHolder"
-            self.avatarImageView.kf.setImage(with: URL(string: music?.avatarUrl ?? ""), placeholder: self.avatarImageView.image)
+            self.avatarImageView.sd_setImage(with: URL(string: music?.avatarUrl ?? ""), placeholderImage: self.avatarImageView.image)
         }
     }
     

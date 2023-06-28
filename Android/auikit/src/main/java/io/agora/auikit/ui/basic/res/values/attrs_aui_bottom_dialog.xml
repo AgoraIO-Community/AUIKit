@@ -4,7 +4,7 @@
     <attr name="aui_bottomDialog_appearance" format="reference"/>
 
 
-    <declare-styleable name="AUiBottomDialog">
+    <declare-styleable name="AUIBottomDialog">
 
         <!-- 背景 -->
         <attr name="aui_bottomDialog_backgroundColor" format="color" />
@@ -60,7 +60,7 @@
 
     </declare-styleable>
 
-    <declare-styleable name="AUiBottomDialogMenu">
+    <declare-styleable name="AUIBottomDialogMenu">
         <attr name="android:id" />
         <attr name="android:icon" />
         <attr name="android:iconTint" />
@@ -68,7 +68,7 @@
         <attr name="android:titleTextColor" />
     </declare-styleable>
 
-    <style name="AUiBottomDialog" parent="Theme.AppCompat.Dialog">
+    <style name="AUIBottomDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:backgroundDimAmount">0</item>
@@ -123,11 +123,11 @@
         <item name="aui_bottomDialog_listDividerColor">#C3C5FE</item>
         <item name="aui_bottomDialog_listSpan">1</item>
 
-        <item name="aui_bottomDialog_menu_appearance">@style/AUiBottomDialogMenu</item>
+        <item name="aui_bottomDialog_menu_appearance">@style/AUIBottomDialogMenu</item>
 
     </style>
 
-    <style name="AUiBottomDialogMenu">
+    <style name="AUIBottomDialogMenu">
         <item name="android:titleTextColor" tools:ignore="NewApi">@color/aui_black</item>
     </style>
 </resources>

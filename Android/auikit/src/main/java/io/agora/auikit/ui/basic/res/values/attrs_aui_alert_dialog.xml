@@ -4,7 +4,7 @@
     <attr name="aui_alertDialog_appearance" format="reference"/>
     <attr name="aui_alertDialog_appearance_outline" format="reference"/>
 
-    <declare-styleable name="AUiAlertDialog">
+    <declare-styleable name="AUIAlertDialog">
 
         <attr name="aui_alertDialog_contentLayout" format="reference"/>
         <attr name="aui_alertDialog_minWidth" format="dimension"/>
@@ -69,7 +69,7 @@
     </declare-styleable>
 
 
-    <style name="AUiAlertDialog" parent="Theme.MaterialComponents.Dialog">
+    <style name="AUIAlertDialog" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowBackground">@null</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -123,7 +123,7 @@
 
     </style>
 
-    <style name="AUiAlertDialog.Outline">
+    <style name="AUIAlertDialog.Outline">
         <item name="aui_alertDialog_inputStyle">?attr/aui_editText_appearance_outline</item>
     </style>
 

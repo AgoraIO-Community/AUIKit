@@ -1,6 +1,6 @@
 package io.agora.auikit.service.http
 
-import io.agora.auikit.service.callback.AUiException
+import io.agora.auikit.service.callback.AUIException
 import org.json.JSONObject
 import retrofit2.Response
 
@@ -8,7 +8,7 @@ class Utils {
     companion object {
 
         @JvmStatic
-        fun <T>errorFromResponse(response: Response<T>): AUiException {
+        fun <T>errorFromResponse(response: Response<T>): AUIException {
             val errorMsg = response.errorBody()?.string()
             var code = -1
             var msg = "error"
@@ -17,7 +17,7 @@ class Utils {
                 code = obj.getInt("code")
                 msg = obj.getString("message")
             }
-            return AUiException(code, msg)
+            return AUIException(code, msg)
         }
 
     }

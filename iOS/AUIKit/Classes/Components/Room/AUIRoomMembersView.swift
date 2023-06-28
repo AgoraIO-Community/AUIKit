@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftTheme
 
 private let headImageWidth: CGFloat = 32
 
@@ -45,7 +46,7 @@ public class AUIRoomMembersView: UIView {
     
     private lazy var moreButton: AUIButton = {
         let theme = AUIButtonDynamicTheme()
-        theme.icon = auiThemeImage("Room.membersMoreIcon")
+        theme.icon = ThemeAnyPicker(keyPath: "Room.membersMoreIcon")
         theme.iconWidth = "Room.membersMoreIconWidth"
         theme.iconHeight = "Room.membersMoreIconHeight"
         theme.buttonWidth = "Room.membersMoreWidth"
@@ -121,7 +122,7 @@ public class AUIRoomMembersView: UIView {
         for (i, imgView) in [rightImgView, leftImgView].enumerated() {
             imgView.isHidden = false
             if imgs.count > i {
-                imgView.kf.setImage(with: URL(string: imgs[i]), placeholder: UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle"))
+                imgView.sd_setImage(with: URL(string: imgs[i]), placeholderImage: UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle"), context: nil)
             }else{
                 imgView.isHidden = true
             }

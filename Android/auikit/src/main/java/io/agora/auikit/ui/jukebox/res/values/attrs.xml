@@ -56,11 +56,11 @@
 
     </declare-styleable>
 
-    <style name="TextAppearance.Design.Tab.AUiJukeboxTitle" parent="TextAppearance.Design.Tab">
+    <style name="TextAppearance.Design.Tab.AUIJukeboxTitle" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textSize">?attr/aui_jukebox_titleTabTextSize</item>
     </style>
-    <style name="TextAppearance.Design.Tab.AUiJukeboxChooseCategory" parent="TextAppearance.Design.Tab">
+    <style name="TextAppearance.Design.Tab.AUIJukeboxChooseCategory" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textSize">?attr/aui_jukeboxChoose_categoryTabTextSize</item>
     </style>
@@ -167,7 +167,7 @@
     </style>
 
     <!-- 点唱机已点歌曲样式 -->
-    <declare-styleable name="AUiJukeboxChosenItemView">
+    <declare-styleable name="AUIJukeboxChosenItemView">
         <attr name="aui_jukeboxChosenItem_appearance"/>
 
         <attr name="aui_jukeboxChosenItem_paddingHorizontal" format="dimension"/>

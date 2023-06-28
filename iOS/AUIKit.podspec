@@ -93,7 +93,7 @@ TODO: Add long description of the pod here.
   s.dependency 'Zip'
   s.dependency 'Alamofire'
   s.dependency 'SwiftTheme'
-  s.dependency 'Kingfisher', '~>7.6.2'
+  s.dependency 'SDWebImage'
   s.dependency 'MJRefresh'
   s.dependency 'ScoreEffectUI'
   s.dependency 'AgoraLyricsScore'

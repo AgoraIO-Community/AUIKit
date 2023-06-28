@@ -136,7 +136,7 @@ open class AUIActionSheet: UIView {
                                      width: windowFrame.width - avatarView.aui_right,
                                      height: avatarView.aui_height / 2)
             seatLabel.frame = CGRect(x: nameLabel.aui_left, y: nameLabel.aui_bottom, width: nameLabel.aui_width, height: nameLabel.aui_height)
-            avatarView.kf.setImage(with: URL(string: headerInfo.avatar))
+            avatarView.sd_setImage(with: URL(string: headerInfo.avatar))
             nameLabel.text = headerInfo.title
             seatLabel.text = headerInfo.subTitle
         } else {
