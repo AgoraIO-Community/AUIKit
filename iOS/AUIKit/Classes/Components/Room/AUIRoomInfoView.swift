@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 import SwiftTheme
 
 
@@ -100,7 +100,7 @@ extension AUIRoomInfoView {
     public func updateRoomInfo(withRoomId roomId:String, roomName: String?, ownerHeadImg:String?){
         roomNameLabel.text = (roomName ?? "") + aui_localized("roomInfoRoomName")
         roomIdLabel.text = aui_localized("roomInfoRoomID") + roomId
-        headImageView.kf.setImage(with: URL(string: ownerHeadImg ?? ""))
+        headImageView.sd_setImage(with: URL(string: ownerHeadImg ?? ""), placeholderImage: UIImage.aui_Image(named: "mine_avatar_placeHolder"), context: nil)
     }
 }
 

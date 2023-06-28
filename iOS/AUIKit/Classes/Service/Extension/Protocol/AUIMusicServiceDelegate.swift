@@ -93,7 +93,7 @@ open class AUIChooseMusicModel: AUIMusicModel {
     
     /// 获取歌曲列表
     /// - Parameters:
-    ///   - chartId: 榜单类型 
+    ///   - chartId: 榜单类型
     ///   - page: 页数，从1开始
     ///   - pageSize: 一页返回数量，最大50
     ///   - completion: 操作完成回调

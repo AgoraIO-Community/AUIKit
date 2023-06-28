@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 
 public class AUISendGiftCell: UICollectionViewCell {
     
@@ -61,8 +61,7 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.contentView.isHidden = (item == nil)
 
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
-        self.icon.kf.setImage(with: URL(string: url)!,placeholder: UIImage(item?.giftName ?? "",.gift))
-
+        self.icon.sd_setImage(with: URL(string: url), placeholderImage: UIImage.aui_Image(named: item?.giftName ?? ""), context: nil)
         self.name.text = item?.giftName
         self.displayValue.setImage(self.config.priceIcon, for: .normal)
         self.displayValue.setTitle(item?.giftPrice ?? "100", for: .normal)
@@ -109,7 +108,7 @@ public class AUISendGiftCellConfig: NSObject {
     
     public var priceTextColor: UIColor = UIColor(red: 0.425, green: 0.445, blue: 0.573, alpha: 0.5)
     
-    public var priceIcon: UIImage? = UIImage("dollagora",.gift)
+    public var priceIcon: UIImage? = UIImage.aui_Image(named: "dollagora")
     
 }
 

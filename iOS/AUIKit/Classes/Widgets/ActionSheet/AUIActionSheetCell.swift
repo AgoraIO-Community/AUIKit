@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 import SwiftTheme
 
 @objc public enum AUIActionSheetItemLayoutType: Int {

@@ -5,7 +5,7 @@
 //  Created by wushengtao on 2023/3/3.
 //
 
-import Kingfisher
+import SDWebImage
 import UIKit
 
 @objc public protocol IAUIListViewBinderRefresh: NSObjectProtocol {
@@ -329,7 +329,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     public func refreshUser(user: AUIUserCellUserDataProtocol) {
         self.user = user
-        self.userIcon.kf.setImage(with: URL(string: user.userAvatar),placeholder: UIImage("mine_avatar_placeHolder", .gift))
+        self.userIcon.sd_setImage(with: URL(string: user.userAvatar), placeholderImage: UIImage("mine_avatar_placeHolder", .gift), context: nil)
         self.userName.text = user.userName
     }
 

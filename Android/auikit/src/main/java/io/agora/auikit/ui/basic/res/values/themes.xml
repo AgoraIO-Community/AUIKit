@@ -16,31 +16,31 @@
 
         <!-- 基础组件 -->
         <!--         Button       -->
-        <item name="aui_button_appearance">@style/AUiButton</item>
-        <item name="aui_button_appearance_stroke">@style/AUiButton.Stroke</item>
-        <item name="aui_button_appearance_min">@style/AUiButton.Mini</item>
-        <item name="aui_button_appearance_min_stroke">@style/AUiButton.Mini.Stroke</item>
-        <item name="aui_button_appearance_circle">@style/AUiButton.Circle</item>
-        <item name="aui_button_appearance_circle_stroke">@style/AUiButton.Circle.Stroke</item>
+        <item name="aui_button_appearance">@style/AUIButton</item>
+        <item name="aui_button_appearance_stroke">@style/AUIButton.Stroke</item>
+        <item name="aui_button_appearance_min">@style/AUIButton.Mini</item>
+        <item name="aui_button_appearance_min_stroke">@style/AUIButton.Mini.Stroke</item>
+        <item name="aui_button_appearance_circle">@style/AUIButton.Circle</item>
+        <item name="aui_button_appearance_circle_stroke">@style/AUIButton.Circle.Stroke</item>
         <!--         EditText       -->
-        <item name="aui_editText_appearance">@style/AUiEditText</item>
-        <item name="aui_editText_appearance_outline">@style/AUiEditText.OutLine</item>
+        <item name="aui_editText_appearance">@style/AUIEditText</item>
+        <item name="aui_editText_appearance_outline">@style/AUIEditText.OutLine</item>
         <!--         BottomDialog       -->
-        <item name="aui_bottomDialog_appearance">@style/AUiBottomDialog</item>
+        <item name="aui_bottomDialog_appearance">@style/AUIBottomDialog</item>
         <!--         AlertDialog       -->
-        <item name="aui_alertDialog_appearance">@style/AUiAlertDialog</item>
-        <item name="aui_alertDialog_appearance_outline">@style/AUiAlertDialog.Outline</item>
+        <item name="aui_alertDialog_appearance">@style/AUIAlertDialog</item>
+        <item name="aui_alertDialog_appearance_outline">@style/AUIAlertDialog.Outline</item>
         <!--         Dividers       -->
-        <item name="aui_dividers_appearance">@style/AUiDividers</item>
+        <item name="aui_dividers_appearance">@style/AUIDividers</item>
         <!--         TitleBar       -->
-        <item name="aui_titleBar_appearance">@style/AUiTitleBar</item>
+        <item name="aui_titleBar_appearance">@style/AUITitleBar</item>
         <!--         NavigationBar       -->
-        <item name="aui_navigationBar_appearance">@style/AUiNavigationBar</item>
+        <item name="aui_navigationBar_appearance">@style/AUINavigationBar</item>
         <!--         TabLayout       -->
-        <item name="aui_tabLayout_appearance">@style/AUiTabLayout</item>
-        <item name="aui_tabLayout_appearance_round">@style/AUiTabLayout.Round</item>
-        <!--         AUiCellText       -->
-        <item name="aui_cellText_appearance">@style/AUiCellText</item>
+        <item name="aui_tabLayout_appearance">@style/AUITabLayout</item>
+        <item name="aui_tabLayout_appearance_round">@style/AUITabLayout.Round</item>
+        <!--         AUICellText       -->
+        <item name="aui_cellText_appearance">@style/AUICellText</item>
     </style>
 
 </resources>

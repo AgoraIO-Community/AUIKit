@@ -1,12 +1,5 @@
 {
   "Alert": {
-      "backgroundColor": "CommonColor.black",
-      "leftBackgroundColor": "CommonColor.black20",
-      "leftTextColor": "#c3c5fe",
       "leftBorderColor": "#c3c5fe",
-      "rightBackgroundColor": "CommonColor.primary",
-      "rightTextColor": "#ffffff",
-      "titleColor": "CommonColor.normalTextColor",
-      "contentTextColor": "CommonColor.normalTextColor50"
   }
 }

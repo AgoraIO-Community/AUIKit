@@ -18,7 +18,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AUIKit"
 include ':auikit'
-
-include ':examples:AUIKitSample'
+include ':app'
 
 

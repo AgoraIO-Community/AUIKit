@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftTheme
-import Kingfisher
+import SDWebImage
 
 public enum MicRole: Int {
     case mainSinger
@@ -75,8 +75,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
-        theme.icon = auiThemeImage("SeatItem.micSeatItemIconMainSinger")
-        theme.selectedIcon = auiThemeImage("SeatItem.micSeatItemIconCoSinger")
+        theme.icon = auiThemeImage("SeatItem.micSeatItemIconMainSinger") as? ThemeAnyPicker
+        theme.selectedIcon = auiThemeImage("SeatItem.micSeatItemIconCoSinger") as? ThemeAnyPicker
         theme.titleFont = "CommonFont.small"
         theme.padding = "SeatItem.padding"
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
@@ -102,7 +102,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     lazy var hostIcon: AUIButton = {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
-        theme.icon = auiThemeImage("SeatItem.micSeatHostIcon")
+        theme.icon = auiThemeImage("SeatItem.micSeatHostIcon") as? ThemeAnyPicker
         theme.buttonWidth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let button = AUIButton()
@@ -210,13 +210,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     private func reloadData() {
         aui_info("reload seat name \(item?.seatName ?? "") url: \(item?.avatarUrl ?? "") mute video: \(item?.isMuteVideo ?? true)", tag: "AUIMicSeatItemCell")
-        avatarImageView.kf.setImage(with: URL(string: item?.avatarUrl ?? ""))
+        avatarImageView.sd_setImage(with: URL(string: item?.avatarUrl ?? ""))
         seatLabel.text = item?.seatName
         if let subIcon = item?.subIcon,let subtitle = item?.subTitle {
-            KF.url(URL(string: subIcon), cacheKey: subIcon).onSuccess { [weak self] result in
-                guard let data = result.data(),let image = UIImage(data: data) else { return }
+            SDWebImageManager.shared.loadImage(with: URL(string: subIcon), context: nil, progress: nil) { [weak self] image, data, error, type, res, url in
+                guard let img = image else { return }
                 self?.subTitle.attributedText = NSAttributedString({
-                    ImageAttachment(image,size: CGSize(width: 14, height: 14))
+                    ImageAttachment(img,size: CGSize(width: 14, height: 14))
                     AttributedText(subtitle).font(.systemFont(ofSize: 11, weight: .regular)).foregroundColor(Color(0xFFFFFF))
                 })
             }

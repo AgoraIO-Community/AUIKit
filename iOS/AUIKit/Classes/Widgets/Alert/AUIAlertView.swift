@@ -390,15 +390,14 @@ import SwiftTheme
 extension AUIAlertView {
     public class func theme_defaultAlert() -> AUIAlertView {
         let alert = AUIAlertView()
-            .theme_background(color: AUIColor("Alert.backgroundColor"))
-            .theme_leftButtonBackground(color: AUIColor("Alert.leftBackgroundColor"))
-            .theme_leftButton(color: AUIColor("Alert.leftTextColor"))
-            .theme_leftButtonBorder(color: AUICGColor("Alert.leftBorderColor"))
-            .theme_rightButtonBackground(color: AUIColor("Alert.rightBackgroundColor"))
-            .theme_rightButton(color: AUIColor("Alert.rightTextColor"))
-            .theme_titleColor(color: AUIColor("Alert.titleColor"))
+            .theme_background(color: "CommonColor.black")
+            .theme_leftButtonBackground(color: "CommonColor.black20")
+            .theme_leftButton(color: "Alert.leftBorderColor")
+            .theme_leftButtonBorder(color: "Alert.leftBorderColor")
+            .theme_rightButtonBackground(color: "CommonColor.primary")
+            .theme_titleColor(color: "CommonColor.normalTextColor")
             .theme_titleFont(font: "CommonFont.big")
-            .theme_contentColor(color: AUIColor("Alert.contentTextColor"))
+            .theme_contentColor(color: "CommonColor.normalTextColor50")
             .theme_contentFont(font: "CommonFont.middle")
         return alert
     }

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 
 @objc public protocol AUIMoreOperationCellDataProtocol: NSObjectProtocol {
     var index: Int {get set}
@@ -78,7 +78,7 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
     
     public func refresh(info: AUIMoreOperationCellDataProtocol) {
         self.title.text = info.operationName
-        self.icon.kf.setImage(with: URL(string: info.iconUrl), placeholder: info.placeHolder)
+        self.icon.sd_setImage(with: URL(string: info.iconUrl), placeholderImage: info.placeHolder, context: nil)
         self.redDot.isHidden = !info.showRedDot
     }
 }
