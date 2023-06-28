@@ -61,7 +61,7 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.contentView.isHidden = (item == nil)
 
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
-        self.icon.kf.setImage(with: URL(string: url)!,placeholder: UIImage(item?.giftName ?? "",.gift))
+        self.icon.kf.setImage(with: URL(string: url)!,placeholder: UIImage.aui_Image(named: item?.giftName ?? ""))
 
         self.name.text = item?.giftName
         self.displayValue.setImage(self.config.priceIcon, for: .normal)
@@ -109,7 +109,7 @@ public class AUISendGiftCellConfig: NSObject {
     
     public var priceTextColor: UIColor = UIColor(red: 0.425, green: 0.445, blue: 0.573, alpha: 0.5)
     
-    public var priceIcon: UIImage? = UIImage("dollagora",.gift)
+    public var priceIcon: UIImage? = UIImage.aui_Image(named: "dollagora")
     
 }
 

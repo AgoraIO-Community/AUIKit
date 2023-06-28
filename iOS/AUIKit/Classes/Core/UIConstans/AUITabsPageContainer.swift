@@ -65,7 +65,7 @@ public class AUITabsPageContainer: UIView {
     }()
     
     lazy var gradient: UIView = {
-        UIImageView(frame: CGRect(x: 0, y: Int(self.frame.height)-ABottomBarHeight-40, width: Int(self.frame.width), height: ABottomBarHeight+40)).backgroundColor(.clear).image(UIImage("mask_onlight",.gift))
+        UIImageView(frame: CGRect(x: 0, y: Int(self.frame.height)-ABottomBarHeight-40, width: Int(self.frame.width), height: ABottomBarHeight+40)).backgroundColor(.clear).image(UIImage.aui_Image(named: "mask_onlight"))
     }()
     
     public convenience init(frame: CGRect,barStyle: AUITabsStyle,containers: [AUITabsPageContainerCellDelegate],titles: [String]) {

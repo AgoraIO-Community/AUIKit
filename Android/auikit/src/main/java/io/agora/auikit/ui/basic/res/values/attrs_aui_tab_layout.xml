@@ -4,7 +4,7 @@
     <attr name="aui_tabLayout_appearance" format="reference"/>
     <attr name="aui_tabLayout_appearance_round" format="reference"/>
 
-    <declare-styleable name="AUiTabLayout">
+    <declare-styleable name="AUITabLayout">
         <attr name="android:background" format="color|reference" />
         <attr name="android:padding" format="dimension" />
 
@@ -47,7 +47,7 @@
 
     </declare-styleable>
 
-    <declare-styleable name="AUiTabLayoutMenu">
+    <declare-styleable name="AUITabLayoutMenu">
         <!-- 布局id -->
         <attr name="android:id" />
         <attr name="aui_tabLayoutMenu_layout" format="reference" />
@@ -95,7 +95,7 @@
         <attr name="aui_tabLayoutMenu_dotPaddingBottom" format="dimension" />
     </declare-styleable>
 
-    <style name="AUiTabLayout">
+    <style name="AUITabLayout">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:padding">0dp</item>
 
@@ -115,11 +115,11 @@
 
         <!-- ====== Menu配置 ====== -->
         <item name="aui_tabLayout_menu">@menu/aui_tab_menu</item>
-        <item name="aui_tabLayout_menu_appearance">@style/AUiTabLayoutMenu</item>
+        <item name="aui_tabLayout_menu_appearance">@style/AUITabLayoutMenu</item>
 
     </style>
 
-    <style name="AUiTabLayoutMenu">
+    <style name="AUITabLayoutMenu">
         <!-- 布局id -->
         <item name="aui_tabLayoutMenu_layout">@layout/aui_tab_layout_item</item>
 
@@ -155,17 +155,17 @@
         <item name="aui_tabLayoutMenu_dotPaddingBottom">3dp</item>
     </style>
 
-    <style name="AUiTabLayout.Round">
+    <style name="AUITabLayout.Round">
         <item name="android:background">@drawable/aui_tab_layout_round_background</item>
         <item name="android:padding">1dp</item>
         <item name="aui_tabLayout_dividerHeight">0dp</item>
         <item name="aui_tabLayout_indicator">@drawable/aui_tab_layout_round_indicator</item>
         <item name="aui_tabLayout_indicatorFullWidth">true</item>
         <item name="aui_tabLayout_indicatorGravity">stretch</item>
-        <item name="aui_tabLayout_menu_appearance">@style/AUiTabLayoutMenu.Round</item>
+        <item name="aui_tabLayout_menu_appearance">@style/AUITabLayoutMenu.Round</item>
     </style>
 
-    <style name="AUiTabLayoutMenu.Round">
+    <style name="AUITabLayoutMenu.Round">
         <item name="aui_tabLayoutMenu_titleTextColor">@color/aui_black_light</item>
         <item name="aui_tabLayoutMenu_titleTextColorSelected">@color/aui_white</item>
         <item name="aui_tabLayoutMenu_iconTintSelected">@color/aui_white</item>

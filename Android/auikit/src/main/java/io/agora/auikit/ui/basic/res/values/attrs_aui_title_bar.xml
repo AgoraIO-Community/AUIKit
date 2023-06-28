@@ -3,7 +3,7 @@
 
     <attr name="aui_titleBar_appearance" format="reference"/>
 
-    <declare-styleable name="AUiTitleBar">
+    <declare-styleable name="AUITitleBar">
         <!-- 背景色和间距 -->
         <attr name="android:background" format="reference|color"/>
         <attr name="android:padding" format="dimension"/>
@@ -42,7 +42,7 @@
 
     </declare-styleable>
 
-    <style name="AUiTitleBar">
+    <style name="AUITitleBar">
         <!-- 背景色和间距 -->
         <item name="android:background">@android:color/white</item>
         <item name="android:padding">@null</item>

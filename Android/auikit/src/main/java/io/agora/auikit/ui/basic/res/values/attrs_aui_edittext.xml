@@ -4,7 +4,7 @@
     <attr name="aui_editText_appearance" format="reference"/>
     <attr name="aui_editText_appearance_outline" format="reference"/>
 
-    <declare-styleable name="AUiEditText">
+    <declare-styleable name="AUIEditText">
 
         <!-- 小标题 -->
         <attr name="aui_edittext_title_text" format="string" />
@@ -94,7 +94,7 @@
         <attr name="aui_edittext_icon_right_tint" format="reference" />
     </declare-styleable>
 
-    <style name="AUiEditText">
+    <style name="AUIEditText">
 
         <!-- 状态 -->
         <item name="aui_edittext_status">normal</item>
@@ -160,7 +160,7 @@
 
     </style>
 
-    <style name="AUiEditText.OutLine">
+    <style name="AUIEditText.OutLine">
         <item name="aui_edittext_title_paddingBottom">0dp</item>
         <item name="aui_edittext_input_backgroundType">line</item>
         <item name="aui_edittext_input_paddingStart">6dp</item>

@@ -66,7 +66,7 @@ import UIKit
             return text
         } else {
             let attachment = NSTextAttachment()
-            attachment.image = UIImage("shaking_hand",.chat)
+            attachment.image = UIImage.aui_Image(named: "shaking_hand")
             attachment.bounds = CGRect(x: 0, y: -4.5, width: 18, height: 18)
             let attributeText = NSMutableAttributedString {
                 AttributedText(self.user.userName).foregroundColor(Color(0x8BB3FF)).font(.systemFont(ofSize: 14, weight: .semibold)).lineSpacing(5)

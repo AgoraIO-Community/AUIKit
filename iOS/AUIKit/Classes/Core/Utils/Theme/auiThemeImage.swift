@@ -16,3 +16,4 @@ public func auiThemeImage(_ keyPath: String) -> ThemeImagePicker? {
         return ThemeManager.image(for: keyPath)
     }
 }
+
