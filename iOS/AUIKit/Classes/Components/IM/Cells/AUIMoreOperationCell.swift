@@ -12,7 +12,7 @@ import SDWebImage
     var index: Int {get set}
 
     var iconUrl: String {get set}
-    var placeHolder: UIImage {get set}
+    var placeHolder: UIImage? {get set}
     var operationName: String {get set}
     var showRedDot: Bool {get set}
 }
@@ -23,7 +23,7 @@ import SDWebImage
     
     public var iconUrl: String = ""
     
-    public var placeHolder: UIImage = UIImage.aui_Image(named: "hands")!
+    public var placeHolder: UIImage? = UIImage.aui_Image(named: "hands")
     
     public var operationName: String = "Apply List"
     
