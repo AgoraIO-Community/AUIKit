@@ -15,5 +15,6 @@
     <string name="aui_micseat_dialog_unmute_audio">取消静音</string>
     <string name="aui_micseat_dialog_mute_video">关闭视频</string>
     <string name="aui_micseat_dialog_unmute_video">打开视频</string>
+    <string name="aui_micseat_dialog_invited">邀请</string>
 
 </resources>

@@ -107,6 +107,12 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
             }
             bottomSheetDialog.dismiss();
         });
+        contentView.setInvitedClickListener(v -> {
+            if (actionDelegate != null) {
+                actionDelegate.onClickInvited(index);
+            }
+            bottomSheetDialog.dismiss();
+        });
         if (actionDelegate != null) {
             if (!actionDelegate.onClickSeat(index, contentView)) {
                 return;

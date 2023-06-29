@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_gift_sent">Sent</string>
+    <string name="voice_chatroom_gift_title">Gifts</string>
+    <string name="voice_gift_dialog_action">Action</string>
+</resources>

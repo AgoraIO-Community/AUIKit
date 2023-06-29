@@ -7,7 +7,8 @@ data class CreateRoomReq(
     val userId: String,
     val userName: String,
     val userAvatar: String,
-    val micSeatCount: Int
+    val micSeatCount: Int,
+    val micSeatStyle:String
 )
 data class CreateRoomResp(
     val roomId: String,
@@ -32,3 +33,16 @@ data class RoomListResp(
     val count: Int,
     val list: List<AUIRoomInfo>
 )
+
+data class CreateChatRoomReq(
+    val roomId : String,
+    val userId : String,
+    val userName: String,
+    val description:String,
+    val custom : String
+)
+
+data class CreateChatRoomRsp(
+    val chatRoomId : String,
+)
+

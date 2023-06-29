@@ -88,6 +88,12 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
     @Nullable
     AUIMicSeatInfo getMicSeatInfo(int seatIndex);
 
+    /**
+     * 点击邀请
+     * @param index 麦位号
+     */
+    void onClickInvited(int index);
+
     interface AUIMicSeatRespDelegate {
 
         /**
@@ -141,5 +147,7 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
          */
         default void onSeatClose(int seatIndex, boolean isClose) {
         }
+
+        default void onShowInvited(int index){}
     }
 }

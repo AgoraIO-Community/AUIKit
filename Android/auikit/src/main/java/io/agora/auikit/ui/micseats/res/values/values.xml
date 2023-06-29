@@ -15,5 +15,6 @@
     <string name="aui_micseat_dialog_unmute_audio">UnMuteAudio</string>
     <string name="aui_micseat_dialog_mute_video">MuteVideo</string>
     <string name="aui_micseat_dialog_unmute_video">UnMuteVideo</string>
+    <string name="aui_micseat_dialog_invited">Invite</string>
 
 </resources>

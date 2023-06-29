@@ -77,6 +77,8 @@ public interface IMicSeatsView {
          * @param mute 是否禁视频
          */
         void onClickMuteVideo(int index, boolean mute);
+
+        void onClickInvited(int index);
     }
 
 }

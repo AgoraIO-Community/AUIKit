@@ -101,6 +101,22 @@
             android:visibility="gone" />
 
         <TextView
+            android:id="@+id/tv_invited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/aui_micSeatDialog_buttonBackground"
+            android:layout_marginHorizontal="?attr/aui_micSeatDialog_buttonMarginHorizontal"
+            android:layout_marginVertical="?attr/aui_micSeatDialog_buttonMarginVertical"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatDialog_buttonPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatDialog_buttonPaddingVertical"
+            android:text="@string/aui_micseat_dialog_invited"
+            android:textColor="?attr/aui_micSeatDialog_buttonNormalTextColor"
+            android:textSize="?attr/aui_micSeatDialog_buttonTextSize"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tv_leave_seat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,7 +195,6 @@
             android:textColor="?attr/aui_micSeatDialog_buttonAbandonTextColor"
             android:textSize="?attr/aui_micSeatDialog_buttonTextSize"
             android:visibility="gone" />
-
 
     </LinearLayout>
 

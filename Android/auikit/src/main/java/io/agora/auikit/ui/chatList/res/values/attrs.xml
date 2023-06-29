@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--================= 主题属性 =================-->
+    <attr name="aui_barrage_appearance" format="reference"/>
+
+    <declare-styleable name="voice_SubtitleView">
+        <attr name="voice_customScrollSpeed">
+            <enum name="fast" value="9" />
+            <enum name="medium" value="6" />
+            <enum name="slow" value="3" />
+        </attr>
+        <attr name="voice_setSubtitleBgResource" format="reference"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="AUIBarrageView">
+        <attr name="aui_barrage_appearance"/>
+
+        <attr name="aui_barrage_normal_title_tag_icon" format="reference"/>
+        <attr name="aui_barrage_normal_title_TextColor" format="reference|color"/>
+        <attr name="aui_barrage_normal_content_TextColor" format="reference|color"/>
+        <attr name="aui_barrage_system_title_TextColor" format="reference|color"/>
+        <attr name="aui_barrage_system_content_TextColor" format="reference|color"/>
+        <attr name="aui_barrage_system_endIcon_resource" format="reference|color"/>
+
+    </declare-styleable>
+
+</resources>

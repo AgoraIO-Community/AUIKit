@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_room_apply_accept">同意申请</string>
+    <string name="aui_room_invited_action">邀请上麦</string>
+    <string name="aui_room_invited_list">邀请列表</string>
+    <string name="aui_room_apply_list">申请列表</string>
+</resources>
