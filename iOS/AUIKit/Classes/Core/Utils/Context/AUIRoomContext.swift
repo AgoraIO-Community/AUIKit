@@ -11,7 +11,7 @@ import SwiftTheme
 open class AUIRoomContext: NSObject {
     public static let shared: AUIRoomContext = AUIRoomContext()
     
-    public var themeNames = ["UIKit", "KTV"]
+    public var themeNames = ["Light", "Dark"]
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {
@@ -53,7 +53,7 @@ open class AUIRoomContext: NSObject {
     }
     
     
-    var themeIdx = 0
+    public private(set) var themeIdx = 0
     
     
     public private(set) var themeResourcePaths: Set<URL> = Set()

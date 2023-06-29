@@ -176,7 +176,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     func convertText(text: NSAttributedString?, key: String) -> NSAttributedString {
         let attribute = NSMutableAttributedString(attributedString: text!)
         let attachment = NSTextAttachment()
-        attachment.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage(key, .chat):AUIChatEmojiManager.shared.emojiMap[key]
+        attachment.image = AUIChatEmojiManager.shared.emojiMap.isEmpty ? UIImage.aui_Image(named: key):AUIChatEmojiManager.shared.emojiMap[key]
         attachment.bounds = CGRect(x: 0, y: -3.5, width: 18, height: 18)
         let imageText = NSMutableAttributedString(attachment: attachment)
         if #available(iOS 11.0, *) {

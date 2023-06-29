@@ -43,7 +43,7 @@ public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionView
     }()
 
     lazy var giftList: UICollectionView = {
-        UICollectionView(frame: CGRect(x: 15, y: 10, width: AScreenWidth - 30, height: self.frame.height), collectionViewLayout: self.flowLayout).registerCell(AUISendGiftCell.self, forCellReuseIdentifier: "AUISendGiftCell").delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).backgroundColor(.white).showsVerticalScrollIndicator(false).backgroundColor(.clear).registerView(UICollectionReusableView.self, UICollectionView.elementKindSectionFooter , "AUIGiftsFooter")
+        UICollectionView(frame: CGRect(x: 15, y: 10, width: AScreenWidth - 30, height: self.frame.height), collectionViewLayout: self.flowLayout).registerCell(AUISendGiftCell.self, forCellReuseIdentifier: "AUISendGiftCell").delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).backgroundColor(.clear).showsVerticalScrollIndicator(false).backgroundColor(.clear).registerView(UICollectionReusableView.self, UICollectionView.elementKindSectionFooter , "AUIGiftsFooter")
     }()
 
     override public init(frame: CGRect) {
@@ -59,7 +59,7 @@ public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionView
         self.giftList.isPagingEnabled = true
         self.giftList.alwaysBounceHorizontal = true
         
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
     }
 
     @available(*, unavailable)
