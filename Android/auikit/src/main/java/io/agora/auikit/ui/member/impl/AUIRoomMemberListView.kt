@@ -3,6 +3,7 @@ package io.agora.auikit.ui.member.impl
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.DiffUtil
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import io.agora.auikit.R
 import io.agora.auikit.databinding.AuiMemberListItemBinding
 import io.agora.auikit.databinding.AuiMemberListViewLayoutBinding
 import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.service.IAUIMicSeatService
 import io.agora.auikit.service.IAUIUserService
+import io.agora.auikit.utils.BindingViewHolder
 
 private class MemberItemModel (
     val user: AUIUserInfo,
@@ -32,8 +35,7 @@ private class MemberItemModel (
     }
 }
 
-class AUIRoomMemberListView : FrameLayout,
-    IAUIUserService.AUIUserRespDelegate,
+class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
     IAUIMicSeatService.AUIMicSeatRespDelegate {
 
     private val mBinding by lazy { AuiMemberListViewLayoutBinding.inflate(
@@ -42,7 +44,10 @@ class AUIRoomMemberListView : FrameLayout,
         )
     ) }
 
-    private lateinit var listAdapter: ListAdapter<MemberItemModel, io.agora.auikit.utils.BindingViewHolder<AuiMemberListItemBinding>>
+    private lateinit var listAdapter: ListAdapter<MemberItemModel, BindingViewHolder<AuiMemberListItemBinding>>
+    private var listener:ActionListener?=null
+    private var isOwner:Boolean?=false
+    private var ownerId:String? = ""
 
     constructor(context: Context) : this(context, null)
 
@@ -60,7 +65,7 @@ class AUIRoomMemberListView : FrameLayout,
     private fun initView() {
         mBinding.rvUserList.layoutManager = LinearLayoutManager(context)
         listAdapter =
-            object : ListAdapter<MemberItemModel, io.agora.auikit.utils.BindingViewHolder<AuiMemberListItemBinding>>(object :
+            object : ListAdapter<MemberItemModel, BindingViewHolder<AuiMemberListItemBinding>>(object :
                 DiffUtil.ItemCallback<MemberItemModel>() {
                 override fun areItemsTheSame(oldItem: MemberItemModel, newItem: MemberItemModel) =
                     oldItem.user.userId == newItem.user.userId
@@ -75,18 +80,28 @@ class AUIRoomMemberListView : FrameLayout,
                     parent: ViewGroup,
                     viewType: Int
                 ) =
-                    io.agora.auikit.utils.BindingViewHolder(
+                    BindingViewHolder(
                         AuiMemberListItemBinding.inflate(
                             LayoutInflater.from(parent.context)
                         )
                     )
 
                 override fun onBindViewHolder(
-                    holder: io.agora.auikit.utils.BindingViewHolder<AuiMemberListItemBinding>,
+                    holder: BindingViewHolder<AuiMemberListItemBinding>,
                     position: Int
                 ) {
                     val item = getItem(position)
                     holder.binding.tvUserName.text = item.user.userName
+
+                    holder.binding.tvKick.setText(context.getString(R.string.aui_member_item_kick))
+                    holder.binding.tvKick.setOnClickListener{
+                        listener?.onKickClick(it,position,item.user)
+                    }
+
+                    if (isOwner != true || item.user.userId == ownerId){
+                        holder.binding.tvKick.visibility = GONE
+                    }
+
                     if (item.micIndex != null) {
                         holder.binding.tvUserInfo.visibility = VISIBLE
                         holder.binding.tvUserInfo.text = item.micString()
@@ -111,5 +126,18 @@ class AUIRoomMemberListView : FrameLayout,
             temp.add(item)
         }
         listAdapter.submitList(temp)
+    }
+
+    fun setIsOwner(isOwner:Boolean,ownerId:String?){
+        this.isOwner = isOwner
+        this.ownerId = ownerId
+    }
+
+    interface ActionListener{
+        fun onKickClick(view: View, position:Int, user: AUIUserInfo){}
+    }
+
+    fun setMemberActionListener(listener:ActionListener){
+        this.listener = listener
     }
 }

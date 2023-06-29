@@ -238,6 +238,12 @@ class AUIMicSeatServiceImpl(
         })
     }
 
+    override fun onClickInvited(index: Int) {
+        delegateHelper.notifyDelegate {
+            it.onShowInvited(index)
+        }
+    }
+
     override fun getMicSeatInfo(seatIndex: Int): AUIMicSeatInfo? {
         return micSeats[seatIndex]
     }

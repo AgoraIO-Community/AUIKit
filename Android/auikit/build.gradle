@@ -85,4 +85,7 @@ dependencies {
     // Ui Libraries
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.github.AgoraIO-Community:LyricsView:1.1.1-beta.8'
+
+    //agora chat
+    api 'io.agora.rtc:chat-sdk:1.1.0'
 }

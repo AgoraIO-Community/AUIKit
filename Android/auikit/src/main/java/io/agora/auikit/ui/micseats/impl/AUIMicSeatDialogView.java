@@ -32,6 +32,7 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
     private TextView tvLockSeat;
     private TextView tvMuteAudio;
     private TextView tvMuteVideo;
+    private TextView tvInvited;
     private boolean mMuteAudio;
     private boolean mMuteVideo;
     private boolean mSeatClosed;
@@ -70,6 +71,7 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         tvLockSeat = findViewById(R.id.tv_lock_seat);
         tvMuteAudio = findViewById(R.id.tv_mute_audio);
         tvMuteVideo = findViewById(R.id.tv_mute_video);
+        tvInvited = findViewById(R.id.tv_invited);
 
         // 用户信息位置配置
         switch (userGravity) {
@@ -100,7 +102,9 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         }
     }
 
-
+    public void addInvite(){
+        tvInvited.setVisibility(View.VISIBLE);
+    }
     public void addMuteAudio(boolean isMute) {
         mMuteAudio = isMute;
         tvMuteAudio.setVisibility(View.VISIBLE);
@@ -163,6 +167,10 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
 
     public void setCloseSeatClickListener(View.OnClickListener clickListener){
         tvLockSeat.setOnClickListener(clickListener);
+    }
+
+    public void setInvitedClickListener(View.OnClickListener clickListener){
+        tvInvited.setOnClickListener(clickListener);
     }
 
     public boolean isSeatClosed() {

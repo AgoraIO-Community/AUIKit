@@ -13,21 +13,6 @@ import io.agora.auikit.service.callback.AUIRoomListCallback;
  * 房间Service抽象协议
  */
 public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRoomManagerRespDelegate> {
-
-    /**
-     * 绑定响应
-     *
-     * @param delegate 需要回调的对象
-     */
-    void bindRespDelegate(@NonNull AUIRoomManagerRespDelegate delegate);
-
-    /**
-     * 解绑响应
-     *
-     * @param delegate 需要回调的对象
-     */
-    void unbindRespDelegate(@NonNull AUIRoomManagerRespDelegate delegate);
-
     /**
      * 创建房间（房主调用），若房间不存在，系统将自动创建一个新房间
      *
@@ -69,6 +54,22 @@ public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRo
      */
     void getRoomInfoList(@Nullable Long lastCreateTime, int pageSize, @Nullable AUIRoomListCallback callback);
 
+    /**
+     * 更新房间公告
+     * @param roomId    房间id
+     * @param content   公告信息
+     * @param callback  操作完成回调
+     */
+    void updateAnnouncementInfo(String roomId,String content,AUICallback callback);
+
+    /**
+     * 把用户提出房间
+     * @param roomId    房间id
+     * @param userId    需要踢出房间的用户id
+     * @param callback  操作完成回调
+     */
+    void kickUser(String roomId,int userId,AUICallback callback);
+
     interface AUIRoomManagerRespDelegate {
 
         /**
@@ -87,6 +88,15 @@ public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRo
          * @param roomInfo 房间信息
          */
         default void onRoomInfoChange(@NonNull String roomId, @NonNull AUIRoomInfo roomInfo) {
+
+        }
+
+        /**
+         * 房间公告被更新
+         * @param roomId    房间id
+         * @param content   公告信息
+         */
+        default void onAnnouncementDidChange(String roomId,String content){
 
         }
     }

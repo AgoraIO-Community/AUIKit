@@ -1,5 +1,6 @@
 package io.agora.auikit.service.imp
 
+import android.util.Log
 import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.service.IAUIUserService

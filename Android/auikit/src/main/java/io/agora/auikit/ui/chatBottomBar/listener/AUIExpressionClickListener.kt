@@ -1,0 +1,8 @@
+package io.agora.auikit.ui.chatBottomBar.listener
+
+import io.agora.auikit.model.AUIExpressionIcon
+
+interface AUIExpressionClickListener {
+    fun onDeleteImageClicked()
+    fun onExpressionClicked(emojiIcon: AUIExpressionIcon?)
+}

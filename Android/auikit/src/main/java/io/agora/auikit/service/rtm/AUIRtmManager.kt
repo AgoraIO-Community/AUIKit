@@ -1,7 +1,12 @@
 package io.agora.auikit.service.rtm
 
 import android.content.Context
+import android.util.Log
+import io.agora.auikit.model.AUIGiftEntity
+import io.agora.auikit.service.callback.AUICallback
+import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.utils.AUILogger
+import io.agora.auikit.utils.GsonTools
 import io.agora.rtm.ErrorInfo
 import io.agora.rtm.JoinChannelOptions
 import io.agora.rtm.Metadata
@@ -17,13 +22,14 @@ import io.agora.rtm.StateItem
 import io.agora.rtm.StreamChannel
 import io.agora.rtm.SubscribeOptions
 import io.agora.rtm.WhoNowResult
+import org.json.JSONObject
 
 class AUIRtmManager(
     context: Context,
     private val rtmClient: RtmClient,
 ) {
 
-    public val proxy = AUIRtmMsgProxy()
+    val proxy = AUIRtmMsgProxy()
     private val rtmStreamChannelMap = mutableMapOf<String, StreamChannel>()
     private val logger = AUILogger(AUILogger.Config(context, "AUIRtmManager"))
     @Volatile
@@ -102,8 +108,8 @@ class AUIRtmManager(
         proxy.unsubscribeUser(delegate)
     }
 
-    fun subscribe(channelName: String, token: String, completion: (AUIRtmException?) -> Unit) {
-        when (kChannelType) {
+    fun subscribe(channelType:RtmChannelType,channelName: String, token: String, completion: (AUIRtmException?) -> Unit) {
+        when (channelType) {
             RtmChannelType.MESSAGE -> {
                 val option = SubscribeOptions()
                 option.withMetadata = true
@@ -167,9 +173,9 @@ class AUIRtmManager(
         }
     }
 
-    fun unSubscribe(channelName: String) {
+    fun unSubscribe(channelType:RtmChannelType,channelName: String) {
         proxy.cleanCache(channelName)
-        when (kChannelType) {
+        when (channelType) {
             RtmChannelType.MESSAGE -> {
                 rtmClient.unsubscribe(channelName)
             }
@@ -486,6 +492,23 @@ class AUIRtmManager(
 
             override fun onFailure(errorInfo: ErrorInfo?) {
 
+            }
+        })
+    }
+
+    fun sendGiftMetadata(channelName: String, giftEntity: AUIGiftEntity, callback: AUICallback){
+        val gift = GsonTools.beanToString(giftEntity)
+        var giftJson = JSONObject()
+        giftJson.put("messageType","AUIChatRoomGift")
+        giftJson.put("messageInfo",gift)
+        rtmClient.publish(channelName,giftJson.toString(),null,object: ResultCallback<Void>{
+            override fun onSuccess(responseInfo: Void?) {
+                giftJson = JSONObject()
+                callback.onResult(null)
+            }
+
+            override fun onFailure(errorInfo: ErrorInfo?) {
+                callback.onResult(errorInfo?.errorCode?.let { AUIException(it,errorInfo.errorReason) })
             }
         })
     }

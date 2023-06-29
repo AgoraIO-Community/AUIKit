@@ -22,4 +22,7 @@ interface RoomInterface {
 
     @POST("room/leave")
     fun leaveRoom(@Body req: RoomUserReq): Call<CommonResp<String>>
+
+    @POST("chatRoom/rooms/create")
+    fun createChatRoom(@Body req: CreateChatRoomReq): Call<CommonResp<CreateChatRoomRsp>>
 }

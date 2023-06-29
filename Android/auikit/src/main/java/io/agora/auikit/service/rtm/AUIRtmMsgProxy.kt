@@ -56,7 +56,7 @@ class AUIRtmMsgProxy : RtmEventListener {
     }
 
     fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
-        val key = "${channelName}_${itemKey}"
+        val key = "${channelName}__${itemKey}"
         val delegates = msgDelegates[key] ?: return
         delegates.remove(delegate)
     }
@@ -89,6 +89,7 @@ class AUIRtmMsgProxy : RtmEventListener {
         event ?: return
         if (event.data.metadataItems.isEmpty()) {
             val delegateKey = "${event.target}__"
+            Log.d("apex","onStorageEvent $delegateKey")
             msgDelegates[delegateKey]?.forEach { delegate ->
                 delegate.onMsgRecvEmpty(event.target)
             }

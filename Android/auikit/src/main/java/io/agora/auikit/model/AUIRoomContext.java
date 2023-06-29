@@ -1,5 +1,7 @@
 package io.agora.auikit.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -60,6 +62,14 @@ public class AUIRoomContext {
 
     public void cleanRoom(String channelName){
         roomInfoMap.remove(channelName);
+    }
+
+    public String getRoomOwner(String channelName){
+        AUIRoomInfo roomInfo = roomInfoMap.get(channelName);
+        if(roomInfo == null || roomInfo.roomOwner == null){
+            return "";
+        }
+        return roomInfo.roomOwner.userId;
     }
 
 }

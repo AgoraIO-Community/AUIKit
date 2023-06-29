@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_gift_sent">赠送 </string>
+    <string name="voice_chatroom_gift_title">打赏</string>
+    <string name="voice_gift_dialog_action">Action</string>
+</resources>

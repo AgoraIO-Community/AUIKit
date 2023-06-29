@@ -51,4 +51,9 @@ public interface IMicSeatDialogView {
      */
     void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo);
 
+    /**
+     * 添加邀请
+     */
+    void addInvite();
+
 }
