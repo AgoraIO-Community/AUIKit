@@ -8,6 +8,7 @@ import io.agora.rtm.RtmConstants
 import io.agora.rtm.RtmEventListener
 import io.agora.rtm.StorageEvent
 import io.agora.rtm.TopicEvent
+import org.json.JSONObject
 
 interface AUIRtmErrorProxyDelegate {
 
@@ -164,7 +165,15 @@ class AUIRtmMsgProxy : RtmEventListener {
 
 
     override fun onMessageEvent(event: MessageEvent?) {
+        event ?: return
+        val str = event.message?.let { String(it) }
+        val json = str?.let { JSONObject(it) }
+        val messageType = json?.get("messageType").toString()
         originEventListeners?.onMessageEvent(event)
+        val delegateKey = "${event.channelName}__$messageType"
+        msgDelegates[delegateKey]?.forEach { delegate ->
+            str?.let { delegate.onMsgDidChanged(event.channelName, messageType, it) }
+        }
     }
 
 
