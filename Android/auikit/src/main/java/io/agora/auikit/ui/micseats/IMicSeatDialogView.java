@@ -50,13 +50,4 @@ public interface IMicSeatDialogView {
      * @param userInfo 用户信息
      */
     void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo);
-<<<<<<< HEAD
-=======
-
-    /**
-     * 添加邀请
-     */
-    void addInvite();
->>>>>>> dev/voicechat_android
-
 }

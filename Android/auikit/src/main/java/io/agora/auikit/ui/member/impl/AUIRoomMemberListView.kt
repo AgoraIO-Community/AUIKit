@@ -17,11 +17,7 @@ import io.agora.auikit.databinding.AuiMemberListViewLayoutBinding
 import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.service.IAUIMicSeatService
 import io.agora.auikit.service.IAUIUserService
-<<<<<<< HEAD
-=======
 import io.agora.auikit.utils.BindingViewHolder
->>>>>>> dev/voicechat_android
-
 private class MemberItemModel (
     val user: AUIUserInfo,
     val micIndex: Int?){
@@ -37,13 +33,7 @@ private class MemberItemModel (
         }
     }
 }
-
-<<<<<<< HEAD
-class AUIRoomMemberListView : FrameLayout,
-    IAUIUserService.AUIUserRespDelegate,
-=======
 class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
->>>>>>> dev/voicechat_android
     IAUIMicSeatService.AUIMicSeatRespDelegate {
 
     private val mBinding by lazy { AuiMemberListViewLayoutBinding.inflate(
