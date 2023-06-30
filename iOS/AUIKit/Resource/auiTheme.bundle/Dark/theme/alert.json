@@ -1,5 +1,12 @@
 {
   "Alert": {
-      "leftBorderColor": "#c3c5fe",
+      "backgroundColor": "CommonColor.black",
+      "leftBackgroundColor": "#5E686E",
+      "leftTextColor": "#F1F2F3",
+      "leftBorderColor": "#F1F2F3",
+      "rightBackgroundColor": "CommonColor.primary",
+      "rightTextColor": "#ffffff",
+      "titleColor": "#F9FAFA",
+      "contentTextColor": "#F9FAFA"
   }
 }

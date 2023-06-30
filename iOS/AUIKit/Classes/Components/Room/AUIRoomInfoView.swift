@@ -53,9 +53,8 @@ public final class AUIRoomInfoView: UIView {
     }
     
     private func _createSubviews(){
-        self.theme_backgroundColor = "Room.roomInfoBackgroundColor"
+        self.theme_backgroundColor = AUIColor("Room.membersMoreBgColor")
         layer.masksToBounds = true
-        
         addSubview(headImageView)
         addSubview(roomNameLabel)
         addSubview(roomIdLabel)

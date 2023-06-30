@@ -391,13 +391,13 @@ extension AUIAlertView {
     public class func theme_defaultAlert() -> AUIAlertView {
         let alert = AUIAlertView()
             .theme_background(color: "CommonColor.black")
-            .theme_leftButtonBackground(color: "CommonColor.black20")
-            .theme_leftButton(color: "Alert.leftBorderColor")
-            .theme_leftButtonBorder(color: "Alert.leftBorderColor")
+            .theme_leftButtonBackground(color: "Alert.leftBackgroundColor")
+            .theme_leftButton(color: "Alert.leftTextColor")
+            .theme_leftButtonBorder(color: "Alert.leftBorderColor").theme_rightButton(color: "Alert.rightTextColor")
             .theme_rightButtonBackground(color: "CommonColor.primary")
-            .theme_titleColor(color: "CommonColor.normalTextColor")
+            .theme_titleColor(color: "Alert.titleColor")
             .theme_titleFont(font: "CommonFont.big")
-            .theme_contentColor(color: "CommonColor.normalTextColor50")
+            .theme_contentColor(color: "Alert.contentTextColor")
             .theme_contentFont(font: "CommonFont.middle")
         return alert
     }
