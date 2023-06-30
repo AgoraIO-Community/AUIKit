@@ -101,9 +101,9 @@ import UIKit
         self.userList = users
         self.tableView.reloadData()
         if self.userList.count == 0 {
-            self.bringSubviewToFront(self.empty)
+            self.addSubview(self.empty)
         } else {
-            self.sendSubviewToBack(self.empty)
+            self.empty.removeFromSuperview()
         }
     }
     
@@ -113,9 +113,9 @@ import UIKit
         })
         self.tableView.reloadData()
         if self.userList.count == 0 {
-            self.bringSubviewToFront(self.empty)
+            self.addSubview(self.empty)
         } else {
-            self.sendSubviewToBack(self.empty)
+            self.empty.removeFromSuperview()
         }
     }
     
@@ -230,9 +230,9 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         self.userList = users
         self.tableView.reloadData()
         if self.userList.count == 0 {
-            self.bringSubviewToFront(self.empty)
+            self.addSubview(self.empty)
         } else {
-            self.sendSubviewToBack(self.empty)
+            self.empty.removeFromSuperview()
         }
     }
     
