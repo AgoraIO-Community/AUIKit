@@ -22,7 +22,7 @@ public class AUIEmojiView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }()
 
     lazy var emojiList: UICollectionView = {
-        UICollectionView(frame: CGRect(x: 0, y: 10, width: AScreenWidth, height: self.frame.height - 10), collectionViewLayout: self.flowLayout).registerCell(AUIChatEmojiCell.self, forCellReuseIdentifier: "AUIChatEmojiCell").dataSource(self).delegate(self).backgroundColor(.white)
+        UICollectionView(frame: CGRect(x: 0, y: 10, width: AScreenWidth, height: self.frame.height - 10), collectionViewLayout: self.flowLayout).registerCell(AUIChatEmojiCell.self, forCellReuseIdentifier: "AUIChatEmojiCell").dataSource(self).delegate(self).backgroundColor(.clear)
     }()
 
     lazy var separaLine: UIView = {
@@ -30,7 +30,7 @@ public class AUIEmojiView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }()
 
     @objc public lazy var deleteEmoji: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: self.frame.width - 48, y: self.frame.height - 56, width: 40, height: 40)).addTargetFor(self, action: #selector(deleteAction), for: .touchUpInside).backgroundColor(.white).cornerRadius(16)
+        UIButton(type: .custom).frame(CGRect(x: self.frame.width - 48, y: self.frame.height - 56, width: 40, height: 40)).addTargetFor(self, action: #selector(deleteAction), for: .touchUpInside).theme_backgroundColor(color: "InputBar.emojiOperationColor").cornerRadius(16)
     }()
 
     override public init(frame: CGRect) {
@@ -40,6 +40,7 @@ public class AUIEmojiView: UIView, UICollectionViewDelegate, UICollectionViewDat
         self.deleteEmoji.setImage(UIImage.aui_Image(named: "backspace"), for: .disabled)
         self.deleteEmoji.isEnabled = false
         self.deleteEmoji.isUserInteractionEnabled = false
+        self.theme_backgroundColor = "InputBar.backgroundColor"
     }
 
     @available(*, unavailable)

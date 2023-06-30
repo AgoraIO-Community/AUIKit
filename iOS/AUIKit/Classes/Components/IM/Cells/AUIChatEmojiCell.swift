@@ -13,6 +13,7 @@ public class AUIChatEmojiCell: UICollectionViewCell {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = .clear
+        self.backgroundColor = .clear
         self.contentView.addSubview(self.icon)
     }
 

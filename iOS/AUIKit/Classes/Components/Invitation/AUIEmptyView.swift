@@ -25,6 +25,7 @@ public class AUIEmptyView: UIView {
         self.init(frame: frame)
         if image != nil {
             emptyImage = image!
+            self.image.image = image
         }
         self.addSubViews([self.image, self.text])
         self.image.center = self.center

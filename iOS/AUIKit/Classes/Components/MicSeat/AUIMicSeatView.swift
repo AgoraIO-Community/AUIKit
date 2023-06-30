@@ -33,6 +33,8 @@ private let kMicSeatCellId = "kMicSeatCellId"
 /// 麦位管理组件
 public class AUIMicSeatView: UIView,IAUIMicSeatView {
     
+    public var touchOnView: (() -> ())?
+    
     public weak var uiDelegate: AUIMicSeatViewDelegate?
         
     public lazy var collectionView: UICollectionView = {
@@ -70,7 +72,10 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
         collectionView.frame = bounds
     }
     
-   
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        self.touchOnView?()
+        return super.hitTest(point, with: event)
+    }
     
     public func updateMicVolume(index: Int,volume: Int) {
         let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? AUIMicSeatItemCell

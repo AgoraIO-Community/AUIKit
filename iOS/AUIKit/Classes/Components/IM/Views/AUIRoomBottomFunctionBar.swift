@@ -29,7 +29,7 @@ public class AUIRoomBottomFunctionBar: UIView {
     }()
 
     public lazy var toolBar: UICollectionView = {
-        UICollectionView(frame: CGRect(x: self.frame.width - (40 * CGFloat(self.datas.count)) - (CGFloat(self.datas.count) - 1) * 8 - 15 - 10, y: 0, width: 40 * CGFloat(self.datas.count) + (CGFloat(self.datas.count) - 1) * 8 + 25, height: self.frame.height), collectionViewLayout: self.flowLayout).delegate(self).dataSource(self).backgroundColor(.clear).registerCell(AUIChatBarFunctionCell.self, forCellReuseIdentifier: "AUIChatBarFunctionCell").showsVerticalScrollIndicator(false).showsHorizontalScrollIndicator(false)
+        UICollectionView(frame: CGRect(x: self.frame.width - (40 * CGFloat(self.datas.count)) - (CGFloat(self.datas.count) - 1) * 8 - 25 - 10, y: 0, width: 40 * CGFloat(self.datas.count) + (CGFloat(self.datas.count) - 1) * 8 + 25, height: self.frame.height), collectionViewLayout: self.flowLayout).delegate(self).dataSource(self).backgroundColor(.clear).registerCell(AUIChatBarFunctionCell.self, forCellReuseIdentifier: "AUIChatBarFunctionCell").showsVerticalScrollIndicator(false).showsHorizontalScrollIndicator(false)
     }()
 
     override public init(frame: CGRect) {
