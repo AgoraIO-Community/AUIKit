@@ -1,12 +1,12 @@
 {
     "Barrage": {
-        "containerBackgroundColor": "#00000057",
+        "containerBackgroundColor": "#FFFFFF33",
         "containerLayerWidth": 1,
         "containerLayerColor": "#009EFF",
         "containerLayerCornerRadius": 12
     },
     "BottomBar": {
-        "containerBackgroundColor": "#00000057",
+        "containerBackgroundColor": "#FFFFFF33",
     },
     "InputBar": {
         "backgroundColor": "#FFFFFF",
