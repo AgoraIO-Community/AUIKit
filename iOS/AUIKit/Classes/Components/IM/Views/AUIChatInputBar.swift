@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftTheme
 
 public class AUIChatInputBar: UIView, UITextViewDelegate {
     
@@ -16,15 +17,15 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     public var changeEmojiClosure: ((Bool) -> Void)?
 
     lazy var rightView: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: 4.5, width: 27, height: 27)).addTargetFor(self, action: #selector(changeToEmoji), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: 0, y: 4.5, width: 27, height: 27)).addTargetFor(self, action: #selector(changeToEmoji), for: .touchUpInside).backgroundColor(.clear)
     }()
 
     lazy var inputContainer: UIView = {
-        UIView(frame: CGRect(x: 15, y: 13, width: AScreenWidth - 110, height: 36)).cornerRadius(18).layerProperties(UIColor(0xE4E3ED), 1).backgroundColor(self.config.backgroundColor)
+        UIView(frame: CGRect(x: 15, y: 13, width: AScreenWidth - 110, height: 36)).cornerRadius(18).theme_backgroundColor(color: "InputBar.inputBackgroundColor")
     }()
 
     public lazy var inputField: PlaceHolderTextView = {
-        PlaceHolderTextView(frame: CGRect(x: 20, y: 14, width: AScreenWidth - 146, height: 34)).delegate(self).font(.systemFont(ofSize: 16, weight: .regular)).backgroundColor(.clear).textColor(.darkText)
+        PlaceHolderTextView(frame: CGRect(x: 20, y: 14, width: AScreenWidth - 146, height: 34)).delegate(self).font(.systemFont(ofSize: 16, weight: .regular)).backgroundColor(.clear).theme_textColor(color: "InputBar.textColor")
     }()
 
     lazy var send: UIButton = {
@@ -41,7 +42,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     
     var config = AUIChatInputBarConfig()
 
-    let line = UIView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 1)).backgroundColor(.white)
+    let line = UIView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 1)).backgroundColor(.clear)
 
     var emoji: AUIEmojiView?
 
@@ -51,10 +52,9 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     
     @objc public convenience init(frame: CGRect,config: AUIChatInputBarConfig) {
         self.init(frame: frame)
-        self.theme_backgroundColor = "InputBar.backgroundColor"
         self.config = config
-        self.rightView.setImage(config.emojiInputIcon, for: .normal)
-        self.rightView.setImage(config.textInputIcon, for: .selected)
+        self.rightView.theme_setImage(auiThemeImage("InputBar.emojiKeyboard"), forState: .normal)
+        self.rightView.theme_setImage(auiThemeImage("InputBar.textKeyboard"), forState: .selected)
         self.addSubViews([self.inputContainer, self.inputField, self.send, self.line])
         self.inputField.theme_tintColor = "InputBar.cursorColor"
         self.inputField.placeHolder = config.placeHolder
@@ -64,12 +64,12 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         orgContainerInset.left = 6
         self.inputField.textContainerInset = orgContainerInset
 
-        let view = UIView(frame: CGRect(x: self.inputContainer.frame.width - self.inputField.frame.height, y: 0, width: self.inputField.frame.height, height: self.inputField.frame.height)).backgroundColor(.white)
+        let view = UIView(frame: CGRect(x: self.inputContainer.frame.width - self.inputField.frame.height, y: 0, width: self.inputField.frame.height, height: self.inputField.frame.height)).backgroundColor(.clear)
         view.addSubview(self.rightView)
         self.inputContainer.addSubview(view)
-        self.createThemeGradient("InputBar.gradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIApplication.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIApplication.keyboardWillHideNotification, object: nil)
+        self.theme_backgroundColor = "InputBar.backgroundColor"
     }
 
     deinit {
@@ -137,7 +137,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
         self.frame = CGRect(x: 0, y: self.frame.origin.y, width: AScreenWidth, height: self.keyboardHeight + 5 + 60)
-        let emoji = AUIEmojiView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124)
+        let emoji = AUIEmojiView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124).theme_backgroundColor(color: "InputBar.backgroundColor")
         self.emoji = emoji
         emoji.emojiClosure = { [weak self] in
             guard let self = self else { return }
@@ -186,6 +186,10 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         }
         attribute.append(imageText)
         return attribute
+    }
+    
+    public func dismissKeyboard() {
+        self.inputField.resignFirstResponder()
     }
 }
 

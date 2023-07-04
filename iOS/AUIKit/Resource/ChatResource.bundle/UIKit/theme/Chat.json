@@ -10,18 +10,22 @@
         "containerBackgroundColor": "#00000050",
     },
     "InputBar": {
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#171A1C",
         "textFont":"PingFangSC-Regular,15",
         "inputContainerLayerColor": "#E4E3ED",
         "inputContainerLayerWidth": 1,
+        "inputBackgroundColor":"#2F3437",
         "placeHolder": "Aa",
         "placeHolderColor":"#B6B8C9",
         "cursorColor":"#009FFF",
         "textColor":"#000000",
         "textInputCornerRadius":5,
         "sendGradientColors":["#33B1FF","#7C5BFF"],
+        "emojiKeyboard":"face",
+        "textKeyboard":"key",
         "enLimitCount": 80,
-        "zhLimitCount": 30
+        "zhLimitCount": 30,
+        "emojiOperationColor":"#2F3437"
     }
         
 }

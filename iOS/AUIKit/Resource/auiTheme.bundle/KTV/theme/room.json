@@ -1,6 +1,6 @@
 {
   "Room": {
-      "roomInfoBackgroundColor": "#ffffff14",
+      "roomInfoBackgroundColor": "#00000014",
       "roomInfoTitleColor": "#ffffff",
       "roomInfoSubTitleColor": "#ffffff50",
       "membersMoreIcon": "aui_members_right_arrow",
@@ -8,7 +8,7 @@
       "membersMoreIconHeight": 24,
       "membersMoreWidth": 32,
       "membersMoreHeight": 32,
-      "membersMoreBgColor": "#ffffff14",
+      "membersMoreBgColor": "#00000014",
       "membersMoreCornerRadius": 16,
       
       "offBtnIcon": "aui_karaoke_room_close",

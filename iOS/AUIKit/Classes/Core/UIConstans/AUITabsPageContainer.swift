@@ -7,9 +7,8 @@
 
 import UIKit
 
-public protocol AUITabsPageContainerCellDelegate: NSObjectProtocol {
+@objc public protocol AUITabsPageContainerCellDelegate: NSObjectProtocol {
         
-//    associatedtype RawDataClass: NSObject
     
     /// Description 获取当前容器视图类名作为视图唯一标识
     /// - Returns: 类名
@@ -47,7 +46,7 @@ public class AUITabsPageContainer: UIView {
         self.tabStyle.selectedTitleColor = UIColor(0x171a1c)
         self.tabStyle.normalTitleColor = UIColor(0xACB4B9)
         self.tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
-        
+        self.tabStyle.alignment = .left
         return AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
     }()
     
@@ -64,8 +63,8 @@ public class AUITabsPageContainer: UIView {
         UICollectionView(frame: CGRect(x: 0, y: self.tabs.frame.maxY, width: AScreenWidth, height: self.frame.height - self.tabs.frame.maxY), collectionViewLayout: self.layout).registerCell(AUITabsPageContainerCell.self, forCellReuseIdentifier: "AUITabsPageContainerCell").backgroundColor(.clear).delegate(self).dataSource(self).showsHorizontalScrollIndicator(false).showsHorizontalScrollIndicator(false)
     }()
     
-    lazy var gradient: UIView = {
-        UIImageView(frame: CGRect(x: 0, y: Int(self.frame.height)-ABottomBarHeight-40, width: Int(self.frame.width), height: ABottomBarHeight+40)).backgroundColor(.clear).image(UIImage.aui_Image(named: "mask_onlight"))
+    lazy var gradient: UIImageView = {
+        UIImageView(frame: CGRect(x: 0, y: Int(self.frame.height)-ABottomBarHeight-40, width: Int(self.frame.width), height: ABottomBarHeight+40)).backgroundColor(.clear)
     }()
     
     public convenience init(frame: CGRect,barStyle: AUITabsStyle,containers: [AUITabsPageContainerCellDelegate],titles: [String]) {
@@ -74,6 +73,7 @@ public class AUITabsPageContainer: UIView {
         self.containers = containers
         self.titles = titles
         self.addSubViews([self.tabs,self.container,self.gradient])
+        self.gradient.theme_image = auiThemeImage("mask")
         self.container.bounces = false
         self.tabs.valueChange = {
             self.container.scrollToItem(at: IndexPath(row: $0, section: 0), at: .centeredHorizontally, animated: true)

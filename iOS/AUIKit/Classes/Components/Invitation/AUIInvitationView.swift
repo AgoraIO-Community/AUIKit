@@ -61,7 +61,7 @@ import UIKit
     }()
     
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain).backgroundColor(.clear)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain).backgroundColor(.clear).separatorStyle(.none)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
@@ -70,7 +70,7 @@ import UIKit
     }()
     
     private lazy var empty: AUIEmptyView = {
-        AUIEmptyView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        AUIEmptyView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height),title: "", image: nil)
     }()
     
     public var userList: [AUIUserCellUserDataProtocol] = []
@@ -101,9 +101,9 @@ import UIKit
         self.userList = users
         self.tableView.reloadData()
         if self.userList.count == 0 {
-            self.bringSubviewToFront(self.empty)
+            self.addSubview(self.empty)
         } else {
-            self.sendSubviewToBack(self.empty)
+            self.empty.removeFromSuperview()
         }
     }
     
@@ -112,6 +112,11 @@ import UIKit
             $0.userId != userId
         })
         self.tableView.reloadData()
+        if self.userList.count == 0 {
+            self.addSubview(self.empty)
+        } else {
+            self.empty.removeFromSuperview()
+        }
     }
     
     public func updateUser(user: AUIUserCellUserDataProtocol) {
@@ -184,7 +189,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
     }()
     
     public lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 54, width: self.frame.width, height: self.frame.height-54), style: .plain).separatorStyle(.none)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 60
@@ -225,9 +230,9 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         self.userList = users
         self.tableView.reloadData()
         if self.userList.count == 0 {
-            self.bringSubviewToFront(self.empty)
+            self.addSubview(self.empty)
         } else {
-            self.sendSubviewToBack(self.empty)
+            self.empty.removeFromSuperview()
         }
     }
     
@@ -236,6 +241,11 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
             $0.userId != userId
         })
         self.tableView.reloadData()
+        if self.userList.count == 0 {
+            self.bringSubviewToFront(self.empty)
+        } else {
+            self.sendSubviewToBack(self.empty)
+        }
     }
     
     public func updateUser(user: AUIUserCellUserDataProtocol) {
@@ -259,7 +269,9 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: kAUIApplyCellId) as? AUIUserOperationCell
         if cell == nil {
-            cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: AUIUserOperationCellConfig())
+            let config = AUIUserOperationCellConfig()
+            config.actionTitle = "Apply"
+            cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: config)
         }
         let user = userList[indexPath.row]
         cell?.refreshUser(user: user)
@@ -304,6 +316,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     convenience init(reuseIdentifier: String?,config: AUIUserOperationCellConfig) {
         self.init(style: .default, reuseIdentifier: reuseIdentifier)
+        self.config = config
         _loadSubViews()
     }
     

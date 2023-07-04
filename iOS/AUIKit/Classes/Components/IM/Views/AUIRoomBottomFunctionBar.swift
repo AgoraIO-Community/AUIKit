@@ -17,7 +17,7 @@ public class AUIRoomBottomFunctionBar: UIView {
     public var datas = [AUIChatFunctionBottomEntity]()
 
     public lazy var chatRaiser: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 15, y: 5, width: (110 / 375.0) * AScreenWidth, height: self.frame.height - 10)).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).cornerRadius((self.frame.height - 10) / 2.0).font(.systemFont(ofSize: 12, weight: .regular)).textColor(UIColor(white: 1, alpha: 0.8), .normal).addTargetFor(self, action: #selector(raiseAction), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: 15, y: 5, width: (110 / 375.0) * AScreenWidth, height: self.frame.height - 10)).theme_backgroundColor(color: "BottomBar.containerBackgroundColor").cornerRadius((self.frame.height - 10) / 2.0).font(.systemFont(ofSize: 12, weight: .regular)).textColor(UIColor(white: 1, alpha: 0.8), .normal).addTargetFor(self, action: #selector(raiseAction), for: .touchUpInside)
     }()
 
     lazy var flowLayout: UICollectionViewFlowLayout = {
@@ -29,7 +29,7 @@ public class AUIRoomBottomFunctionBar: UIView {
     }()
 
     public lazy var toolBar: UICollectionView = {
-        UICollectionView(frame: CGRect(x: self.frame.width - (40 * CGFloat(self.datas.count)) - (CGFloat(self.datas.count) - 1) * 8 - 15 - 10, y: 0, width: 40 * CGFloat(self.datas.count) + (CGFloat(self.datas.count) - 1) * 8 + 25, height: self.frame.height), collectionViewLayout: self.flowLayout).delegate(self).dataSource(self).backgroundColor(.clear).registerCell(AUIChatBarFunctionCell.self, forCellReuseIdentifier: "AUIChatBarFunctionCell").showsVerticalScrollIndicator(false).showsHorizontalScrollIndicator(false)
+        UICollectionView(frame: CGRect(x: self.frame.width - (40 * CGFloat(self.datas.count)) - (CGFloat(self.datas.count) - 1) * 8 - 25 - 10, y: 0, width: 40 * CGFloat(self.datas.count) + (CGFloat(self.datas.count) - 1) * 8 + 25, height: self.frame.height), collectionViewLayout: self.flowLayout).delegate(self).dataSource(self).backgroundColor(.clear).registerCell(AUIChatBarFunctionCell.self, forCellReuseIdentifier: "AUIChatBarFunctionCell").showsVerticalScrollIndicator(false).showsHorizontalScrollIndicator(false)
     }()
 
     override public init(frame: CGRect) {

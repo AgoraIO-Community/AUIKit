@@ -152,12 +152,12 @@ public class AUIRoomMembersView: UIView {
 
 extension AUIRoomMembersView:IAUIRoomMembersView {
     public func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String) {
-        self.members = members
-        self.members.forEach {
+        members.forEach {
             if $0.userId == AUIRoomContext.shared.roomInfoMap[channelName]?.owner?.userId ?? "" {
                 $0.isOwner = true
             }
         }
+        self.members = members
     }
     
     public func appendMember(member: AUIUserCellUserDataProtocol) {
@@ -181,6 +181,8 @@ extension AUIRoomMembersView:IAUIRoomMembersView {
         members.first(where: {
             $0.userId == member.userId
         })?.seatIndex = seatIndex
+        var users = members.map {$0}
+        self.members = users
     }
     
     
