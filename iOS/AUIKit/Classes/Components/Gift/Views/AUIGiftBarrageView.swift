@@ -6,17 +6,43 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  AUIGiftBarrageView抽象而来的view协议用于跟scene层view binder绑定进行数据UI交互
+ *
+ *  \~English
+ *  The view protocol abstracted from AUIGiftBarrageView is used to bind with the scene layer view binder for data UI interaction
+ *
+ */
 @objc public protocol IAUIGiftBarrageView: NSObjectProtocol {
+    
+    /// Description 收到礼物后刷新UI
+    /// - Parameter gift: 礼物模型
+    /// Description Refresh the UI after receiving the gift
+    /// - Parameter gift: entity
     func receiveGift(gift: AUIGiftEntity)
 }
-
+/*!
+ *  \~Chinese
+ *  收礼物cell的数据源协议包含cell高度以及X、Y方向的缩放比例
+ *
+ *  \~English
+ *  The data source protocol of the gift receiving cell includes the cell height and the scaling ratio in the X and Y directions
+ *
+ */
 @objc public protocol AUIGiftBarrageViewDataSource: NSObjectProtocol {
     @objc optional func rowHeight() -> CGFloat
     @objc optional func zoomScaleX() -> CGFloat
     @objc optional func zoomScaleY() -> CGFloat
 }
-
+/*!
+ *  \~Chinese
+ *  收礼物view
+ *
+ *  \~English
+ *  The receive gift view.
+ *
+ */
 public class AUIGiftBarrageView: UIView, UITableViewDelegate, UITableViewDataSource,IAUIGiftBarrageView {
     
     public var dataSource: AUIGiftBarrageViewDataSource?
@@ -40,6 +66,10 @@ public class AUIGiftBarrageView: UIView, UITableViewDelegate, UITableViewDataSou
         super.init(frame: frame)
     }
     
+    /// Description 初始化方法需要传入布局的坐标以及对cell一些形变参数的数据源设置
+    /// - Parameters:
+    ///   - frame: 坐标
+    ///   - source: cell形变数据源
     @objc public convenience init(frame: CGRect, source: AUIGiftBarrageViewDataSource?) {
         self.init(frame: frame)
         self.dataSource = source

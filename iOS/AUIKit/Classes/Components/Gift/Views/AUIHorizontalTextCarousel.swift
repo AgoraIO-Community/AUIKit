@@ -6,7 +6,14 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  跑马灯常用于送礼全局广播
+ *
+ *  \~English
+ *  Marquee is often used for gift giving global broadcast.
+ *
+ */
 @objc public class AUIHorizontalTextCarousel: UIView {
     
     lazy var voiceIcon: UIImageView = {
@@ -32,6 +39,8 @@ import UIKit
         self.scroll.addSubview(self.textCarousel)
     }
     
+    /// Description 根据传入文本计算是否 播放滚动动画
+    /// - Parameter text: 富文本字符串
     public func textAnimation(text: NSAttributedString) {
         let width = text.string.a.sizeWithText(font: .systemFont(ofSize: 12, weight: .semibold), size: CGSize(width: 999, height: self.frame.height)).width
         if width > AScreenWidth-60 {

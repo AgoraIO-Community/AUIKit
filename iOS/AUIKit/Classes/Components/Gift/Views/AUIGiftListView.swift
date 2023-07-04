@@ -6,16 +6,23 @@
 //
 
 import UIKit
-
-public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,AUITabsPageContainerCellDelegate {
+/*!
+ *  \~Chinese
+ *  礼物列表
+ *
+ *  \~English
+ *  Gifts list.
+ *
+ */
+public class AUIGiftListView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,AUITabsPageContainerCellDelegate {
     
     public func viewIdentity() -> String {
         self.a.swiftClassName ?? "AUIKit.AUIGiftsView"
     }
     
     public func create(frame: CGRect, datas: [NSObject]) -> UIView? {
-        guard let dataSource = datas as? [AUIGiftEntity] else { return AUiGiftListView() }
-        return AUiGiftListView(frame: frame, gifts: dataSource,sentGift: self.sendClosure!)
+        guard let dataSource = datas as? [AUIGiftEntity] else { return AUIGiftListView() }
+        return AUIGiftListView(frame: frame, gifts: dataSource,sentGift: self.sendClosure!)
     }
     
     public func rawFrame() -> CGRect {
@@ -28,7 +35,7 @@ public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionView
         
     var gifts = [AUIGiftEntity]()
 
-    public var sendClosure: ((AUIGiftEntity) -> Void)?
+    private var sendClosure: ((AUIGiftEntity) -> Void)?
 
     var lastPoint = CGPoint.zero
 
@@ -50,6 +57,19 @@ public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionView
         super.init(frame: frame)
     }
 
+    /*!
+     *  \~Chinese
+     *  初始化方法
+     *
+     *  @param gifts     礼物模型数组
+     *  @param sentGift  发送礼物的回调
+     *
+     *  \~English
+     *  Initialize method
+     *
+     *  @param gifts       Gifts entity array.
+     *  @param sentGift    Send action callback.
+     */
     public convenience init(frame: CGRect, gifts: [AUIGiftEntity], sentGift: @escaping ((AUIGiftEntity) -> Void)) {
         self.init(frame: frame)
         self.sendClosure = sentGift
@@ -68,7 +88,7 @@ public class AUiGiftListView: UIView, UICollectionViewDelegate, UICollectionView
     }
 }
 
-public extension AUiGiftListView {
+public extension AUIGiftListView {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         gifts.count

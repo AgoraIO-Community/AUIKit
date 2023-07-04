@@ -8,28 +8,77 @@
 import UIKit
 import SDWebImage
 
-public class AUIReceiveGiftCell: UITableViewCell {
-    
+/*!
+ *  \~Chinese
+ *  收礼物的cell
+ *
+ *  \~English
+ *  Cell receive gift
+ */
+@objcMembers public class AUIReceiveGiftCell: UITableViewCell {
+    /*!
+     *  \~Chinese
+     *  收礼物的实体模型
+     *
+     *  \~English
+     *  Mock-up for receiving presents
+     */
     var gift: AUIGiftEntity?
-
+    /*!
+     *  \~Chinese
+     *  收礼物整体的容器包含所有子视图
+     *
+     *  \~English
+     *  The overall container contains all subviews
+     */
     lazy var container: UIToolbar = {
         UIToolbar(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 10)).backgroundColor(.clear)
     }()
-
+    /*!
+     *  \~Chinese
+     *  用户头像
+     *
+     *  \~English
+     *  User avatar
+     */
     lazy var avatar: UIImageView = UIImageView(frame: CGRect(x: 5, y: 5, width: self.frame.width / 5.0, height: self.frame.width / 5.0)).contentMode(.scaleAspectFit)
-
+    /*!
+     *  \~Chinese
+     *  用户名称
+     *
+     *  \~English
+     *  User nickname
+     */
     lazy var userName: UILabel = {
         UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: 8, width: self.frame.width / 5.0 * 2 - 12, height: 15)).theme_font(font: "ReceiveGift.userNameFont").theme_textColor(color: "ReceiveGift.userNameColor")
     }()
-
+    /*!
+     *  \~Chinese
+     *  礼物名称
+     *
+     *  \~English
+     *  Gift name
+     */
     lazy var giftName: UILabel = {
         UILabel(frame: CGRect(x: self.avatar.frame.maxX + 6, y: self.userName.frame.maxY, width: self.frame.width / 5.0 * 2 - 12, height: 15)).theme_font(font: "ReceiveGift.giftNameFont").theme_textColor(color: "ReceiveGift.giftNameColor")
     }()
-
+    /*!
+     *  \~Chinese
+     *  礼物图标
+     *
+     *  \~English
+     *  Gift icon
+     */
     lazy var giftIcon: UIImageView = {
         UIImageView(frame: CGRect(x: self.frame.width / 5.0 * 3, y: 0, width: self.frame.width / 5.0, height: self.contentView.frame.height)).contentMode(.scaleAspectFit)
     }()
-
+    /*!
+     *  \~Chinese
+     *  礼物数目
+     *
+     *  \~English
+     *  Gift count
+     */
     lazy var giftNumbers: UILabel = {
         UILabel(frame: CGRect(x: self.frame.width / 5.0 * 4 + 8, y: 10, width: self.frame.width / 5.0 - 16, height: self.frame.height - 20)).theme_font(font: "ReceiveGift.giftNumbersFont").theme_textColor(color: "ReceiveGift.giftNumbersColor")
     }()
@@ -38,7 +87,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    convenience init(reuseIdentifier: String?,config: AUIReceiveGiftCellConfig) {
+    @objc public convenience init(reuseIdentifier: String?,config: AUIReceiveGiftCellConfig) {
         self.init(style: .default, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .clear
         self.backgroundColor = .clear
@@ -67,7 +116,7 @@ public class AUIReceiveGiftCell: UITableViewCell {
         self.giftNumbers.frame = CGRect(x: self.giftIcon.frame.maxX + 5, y: 5, width: self.container.frame.width - self.giftIcon.frame.maxX - 5, height: self.container.frame.height - 5)
     }
 
-    func refresh(item: AUIGiftEntity) {
+    @objc public func refresh(item: AUIGiftEntity) {
         if self.gift == nil {
             self.gift = item
         }

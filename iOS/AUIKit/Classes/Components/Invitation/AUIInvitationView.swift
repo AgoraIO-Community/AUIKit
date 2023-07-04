@@ -269,7 +269,9 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: kAUIApplyCellId) as? AUIUserOperationCell
         if cell == nil {
-            cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: AUIUserOperationCellConfig())
+            let config = AUIUserOperationCellConfig()
+            config.actionTitle = "Apply"
+            cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: config)
         }
         let user = userList[indexPath.row]
         cell?.refreshUser(user: user)
@@ -314,6 +316,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     convenience init(reuseIdentifier: String?,config: AUIUserOperationCellConfig) {
         self.init(style: .default, reuseIdentifier: reuseIdentifier)
+        self.config = config
         _loadSubViews()
     }
     

@@ -390,7 +390,7 @@ import SwiftTheme
 extension AUIAlertView {
     public class func theme_defaultAlert() -> AUIAlertView {
         let alert = AUIAlertView()
-            .theme_background(color: "CommonColor.black")
+            .theme_background(color: "Alert.backgroundColor")
             .theme_leftButtonBackground(color: "Alert.leftBackgroundColor")
             .theme_leftButton(color: "Alert.leftTextColor")
             .theme_leftButtonBorder(color: "Alert.leftBorderColor").theme_rightButton(color: "Alert.rightTextColor")
@@ -398,7 +398,7 @@ extension AUIAlertView {
             .theme_titleColor(color: "Alert.titleColor")
             .theme_titleFont(font: "CommonFont.big")
             .theme_contentColor(color: "Alert.contentTextColor")
-            .theme_contentFont(font: "CommonFont.middle")
+            .theme_contentFont(font: "CommonFont.middle").theme_textFieldBackground(color: "Alert.inputBackground")
         return alert
     }
     
@@ -452,6 +452,22 @@ extension AUIAlertView {
         rightButton.theme_backgroundColor = color
         return self
     }
+    
+    public func theme_backgroundImage(color: ThemeImagePicker?,state: UIControl.State) -> AUIAlertView {
+        self.rightButton.theme_setBackgroundImage(color, forState: state)
+        return self
+    }
+    
+    public func theme_titleColor(color: ThemeColorPicker?,state: UIControl.State) -> AUIAlertView {
+        self.rightButton.theme_setTitleColor(color, forState: state)
+        return self
+    }
+    
+    public func theme_rightButtonGradientBackground(color: ThemeColorPicker?) -> AUIAlertView {
+        rightButton.createThemeGradient("Alert.rightBackgroundGradientColors", [CGPoint(x: 0, y: 0),CGPoint(x: 0, y: 1)])
+        return self
+    }
+    
     public func rightButtonBorder(color: ThemeCGColorPicker?) -> AUIAlertView {
         rightButton.layer.theme_borderColor = color
         return self

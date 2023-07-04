@@ -1,12 +1,15 @@
 {
   "Alert": {
-      "backgroundColor": "CommonColor.black",
-      "leftBackgroundColor": "#ffffff",
-      "leftTextColor": "#099DFD",
-      "leftBorderColor": "#099DFD",
+      "backgroundColor": "#F9FAFA",
+      "leftBackgroundColor": "#F9FAFA",
+      "leftTextColor": "#464E53",
+      "leftBorderColor": "#464E53",
       "rightBackgroundColor": "CommonColor.primary",
+      "rightBackgroundGradientColors":["#33B1FF","#7C5BFF"],
       "rightTextColor": "#ffffff",
       "titleColor": "#171A1C",
-      "contentTextColor": "#171A1C"
+      "contentTextColor": "#75828A",
+      "inputBackground": "#F1F2F3"
   }
 }
+

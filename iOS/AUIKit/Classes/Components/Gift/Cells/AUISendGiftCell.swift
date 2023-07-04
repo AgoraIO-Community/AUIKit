@@ -7,13 +7,31 @@
 
 import UIKit
 import SDWebImage
-
+/*!
+ *  \~Chinese
+ *  发礼物的cell
+ *
+ *  \~English
+ *  Cell send gift
+ */
 public class AUISendGiftCell: UICollectionViewCell {
     
     private var gift: AUIGiftEntity?
-    
+    /*!
+     *  \~Chinese
+     *  发礼物的回调
+     *
+     *  \~English
+     *  Cell send gift callback
+     */
     public var sendCallback: ((AUIGiftEntity?)->Void)?
-    
+    /*!
+     *  \~Chinese
+     *  发礼物的cell配置
+     *
+     *  \~English
+     *  Cell config send gift
+     */
     public var config = AUISendGiftCellConfig() {
         didSet {
             self.cover.layerProperties(self.config.coverLayerColor, self.config.coverLayerWidth).setGradient(self.config.coverGradientColors, self.config.coverGradientPoints)
@@ -55,8 +73,16 @@ public class AUISendGiftCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    func refresh(item: AUIGiftEntity?) {
+    /*!
+     *  \~Chinese
+     *  刷新cell
+     *  @param item cell数据实体
+     *
+     *  \~English
+     *  Refresh cell
+     *  @param item cell data entity
+     */
+    @objc public func refresh(item: AUIGiftEntity?) {
         self.gift = item
         self.contentView.isHidden = (item == nil)
 
