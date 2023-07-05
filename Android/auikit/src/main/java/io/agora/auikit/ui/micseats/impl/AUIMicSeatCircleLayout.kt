@@ -63,12 +63,12 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
     /**
      * ItemView 的宽度
      */
-    private var mItemWidth = 0
+    private var mItemWidth = 90
 
     /**
      * ItemView 的高度
      */
-    private var mItemHeight = 0
+    private var mItemHeight = 120
 
 
     private var mMicSeatMap = mutableMapOf<Int,MicSeatItem>()
@@ -118,10 +118,13 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
         if (micSeatCount > 6){
             micSeatCount = 6
         }
+        Log.e("apex","setOptions ${option.mItemWidth}  ${option.mItemHeight}")
         mStartAngle = option.startAngle
         mRadius = option.mRadius
         mItemWidth = option.mItemWidth
         mItemHeight = option.mItemHeight
+
+        invalidate()
     }
 
     fun addView(layout:FrameLayout){
@@ -140,6 +143,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
                     it.layoutParams = ViewGroup.LayoutParams(
                         DeviceTools.dp2px(context,mItemWidth.toFloat()),
                         DeviceTools.dp2px(context,mItemHeight.toFloat()))
+
                     micSeatItemViewWrap?.setView(it)
                     itemView.setOnClickListener{ it1 ->
                         showMicSeatDialog(it1)
@@ -192,6 +196,10 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
         private var userAvatarImageUrl: String? = null
         private var view: IMicSeatItemView? = null
 
+        fun getView(): IMicSeatItemView? {
+            return view
+        }
+
         fun setView(view: IMicSeatItemView) {
             this.view = view
             titleText?.let { setTitleText(it) }
@@ -199,9 +207,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
             setRoomOwnerVisibility(roomOwnerVisibility)
             setAudioMuteVisibility(audioMuteVisibility)
             setVideoMuteVisibility(videoMuteVisibility)
-            userAvatarImageDrawable?.let {
-                setUserAvatarImageDrawable(it)
-            }
+            setUserAvatarImageDrawable(userAvatarImageDrawable)
             setMicSeatState(seatStatus)
             userAvatarImageUrl?.let { setUserAvatarImageUrl(it) }
         }
@@ -241,7 +247,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
             }
         }
 
-        override fun setUserAvatarImageDrawable(drawable: Drawable) {
+        override fun setUserAvatarImageDrawable(drawable: Drawable?) {
             userAvatarImageDrawable = drawable
             if (view != null) {
                 view?.setUserAvatarImageDrawable(drawable)
@@ -279,7 +285,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
     }
 
     override fun setMicSeatActionDelegate(actionDelegate: IMicSeatsView.ActionDelegate?) {
-       this.actionDelegate = actionDelegate
+        this.actionDelegate = actionDelegate
     }
 
     private fun showMicSeatDialog(view:View) {
@@ -337,5 +343,18 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
         }
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
+    }
+
+    override fun startRippleAnimation(index: Int) {
+        val circleViewWrap = micSeatViewList[index]
+        val auiMicSeatItemView = circleViewWrap?.getView() as AUIMicSeatItemView
+        auiMicSeatItemView.startRippleAnimation()
+
+    }
+
+    override fun stopRippleAnimation(index: Int) {
+        val circleViewWrap = micSeatViewList[index]
+        val auiMicSeatItemView = circleViewWrap?.getView() as AUIMicSeatItemView
+        auiMicSeatItemView.stopRippleAnimation()
     }
 }

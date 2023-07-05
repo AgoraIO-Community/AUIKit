@@ -2,10 +2,12 @@ package io.agora.auikit.ui.micseats.impl;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
     private ImageView ivVideoMute;
     private View bgSeat;
     private ImageView ivUserAvatar;
+    private AUIRippleAnimationView ripple;
 
     public AUIMicSeatItemView(@NonNull Context context) {
         this(context, null);
@@ -68,6 +71,10 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
         tvChorus = findViewById(R.id.tv_chorus);
         ivAudioMute = findViewById(R.id.iv_audio_mute);
         ivVideoMute = findViewById(R.id.iv_video_mute);
+        ripple = findViewById(R.id.iv_ripple);
+
+        ripple.setInterpolator(new AccelerateInterpolator(1.2f));
+        ripple.setStyle(Paint.Style.STROKE);
 
         // 静音图标位置配置
         FrameLayout.LayoutParams ivAudioMuteParams = (LayoutParams) ivAudioMute.getLayoutParams();
@@ -95,6 +102,14 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
         }
     }
 
+    public void setRippleInitialRadius(float radius){
+        ripple.setInitialRadius(radius);
+    }
+
+    public void setRippleInterpolator(float value){
+        ripple.setInterpolator(new AccelerateInterpolator(value));
+    }
+
     @Override
     public void setRoomOwnerVisibility(int visible) {
         tvRoomOwner.setVisibility(visible);
@@ -111,6 +126,15 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
     public void setTitleText(String text) {
         tvTitle.setText(text);
     }
+
+    public void startRippleAnimation(){
+        ripple.startRippleAnimation();
+    }
+
+    public void stopRippleAnimation(){
+        ripple.stopImmediatelyRippleAnimation();
+    }
+
     @Override
     public void setAudioMuteVisibility(int visible) {
         ivAudioMute.setVisibility(visible);
