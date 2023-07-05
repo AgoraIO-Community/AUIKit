@@ -4,4 +4,5 @@
     <string name="aui_room_invited_action">邀请上麦</string>
     <string name="aui_room_invited_list">邀请列表</string>
     <string name="aui_room_apply_list">申请列表</string>
+    <string name="aui_room_contribution_empty">暂无数据</string>
 </resources>
