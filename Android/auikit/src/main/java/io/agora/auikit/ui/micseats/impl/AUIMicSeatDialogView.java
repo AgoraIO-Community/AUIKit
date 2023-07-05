@@ -102,8 +102,12 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         }
     }
 
-    public void addInvite(){
-        tvInvited.setVisibility(View.VISIBLE);
+    public void addInvite(boolean isShow){
+        if (isShow){
+            tvInvited.setVisibility(View.VISIBLE);
+        }else {
+            tvInvited.setVisibility(View.GONE);
+        }
     }
     public void addMuteAudio(boolean isMute) {
         mMuteAudio = isMute;
@@ -129,8 +133,12 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         tvLeaveSeat.setVisibility(View.VISIBLE);
     }
 
-    public void addEnterSeat() {
-        tvEnterSeat.setVisibility(View.VISIBLE);
+    public void addEnterSeat(boolean isShow) {
+        if (isShow){
+            tvEnterSeat.setVisibility(View.VISIBLE);
+        }else {
+            tvEnterSeat.setVisibility(View.GONE);
+        }
     }
 
     public void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo) {
