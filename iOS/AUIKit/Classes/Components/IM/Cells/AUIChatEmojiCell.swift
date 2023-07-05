@@ -6,7 +6,14 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  表情键盘Collection Cell
+ *
+ *  \~English
+ *  Emojis Collection Cell.
+ *
+ */
 public class AUIChatEmojiCell: UICollectionViewCell {
     lazy var icon: UIImageView = .init(frame: CGRect(x: 7, y: 7, width: self.contentView.frame.width - 14, height: self.contentView.frame.height - 14)).contentMode(.scaleAspectFit).backgroundColor(.clear)
 
