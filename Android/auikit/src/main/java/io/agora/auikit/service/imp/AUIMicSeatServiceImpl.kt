@@ -247,6 +247,11 @@ class AUIMicSeatServiceImpl(
     override fun getMicSeatInfo(seatIndex: Int): AUIMicSeatInfo? {
         return micSeats[seatIndex]
     }
+
+    override fun getMicSeatSize(): Int {
+        return micSeats.size
+    }
+
     override fun getChannelName() = channelName
 
     /** AUiRtmMsgProxyDelegate */
