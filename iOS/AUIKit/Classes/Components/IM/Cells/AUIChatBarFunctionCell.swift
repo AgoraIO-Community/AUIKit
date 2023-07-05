@@ -6,9 +6,23 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  底部功能区域Collection Cell
+ *
+ *  \~English
+ *  Bottom functional area Collection Cell.
+ *
+ */
 public class AUIChatBarFunctionCell: UICollectionViewCell {
-    
+    /*!
+     *  \~Chinese
+     *  Cell中颜色字体背景色配置
+     *
+     *  \~English
+     *  Color font background color configuration in Cell.
+     *
+     */
     public var config: AUIChatBarFunctionCellConfig = AUIChatBarFunctionCellConfig() {
         willSet {
             self.container.backgroundColor = newValue.containerBackgroundColor

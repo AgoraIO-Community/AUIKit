@@ -270,7 +270,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
         var cell = tableView.dequeueReusableCell(withIdentifier: kAUIApplyCellId) as? AUIUserOperationCell
         if cell == nil {
             let config = AUIUserOperationCellConfig()
-            config.actionTitle = "Apply"
+            config.actionTitle = "Accept"
             cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: config)
         }
         let user = userList[indexPath.row]

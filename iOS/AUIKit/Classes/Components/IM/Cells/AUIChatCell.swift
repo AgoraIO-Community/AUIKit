@@ -6,7 +6,14 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  弹幕区域cell
+ *
+ *  \~English
+ *  Chat Cell.
+ *
+ */
 public class AUIChatCell: UITableViewCell {
     
     private var config = AUIChatCellConfig()
@@ -37,7 +44,10 @@ public class AUIChatCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func refresh(chat: AUIChatEntity) {
+    
+    /// Description 刷新渲染聊天弹幕的实体，内部包含高度宽度以及富文本缓存
+    /// - Parameter chat: 实体对象
+    @objc public func refresh(chat: AUIChatEntity) {
         self.container.frame = CGRect(x: 15, y: 6, width: chat.width! + 30, height: chat.height! - 6)
         self.content.attributedText = chat.attributeContent
         self.content.preferredMaxLayoutWidth =  self.container.frame.width - 24

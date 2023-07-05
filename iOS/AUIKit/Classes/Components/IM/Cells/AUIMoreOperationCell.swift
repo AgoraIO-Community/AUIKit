@@ -7,16 +7,30 @@
 
 import UIKit
 import SDWebImage
-
+/*!
+ *  \~Chinese
+ *  更多列表中Cell数据实体协议
+ *
+ *  \~English
+ *  More list cell data protocol.
+ *
+ */
 @objc public protocol AUIMoreOperationCellDataProtocol: NSObjectProtocol {
+    
     var index: Int {get set}
-
     var iconUrl: String {get set}
     var placeHolder: UIImage? {get set}
     var operationName: String {get set}
     var showRedDot: Bool {get set}
 }
-
+/*!
+ *  \~Chinese
+ *  更多列表中Cell数据实体
+ *
+ *  \~English
+ *  More list cell data entity.
+ *
+ */
 @objc public class AUIMoreOperationCellEntity: NSObject, AUIMoreOperationCellDataProtocol {
     
     public var index: Int = 0
@@ -31,7 +45,14 @@ import SDWebImage
     
 
 }
-
+/*!
+ *  \~Chinese
+ *  更多列表中Cell
+ *
+ *  \~English
+ *  More list cell.
+ *
+ */
 final public class AUIMoreOperationCell: UICollectionViewCell {
     
     private lazy var iconContainer: UIImageView = {
@@ -75,7 +96,17 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
         self.redDot.frame = CGRect(x: r + length + 3, y: r - length, width: 6, height: 6)
         self.icon.frame = CGRect(x: 8, y: 7, width: self.iconContainer.frame.width-16, height: self.iconContainer.frame.width-16)
     }
-    
+    /*!
+     *  \~Chinese
+     *  刷新AUIMoreOperationCell方法
+     *
+     *  @param info  遵循AUIMoreOperationCellDataProtocol协议的实体对象
+     *
+     *  \~English
+     *  Refresh AUIMoreOperationCell method.
+     *
+     *  @param info  An entity object conforming to the AUIMoreOperationCellDataProtocol protocol.
+     */
     public func refresh(info: AUIMoreOperationCellDataProtocol) {
         self.title.text = info.operationName
         self.icon.sd_setImage(with: URL(string: info.iconUrl), placeholderImage: info.placeHolder, context: nil)
