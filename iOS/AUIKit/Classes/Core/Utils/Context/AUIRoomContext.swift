@@ -47,6 +47,8 @@ open class AUIRoomContext: NSObject {
         roomInfoMap[channelName] = nil
     }
     
+    private var currentThemeName: String?
+    
     override init() {
         super.init()
         switchTheme(themeName: "Dark")
@@ -61,7 +63,8 @@ open class AUIRoomContext: NSObject {
     
     public func addThemeFolderPath(path: URL) {
         themeFolderPaths.insert(path)
-        resetTheme()
+        guard let themeName = currentThemeName else {return}
+        switchTheme(themeName: themeName)
     }
     
     public func resetTheme() {
@@ -87,6 +90,8 @@ open class AUIRoomContext: NSObject {
             aui_error("SwiftTheme WARNING: Can't read json '\(themeName)' at: \(themeFolderPath)", tag: "AUIKaraokeRoomView")
             return
         }
+        
+        currentThemeName = themeName
         
         themeResourcePaths.removeAll()
         themeFolderPaths.forEach { path in
