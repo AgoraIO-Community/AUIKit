@@ -242,7 +242,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         })
         self.tableView.reloadData()
         if self.userList.count == 0 {
-            self.bringSubviewToFront(self.empty)
+            self.addSubview(self.empty)
         } else {
             self.sendSubviewToBack(self.empty)
         }
