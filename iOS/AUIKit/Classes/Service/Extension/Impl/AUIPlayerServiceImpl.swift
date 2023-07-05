@@ -156,7 +156,7 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
     public func didKTVAPIReceiveStreamMessageFrom(uid: NSInteger, streamId: NSInteger, data: Data) {
         ktvApi.didKTVAPIReceiveStreamMessageFrom(uid: uid, streamId: streamId, data: data)
-        respDelegates.objectEnumerator().forEach { obj in
+        for obj in respDelegates.allObjects {
             (obj as? AUIPlayerRespDelegate)?.onDataStreamMsgReceived(with: uid, streamId: streamId, data: data)
         }
     }
