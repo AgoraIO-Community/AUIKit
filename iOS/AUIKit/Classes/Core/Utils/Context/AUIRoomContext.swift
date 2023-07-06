@@ -47,7 +47,7 @@ open class AUIRoomContext: NSObject {
         roomInfoMap[channelName] = nil
     }
     
-    public var currentThemeName: String?
+    public private(set) var currentThemeName: String?
     
     override init() {
         super.init()
