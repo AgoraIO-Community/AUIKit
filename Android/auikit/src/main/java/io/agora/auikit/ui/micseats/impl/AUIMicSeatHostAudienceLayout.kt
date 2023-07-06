@@ -127,7 +127,7 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
                         DeviceTools.dp2px(context,childWidth+20.toFloat()),
                         DeviceTools.dp2px(context,childHeight.toFloat()))
 
-                    it.setRippleInitialRadius(100f)
+                    it.setRippleInitialRadius(80f)
                     it.setRippleInterpolator(1.4f)
                     micSeatItemViewWrap?.setView(it)
                     itemView.setOnClickListener{ it1 ->
