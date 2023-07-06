@@ -99,5 +99,12 @@ public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRo
         default void onAnnouncementDidChange(String roomId,String content){
 
         }
+
+        /**
+         * 用户被踢
+         * @param roomId 房间id
+         * @param userId 用户id
+         */
+        default void onRoomUserBeKicked(String roomId,String userId){}
     }
 }

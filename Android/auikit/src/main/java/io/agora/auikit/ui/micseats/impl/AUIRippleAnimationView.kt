@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 class AUIRippleAnimationView:View {
 
-    private var mInitialRadius = 100f // 初始波纹半径
+    private var mInitialRadius = 80f // 初始波纹半径
     private var mMaxRadius = 110f // 最大波纹半径
     private var mDuration: Long = 2000 // 一个波纹从创建到消失的持续时间
     private var mSpeed = 500 // 波纹的创建速度，每500ms创建一个
@@ -54,7 +54,7 @@ class AUIRippleAnimationView:View {
 
     private fun initView(appearanceId:Int){
         val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIRippleAnimationView)
-        mInitialRadius = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_initial_radius,100).toFloat()
+        mInitialRadius = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_initial_radius,80).toFloat()
         mMaxRadius = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_max_radius, 110).toFloat()
         rippleStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_stroke_width, 4)
         mSpeed =  typedArray.getInteger(R.styleable.AUIRippleAnimationView_aui_ripple_speed,500)
