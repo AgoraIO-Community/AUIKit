@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftTheme
 
 @objc public protocol AUITabsPageContainerCellDelegate: NSObjectProtocol {
         
@@ -47,7 +48,10 @@ public class AUITabsPageContainer: UIView {
         self.tabStyle.normalTitleColor = UIColor(0xACB4B9)
         self.tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
         self.tabStyle.alignment = .left
-        return AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
+        let tab = AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
+        tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
+        tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
+        return tab
     }()
     
     private lazy var layout: UICollectionViewFlowLayout = {
