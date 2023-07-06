@@ -7,6 +7,15 @@
 
 import UIKit
 
+
+/// Description 聊天整体区域与对应的Binder类数据交互刷新协议，提供给binder调用view里的刷新数据
+@objc public protocol IAUIChatListView: NSObjectProtocol {
+    
+    /// Description 显示新消息
+    /// - Parameter entity: 消息渲染的实体包含缓存的渲染富文本与高度宽度
+    func showNewMessage(entity: AUIChatEntity)
+}
+
 let chatViewWidth = AScreenWidth * (287 / 375.0)
 /*!
  *  \~Chinese
@@ -16,7 +25,13 @@ let chatViewWidth = AScreenWidth * (287 / 375.0)
  *  Chat list
  *
  */
-public class AUIChatListView: UIView {
+public class AUIChatListView: UIView,IAUIChatListView {
+    public func showNewMessage(entity: AUIChatEntity) {
+        self.messages?.append(entity)
+        self.chatView.reloadData()
+        self.scrollTableViewToBottom()
+    }
+    
 
     private var lastOffsetY = CGFloat(0)
 
@@ -28,11 +43,11 @@ public class AUIChatListView: UIView {
         UITableView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height), style: .plain).delegate(self).dataSource(self).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).showsVerticalScrollIndicator(false)
     }()
 
-    public lazy var gradientLayer: CAGradientLayer = {
+    private lazy var gradientLayer: CAGradientLayer = {
         CAGradientLayer().startPoint(CGPoint(x: 0, y: 0)).endPoint(CGPoint(x: 0, y: 0.1)).colors([UIColor.clear.withAlphaComponent(0).cgColor, UIColor.clear.withAlphaComponent(1).cgColor]).locations([NSNumber(0), NSNumber(1)]).rasterizationScale(UIScreen.main.scale).frame(self.blurView.frame)
     }()
 
-    public lazy var blurView: UIView = {
+    private lazy var blurView: UIView = {
         UIView(frame: CGRect(x: 0, y: 0, width: chatViewWidth, height: self.frame.height)).backgroundColor(.clear)
     }()
 

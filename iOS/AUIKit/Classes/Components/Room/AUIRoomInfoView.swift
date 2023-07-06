@@ -42,10 +42,17 @@ public final class AUIRoomInfoView: UIView {
         UIButton(type: .custom).frame(.zero).backgroundColor(.clear)
     }()
     
+    private var show = false
     
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+    
+    @objc public convenience init(frame: CGRect,showExtension: Bool = false) {
+        self.init(frame: frame)
+        self.show = showExtension
         _createSubviews()
+        self.extensionButton.isHidden = !showExtension
     }
     
     required init?(coder: NSCoder) {
@@ -71,6 +78,9 @@ public final class AUIRoomInfoView: UIView {
         ])
         headImageView.cornerRadius(avatarHeight/2.0)
         var width = (44/185.0)*self.frame.width
+        if !self.show {
+           width = 0
+        }
         NSLayoutConstraint.activate([
             roomNameLabel.topAnchor.constraint(equalTo: headImageView.topAnchor),
             roomNameLabel.leftAnchor.constraint(equalTo: headImageView.rightAnchor, constant: 8),
