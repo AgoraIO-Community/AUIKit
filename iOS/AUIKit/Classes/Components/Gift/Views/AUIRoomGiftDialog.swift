@@ -13,6 +13,7 @@ import UIKit
     func addActionHandler(actionHandler: AUIRoomGiftDialogEventsDelegate)
     
     func removeEventHandler(actionHandler: AUIRoomGiftDialogEventsDelegate)
+
 }
 
 @objc public protocol AUIRoomGiftDialogEventsDelegate: NSObjectProtocol {
