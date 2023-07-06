@@ -10,5 +10,5 @@ interface IAUIRoomMembersView {
 
     fun setRightIconResources(url:String,view: AUIImageView){}
 
-    fun setMemberData(rankList: List<AUIUserInfo>?){}
+    fun setMemberData(rankList: List<AUIUserInfo?>){}
 }

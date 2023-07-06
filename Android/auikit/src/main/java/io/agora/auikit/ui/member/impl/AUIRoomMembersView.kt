@@ -52,19 +52,19 @@ class AUIRoomMembersView : ConstraintLayout,
     /**
      * 设置排行榜前三
      */
-    override fun setMemberData(memberList: List<AUIUserInfo>?){
-        val size = memberList?.size
-        size?.let {
+    override fun setMemberData(memberList: List<AUIUserInfo?>){
+        val size = memberList.size
+        size.let {
             if (it > 3){
-                setMemberView(3,memberList)
+                setMemberView(3, memberList)
                 return
             }
-            setMemberView(it,memberList)
+            setMemberView(it, memberList)
         }
 
     }
 
-    private fun setMemberView(size:Int,rankList:List<AUIUserInfo>){
+    private fun setMemberView(size:Int,rankList:List<AUIUserInfo?>){
         when(size){
             0 -> {
                 mRoomViewBinding.ivMember1.visibility = GONE
@@ -75,22 +75,22 @@ class AUIRoomMembersView : ConstraintLayout,
                 mRoomViewBinding.ivMember1.visibility = VISIBLE
                 mRoomViewBinding.ivMember2.visibility = GONE
                 mRoomViewBinding.ivMember3.visibility = GONE
-                setResources(rankList[0].userAvatar,mRoomViewBinding.ivMember1)
+                rankList[0]?.let { setResources(it.userAvatar,mRoomViewBinding.ivMember1) }
             }
             2 -> {
                 mRoomViewBinding.ivMember1.visibility = VISIBLE
                 mRoomViewBinding.ivMember2.visibility = VISIBLE
                 mRoomViewBinding.ivMember3.visibility = GONE
-                setResources(rankList[0].userAvatar,mRoomViewBinding.ivMember1)
-                setResources(rankList[1].userAvatar,mRoomViewBinding.ivMember2)
+                rankList[0]?.let { setResources(it.userAvatar,mRoomViewBinding.ivMember1) }
+                rankList[1]?.let { setResources(it.userAvatar,mRoomViewBinding.ivMember2) }
             }
             3 -> {
                 mRoomViewBinding.ivMember1.visibility = VISIBLE
                 mRoomViewBinding.ivMember2.visibility = VISIBLE
                 mRoomViewBinding.ivMember3.visibility = VISIBLE
-                setResources(rankList[0].userAvatar,mRoomViewBinding.ivMember1)
-                setResources(rankList[1].userAvatar,mRoomViewBinding.ivMember2)
-                setResources(rankList[2].userAvatar,mRoomViewBinding.ivMember3)
+                rankList[0]?.let { setResources(it.userAvatar,mRoomViewBinding.ivMember1) }
+                rankList[1]?.let { setResources(it.userAvatar,mRoomViewBinding.ivMember2) }
+                rankList[2]?.let { setResources(it.userAvatar,mRoomViewBinding.ivMember3) }
             }
         }
     }

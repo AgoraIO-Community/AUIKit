@@ -20,7 +20,7 @@ import io.agora.auikit.service.IAUIUserService
 import io.agora.auikit.utils.BindingViewHolder
 
 private class MemberItemModel (
-    val user: AUIUserInfo,
+    val user: AUIUserInfo?,
     val micIndex: Int?){
 
     fun micString(): String? {
@@ -68,7 +68,7 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
             object : ListAdapter<MemberItemModel, BindingViewHolder<AuiMemberListItemBinding>>(object :
                 DiffUtil.ItemCallback<MemberItemModel>() {
                 override fun areItemsTheSame(oldItem: MemberItemModel, newItem: MemberItemModel) =
-                    oldItem.user.userId == newItem.user.userId
+                    oldItem.user?.userId == newItem.user?.userId
 
                 override fun areContentsTheSame(
                     oldItem: MemberItemModel,
@@ -91,14 +91,14 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
                     position: Int
                 ) {
                     val item = getItem(position)
-                    holder.binding.tvUserName.text = item.user.userName
+                    holder.binding.tvUserName.text = item.user?.userName
 
                     holder.binding.tvKick.setText(context.getString(R.string.aui_member_item_kick))
                     holder.binding.tvKick.setOnClickListener{
                         listener?.onKickClick(it,position,item.user)
                     }
 
-                    if (isOwner != true || item.user.userId == ownerId){
+                    if (isOwner != true || item.user?.userId == ownerId){
                         holder.binding.tvKick.visibility = GONE
                     }
 
@@ -110,7 +110,7 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
                     }
 
                     Glide.with(holder.binding.ivAvatar)
-                        .load(item.user.userAvatar)
+                        .load(item.user?.userAvatar)
                         .apply(RequestOptions.circleCropTransform())
                         .into(holder.binding.ivAvatar)
                 }
@@ -118,10 +118,10 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
         mBinding.rvUserList.adapter = listAdapter
     }
 
-    fun setMembers(members: List<AUIUserInfo>, seatMap: Map<Int, String>) {
+    fun setMembers(members: List<AUIUserInfo?>, seatMap: Map<Int, String?>) {
         val temp = mutableListOf<MemberItemModel>()
         members.forEach {  user ->
-            val micIndex = seatMap.entries.find { it.value == user.userId }?.key
+            val micIndex = seatMap.entries.find { it.value == user?.userId }?.key
             val item = MemberItemModel(user, micIndex)
             temp.add(item)
         }
@@ -134,7 +134,7 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
     }
 
     interface ActionListener{
-        fun onKickClick(view: View, position:Int, user: AUIUserInfo){}
+        fun onKickClick(view: View, position:Int, user: AUIUserInfo?){}
     }
 
     fun setMemberActionListener(listener:ActionListener){
