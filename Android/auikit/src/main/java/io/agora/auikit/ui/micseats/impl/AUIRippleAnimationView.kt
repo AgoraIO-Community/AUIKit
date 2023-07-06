@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
@@ -131,6 +132,7 @@ class AUIRippleAnimationView:View {
 
     fun setInitialRadius(radius: Float) {
         mInitialRadius = radius
+        invalidate()
     }
 
     fun setDuration(duration: Long) {
@@ -184,5 +186,6 @@ class AUIRippleAnimationView:View {
         if (mInterpolator == null) {
             mInterpolator = LinearInterpolator()
         }
+        invalidate()
     }
 }
