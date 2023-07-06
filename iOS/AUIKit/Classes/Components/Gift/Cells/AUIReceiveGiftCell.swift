@@ -110,8 +110,8 @@ import SDWebImage
         self.container.cornerRadius(self.container.frame.height/2.0)
         self.avatar.frame = CGRect(x: 5, y: 5, width: self.container.frame.height - 10, height: self.container.frame.height - 10)
         self.avatar.cornerRadius((self.container.frame.height - 10) / 2.0)
-        self.userName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: 5, width: frame.width / 5.0 * 2 - 12, height: 15)
-        self.giftName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: self.userName.frame.maxY + 2, width: frame.width / 5.0 * 2 - 12, height: 15)
+        self.userName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: self.container.height/2.0 - 15, width: frame.width / 5.0 * 2 - 12, height: 15)
+        self.giftName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: self.container.height/2.0 , width: frame.width / 5.0 * 2 - 12, height: 15)
         self.giftIcon.frame = CGRect(x: frame.width / 5.0 * 3, y: 0, width: container.frame.height, height: self.container.frame.height)
         self.giftNumbers.frame = CGRect(x: self.giftIcon.frame.maxX + 5, y: 5, width: self.container.frame.width - self.giftIcon.frame.maxX - 5, height: self.container.frame.height - 5)
     }

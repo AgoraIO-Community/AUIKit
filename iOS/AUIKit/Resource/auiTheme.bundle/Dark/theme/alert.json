@@ -8,7 +8,8 @@
       "rightBackgroundGradientColors":["#33B1FF","#7C5BFF"],
       "rightTextColor": "#ffffff",
       "titleColor": "#F9FAFA",
-      "contentTextColor": "#F9FAFA",
-      "inputBackground": "#5E686E"
+      "contentTextColor": "#919BA1",
+      "inputTextColor": "#F9FAFA",
+      "inputBackground": "#2F3437"
   }
 }

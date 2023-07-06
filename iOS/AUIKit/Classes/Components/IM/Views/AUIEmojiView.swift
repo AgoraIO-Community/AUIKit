@@ -33,7 +33,7 @@ public class AUIEmojiView: UIView, UICollectionViewDelegate, UICollectionViewDat
     }()
 
     lazy var separaLine: UIView = {
-        UIView(frame: CGRect(x: 0, y: 10, width: AScreenWidth, height: 1)).backgroundColor(UIColor(0xF8F5FA))
+        UIView(frame: CGRect(x: 0, y: 10, width: AScreenWidth, height: 1)).backgroundColor(.clear)
     }()
 
     @objc public lazy var deleteEmoji: UIButton = {

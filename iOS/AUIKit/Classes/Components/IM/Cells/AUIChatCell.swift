@@ -52,6 +52,11 @@ public class AUIChatCell: UITableViewCell {
         self.content.attributedText = chat.attributeContent
         self.content.preferredMaxLayoutWidth =  self.container.frame.width - 24
         self.content.frame = CGRect(x: 12, y: 7, width:  self.container.frame.width - 24, height:  self.container.frame.height - 16)
+        if chat.joined ?? false {
+            self.container.layerThemeProperties("Barrage.containerLayerColor", "Barrage.containerLayerWidth")
+        } else {
+            self.container.layerProperties(.clear, 0)
+        }
         
     }
 }

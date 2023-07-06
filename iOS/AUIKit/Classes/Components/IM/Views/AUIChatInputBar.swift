@@ -77,10 +77,11 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         self.rightView.theme_setImage(auiThemeImage("InputBar.emojiKeyboard"), forState: .normal)
         self.rightView.theme_setImage(auiThemeImage("InputBar.textKeyboard"), forState: .selected)
         self.addSubViews([self.inputContainer, self.inputField, self.send, self.line])
-        self.inputField.theme_tintColor = "InputBar.cursorColor"
+        self.inputField.theme_tintColor = ThemeColorPicker(keyPath: "InputBar.cursorColor")
         self.inputField.placeHolder = config.placeHolder
         self.inputField.placeHolderColor = config.placeHolderColor
         self.inputField.returnKeyType = config.returnKeyType
+        self.inputField.theme_textColor = ThemeColorPicker(keyPath: "InputBar.textColor")
         var orgContainerInset = self.inputField.textContainerInset
         orgContainerInset.left = 6
         self.inputField.textContainerInset = orgContainerInset

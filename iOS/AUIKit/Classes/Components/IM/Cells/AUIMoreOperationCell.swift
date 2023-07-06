@@ -56,7 +56,7 @@ import SDWebImage
 final public class AUIMoreOperationCell: UICollectionViewCell {
     
     private lazy var iconContainer: UIImageView = {
-        UIImageView(frame: CGRect(x: 5, y: 0, width: self.contentView.frame.width-10, height: self.contentView.frame.width-10)).contentMode(.scaleAspectFit).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).backgroundColor(.clear).cornerRadius((self.contentView.frame.width-10) / 2.0).setGradient(self.config.iconContainerGradientColors, self.config.iconContainerGradientLocations)
+        UIImageView(frame: CGRect(x: 5, y: 0, width: self.contentView.frame.width-10, height: self.contentView.frame.width-10)).contentMode(.scaleAspectFit).backgroundColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)).backgroundColor(.clear).cornerRadius((self.contentView.frame.width-10) / 2.0).createThemeGradient("BottomBar.moreGradientColors", self.config.iconContainerGradientLocations)
     }()
 
     private lazy var icon: UIImageView = {

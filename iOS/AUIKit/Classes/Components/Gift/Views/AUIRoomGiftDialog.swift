@@ -9,6 +9,11 @@ import UIKit
 
 @objc public protocol IAUIRoomGiftDialog: NSObjectProtocol {
     func fillTabs(tabs: [AUIGiftTabEntity])
+    
+    func addActionHandler(actionHandler: AUIRoomGiftDialogEventsDelegate)
+    
+    func removeEventHandler(actionHandler: AUIRoomGiftDialogEventsDelegate)
+
 }
 
 @objc public protocol AUIRoomGiftDialogEventsDelegate: NSObjectProtocol {

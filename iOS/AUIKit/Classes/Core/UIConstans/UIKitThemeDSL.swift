@@ -13,7 +13,7 @@ import SwiftTheme
     @discardableResult
     func cornerThemeRadius(_ radius: String) -> Self  {
         let view = self
-        view.clipsToBounds = true
+        view.layer.masksToBounds = true
         view.layer.theme_cornerRadius = ThemeCGFloatPicker(keyPath: radius)
         return view
     }
