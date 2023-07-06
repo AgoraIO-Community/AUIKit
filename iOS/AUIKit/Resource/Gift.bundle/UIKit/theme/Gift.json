@@ -1,7 +1,7 @@
 {
   "SendGift": {
       "backgroundColor": "#00000000",
-      "coverGradientColors": ["#003F66","#2C006600"],
+      "coverGradientColors": ["#003F66","#21004D"],
       "coverLayerWidth": 1,
       "coverLayerColor": "#009EFF",
       "sendGradientColors": ["#33B1FF","#7C5BFF"],

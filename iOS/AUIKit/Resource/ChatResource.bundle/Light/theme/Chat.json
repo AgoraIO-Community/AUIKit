@@ -2,11 +2,12 @@
     "Barrage": {
         "containerBackgroundColor": "#FFFFFF33",
         "containerLayerWidth": 1,
-        "containerLayerColor": "#F9FAFA",
+        "containerLayerColor": "#F9FAFA99",
         "containerLayerCornerRadius": 12
     },
     "BottomBar": {
         "containerBackgroundColor": "#FFFFFF33",
+        "moreGradientColors": ["E5F5FFFF","#1B006600"]
     },
     "InputBar": {
         "backgroundColor": "#FFFFFF",
@@ -14,7 +15,7 @@
         "placeHolder": "Aa",
         "placeHolderColor":"#B6B8C9",
         "cursorColor":"#009FFF",
-        "textColor":"#000000",
+        "textColor":"#F9FAFA",
         "inputContainerLayerColor": "#E4E3ED",
         "inputContainerLayerWidth": 1,
         "inputBackgroundColor":"#F1F2F3",

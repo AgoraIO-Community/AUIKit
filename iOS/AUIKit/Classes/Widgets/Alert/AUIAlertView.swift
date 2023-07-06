@@ -398,7 +398,7 @@ extension AUIAlertView {
             .theme_titleColor(color: "Alert.titleColor")
             .theme_titleFont(font: "CommonFont.big")
             .theme_contentColor(color: "Alert.contentTextColor")
-            .theme_contentFont(font: "CommonFont.middle").theme_textFieldBackground(color: "Alert.inputBackground")
+            .theme_contentFont(font: "CommonFont.middle").theme_textFieldBackground(color: "Alert.inputBackground").theme_textFieldTextColor(color: "Alert.inputTextColor")
         return alert
     }
     
@@ -419,6 +419,11 @@ extension AUIAlertView {
     
     public func theme_textFieldBackground(color: ThemeColorPicker?) -> AUIAlertView {
         textField.theme_backgroundColor = color
+        return self
+    }
+    
+    public func theme_textFieldTextColor(color: ThemeColorPicker?) -> AUIAlertView {
+        textField.theme_textColor = color
         return self
     }
     

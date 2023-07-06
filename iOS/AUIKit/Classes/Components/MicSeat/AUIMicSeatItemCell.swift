@@ -236,6 +236,9 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         if item?.isLock ?? false {
             defaultImageView.theme_image = "SeatItem.lockImage"
             statusImageView.theme_image = nil
+        } else if item?.isLock ?? false,item?.isMuteAudio ?? false {
+            defaultImageView.theme_image = "SeatItem.lockImage"
+            statusImageView.theme_image = "SeatItem.muteAudioImage"
         } else if item?.isMuteAudio ?? false {
             defaultImageView.theme_image = "SeatItem.defaultImage"
             statusImageView.theme_image = "SeatItem.muteAudioImage"
@@ -249,6 +252,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
             defaultImageView.theme_image = "SeatItem.defaultImage"
         }
         
+        
         if item?.avatarUrl?.count ?? 0 > 0 {
             canvasView.alpha = item?.isMuteVideo ?? true ? 0 : 1
         } else {
@@ -256,13 +260,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         }
         
         hostIcon.isHidden = item?.micSeat != 0
+        updateRoleUI(with: item?.role ?? .offlineAudience)
         guard let mic = item else { return }
         if mic.role == .onlineAudience,mic.isMuteAudio == false,mic.isLock == false {
             rippleView.isHidden = false
         } else {
             rippleView.isHidden = true
         }
-        updateRoleUI(with: mic.role)
         setNeedsLayout()
     }
     

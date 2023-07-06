@@ -42,11 +42,11 @@ public class AUISendGiftCell: UICollectionViewCell {
     }
 
     lazy var cover: UIView = {
-        UIView(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)).cornerThemeRadius("SendGift.coverCornerRadius").layerThemeProperties("SendGift.coverLayerColor", "SendGift.coverLayerWidth").createThemeGradient("SendGift.coverGradientColors", self.config.coverGradientPoints).theme_backgroundColor(color: "SendGift.backgroundColor")
+        UIView(frame:CGRect(x: 1, y: 5, width: self.contentView.frame.width-2, height: self.contentView.frame.height - 5)).cornerThemeRadius("SendGift.coverCornerRadius").layerThemeProperties("SendGift.coverLayerColor", "SendGift.coverLayerWidth").theme_backgroundColor(color: "SendGift.backgroundColor").createThemeGradient("SendGift.coverGradientColors", self.config.coverGradientPoints)
     }()
     
     lazy var send: UIButton = {
-        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).createThemeGradient("SendGift.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .gift), .normal).themeTitleColor("SendGift.sendTextColor", forState: .normal).theme_font("SendGift.sendFont").addTargetFor(self, action: #selector(sendAction), for: .touchUpInside)
+        UIButton(type: .custom).frame(CGRect(x: 0, y: self.cover.frame.height-28, width: self.cover.frame.width, height: 28)).createThemeGradient("SendGift.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .gift), .normal).themeTitleColor("SendGift.sendTextColor", forState: .normal).theme_font("SendGift.sendFont").addTargetFor(self, action: #selector(sendAction), for: .touchUpInside).cornerRadius(8, [.bottomLeft,.bottomRight], .clear, 0)
     }()
 
     lazy var icon: UIImageView = {
@@ -67,6 +67,11 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.contentView.addSubViews([self.cover, self.icon, self.name, self.displayValue])
         self.cover.addSubview(self.send)
         self.displayValue.imageEdgeInsets(UIEdgeInsets(top: self.displayValue.imageEdgeInsets.top, left: -10, bottom: self.displayValue.imageEdgeInsets.bottom, right: self.displayValue.imageEdgeInsets.right))
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.icon.frame = CGRect(x: self.contentView.frame.width / 2.0 - 24, y: 16.5, width: 48, height: 48)
     }
 
     @available(*, unavailable)
@@ -94,8 +99,6 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.cover.isHidden = !(item?.selected ?? false)
         self.displayValue.frame = CGRect(x: 0, y: item!.selected ? self.icon.frame.maxY + 4:self.name.frame.maxY + 1, width: self.contentView.frame.width, height: 15)
         self.name.isHidden = item?.selected ?? false
-        self.cover.frame = CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 5)
-        self.icon.frame = CGRect(x: self.contentView.frame.width / 2.0 - 24, y: 16.5, width: 48, height: 48)
     }
     
     @objc private func sendAction() {
@@ -116,7 +119,7 @@ public class AUISendGiftCellConfig: NSObject {
     
     public var coverGradientColors: [UIColor] = [UIColor(red: 0.8, green: 0.924, blue: 1, alpha: 1),UIColor(red: 0.888, green: 0.8, blue: 1, alpha: 0)]
     
-    public var coverGradientPoints: [CGPoint] = [CGPoint(x: 0, y: 0.5), CGPoint(x: 0, y: 1)]
+    public var coverGradientPoints: [CGPoint] = [CGPoint(x: 0, y: 0.618), CGPoint(x: 0, y: 1)]
     
     public var sendGradientColors: [UIColor] = [UIColor(red: 0, green: 0.62, blue: 1, alpha: 1),UIColor(red: 0.487, green: 0.358, blue: 1, alpha: 1)]
     

@@ -2,10 +2,10 @@
 {
   "SendGift": {
       "backgroundColor": "#00000000",
-      "coverGradientColors": ["#CCECFF","##E2CCFF00"],
+      "coverGradientColors": ["#CCECFF","#F0E5FF"],
       "coverLayerWidth": 1,
       "coverLayerColor": "#009EFF",
-      "sendGradientColors": ["#009EFF","#7C5BFF"],
+      "sendGradientColors": ["#33B1FF","#7C5BFF"],
       "coverCornerRadius": 12,
       "sendFont": "PingFangSC-Medium,14",
       "sendTextColor": "#F9FAFA",
