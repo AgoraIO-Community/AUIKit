@@ -47,11 +47,11 @@ open class AUIRoomContext: NSObject {
         roomInfoMap[channelName] = nil
     }
     
-    private var currentThemeName: String?
+    public var currentThemeName: String?
     
     override init() {
         super.init()
-//        switchTheme(themeName: "Dark")
+        switchTheme(themeName: "Light")
     }
     
     
