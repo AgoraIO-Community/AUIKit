@@ -49,11 +49,11 @@ class VoiceRoomApplyListFragment : Fragment(),
     private var invitedIndex:Int? = -1
 
     private var total = 0
-     set(value) {
-         field = value
-         checkEmpty()
-     }
-    private var members = mutableListOf<AUIUserInfo>()
+        set(value) {
+            field = value
+            checkEmpty()
+        }
+    private var members = mutableListOf<AUIUserInfo?>()
 
     private var applyAdapter: VoiceApplyAdapter?=null
 
@@ -123,8 +123,8 @@ class VoiceRoomApplyListFragment : Fragment(),
         mRoomViewBinding.slApplyList.isRefreshing = false
     }
 
-    fun refreshData(userList:MutableList<AUIUserInfo>?){
-        userList?.let {
+    fun refreshData(userList:MutableList<AUIUserInfo?>){
+        userList.let {
             total = it.size
             checkEmpty()
             applyAdapter?.refresh(it)
@@ -132,24 +132,24 @@ class VoiceRoomApplyListFragment : Fragment(),
     }
 
     interface ApplyEventListener{
-        fun onApplyItemClick(view:View,applyIndex:Int,user:AUIUserInfo,position: Int){}
+        fun onApplyItemClick(view:View,applyIndex:Int?,user:AUIUserInfo?,position: Int){}
     }
 
     fun setApplyEventListener(listener: ApplyEventListener){
         this.listener = listener
     }
 
-    override fun onApplyClickListener(view: View, user: AUIUserInfo,position: Int) {
-        this.listener?.onApplyItemClick(view, user.micIndex, user,position)
+    override fun onApplyClickListener(view: View, user: AUIUserInfo?, position: Int) {
+        this.listener?.onApplyItemClick(view, user?.micIndex, user,position)
     }
 
 }
 
 class VoiceApplyAdapter constructor(
     context: Context,
-    dataList:MutableList<AUIUserInfo>?
+    dataList:MutableList<AUIUserInfo?>
 ): RecyclerView.Adapter<ApplyViewHolder>()   {
-    var dataList:MutableList<AUIUserInfo> = mutableListOf()
+    var dataList:MutableList<AUIUserInfo?> = mutableListOf()
     private var listener: ApplyEventListener?=null
 
     private var mContext:Context?=null
@@ -169,15 +169,15 @@ class VoiceApplyAdapter constructor(
 
     override fun onBindViewHolder(holder: ApplyViewHolder, position: Int) {
         val userInfo = dataList[position]
-        holder.name.text = userInfo.userName
+        holder.name.text = userInfo?.userName
         holder.action.text = mContext?.getString(R.string.aui_room_apply_accept)
         holder.action.alpha = 1.0f
         ThreadManager.getInstance().runOnMainThread{
-            mContext?.let { Glide.with(it).load(userInfo.userAvatar).into(holder.avatar) }
+            mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
         }
         holder.action.setOnClickListener{
             userInfo.let { index->
-                if (index.micIndex != -1){
+                if (index?.micIndex != -1){
                     listener?.onApplyClickListener(it,userInfo,position)
                 }
                 holder.action.alpha = 0.2f
@@ -192,9 +192,9 @@ class VoiceApplyAdapter constructor(
         return 0
     }
 
-    fun refresh(data:MutableList<AUIUserInfo>){
+    fun refresh(data:MutableList<AUIUserInfo?>){
         ThreadManager.getInstance().runOnMainThread {
-            val list: MutableList<AUIUserInfo> = data
+            val list: MutableList<AUIUserInfo?> = data
             Log.e("apex","apply refresh ${list.size}")
             dataList = list
             notifyDataSetChanged()
@@ -202,7 +202,7 @@ class VoiceApplyAdapter constructor(
     }
 
     interface ApplyEventListener{
-        fun onApplyClickListener(view:View,user:AUIUserInfo,position:Int)
+        fun onApplyClickListener(view:View,user:AUIUserInfo?,position:Int)
     }
 
     fun setInvitedEventListener(listener: ApplyEventListener){
