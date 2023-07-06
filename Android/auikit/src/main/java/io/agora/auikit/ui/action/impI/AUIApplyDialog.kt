@@ -94,7 +94,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
         }
     }
 
-    override fun refreshApplyData(userList:MutableList<AUIUserInfo>?){
+    override fun refreshApplyData(userList: MutableList<AUIUserInfo?>){
         adapter?.refreshData(userList)
     }
 
@@ -151,7 +151,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
             return fragments.size()
         }
 
-        fun refreshData(userList:MutableList<AUIUserInfo>?){
+        fun refreshData(userList:MutableList<AUIUserInfo?>){
             fragments.forEach { key, value ->
                 if (key == PAGE_INDEX0){
                     val fragment = value as VoiceRoomApplyListFragment
@@ -160,7 +160,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
             }
         }
 
-        override fun onApplyItemClick(view: View, applyIndex: Int, user: AUIUserInfo, position: Int) {
+        override fun onApplyItemClick(view: View, applyIndex: Int?, user: AUIUserInfo?, position: Int) {
             this.listener?.onApplyItemClick(view, applyIndex, user,position)
         }
     }

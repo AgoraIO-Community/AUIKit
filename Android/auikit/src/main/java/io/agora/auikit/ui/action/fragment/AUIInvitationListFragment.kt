@@ -50,11 +50,11 @@ class VoiceRoomInvitedListFragment : Fragment(),
     private var listener: InviteEventListener?=null
 
     private var total = 0
-     set(value) {
-         field = value
-         checkEmpty()
-     }
-    private var members = mutableListOf<AUIUserInfo>()
+        set(value) {
+            field = value
+            checkEmpty()
+        }
+    private var members = mutableListOf<AUIUserInfo?>()
 
     private var invitedAdapter: VoiceInvitedAdapter?=null
 
@@ -120,8 +120,8 @@ class VoiceRoomInvitedListFragment : Fragment(),
         mRoomViewBinding.slInvitedList.isRefreshing = false
     }
 
-    fun refreshData(userList:MutableList<AUIUserInfo>?){
-        userList?.let {
+    fun refreshData(userList:MutableList<AUIUserInfo?>){
+        userList.let {
             total = it.size
             checkEmpty()
             invitedAdapter?.refresh(it)
@@ -129,12 +129,12 @@ class VoiceRoomInvitedListFragment : Fragment(),
 
     }
 
-    override fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIUserInfo) {
+    override fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIUserInfo?) {
         this.listener?.onInviteItemClick(view,invitedIndex,user)
     }
 
     interface InviteEventListener{
-        fun onInviteItemClick(view:View,invitedIndex:Int,user:AUIUserInfo){}
+        fun onInviteItemClick(view:View,invitedIndex:Int,user:AUIUserInfo?){}
     }
 
     fun setInviteEventListener(listener: InviteEventListener){
@@ -146,9 +146,9 @@ class VoiceRoomInvitedListFragment : Fragment(),
 class VoiceInvitedAdapter constructor(
     context: Context,
     index: Int?,
-    dataList:MutableList<AUIUserInfo>?
+    dataList:MutableList<AUIUserInfo?>
 ): RecyclerView.Adapter<InvitedViewHolder>()   {
-    var dataList:MutableList<AUIUserInfo> = mutableListOf()
+    var dataList:MutableList<AUIUserInfo?> = mutableListOf()
     private var listener: InvitedEventListener?=null
     private var invitedIndex:Int?
 
@@ -170,11 +170,11 @@ class VoiceInvitedAdapter constructor(
 
     override fun onBindViewHolder(holder: InvitedViewHolder, position: Int) {
         val userInfo = dataList[position]
-        holder.name.text = userInfo.userName
+        holder.name.text = userInfo?.userName
         holder.action.text = mContext?.getString(R.string.aui_room_invited_action)
         holder.action.alpha = 1.0f
         ThreadManager.getInstance().runOnMainThread{
-            mContext?.let { Glide.with(it).load(userInfo.userAvatar).into(holder.avatar) }
+            mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
         }
         holder.action.setOnClickListener{
             invitedIndex?.let { index->
@@ -194,15 +194,18 @@ class VoiceInvitedAdapter constructor(
     }
 
 
-    fun refresh(data:MutableList<AUIUserInfo>){
+    fun refresh(data:MutableList<AUIUserInfo?>){
         ThreadManager.getInstance().runOnMainThread {
-            dataList = data
+            data.let {
+                dataList = data
+            }
+
             notifyDataSetChanged()
         }
     }
 
     interface InvitedEventListener{
-        fun onInvitedClickListener(view:View,invitedIndex:Int,user:AUIUserInfo)
+        fun onInvitedClickListener(view:View,invitedIndex:Int,user:AUIUserInfo?)
     }
 
     fun setInvitedEventListener(listener: InvitedEventListener){
