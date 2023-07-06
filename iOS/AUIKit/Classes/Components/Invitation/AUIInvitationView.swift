@@ -7,6 +7,7 @@
 
 import SDWebImage
 import UIKit
+import SwiftTheme
 
 @objc public protocol IAUIListViewBinderRefresh: NSObjectProtocol {
     func filter(userId: String)
@@ -56,8 +57,10 @@ import UIKit
         tabStyle.selectedTitleColor = UIColor(0x171a1c)
         tabStyle.normalTitleColor = UIColor(0xFFFFFF)
         tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
-        
-        return AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+        let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Invite List"]).backgroundColor(.clear)
+        tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
+        return tab
     }()
     
     public lazy var tableView: UITableView = {
@@ -185,7 +188,10 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         tabStyle.normalTitleColor = .white
         tabStyle.titleFont = .systemFont(ofSize: 16, weight: .semibold)
         
-        return AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+        let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+        tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        return tab
     }()
     
     public lazy var tableView: UITableView = {
