@@ -78,8 +78,8 @@ class AUIGiftServiceImpl constructor(
             val gift = JSONObject(value.toString())
             GsonTools.toBean(gift["messageInfo"].toString(), AUIGiftEntity::class.java)?.let { it ->
                 auiChatServiceImpl.addGiftList(it)
-                this.delegateHelper.notifyDelegate {
-                    it.onReceiveGiftMsg(channelName)
+                this.delegateHelper.notifyDelegate { it1 ->
+                    it1.onReceiveGiftMsg(it)
                 }
             }
         }

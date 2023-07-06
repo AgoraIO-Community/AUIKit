@@ -20,6 +20,6 @@ interface IAUIGiftsService : IAUICommonService<IAUIGiftsService.AUIGiftRespDeleg
     fun sendGift(gift: AUIGiftEntity,callback: AUICallback)
 
     interface AUIGiftRespDelegate{
-        fun onReceiveGiftMsg(channel:String){}
+        fun onReceiveGiftMsg(giftEntity:AUIGiftEntity?){}
     }
 }
