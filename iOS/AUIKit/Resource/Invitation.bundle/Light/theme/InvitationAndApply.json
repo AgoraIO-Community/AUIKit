@@ -4,10 +4,14 @@
         "backgroundColor":"#FFFFFF",
         "titleColor":"#171A1C",
         "cellTitleColor":"#171A1C"
+        "bigTitleFont": "PingFangSC-Medium,17",
+        "cellTitleColor":"#171A1C"
     },
     "Apply": {
         "backgroundColor":"#FFFFFF",
         "titleColor":"#171A1C",
+        "cellTitleColor":"#171A1C"
+        "bigTitleFont": "PingFangSC-Medium,17",
         "cellTitleColor":"#171A1C"
     }
 }
