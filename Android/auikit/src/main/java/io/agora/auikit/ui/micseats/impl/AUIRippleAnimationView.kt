@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import io.agora.auikit.R
+import java.util.concurrent.CopyOnWriteArrayList
 
 
 class AUIRippleAnimationView:View {
@@ -22,7 +23,8 @@ class AUIRippleAnimationView:View {
     private var mMaxRadiusSet = false
     private var mIsRunning = false
     private var mLastCreateTime: Long = 0
-    private val mCircleList: ArrayList<Circle> = ArrayList<Circle>()
+
+    private val mCircleList = CopyOnWriteArrayList<Circle>()
 
     private var mInterpolator: Interpolator = LinearInterpolator()
     private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -82,8 +84,6 @@ class AUIRippleAnimationView:View {
             if (System.currentTimeMillis() - circle.mCreateTime < mDuration) {
                 mPaint.alpha = circle.alpha
                 canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), radius, mPaint)
-            } else {
-                iterator.remove()
             }
         }
         if (mCircleList.size > 0) {
