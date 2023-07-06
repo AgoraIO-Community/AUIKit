@@ -143,7 +143,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
                     it.layoutParams = ViewGroup.LayoutParams(
                         DeviceTools.dp2px(context,mItemWidth.toFloat()),
                         DeviceTools.dp2px(context,mItemHeight.toFloat()))
-
+                    it.setRippleInitialRadius(100f)
                     micSeatItemViewWrap?.setView(it)
                     itemView.setOnClickListener{ it1 ->
                         showMicSeatDialog(it1)
