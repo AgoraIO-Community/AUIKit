@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftTheme
 
 @objc public protocol AUITabsPageContainerCellDelegate: NSObjectProtocol {
         
@@ -47,7 +48,10 @@ public class AUITabsPageContainer: UIView {
         self.tabStyle.normalTitleColor = UIColor(0xACB4B9)
         self.tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
         self.tabStyle.alignment = .left
-        return AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
+        let tab = AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
+        tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        return tab
     }()
     
     private lazy var layout: UICollectionViewFlowLayout = {
@@ -73,7 +77,7 @@ public class AUITabsPageContainer: UIView {
         self.containers = containers
         self.titles = titles
         self.addSubViews([self.tabs,self.container,self.gradient])
-        self.gradient.theme_image = auiThemeImage("mask")
+        self.gradient.image = UIImage.aui_Image(named: "mask")
         self.container.bounces = false
         self.tabs.valueChange = {
             self.container.scrollToItem(at: IndexPath(row: $0, section: 0), at: .centeredHorizontally, animated: true)

@@ -394,7 +394,7 @@ extension AUIAlertView {
             .theme_leftButtonBackground(color: "Alert.leftBackgroundColor")
             .theme_leftButton(color: "Alert.leftTextColor")
             .theme_leftButtonBorder(color: "Alert.leftBorderColor").theme_rightButton(color: "Alert.rightTextColor")
-            .theme_rightButtonBackground(color: "CommonColor.primary")
+            .theme_rightButtonBackground(color: "Alert.rightBackgroundColor")
             .theme_titleColor(color: "Alert.titleColor")
             .theme_titleFont(font: "CommonFont.big")
             .theme_contentColor(color: "Alert.contentTextColor")
