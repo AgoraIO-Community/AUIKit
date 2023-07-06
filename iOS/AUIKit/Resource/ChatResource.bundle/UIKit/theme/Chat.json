@@ -3,7 +3,7 @@
     "Barrage": {
         "containerBackgroundColor": "#00000050",
         "containerLayerWidth": 1,
-        "containerLayerColor": "#009EFF",
+        "containerLayerColor": "#F9FAFA",
         "containerLayerCornerRadius": 12
     },
     "BottomBar": {

@@ -6,7 +6,14 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  表情容器View
+ *
+ *  \~English
+ *  Emoji container Collection
+ *
+ */
 public class AUIEmojiView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     @objc public var deleteClosure: (() -> Void)?
 

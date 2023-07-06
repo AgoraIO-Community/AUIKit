@@ -73,7 +73,7 @@ public class AUITabsPageContainer: UIView {
         self.containers = containers
         self.titles = titles
         self.addSubViews([self.tabs,self.container,self.gradient])
-        self.gradient.theme_image = auiThemeImage("mask")
+        self.gradient.image = UIImage.aui_Image(named: "mask")
         self.container.bounces = false
         self.tabs.valueChange = {
             self.container.scrollToItem(at: IndexPath(row: $0, section: 0), at: .centeredHorizontally, animated: true)

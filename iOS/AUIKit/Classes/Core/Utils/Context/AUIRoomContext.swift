@@ -49,7 +49,7 @@ open class AUIRoomContext: NSObject {
     
     override init() {
         super.init()
-        switchTheme(themeName: "Dark")
+//        switchTheme(themeName: "Dark")
     }
     
     

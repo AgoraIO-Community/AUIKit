@@ -20,7 +20,7 @@ public extension AUIKitSwiftLib where Base == Data {
         do {
             dic = try JSONSerialization.jsonObject(with: base, options: .allowFragments) as? Dictionary<String,Any>
         } catch {
-            assert(false, "\(error)")
+            aui_info("AUIKit data toDictionary() error:\(error.localizedDescription)")
         }
         return dic
     }
@@ -30,7 +30,7 @@ public extension AUIKitSwiftLib where Base == Data {
         do {
             array = try JSONSerialization.jsonObject(with: base, options: .allowFragments) as? [Dictionary<String,Any>]
         } catch {
-            assert(false, "\(error)")
+            aui_info("AUIKit data toArray() error:\(error.localizedDescription)")
         }
         return array
     }

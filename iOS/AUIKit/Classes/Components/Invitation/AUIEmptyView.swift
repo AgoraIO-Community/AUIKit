@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Description A empty view
 public class AUIEmptyView: UIView {
 
     var emptyImage = UIImage.aui_Image(named: "empty")
@@ -20,7 +21,17 @@ public class AUIEmptyView: UIView {
     override public init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
+    /// Description 初始化方法
+    /// - Parameters:
+    ///   - frame: 坐标布局
+    ///   - title: 文案
+    ///   - image: 图片
+    /// Description initialization method
+    /// - Parameters:
+    ///   - frame: coordinate layout
+    ///   - title: Copywriting
+    ///   - image: image
     public convenience init(frame: CGRect, title: String, image: UIImage?) {
         self.init(frame: frame)
         if image != nil {

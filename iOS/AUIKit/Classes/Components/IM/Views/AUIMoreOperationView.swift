@@ -6,15 +6,33 @@
 //
 
 import UIKit
-
+/*!
+ *  \~Chinese
+ *  更多功能视图事件回调
+ *
+ *  \~English
+ *  View's events delegate.
+ *
+ */
 @objc public protocol AUIMoreOperationViewEventsDelegate: NSObjectProtocol {
     func onItemSelected(entity: AUIMoreOperationCellDataProtocol)
 }
-
+/*!
+ *  \~Chinese
+ *  更多功能视图
+ *
+ *  \~English
+ *  More function container Collection
+ *
+ */
 public final class AUIMoreOperationView: UIView {
     
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
+    /// Description 添加UI事件监听代理
+    /// - Parameter actionHandler: 代理对象
+    /// Description Add UI event listening agent
+    /// - Parameter actionHandler: proxy object
     public func addActionHandler(actionHandler: AUIMoreOperationViewEventsDelegate) {
         if self.eventHandlers.contains(actionHandler) {
             return
@@ -22,6 +40,11 @@ public final class AUIMoreOperationView: UIView {
         self.eventHandlers.add(actionHandler)
     }
 
+    
+    /// Description 移除UI事件监听代理
+    /// - Parameter actionHandler: 代理对象
+    /// Description Remove UI event listening agent
+    /// - Parameter actionHandler: proxy object
     public func removeEventHandler(actionHandler: AUIMoreOperationViewEventsDelegate) {
         self.eventHandlers.remove(actionHandler)
     }
