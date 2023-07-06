@@ -2,9 +2,9 @@
   "Alert": {
       "backgroundColor": "#171A1C",
       "leftBackgroundColor": "#171A1C",
-      "leftTextColor": "#F1F2F3",
-      "leftBorderColor": "#F1F2F3",
-      "rightBackgroundColor": "CommonColor.primary",
+      "leftTextColor": "#33B1FF",
+      "leftBorderColor": "#33B1FF",
+      "rightBackgroundColor": "#33B1FF",
       "rightBackgroundGradientColors":["#33B1FF","#7C5BFF"],
       "rightTextColor": "#ffffff",
       "titleColor": "#F9FAFA",

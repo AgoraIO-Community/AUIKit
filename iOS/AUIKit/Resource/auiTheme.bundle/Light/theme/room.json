@@ -1,15 +1,15 @@
 
 {
   "Room": {
-      "roomInfoBackgroundColor": "#FFFFFFCC",
+      "roomInfoBackgroundColor": "#FFFFFF51",
       "roomInfoTitleColor": "#FFFFFF",
-      "roomInfoSubTitleColor": "#FFFFFFCC",
+      "roomInfoSubTitleColor": "#FFFFFF",
       "membersMoreIcon": "aui_members_right_arrow",
       "membersMoreIconWidth": 24,
       "membersMoreIconHeight": 24,
       "membersMoreWidth": 32,
       "membersMoreHeight": 32,
-      "membersMoreBgColor": "#FFFFFFCC",
+      "membersMoreBgColor": "#FFFFFF51",
       "membersMoreCornerRadius": 16,
       
       "offBtnIcon": "aui_karaoke_room_close",

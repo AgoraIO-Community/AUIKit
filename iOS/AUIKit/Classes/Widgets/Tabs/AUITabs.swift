@@ -34,6 +34,8 @@ public struct AUITabsStyle {
     public var selectedBorderColor = UIColor.clear
     public var normalBorderColor = UIColor.clear
     public var minimumWidth: CGFloat?
+    public var theme_normalTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
+    public var theme_selectedTitleColor = UIColor.darkGray
     public init() {}
 }
 

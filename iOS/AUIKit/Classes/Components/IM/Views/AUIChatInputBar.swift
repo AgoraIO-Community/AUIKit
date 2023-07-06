@@ -7,13 +7,34 @@
 
 import UIKit
 import SwiftTheme
-
+/*!
+ *  \~Chinese
+ *  文字以及表情输入框
+ *
+ *  \~English
+ *  Text and emoticon input box
+ *
+ */
 public class AUIChatInputBar: UIView, UITextViewDelegate {
     
     var keyboardHeight = CGFloat(0)
-
+    /*!
+     *  \~Chinese
+     *  发送按钮回调包含要发送的字符串
+     *
+     *  \~English
+     *  The send button callback contains the string to send
+     *
+     */
     public var sendClosure: ((String) -> Void)?
-
+    /*!
+     *  \~Chinese
+     *  点击切换表情与文字键盘的回调，可用于事件统计
+     *
+     *  \~English
+     *  Click to switch the callback of emoticon and text keyboard, which can be used for event statistics
+     *
+     */
     public var changeEmojiClosure: ((Bool) -> Void)?
 
     lazy var rightView: UIButton = {

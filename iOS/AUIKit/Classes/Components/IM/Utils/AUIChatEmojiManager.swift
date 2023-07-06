@@ -7,7 +7,14 @@
 
 import Foundation
 fileprivate let manager = AUIChatEmojiManager()
-
+/*!
+ *  \~Chinese
+ *  表情资源管理类
+ *
+ *  \~English
+ *  Emoticon resource management class
+ *
+ */
 @objc open class AUIChatEmojiManager: NSObject {
     
     @objc static let shared = manager

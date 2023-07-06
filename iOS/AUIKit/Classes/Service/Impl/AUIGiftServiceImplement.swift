@@ -23,6 +23,7 @@ fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
     private var rtmManager: AUIRtmManager?
     
     deinit {
+        requestDelegate = nil
         aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
         rtmManager?.unsubscribeMessage(channelName: channelName, delegate: self)
     }

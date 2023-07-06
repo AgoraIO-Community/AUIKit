@@ -7,7 +7,14 @@
 
 import Foundation
 
-
+/*!
+ *  \~Chinese
+ *  底部功能区域
+ *
+ *  \~English
+ *  bottom functional area.
+ *
+ */
 public class AUIRoomBottomFunctionBar: UIView {
 
     public var raiseKeyboard: (() -> Void)?

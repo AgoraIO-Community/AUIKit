@@ -9,9 +9,6 @@ import Foundation
 import AgoraChat
 import YYModel
 
-import Foundation
-import AgoraChat
-import YYModel
 
 
 fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
@@ -112,6 +109,7 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
     }
     
     deinit {
+        requestDelegate = nil
         removeListener()
         if AUIRoomContext.shared.isRoomOwner(channelName: self.channelName) {
             userDestroyedChatroom()

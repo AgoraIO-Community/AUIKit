@@ -8,7 +8,14 @@
 import UIKit
 
 let chatViewWidth = AScreenWidth * (287 / 375.0)
-
+/*!
+ *  \~Chinese
+ *  聊天消息列表
+ *
+ *  \~English
+ *  Chat list
+ *
+ */
 public class AUIChatListView: UIView {
 
     private var lastOffsetY = CGFloat(0)

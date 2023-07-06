@@ -7,7 +7,14 @@
 
 import UIKit
 import AudioToolbox
-
+/*!
+ *  \~Chinese
+ *  点赞动画效果视图
+ *
+ *  \~English
+ *  Like animation effect view.
+ *
+ */
 public class AUIPraiseEffectView: UIView, CAAnimationDelegate {
     private var images = [UIImage.aui_Image(named: "finger_heart"), UIImage.aui_Image(named: "thunder"), UIImage.aui_Image(named: "thumbs_up"), UIImage.aui_Image(named: "No_of_the_beast"), UIImage.aui_Image(named: "lips"), UIImage.aui_Image(named: "heart")]
 
@@ -23,6 +30,16 @@ public class AUIPraiseEffectView: UIView, CAAnimationDelegate {
         super.init(frame: frame)
     }
     
+    /// Description 初始化方法
+    /// - Parameters:
+    ///   - frame: 坐标
+    ///   - images: 图片数组
+    ///   - touchFeedback: 是否开启触感反馈
+    /// Description initialization method
+    /// - Parameters:
+    ///   - frame: coordinates
+    ///   - images: array of images
+    ///   - touchFeedback: Whether to enable touch feedback
     public convenience init(frame: CGRect,images: [UIImage], touchFeedback: Bool = true) {
         self.init(frame: frame)
         if !images.isEmpty {
@@ -37,9 +54,11 @@ public class AUIPraiseEffectView: UIView, CAAnimationDelegate {
     }
     
     private func shakeDevice() {
-        AudioServicesPlaySystemSound(1519)
+        AudioServicesPlaySystemSound(1520)
     }
-
+    
+    /// Description 播放点赞动画
+    /// Description Play like animation
     public func setupEmitter() {
         if self.touchFeedback {
             self.shakeDevice()
