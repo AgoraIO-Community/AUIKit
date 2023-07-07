@@ -90,7 +90,6 @@ class AUIRtmMsgProxy : RtmEventListener {
         event ?: return
         if (event.data.metadataItems.isEmpty()) {
             val delegateKey = "${event.target}__"
-            Log.d("apex","onStorageEvent $delegateKey")
             msgDelegates[delegateKey]?.forEach { delegate ->
                 delegate.onMsgRecvEmpty(event.target)
             }
