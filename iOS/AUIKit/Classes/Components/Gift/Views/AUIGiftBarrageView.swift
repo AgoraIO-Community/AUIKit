@@ -50,7 +50,7 @@ public class AUIGiftBarrageView: UIView, UITableViewDelegate, UITableViewDataSou
     public var gifts = [AUIGiftEntity]() {
         didSet {
             if self.gifts.count > 0 {
-                self.viewWithTag(11)?.isHidden = false
+                self.isHidden = false
                 self.cellAnimation()
             }
         }
@@ -89,6 +89,7 @@ public class AUIGiftBarrageView: UIView, UITableViewDelegate, UITableViewDataSou
 }
 
 public extension AUIGiftBarrageView {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.gifts.count
     }
@@ -100,6 +101,7 @@ public extension AUIGiftBarrageView {
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.contentView.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         cell.alpha = 0
+        cell.isUserInteractionEnabled = false
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -135,6 +137,7 @@ public extension AUIGiftBarrageView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseInOut) {
                 self.alpha = 0
+                self.isHidden = true
             } completion: { _ in
                 self.gifts.removeAll()
             }

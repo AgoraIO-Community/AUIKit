@@ -32,7 +32,7 @@ import SDWebImage
      *  The overall container contains all subviews
      */
     lazy var container: UIToolbar = {
-        UIToolbar(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 10)).backgroundColor(.clear)
+        UIToolbar(frame: CGRect(x: 0, y: 5, width: self.contentView.frame.width, height: self.contentView.frame.height - 10)).backgroundColor(.clear).isUserInteractionEnabled(false)
     }()
     /*!
      *  \~Chinese
@@ -89,6 +89,7 @@ import SDWebImage
     
     @objc public convenience init(reuseIdentifier: String?,config: AUIReceiveGiftCellConfig) {
         self.init(style: .default, reuseIdentifier: reuseIdentifier)
+        contentView.isUserInteractionEnabled = false
         contentView.backgroundColor = .clear
         self.backgroundColor = .clear
         contentView.addSubview(self.container)
@@ -114,6 +115,10 @@ import SDWebImage
         self.giftName.frame = CGRect(x: self.avatar.frame.maxX + 6, y: self.container.height/2.0 , width: frame.width / 5.0 * 2 - 12, height: 15)
         self.giftIcon.frame = CGRect(x: frame.width / 5.0 * 3, y: 0, width: container.frame.height, height: self.container.frame.height)
         self.giftNumbers.frame = CGRect(x: self.giftIcon.frame.maxX + 5, y: 5, width: self.container.frame.width - self.giftIcon.frame.maxX - 5, height: self.container.frame.height - 5)
+    }
+    
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        super.hitTest(point, with: event)
     }
 
     @objc public func refresh(item: AUIGiftEntity) {

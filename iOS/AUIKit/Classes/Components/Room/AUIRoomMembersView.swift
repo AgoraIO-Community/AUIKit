@@ -151,6 +151,7 @@ public class AUIRoomMembersView: UIView {
 }
 
 extension AUIRoomMembersView:IAUIRoomMembersView {
+    
     public func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String) {
         members.forEach {
             if $0.userId == AUIRoomContext.shared.roomInfoMap[channelName]?.owner?.userId ?? "" {

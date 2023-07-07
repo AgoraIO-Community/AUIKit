@@ -7,6 +7,14 @@
 
 import Foundation
 
+@objc public enum AUIChatFunctionBottomEntityType: Int {
+    case more
+    case mic
+    case gift
+    case like
+    case unknown = -1
+}
+
 @objcMembers public class AUIChatFunctionBottomEntity: NSObject {
     
     public var showRedDot: Bool = false
@@ -17,6 +25,6 @@ import Foundation
     
     public var normalImage: UIImage?
     
-    public var index: Int = 0
+    public var type: AUIChatFunctionBottomEntityType = .more
     
 }

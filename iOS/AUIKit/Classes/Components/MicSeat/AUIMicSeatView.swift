@@ -62,6 +62,14 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
         _loadSubViews()
     }
     
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        self.touchOnView?()
+//        if let indexPath = self.collectionView.indexPathForItem(at: point),self.collectionView.frame.contains(point) {
+//            uiDelegate?.onItemDidClick(view: self, seatIndex: indexPath.row)
+//        }
+        return super.hitTest(point, with: event)
+    }
+    
     private func _loadSubViews() {
         addSubview(collectionView)
         self.backgroundColor = .clear
@@ -70,11 +78,6 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         collectionView.frame = bounds
-    }
-    
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        self.touchOnView?()
-        return super.hitTest(point, with: event)
     }
     
     public func updateMicVolume(index: Int,volume: Int) {

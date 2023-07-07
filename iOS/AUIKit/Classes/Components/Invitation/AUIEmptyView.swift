@@ -52,13 +52,13 @@ public class AUIEmptyView: UIView {
     public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if let subviews = self.superview?.subviews.reversed() {
             for view in subviews {
-                if view is UIButton,view.frame.contains(point) {
+                if view.isKind(of: UIButton.self),view.frame.contains(point) {
                     return view
                 }
-                if view is UITableView {
+                if view.isKind(of: UITableView.self),view.frame.contains(point) {
                     return view
                 }
-                if view is UICollectionView {
+                if view.isKind(of: UICollectionView.self),view.frame.contains(point) {
                     return view
                 }
             }

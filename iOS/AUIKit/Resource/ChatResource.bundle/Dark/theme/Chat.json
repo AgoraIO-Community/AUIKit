@@ -19,7 +19,7 @@
         "placeHolder": "Aa",
         "placeHolderColor":"#B6B8C9",
         "cursorColor":"#009FFF",
-        "textColor":"#000000",
+        "textColor":"#F9FAFA",
         "textInputCornerRadius":5,
         "sendGradientColors":["#33B1FF","#7C5BFF"],
         "sendFont": "PingFangSC-Regular,16",
