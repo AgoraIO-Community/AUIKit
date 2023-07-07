@@ -18,7 +18,6 @@ import io.agora.auikit.service.http.Utils
 import io.agora.auikit.service.http.user.CreateUserReq
 import io.agora.auikit.service.http.user.CreateUserRsp
 import io.agora.auikit.service.http.user.UserInterface
-import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ThreadManager
 import io.agora.chat.*
@@ -84,7 +83,7 @@ class AUIChatManager(
     }
 
     fun isOwner():Boolean{
-       return roomContext?.isRoomOwner(channelId) == true
+        return roomContext?.isRoomOwner(channelId) == true
     }
 
     fun getAppKey():String?{
@@ -118,15 +117,18 @@ class AUIChatManager(
 
     fun loginChat(callback:CallBack){
         Logger.t("AUIChatManager").d("loginChat")
-        Log.e("apex","loginChat $userName $accessToken ")
         ChatClient.getInstance().loginWithToken(userName,accessToken,object : CallBack{
             override fun onSuccess() {
-                callback.onSuccess()
+                ThreadManager.getInstance().runOnMainThread{
+                    callback.onSuccess()
+                }
                 Log.d("apex","loginChat suc")
             }
 
             override fun onError(code: Int, error: String?) {
-                callback.onError(code,error)
+                ThreadManager.getInstance().runOnMainThread{
+                    callback.onError(code,error)
+                }
                 Log.e("apex","loginChat error $code  $error")
             }
         })
@@ -161,14 +163,14 @@ class AUIChatManager(
                 sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback{
                     override fun onOriginalResult(error: AUIException?, message: ChatMessage?) {
                         if (error == null){
-                            ThreadManager.getInstance().runOnMainThreadDelay({ callback.onOriginalResult(null,message) }, 200)
+                            ThreadManager.getInstance().runOnMainThreadDelay({callback.onOriginalResult(null,message)},300)
                         }
                     }
                 })
             }
 
             override fun onError(code: Int, errorMsg: String?) {
-                Log.e("apex","joinRoom onError $roomId")
+                Log.e("apex","joinRoom onError $roomId $code $errorMsg")
                 ThreadManager.getInstance().runOnMainThread { callback.onOriginalResult(AUIException(code,errorMsg),null) }
             }
         })
@@ -325,7 +327,6 @@ class AUIChatManager(
                 override fun onResponse(call: Call<CommonResp<CreateUserRsp>>, response: Response<CommonResp<CreateUserRsp>>) {
                     val rsp = response.body()?.data
                     if (response.body()?.code == 0 && rsp != null) {
-                        Log.e("apex-wt","getChatUser $rsp")
                         userId = rsp.userUuid
                         userName = rsp.userName
                         accessToken = rsp.accessToken

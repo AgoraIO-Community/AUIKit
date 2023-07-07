@@ -24,6 +24,7 @@ import io.agora.auikit.service.http.room.RoomUserReq
 import io.agora.auikit.service.http.user.KickUserReq
 import io.agora.auikit.service.http.user.KickUserRsp
 import io.agora.auikit.service.http.user.UserInterface
+import io.agora.auikit.service.rtm.AUIRtmErrorProxyDelegate
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.AUILogger
@@ -40,7 +41,7 @@ private const val kRoomAttrKey = "room"
 class AUIRoomManagerImpl(
     private val commonConfig: AUICommonConfig,
     private val rtmClient: RtmClient? = null,
-) : IAUIRoomManager, AUIRtmMsgProxyDelegate {
+) : IAUIRoomManager, AUIRtmMsgProxyDelegate, AUIRtmErrorProxyDelegate {
 
     private val subChannelMsg = AtomicBoolean(false)
     private val subChannelStream = AtomicBoolean(false)
@@ -135,6 +136,8 @@ class AUIRoomManagerImpl(
             })
     }
     override fun enterRoom(roomId: String, token: String, callback: AUICallback?) {
+        subChannelStream.set(false)
+        subChannelMsg.set(false)
         val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, String>
         if (user == null) {
             AUILogger.logger().d("EnterRoom", "user == null")
@@ -271,9 +274,23 @@ class AUIRoomManagerImpl(
         }
     }
 
+    override fun onTokenPrivilegeWillExpire(channelName: String?) {
+
+    }
+
+    override fun onConnectionStateChanged(channelName: String?, state: Int, reason: Int) {
+        if (state == 5 && reason == 3){
+            delegateHelper.notifyDelegate {
+                it.onRoomUserBeKicked(channelName,AUIRoomContext.shared().currentUserInfo.userId)
+            }
+        }
+    }
+
     override fun onMsgRecvEmpty(channelName: String) {
-        delegateHelper.notifyDelegate {
-            it.onRoomDestroy(channelName)
+        if (channelName == getChannelName()){
+            delegateHelper.notifyDelegate {
+                it.onRoomDestroy(channelName)
+            }
         }
     }
 
