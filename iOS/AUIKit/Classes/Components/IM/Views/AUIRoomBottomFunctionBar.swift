@@ -55,6 +55,13 @@ public class AUIRoomBottomFunctionBar: UIView {
         self.chatRaiser.contentHorizontalAlignment = .left
          
     }
+    
+    @objc public func refreshToolBar(datas: [AUIChatFunctionBottomEntity]) {
+        self.datas.removeAll()
+        self.datas = datas
+        self.toolBar.frame = CGRect(x: self.frame.width - (40 * CGFloat(self.datas.count)) - (CGFloat(self.datas.count) - 1) * 8 - 25 - 10, y: 0, width: 40 * CGFloat(self.datas.count) + (CGFloat(self.datas.count) - 1) * 8 + 25, height: self.frame.height)
+        self.toolBar.reloadData()
+    }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
@@ -78,7 +85,6 @@ extension AUIRoomBottomFunctionBar:UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUIChatBarFunctionCell", for: indexPath) as? AUIChatBarFunctionCell
         let entity = self.datas[safe:indexPath.row] ?? AUIChatFunctionBottomEntity()
         let selected = entity.selected
-        entity.index = indexPath.row
         cell?.icon.image = selected ? (entity.selectedImage != nil ? entity.selectedImage:entity.normalImage):entity.normalImage
         cell?.redDot.isHidden = !entity.showRedDot
         return cell ?? AUIChatBarFunctionCell()

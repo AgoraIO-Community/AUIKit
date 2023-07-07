@@ -60,6 +60,7 @@ import SwiftTheme
         let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Invite List"]).backgroundColor(.clear)
         tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
         tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
+        tab.theme_backgroundColor = AUIColor("Invitation.backgroundColor")
         return tab
     }()
     
@@ -191,6 +192,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
         tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
         tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        tab.theme_backgroundColor = AUIColor("Apply.backgroundColor")
         return tab
     }()
     
