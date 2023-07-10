@@ -184,7 +184,7 @@ public class AUIRippleAnimationView: UIView {
     }
     
     /// The number of circles to draw around the disk, the default value is 3, if the forcedMaximumCircleRadius is used the number of drawn circles could be less than numberOfCircles
-    @IBInspectable public var numberOfCircles: Int = 2 {
+    @IBInspectable public var numberOfCircles: Int = 3 {
         didSet {
             redrawCircles()
         }

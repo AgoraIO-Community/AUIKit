@@ -44,6 +44,9 @@ let kUserMuteAttrKey = "mute"
         let rtmConfig = AgoraRtmClientConfig()
         rtmConfig.userId = commonConfig.userId
         rtmConfig.appId = commonConfig.appId
+        let log = AgoraRtmLogConfig()
+        log.filePath = NSHomeDirectory() + "/Documents/RTMLog/"
+        rtmConfig.logConfig = log
         if rtmConfig.userId.count == 0 {
             aui_error("userId is empty")
             assert(false, "userId is empty")
