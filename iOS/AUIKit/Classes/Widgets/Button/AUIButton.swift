@@ -35,7 +35,7 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var titleFont: ThemeFontPicker = "Button.titleFont"
     public var titleColor: ThemeColorPicker = "Button.titleColor"
     public var selectedTitleColor: ThemeColorPicker = "Button.titleColor"
-    public var backgroundColor: ThemeColorPicker = "Button.backgroundColor"
+    public var backgroundColor: ThemeColorPicker = AUIColor("Button.backgroundColor")
     public var cornerRadius: ThemeCGFloatPicker? = "Button.cornerRadius"
     public var textAlpha: ThemeCGFloatPicker = "Button.titleAlpha"
     public var highlightedBackgroundColor: ThemeColorPicker?
