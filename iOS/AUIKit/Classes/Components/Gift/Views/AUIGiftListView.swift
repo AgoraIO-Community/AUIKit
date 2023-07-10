@@ -45,7 +45,7 @@ public class AUIGiftListView: UIView, UICollectionViewDelegate, UICollectionView
         layout.itemSize = CGSize(width: (AScreenWidth - 30) / 4.0, height: (110 / 84.0) * (AScreenWidth - 30) / 4.0)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.footerReferenceSize = CGSize(width: self.frame.width, height: 150)
+        layout.footerReferenceSize = CGSize(width: self.frame.width, height: 180)
         return layout
     }()
 
@@ -110,7 +110,7 @@ public extension AUIGiftListView {
         if kind == UICollectionView.elementKindSectionFooter {
             let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "AUIGiftsFooter", for: indexPath)
             reusableView.backgroundColor = .clear
-            reusableView.frame = CGRect(origin: reusableView.frame.origin, size: CGSize(width: self.frame.width, height: 150))
+            reusableView.frame = CGRect(origin: reusableView.frame.origin, size: CGSize(width: self.frame.width, height: 180))
             return reusableView
         }
         return UICollectionReusableView()
