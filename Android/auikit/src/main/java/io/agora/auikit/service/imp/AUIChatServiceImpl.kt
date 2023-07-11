@@ -24,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 private const val chatRoomIdKey = "chatRoom"
-class AUIChatServiceImpl(
+class AUIChatServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
 ) : IAUIChatService, AUIRtmMsgProxyDelegate {
