@@ -118,7 +118,7 @@ class AUIChatBottomBarView : RelativeLayout,
                 imageView.setBackgroundResource(R.drawable.aui_chat_bottom_bar_item_icon)
                 imageView.id = itemId
                 imageView.setOnClickListener { v ->
-                     listener?.onChatExtendMenuItemClick(v.id, v)
+                    listener?.onChatExtendMenuItemClick(v.id, v)
                 }
                 mViewBinding.menuLayout.addView(imageView)
             }
@@ -199,7 +199,7 @@ class AUIChatBottomBarView : RelativeLayout,
     }
 
     override fun setMenuItemClickListener(listener: AUIMenuItemClickListener?) {
-       this.listener = listener
+        this.listener = listener
     }
 
     private fun setViewLayoutParams(view: View, width: Int, height: Int) {
@@ -263,6 +263,18 @@ class AUIChatBottomBarView : RelativeLayout,
         }
     }
 
+    override fun setShowMic(isShow: Boolean) {
+        post {
+            val mic: ImageView =
+                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_mic)
+            if (isShow) {
+                mic.visibility = VISIBLE
+            } else {
+                mic.visibility = GONE
+            }
+        }
+    }
+
     override fun setShowMoreStatus(isOwner: Boolean?, isShowHandStatus: Boolean) {
         post {
             val moreStatus: ImageView =
@@ -292,7 +304,7 @@ class AUIChatBottomBarView : RelativeLayout,
         }
     }
 
-     override fun hideKeyboard() {
+    override fun hideKeyboard() {
         KeyboardUtils.hideKeyboard(this)
     }
 
