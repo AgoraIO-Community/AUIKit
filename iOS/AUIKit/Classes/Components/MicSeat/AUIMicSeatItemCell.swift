@@ -271,7 +271,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     }
     
     func updateVolume(_ volume: Int) {
-        if volume > 5 {
+        if volume > 1 {
             if !rippleView.isAnimating {
                 rippleView.startAnimation()
             }
