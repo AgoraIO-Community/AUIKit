@@ -62,14 +62,12 @@
 
         <io.agora.auikit.ui.micseats.impl.AUIRippleAnimationView
             android:id="@+id/iv_ripple"
-            app:layout_constraintStart_toStartOf="@+id/iv_user_avatar"
-            app:layout_constraintEnd_toEndOf="@+id/iv_user_avatar"
-            app:layout_constraintTop_toTopOf="@+id/iv_user_avatar"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_user_avatar"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:aui_ripple_max_radius="110dp"
-            app:aui_ripple_initial_radius="100dp"
             app:aui_ripple_color="@color/aui_ripple_stroke_color"
             />
 

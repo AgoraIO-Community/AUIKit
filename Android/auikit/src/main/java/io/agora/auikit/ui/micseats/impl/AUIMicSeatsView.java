@@ -171,7 +171,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
 
         private void setView(IMicSeatItemView view) {
             this.view = view;
-            ((AUIMicSeatItemView)view).setRippleInitialRadius(100f);
             setTitleText(titleText);
             setTitleIndex(titleIndex);
             setRoomOwnerVisibility(roomOwnerVisibility);
