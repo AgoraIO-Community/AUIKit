@@ -15,8 +15,8 @@ class AUIRippleAnimationView:View {
 
     private var mInitialRadius = 80f // 初始波纹半径
     private var mMaxRadius = 110f // 最大波纹半径
-    private var mDuration: Long = 2000 // 一个波纹从创建到消失的持续时间
-    private var mSpeed = 500 // 波纹的创建速度，每500ms创建一个
+    private var mDuration: Long = 3000 // 一个波纹从创建到消失的持续时间
+    private var mSpeed = 1000 // 波纹的创建速度
     private var mMaxRadiusRate = 0.85f
     private var rippleStrokeWidth = 2
     private var rippleColor = 0
@@ -55,7 +55,7 @@ class AUIRippleAnimationView:View {
         val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIRippleAnimationView)
         mInitialRadius = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_initial_radius,80).toFloat()
         mMaxRadius = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_max_radius, 110).toFloat()
-        rippleStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_stroke_width, 4)
+        rippleStrokeWidth = typedArray.getDimensionPixelSize(R.styleable.AUIRippleAnimationView_aui_ripple_stroke_width, 2)
         mSpeed =  typedArray.getInteger(R.styleable.AUIRippleAnimationView_aui_ripple_speed,500)
         mMaxRadiusRate = typedArray.getFloat(R.styleable.AUIRippleAnimationView_aui_ripple_max_radiusRate, 0.85f)
         rippleColor = typedArray.getInt(
@@ -87,7 +87,7 @@ class AUIRippleAnimationView:View {
             }
         }
         if (mCircleList.size > 0) {
-            postInvalidateDelayed(10)
+            postInvalidateDelayed(1000)
         }
     }
 
@@ -141,6 +141,7 @@ class AUIRippleAnimationView:View {
     fun setMaxRadius(maxRadius: Float) {
         mMaxRadius = maxRadius
         mMaxRadiusSet = true
+        invalidate()
     }
 
     fun setStrokeWidth(strokeWidth: Float) {

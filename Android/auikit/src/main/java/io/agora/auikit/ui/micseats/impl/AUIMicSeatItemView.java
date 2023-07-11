@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import io.agora.auikit.R;
 import io.agora.auikit.model.AUIMicSeatStatus;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
 
-public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView {
+public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView, ViewTreeObserver.OnGlobalLayoutListener {
     private String titleIdleText;
     private ImageView ivStateIdle;
     private ImageView ivStateLock;
@@ -36,6 +37,8 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
     private View bgSeat;
     private ImageView ivUserAvatar;
     private AUIRippleAnimationView ripple;
+    private int itemWidth;
+    private Context context;
 
     public AUIMicSeatItemView(@NonNull Context context) {
         this(context, null);
@@ -47,6 +50,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
 
     public AUIMicSeatItemView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         TypedArray themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIMicSeatItemView, defStyleAttr, 0);
         int appearanceId = themeTa.getResourceId(R.styleable.AUIMicSeatItemView_aui_micSeatItem_appearance, 0);
         themeTa.recycle();
@@ -73,7 +77,10 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
         ivVideoMute = findViewById(R.id.iv_video_mute);
         ripple = findViewById(R.id.iv_ripple);
 
-        ripple.setInterpolator(new AccelerateInterpolator(1.2f));
+        // 设置监听器以获取宽度
+        getViewTreeObserver().addOnGlobalLayoutListener(this);
+
+        ripple.setInterpolator(new AccelerateInterpolator(1.4f));
         ripple.setStyle(Paint.Style.STROKE);
 
         // 静音图标位置配置
@@ -181,6 +188,18 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
             tvChorus.setText(R.string.aui_micseat_chorus);
         } else {
             tvChorus.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onGlobalLayout() {
+        // 当布局完成时，获取 ImageView 的宽度
+        if (ivUserAvatar.getWidth() > 0) {
+            itemWidth = ivUserAvatar.getWidth();
+            // 在获取到宽度后，移除监听器
+            getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            ripple.setInitialRadius(itemWidth/2);
+            ripple.setMaxRadius(itemWidth/2 + 10);
         }
     }
 }
