@@ -59,9 +59,11 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
     
     public func onMessageReceive(channelName: String, message: String) {
         let messageJson = message.a.jsonToDictionary()
-        guard let messageType = messageJson["messageType"] as? String,let messageInfo = messageJson["messageInfo"] as? Dictionary<String,Any> else { return }
-        
-        guard let gift = AUIGiftEntity.yy_model(with: messageInfo) else { return }
+        aui_info("messageJson :\(messageJson)")
+        guard let messageType = messageJson["messageType"] as? String,let messageInfo = messageJson["messageInfo"] as? String else { return }
+        AUIToast.show(text: "messageType:\(messageType) message info:\(messageInfo)")
+        let dic = messageInfo.a.jsonToDictionary()
+        guard let gift = AUIGiftEntity.yy_model(with: dic) else { return }
         switch messageType {
         case AUIChatRoomGift:
             for response in self.responseDelegates.allObjects {
@@ -88,7 +90,7 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
     
     public func sendGift(gift: AUIGiftEntity, completion: @escaping (NSError?) -> Void) {
         gift.sendUser = AUIRoomContext.shared.currentUserInfo
-        let json = gift.yy_modelToJSONObject() ?? ""
+        let json = gift.yy_modelToJSONString() ?? ""
         guard let message = ["messageType":AUIChatRoomGift,"messageInfo":json].a.toJsonString() else {
             completion(NSError(domain: "sendGift json error", code: 400))
             return
