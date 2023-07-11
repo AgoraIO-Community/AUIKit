@@ -2,10 +2,13 @@ package io.agora.auikit.ui.micseats.impl;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +24,7 @@ import io.agora.auikit.R;
 import io.agora.auikit.model.AUIMicSeatStatus;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
 
-public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView {
+public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView, ViewTreeObserver.OnGlobalLayoutListener {
     private String titleIdleText;
     private ImageView ivStateIdle;
     private ImageView ivStateLock;
@@ -33,6 +36,9 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
     private ImageView ivVideoMute;
     private View bgSeat;
     private ImageView ivUserAvatar;
+    private AUIRippleAnimationView ripple;
+    private int itemWidth;
+    private Context context;
 
     public AUIMicSeatItemView(@NonNull Context context) {
         this(context, null);
@@ -44,6 +50,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
 
     public AUIMicSeatItemView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         TypedArray themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIMicSeatItemView, defStyleAttr, 0);
         int appearanceId = themeTa.getResourceId(R.styleable.AUIMicSeatItemView_aui_micSeatItem_appearance, 0);
         themeTa.recycle();
@@ -68,6 +75,13 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
         tvChorus = findViewById(R.id.tv_chorus);
         ivAudioMute = findViewById(R.id.iv_audio_mute);
         ivVideoMute = findViewById(R.id.iv_video_mute);
+        ripple = findViewById(R.id.iv_ripple);
+
+        // 设置监听器以获取宽度
+        getViewTreeObserver().addOnGlobalLayoutListener(this);
+
+        ripple.setInterpolator(new AccelerateInterpolator(1.4f));
+        ripple.setStyle(Paint.Style.STROKE);
 
         // 静音图标位置配置
         FrameLayout.LayoutParams ivAudioMuteParams = (LayoutParams) ivAudioMute.getLayoutParams();
@@ -95,6 +109,14 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
         }
     }
 
+    public void setRippleInitialRadius(float radius){
+        ripple.setInitialRadius(radius);
+    }
+
+    public void setRippleInterpolator(float value){
+        ripple.setInterpolator(new AccelerateInterpolator(value));
+    }
+
     @Override
     public void setRoomOwnerVisibility(int visible) {
         tvRoomOwner.setVisibility(visible);
@@ -111,6 +133,15 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
     public void setTitleText(String text) {
         tvTitle.setText(text);
     }
+
+    public void startRippleAnimation(){
+        ripple.startRippleAnimation();
+    }
+
+    public void stopRippleAnimation(){
+        ripple.stopImmediatelyRippleAnimation();
+    }
+
     @Override
     public void setAudioMuteVisibility(int visible) {
         ivAudioMute.setVisibility(visible);
@@ -157,6 +188,18 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView 
             tvChorus.setText(R.string.aui_micseat_chorus);
         } else {
             tvChorus.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onGlobalLayout() {
+        // 当布局完成时，获取 ImageView 的宽度
+        if (ivUserAvatar.getWidth() > 0) {
+            itemWidth = ivUserAvatar.getWidth();
+            // 在获取到宽度后，移除监听器
+            getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            ripple.setInitialRadius(itemWidth/2);
+            ripple.setMaxRadius(itemWidth/2 + 10);
         }
     }
 }

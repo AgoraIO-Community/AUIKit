@@ -26,7 +26,7 @@ interface IAUIChatService: IAUICommonService<IAUIChatService.AUIChatRespDelegate
      * 加入聊天室
      * - roomId: 聊天室id
      */
-    fun joinedChatRoom(roomId: String?,callback:AUIChatMsgCallback){}
+    fun joinedChatRoom(roomId: String,callback:AUIChatMsgCallback){}
 
     /**
      * 退出聊天室

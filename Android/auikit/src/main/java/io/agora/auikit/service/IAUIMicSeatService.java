@@ -88,6 +88,8 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
     @Nullable
     AUIMicSeatInfo getMicSeatInfo(int seatIndex);
 
+    int getMicSeatSize();
+
     /**
      * 点击邀请
      * @param index 麦位号

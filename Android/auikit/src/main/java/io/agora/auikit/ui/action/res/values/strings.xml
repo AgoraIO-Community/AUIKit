@@ -4,4 +4,5 @@
     <string name="aui_room_invited_action">Invited</string>
     <string name="aui_room_invited_list">Audience</string>
     <string name="aui_room_apply_list">Application List</string>
+    <string name="aui_room_contribution_empty">No Data</string>
 </resources>

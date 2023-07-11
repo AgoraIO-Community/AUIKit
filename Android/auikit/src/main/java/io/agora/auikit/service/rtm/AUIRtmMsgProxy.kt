@@ -18,7 +18,7 @@ interface AUIRtmErrorProxyDelegate {
 
     /** 网络状态变化
      */
-    fun onConnectionStateChanged(channelName: String, state: Int, reason: Int) {}
+    fun onConnectionStateChanged(channelName: String?, state: Int, reason: Int) {}
 
     /** 收到的KV为空
      */
@@ -90,7 +90,6 @@ class AUIRtmMsgProxy : RtmEventListener {
         event ?: return
         if (event.data.metadataItems.isEmpty()) {
             val delegateKey = "${event.target}__"
-            Log.d("apex","onStorageEvent $delegateKey")
             msgDelegates[delegateKey]?.forEach { delegate ->
                 delegate.onMsgRecvEmpty(event.target)
             }
@@ -188,6 +187,10 @@ class AUIRtmMsgProxy : RtmEventListener {
 
     override fun onConnectionStateChange(channelName: String?, state: Int, reason: Int) {
         Log.d("rtm_event", "rtm -- connect state change: $state, reason: $reason")
+
+        errorDelegates.forEach {
+            it.onConnectionStateChanged(channelName,state, reason)
+        }
     }
 
     override fun onTokenPrivilegeWillExpire(channelName: String?) {

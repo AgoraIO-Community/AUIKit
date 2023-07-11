@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:background="?attr/aui_micSeatItem_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="?attr/aui_micSeatItem_dimensionRatio"
@@ -17,6 +17,7 @@
             android:id="@+id/bg_seat"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
             android:background="?attr/aui_micSeatItem_seatBackground"
             app:layout_constraintBottom_toTopOf="@id/ll_bottom"
             app:layout_constraintDimensionRatio="1:1"
@@ -26,8 +27,8 @@
 
         <ImageView
             android:id="@+id/iv_state_idle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="?attr/aui_micSeatItem_seatIconMargin"
             android:src="?attr/aui_micSeatItem_seatIconIdle"
             android:visibility="visible"
@@ -39,8 +40,8 @@
 
         <ImageView
             android:id="@+id/iv_state_lock"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="?attr/aui_micSeatItem_seatIconMargin"
             android:src="?attr/aui_micSeatItem_seatIconLock"
             android:visibility="invisible"
@@ -58,6 +59,17 @@
             app:layout_constraintEnd_toEndOf="@id/bg_seat"
             app:layout_constraintStart_toStartOf="@id/bg_seat"
             app:layout_constraintTop_toTopOf="@id/bg_seat" />
+
+        <io.agora.auikit.ui.micseats.impl.AUIRippleAnimationView
+            android:id="@+id/iv_ripple"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:aui_ripple_color="@color/aui_ripple_stroke_color"
+            />
 
         <TextView
             android:id="@+id/tv_room_owner"

@@ -4,5 +4,5 @@ import android.view.View
 import io.agora.auikit.model.AUIUserInfo
 
 interface AUIInvitationDialogEventListener {
-    fun onInvitedItemClick(view: View, invitedIndex: Int, user: AUIUserInfo){}
+    fun onInvitedItemClick(view: View, invitedIndex: Int, user: AUIUserInfo?){}
 }

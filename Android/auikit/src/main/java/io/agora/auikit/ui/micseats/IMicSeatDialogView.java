@@ -42,7 +42,7 @@ public interface IMicSeatDialogView {
     /**
      * 添加上麦按钮
      */
-    void addEnterSeat();
+    void addEnterSeat(boolean isShow);
 
     /**
      * 设置显示用户信息
@@ -50,4 +50,10 @@ public interface IMicSeatDialogView {
      * @param userInfo 用户信息
      */
     void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo);
+
+    /**
+     * 添加邀请
+     */
+    void addInvite(boolean isShow);
+
 }

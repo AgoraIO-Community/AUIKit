@@ -22,6 +22,16 @@ public interface IMicSeatsView {
      */
     void setMicSeatActionDelegate(ActionDelegate actionDelegate);
 
+    /**
+     * 开启水波纹动画
+     */
+    default void startRippleAnimation(int index){}
+
+    /**
+     * 结束水波纹动画
+     */
+    default void stopRippleAnimation(int index){}
+
     interface ActionDelegate {
 
         /**

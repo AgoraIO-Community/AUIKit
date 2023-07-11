@@ -17,7 +17,6 @@ import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.AgoraEngineCreator
 import io.agora.auikit.utils.DelegateHelper
-import io.agora.auikit.utils.ThreadManager
 import io.agora.chat.ChatMessage
 import org.json.JSONObject
 import retrofit2.Call
@@ -30,16 +29,15 @@ class AUIChatServiceImpl constructor(
 ) : IAUIChatService, AUIRtmMsgProxyDelegate {
     private val roomContext:AUIRoomContext
     private var chatManager:AUIChatManager?
+    private var mKeyMap:MutableMap<String,Boolean> = mutableMapOf<String,Boolean>()
 
     init {
         rtmManager.subscribeMsg(channelName,chatRoomIdKey,this)
         this.roomContext = AUIRoomContext.shared()
         this.chatManager = AUIChatManager(channelName,roomContext)
-        Log.e("apex-wt","op2")
     }
 
     fun initChatService(){
-        Log.d("apex","initChatService ${chatManager?.getAppKey()}")
         AgoraEngineCreator.createChatClient(
             roomContext.commonConfig.context,
             chatManager?.getAppKey()
@@ -71,7 +69,6 @@ class AUIChatServiceImpl constructor(
 
     override fun createChatRoom(roomId: String, callback: AUICreateChatRoomCallback) {
         val userName = chatManager?.userName
-        Log.e("apex-wt","op6 $userName")
         userName?.let { createRoom(roomId,it,callback) }
     }
 
@@ -84,7 +81,7 @@ class AUIChatServiceImpl constructor(
         chatManager?.sendTxtMsg(roomId,text,userInfo,callback)
     }
 
-    override fun joinedChatRoom(roomId: String?, callback: AUIChatMsgCallback) {
+    override fun joinedChatRoom(roomId: String, callback: AUIChatMsgCallback) {
         chatManager?.joinRoom(roomId,callback)
     }
 
@@ -134,7 +131,11 @@ class AUIChatServiceImpl constructor(
         if (key == chatRoomIdKey){
             delegateHelper.notifyDelegate {
                 val room = JSONObject(value.toString())
-                it.onUpdateChatRoomId(room.getString("chatRoomId"))
+                val chatroomId = room.getString("chatRoomId")
+                if (!mKeyMap.containsKey(chatroomId)){
+                    mKeyMap[chatroomId] = true
+                    it.onUpdateChatRoomId(chatroomId)
+                }
             }
         }
     }
