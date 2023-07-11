@@ -12,6 +12,8 @@ interface IAUIChatBottomBarView {
 
     fun setEnableMic(isEnable: Boolean){}
 
+    fun setShowMic(isShow:Boolean){}
+
     fun setShowMoreStatus(isOwner: Boolean?, isShowHandStatus: Boolean){}
 
 }
