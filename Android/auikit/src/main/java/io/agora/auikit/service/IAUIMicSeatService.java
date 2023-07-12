@@ -150,6 +150,10 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
         default void onSeatClose(int seatIndex, boolean isClose) {
         }
 
+        /**
+         * 显示邀请dialog
+         * @param index
+         */
         default void onShowInvited(int index){}
     }
 }
