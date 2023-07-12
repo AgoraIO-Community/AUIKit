@@ -1,6 +1,5 @@
 package io.agora.auikit.service.imp
 
-import android.util.Log
 import io.agora.auikit.model.AUICommonConfig
 import io.agora.auikit.model.AUICreateRoomInfo
 import io.agora.auikit.model.AUIRoomContext
@@ -27,10 +26,7 @@ import io.agora.auikit.service.http.user.UserInterface
 import io.agora.auikit.service.rtm.AUIRtmErrorProxyDelegate
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.AUILogger
-import io.agora.auikit.utils.AgoraEngineCreator
-import io.agora.auikit.utils.DelegateHelper
-import io.agora.auikit.utils.MapperUtils
+import io.agora.auikit.utils.*
 import io.agora.rtm.RtmClient
 import io.agora.rtm.RtmConstants
 import retrofit2.Call
@@ -68,10 +64,12 @@ class AUIRoomManagerImpl(
     }
     override fun bindRespDelegate(delegate: AUIRoomManagerRespDelegate?) {
         delegateHelper.bindDelegate(delegate)
+        rtmManager.proxy.subscribeError("",this)
     }
 
     override fun unbindRespDelegate(delegate: AUIRoomManagerRespDelegate?) {
         delegateHelper.unBindDelegate(delegate)
+        rtmManager.proxy.unsubscribeError("",this)
     }
 
     override fun createRoom(
@@ -253,15 +251,19 @@ class AUIRoomManagerImpl(
                 override fun onResponse(call: Call<CommonResp<KickUserRsp>>, response: Response<CommonResp<KickUserRsp>>) {
                     val rsp = response.body()?.data
                     if (response.body()?.code == 0 && rsp != null) {
-                        Log.e("apex","kickUser suc")
-                        callback?.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread{
+                            callback?.onResult(null)
+                        }
                     } else {
-                        callback?.onResult(Utils.errorFromResponse(response))
+                        ThreadManager.getInstance().runOnMainThread{
+                            callback?.onResult(Utils.errorFromResponse(response))
+                        }
                     }
                 }
                 override fun onFailure(call: Call<CommonResp<KickUserRsp>>, t: Throwable) {
-                    callback?.onResult(AUIException(-1, t.message))
-                    Log.e("apex","createChatRoom onFailure")
+                    ThreadManager.getInstance().runOnMainThread{
+                        callback?.onResult(AUIException(-1, t.message))
+                    }
                 }
             })
     }
