@@ -7,6 +7,17 @@
 
 import UIKit
 import SwiftTheme
+
+@objc public func getInput() -> AUIChatInputBar? {
+    guard let window = getWindow() else {return nil}
+    for subView in window.subviews {
+        if let input = subView as? AUIChatInputBar {
+            return input
+        }
+    }
+    return nil
+}
+
 /*!
  *  \~Chinese
  *  文字以及表情输入框
@@ -36,23 +47,23 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
      *
      */
     public var changeEmojiClosure: ((Bool) -> Void)?
-
+    
     lazy var rightView: UIButton = {
         UIButton(type: .custom).frame(CGRect(x: 0, y: 4.5, width: 27, height: 27)).addTargetFor(self, action: #selector(changeToEmoji), for: .touchUpInside).backgroundColor(.clear)
     }()
-
+    
     lazy var inputContainer: UIView = {
         UIView(frame: CGRect(x: 15, y: 13, width: AScreenWidth - 110, height: 36)).cornerRadius(18).theme_backgroundColor(color: "InputBar.inputBackgroundColor")
     }()
-
+    
     public lazy var inputField: PlaceHolderTextView = {
         PlaceHolderTextView(frame: CGRect(x: 20, y: 14, width: AScreenWidth - 146, height: 34)).delegate(self).font(.systemFont(ofSize: 16, weight: .regular)).backgroundColor(.clear).theme_textColor(color: "InputBar.textColor")
     }()
-
+    
     lazy var send: UIButton = {
         UIButton(type: .custom).frame(CGRect(x: AScreenWidth - 82, y: 12, width: 67, height: 36)).cornerRadius(18).createThemeGradient("InputBar.sendGradientColors", self.config.sendGradientPoints).title("Send".a.localize(type: .chat), .normal).themeTitleColor("InputBar.sendColor", forState: .normal).theme_font("InputBar.sendFont").addTargetFor(self, action: #selector(sendMessage), for: .touchUpInside)
     }()
-
+    
     private var limitCount: Int {
         var count = self.config.zhLimitCount
         if NSLocale.preferredLanguages.first!.hasPrefix("en") {
@@ -62,11 +73,11 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
     }
     
     var config = AUIChatInputBarConfig()
-
+    
     let line = UIView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: 1)).backgroundColor(.clear)
-
+    
     var emoji: AUIEmojiView?
-
+    
     override public init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -85,7 +96,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         var orgContainerInset = self.inputField.textContainerInset
         orgContainerInset.left = 6
         self.inputField.textContainerInset = orgContainerInset
-
+        
         let view = UIView(frame: CGRect(x: self.inputContainer.frame.width - self.inputField.frame.height, y: 0, width: self.inputField.frame.height, height: self.inputField.frame.height)).backgroundColor(.clear)
         view.addSubview(self.rightView)
         self.inputContainer.addSubview(view)
@@ -93,19 +104,19 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIApplication.keyboardWillHideNotification, object: nil)
         self.theme_backgroundColor = "InputBar.backgroundColor"
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
         inputField.removeFromSuperview()
         emoji?.removeFromSuperview()
         emoji = nil
     }
-
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     @objc func sendMessage() {
         self.hiddenInputBar()
         self.rightView.isSelected = false
@@ -113,9 +124,9 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
             self.sendClosure!(self.inputField.attributedText.toString().trimmingCharacters(in: .whitespacesAndNewlines))
         }
     }
-
+    
     public func textViewDidEndEditing(_ textView: UITextView) {}
-
+    
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             self.sendMessage()
@@ -136,7 +147,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         }
         return self.bounds.contains(point)
     }
-
+    
     @objc func changeToEmoji() {
         self.rightView.isSelected = !self.rightView.isSelected
         if self.changeEmojiClosure != nil {
@@ -148,7 +159,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
             self.inputField.becomeFirstResponder()
         }
     }
-
+    
     @objc private func keyboardWillShow(notification: Notification) {
         if !self.inputField.isFirstResponder {
             return
@@ -160,7 +171,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
             self.frame = CGRect(x: 0, y: AScreenHeight - 60 - frame!.height, width: AScreenWidth, height: self.frame.height)
         }
     }
-
+    
     @objc private func keyboardWillHide(notification: Notification) {
         let frame = notification.a.keyboardEndFrame
         let duration = notification.a.keyboardAnimationDuration
@@ -192,7 +203,7 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
             emoji.isHidden = false
         }
     }
-
+    
     @objc public func hiddenInputBar() {
         self.inputField.resignFirstResponder()
         UIView.animate(withDuration: 0.3) {
@@ -200,6 +211,11 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         }
         self.emoji?.removeFromSuperview()
         self.rightView.isSelected = false
+    }
+    
+    /// Description AUIChatInputBar.hiddenInput() 隐藏window上的AUIChatInputBar
+    @objc static public func hiddenInput() {
+        getInput()?.hiddenInputBar()
     }
 
     func convertText(text: NSAttributedString?, key: String) -> NSAttributedString {
