@@ -151,8 +151,8 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         }
         self.hiddenInputBar()
         return super.hitTest(point, with: event)
-    }
-    
+    }    
+
     @objc func changeToEmoji() {
         self.rightView.isSelected = !self.rightView.isSelected
         if self.changeEmojiClosure != nil {
