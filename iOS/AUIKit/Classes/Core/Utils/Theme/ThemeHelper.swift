@@ -73,6 +73,7 @@ extension String {
             guard let data = try? Data(contentsOf: URL(fileURLWithPath: jsonPath)),
                   let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed),
                   let jsonDict = json as? [String: Any] else {
+                aui_warn("load json theme fail: \(jsonPath)")
                 return
             }
             

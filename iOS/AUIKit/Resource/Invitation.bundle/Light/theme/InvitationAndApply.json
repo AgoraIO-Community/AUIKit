@@ -1,4 +1,3 @@
-
 {
     "Invitation": {
         "backgroundColor":"#F9FAFA",
@@ -9,7 +8,7 @@
     "Apply": {
         "backgroundColor":"#F9FAFA",
         "titleColor":"#171A1C",
-        "cellTitleColor":"#171A1C"
-        "bigTitleFont": "PingFangSC-Medium,17",
+        "cellTitleColor":"#171A1C",
+        "bigTitleFont": "PingFangSC-Medium,17"
     }
 }
