@@ -8,6 +8,7 @@
 import UIKit
 
 
+/// Description 9麦位布局数据源
 @objc public protocol AUIMicSeatHostAudienceLayoutDataSource:AnyObject,NSObjectProtocol {
     func hostSize() -> CGSize
     func otherSize() -> CGSize
@@ -16,6 +17,7 @@ import UIKit
 
 fileprivate let columnSpace = 6
 
+/// Description 9麦位布局
 @objcMembers public final class AUIMicSeatHostAudienceLayout: UICollectionViewLayout {
     
     internal var center: CGPoint!
