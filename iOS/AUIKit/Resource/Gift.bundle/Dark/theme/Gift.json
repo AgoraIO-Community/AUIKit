@@ -15,7 +15,7 @@
       "priceIcon": "dollagora"
   },
   "ReceiveGift": {
-      "containerGradientColors": ["#011FAD3F","#5701AD55"],
+      "containerGradientColors": ["#011FAD63","#5701AD85"],
       "userNameFont": "PingFangSC-Semibold,12",
       "userNameColor": "#FFFFFF",
       "giftNameFont": "PingFangSC-Regular,12",

@@ -8,7 +8,7 @@
 import UIKit
 
 
-/// Description
+/// Description 环形布局半径与弧度数据源
 @objc public protocol AUIMicSeatCircleLayoutDataSource:AnyObject,NSObjectProtocol {
         
     /// Description Radius for circle
@@ -19,6 +19,7 @@ import UIKit
 }
 
 
+/// Description 环形布局
 @objcMembers public final class AUIMicSeatCircleLayout: UICollectionViewFlowLayout {
     
     internal var center: CGPoint!

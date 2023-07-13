@@ -95,7 +95,7 @@ import SDWebImage
         contentView.addSubview(self.container)
         self.container.addSubViews([self.avatar, self.userName, self.giftName, self.giftIcon, self.giftNumbers])
         self.container.barStyle = .default
-        self.container.isTranslucent = true
+        self.container.isTranslucent = false
         self.container.isOpaque = false
     }
 

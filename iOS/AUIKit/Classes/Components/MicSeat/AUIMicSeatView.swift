@@ -30,11 +30,9 @@ private let kMicSeatCellId = "kMicSeatCellId"
 }
 
 
-/// 麦位管理组件
+/// 麦位UI组件
 public class AUIMicSeatView: UIView,IAUIMicSeatView {
-    
-    public var touchOnView: (() -> ())?
-    
+        
     public weak var uiDelegate: AUIMicSeatViewDelegate?
         
     public lazy var collectionView: UICollectionView = {
@@ -60,14 +58,6 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         _loadSubViews()
-    }
-    
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        self.touchOnView?()
-//        if let indexPath = self.collectionView.indexPathForItem(at: point),self.collectionView.frame.contains(point) {
-//            uiDelegate?.onItemDidClick(view: self, seatIndex: indexPath.row)
-//        }
-        return super.hitTest(point, with: event)
     }
     
     private func _loadSubViews() {
