@@ -10,10 +10,10 @@ import SwiftTheme
 import SDWebImage
 
 public enum MicRole: Int {
-    case mainSinger
-    case coSinger
-    case onlineAudience
-    case offlineAudience
+    case mainSinger // 主唱
+    case coSinger   // 副唱
+    case onlineAudience // 上麦观众
+    case offlineAudience    // 没有上麦的观众
 }
 
 /// 麦位管理对话框cell
@@ -235,23 +235,16 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         
         if item?.isLock ?? false {
             defaultImageView.theme_image = "SeatItem.lockImage"
-            statusImageView.theme_image = nil
-        } else if item?.isLock ?? false,item?.isMuteAudio ?? false {
-            defaultImageView.theme_image = "SeatItem.lockImage"
-            statusImageView.theme_image = "SeatItem.muteAudioImage"
-        } else if item?.isMuteAudio ?? false {
-            defaultImageView.theme_image = "SeatItem.defaultImage"
-            statusImageView.theme_image = "SeatItem.muteAudioImage"
-        } else if item?.isMuteVideo ?? false {
-            defaultImageView.theme_image = "SeatItem.defaultImage"
-            statusImageView.theme_image = nil//SeatItem.muteVideoImage"
-            statusImageView.image = nil
         } else {
-            statusImageView.theme_image = nil
-            statusImageView.image = nil
             defaultImageView.theme_image = "SeatItem.defaultImage"
         }
         
+        if item?.isMuteAudio ?? false {
+            statusImageView.theme_image = "SeatItem.muteAudioImage"
+        }else{
+            statusImageView.theme_image = nil
+            statusImageView.image = nil
+        }
         
         if item?.avatarUrl?.count ?? 0 > 0 {
             canvasView.alpha = item?.isMuteVideo ?? true ? 0 : 1

@@ -163,7 +163,7 @@ open class AUIJukeBoxView: UIView {
     private lazy var segmentControl: AUISegmented = {
         let segmentView = AUISegmented()
         segmentView.aui_size = kJukeBoxSegmentSize
-        segmentView.segments = AUILabelSegment.segments(withTitles: [aui_localized("selectSong"), aui_localized("selectedSong")])
+        segmentView.segments = AUILabelSegment.segments(withTitles: [aui_localized("selectSong"), aui_localized("selectedSong")], normalTextColor: AUIColor("JukeBox.segmentViewTitleNormalColor"))
         segmentView.theme_indicatorColor = AUIColor("JukeBox.segmentViewIndicatorColor")
 //        segmentView.selectedSegmentIndex = 0
 //        segmentView.selectedSegmentTintColor = .red

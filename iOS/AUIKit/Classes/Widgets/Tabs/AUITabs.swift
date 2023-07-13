@@ -162,16 +162,12 @@ public struct AUITabsStyle {
         reloadData()
     }
 
-    public func setSelectIndex(index: Int, animated: Bool = true) {
-        setSelectIndex(index: index, animated: animated, sendAction: false)
-    }
-
     // Target action
     @objc private func handleTapGesture(_ gesture: UITapGestureRecognizer) {
         let x = gesture.location(in: self).x + scrollView.contentOffset.x
         for (i, label) in titleLabels.enumerated() {
             if x >= label.frame.minX && x <= label.frame.maxX {
-                setSelectIndex(index: i, animated: true)
+                setSelectIndex(index: i, animated: true, sendAction: true)
                 break
             }
         }
@@ -182,7 +178,7 @@ public struct AUITabsStyle {
         self._titleElements = titles
     }
 
-    private func setSelectIndex(index: Int, animated: Bool, sendAction: Bool, forceUpdate: Bool = false) {
+    public func setSelectIndex(index: Int, animated: Bool = true, sendAction: Bool = false, forceUpdate: Bool = false) {
 
         guard (index != selectIndex || forceUpdate), index >= 0, index < titleLabels.count else { return }
         preLabel?.textColor = style.normalTitleColor
