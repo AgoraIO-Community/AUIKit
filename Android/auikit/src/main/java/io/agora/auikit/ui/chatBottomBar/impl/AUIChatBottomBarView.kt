@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -271,6 +271,30 @@ class AUIChatBottomBarView : RelativeLayout,
                 mic.visibility = VISIBLE
             } else {
                 mic.visibility = GONE
+            }
+        }
+    }
+
+    override fun setShowLike(isShow: Boolean) {
+        post {
+            val like: ImageView =
+                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_like)
+            if (isShow) {
+                like.visibility = VISIBLE
+            } else {
+                like.visibility = GONE
+            }
+        }
+    }
+
+    override fun setShowMore(isShow: Boolean) {
+        post {
+            val more: ImageView =
+                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_more)
+            if (isShow) {
+                more.visibility = VISIBLE
+            } else {
+                more.visibility = GONE
             }
         }
     }
