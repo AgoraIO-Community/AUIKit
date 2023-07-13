@@ -61,7 +61,6 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
         let messageJson = message.a.jsonToDictionary()
         aui_info("messageJson :\(messageJson)")
         guard let messageType = messageJson["messageType"] as? String,let messageInfo = messageJson["messageInfo"] as? String else { return }
-        AUIToast.show(text: "messageType:\(messageType) message info:\(messageInfo)")
         let dic = messageInfo.a.jsonToDictionary()
         guard let gift = AUIGiftEntity.yy_model(with: dic) else { return }
         switch messageType {
