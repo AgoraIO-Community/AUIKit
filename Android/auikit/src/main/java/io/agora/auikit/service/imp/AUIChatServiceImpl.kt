@@ -1,6 +1,5 @@
 package io.agora.auikit.service.imp
 
-import android.util.Log
 import io.agora.CallBack
 import io.agora.auikit.model.*
 import io.agora.auikit.service.IAUIChatService
@@ -17,6 +16,7 @@ import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.AgoraEngineCreator
 import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.utils.ThreadManager
 import io.agora.chat.ChatMessage
 import org.json.JSONObject
 import retrofit2.Call
@@ -113,15 +113,15 @@ class AUIChatServiceImpl(
                         val chatRoomId = rsp.chatRoomId
                         // success
                         chatManager?.setChatRoom(chatRoomId)
-                        Log.e("apex","createChatRoom suc")
-                        callback.onResult(null,chatRoomId)
+                        ThreadManager.getInstance().runOnMainThread{
+                            callback.onResult(null,chatRoomId)
+                        }
                     } else {
                         callback.onResult(Utils.errorFromResponse(response),null)
                     }
                 }
                 override fun onFailure(call: Call<CommonResp<CreateChatRoomRsp>>, t: Throwable) {
                     callback.onResult(AUIException(-1, t.message),"")
-                    Log.e("apex","createChatRoom onFailure")
                 }
             })
     }
