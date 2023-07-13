@@ -17,6 +17,7 @@ import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.DelegateHelper
 import io.agora.auikit.utils.GsonTools
+import io.agora.auikit.utils.ThreadManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,7 +62,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback?.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread{
+                            callback?.onResult(null)
+                        }
                     }
                 }
 
@@ -84,7 +87,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback?.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread {
+                            callback?.onResult(null)
+                        }
                     }
                 }
 
@@ -109,7 +114,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback?.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread {
+                            callback?.onResult(null)
+                        }
                     }
                 }
 
@@ -134,7 +141,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback?.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread {
+                            callback?.onResult(null)
+                        }
                     }
                 }
 
@@ -158,7 +167,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread{
+                            callback.onResult(null)
+                        }
                     }
                 }
 
@@ -182,7 +193,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread{
+                            callback.onResult(null)
+                        }
                     }
                 }
 
@@ -206,7 +219,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread {
+                            callback.onResult(null)
+                        }
                     }
                 }
 
@@ -230,7 +245,9 @@ class AUIInvitationServiceImpl(
                     response: Response<CommonResp<Any>>
                 ) {
                     if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        callback.onResult(null)
+                        ThreadManager.getInstance().runOnMainThread {
+                            callback.onResult(null)
+                        }
                     }
                 }
 
