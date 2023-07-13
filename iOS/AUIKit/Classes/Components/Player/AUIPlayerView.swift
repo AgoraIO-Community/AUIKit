@@ -425,6 +425,7 @@ extension AUIPlayerView {
     }
     
     @objc func nextSong() {
+        AUIChatInputBar.hiddenInput()
         AUIAlertView.theme_defaultAlert()
             .isShowCloseButton(isShow: false)
             .title(title: aui_localized("switchToNextSong"))

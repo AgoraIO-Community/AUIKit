@@ -8,7 +8,7 @@
 import UIKit
 import SwiftTheme
 
-@objc public func getInput() -> AUIChatInputBar? {
+public func getInput() -> AUIChatInputBar? {
     guard let window = getWindow() else {return nil}
     for subView in window.subviews {
         if let input = subView as? AUIChatInputBar {
@@ -141,12 +141,26 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         return true
     }
     
-    public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        if !self.bounds.contains(point) {
-            self.hiddenInputBar()
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        for view in subviews.reversed() {
+            if view.isKind(of: type(of: view)),view.frame.contains(point){
+                let childPoint = self.convert(point, to: view)
+                let childView = view.hitTest(childPoint, with: event)
+                return childView
+            }
         }
-        return self.bounds.contains(point)
+        self.hiddenInputBar()
+        return super.hitTest(point, with: event)
     }
+    
+//    public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+//        if !self.bounds.contains(point) {
+//            self.hiddenInputBar()
+//            return false
+//        } else {
+//            return true
+//        }
+//    }
     
     @objc func changeToEmoji() {
         self.rightView.isSelected = !self.rightView.isSelected
