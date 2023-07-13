@@ -30,7 +30,7 @@ private let kMicSeatCellId = "kMicSeatCellId"
 }
 
 
-/// 麦位管理组件
+/// 麦位UI组件
 public class AUIMicSeatView: UIView,IAUIMicSeatView {
     
     public var touchOnView: (() -> ())?

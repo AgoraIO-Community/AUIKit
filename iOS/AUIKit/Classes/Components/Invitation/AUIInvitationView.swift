@@ -162,7 +162,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-/// 邀请列表组件
+/// 申请列表组件
 @objc open class AUIApplyView: UIView,IAUIListViewBinderRefresh {
         
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()

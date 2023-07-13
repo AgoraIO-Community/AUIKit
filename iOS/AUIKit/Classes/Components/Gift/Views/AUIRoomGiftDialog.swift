@@ -22,7 +22,7 @@ import UIKit
     /// - Parameter gift: 礼物
     func sendGiftAction(gift: AUIGiftEntity)
 }
-
+/// Description 礼物列表的整体容器
 public class AUIRoomGiftDialog: UIView,IAUIRoomGiftDialog {
     
     private var eventHandlers: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
