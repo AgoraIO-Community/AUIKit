@@ -10,8 +10,8 @@
       "headSplitAlpha": 1.0,
       "tailIconOn": "aui_ic_password_eye_on",
       "tailIconOff": "aui_ic_password_eye_off",
-      "textFont": "PingFangSC-Semibold,17"
-      "textColor": "#ffffff"
+      "textFont": "PingFangSC-Semibold,17",
+      "textColor": "#ffffff",
       "placeholderTextFont": "PingFangSC-Semibold,17",
       "placeholderTextColor": "#ffffff5a",
       "errorTextColor:": "读取color对应配置",
