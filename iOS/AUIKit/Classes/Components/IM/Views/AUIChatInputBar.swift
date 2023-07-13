@@ -153,15 +153,6 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         return super.hitTest(point, with: event)
     }
     
-//    public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-//        if !self.bounds.contains(point) {
-//            self.hiddenInputBar()
-//            return false
-//        } else {
-//            return true
-//        }
-//    }
-    
     @objc func changeToEmoji() {
         self.rightView.isSelected = !self.rightView.isSelected
         if self.changeEmojiClosure != nil {
