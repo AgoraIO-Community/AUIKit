@@ -36,10 +36,11 @@ open class AUICommonDialog: UIView {
     
     private lazy var indicatorView: UIView = {
         let view = UIView()
-        view.aui_size = CGSize(width: 48, height: 2)
-        view.layer.cornerRadius = 1
+        view.aui_size = CGSize(width: 48, height: 3)
+        view.layer.cornerRadius = 1.5
         view.clipsToBounds = true
         view.theme_backgroundColor = "CommonColor.lightGrey35"
+        view.backgroundColor = UIColor(red: 249/255.0, green: 250/255.0, blue: 250/255.0, alpha: 1)
         return view
     }()
     

@@ -7,7 +7,7 @@
     },
     "BottomBar": {
         "containerBackgroundColor": "#FFFFFF33",
-        "moreGradientColors": ["E5F5FFFF","#1B006600"]
+        "moreGradientColors": ["#E5F5FF","#7C5BFF00"]
     },
     "InputBar": {
         "backgroundColor": "#FFFFFF",

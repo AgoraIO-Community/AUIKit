@@ -93,7 +93,7 @@ import SwiftTheme
         addSubview(empty)
         addSubview(tabs)
         addSubview(tableView)
-        self.theme_backgroundColor = "Invitation.backgroundColor"
+        self.theme_backgroundColor = AUIColor("Invitation.backgroundColor")
     }
     
     public override func layoutSubviews() {
@@ -226,7 +226,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         addSubview(empty)
         addSubview(tabs)
         addSubview(tableView)
-        self.theme_backgroundColor = "Apply.backgroundColor"
+        self.theme_backgroundColor = AUIColor("Apply.backgroundColor")
     }
     
     public override func layoutSubviews() {
@@ -278,7 +278,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
         var cell = tableView.dequeueReusableCell(withIdentifier: kAUIApplyCellId) as? AUIUserOperationCell
         if cell == nil {
             let config = AUIUserOperationCellConfig()
-            config.actionTitle = "Accept"
+            config.actionTitle = "申请"
             cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: config)
         }
         let user = userList[indexPath.row]
@@ -334,7 +334,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func _loadSubViews() {
-        self.theme_backgroundColor = "Invitation.backgroundColor"
+        self.theme_backgroundColor = AUIColor("Invitation.backgroundColor")
         self.contentView.addSubViews([self.userIcon,self.userName,self.action])
     }
     
@@ -368,7 +368,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     public var textColor: UIColor = UIColor(0x171A1C)
     
-    public var actionTitle: String = "Invite".a.localize(type: .gift)
+    public var actionTitle: String = "邀请".a.localize(type: .gift)
     
     var mode: AUIThemeMode = .light {
         willSet {
