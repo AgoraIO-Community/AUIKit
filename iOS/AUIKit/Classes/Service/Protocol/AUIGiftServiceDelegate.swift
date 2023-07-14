@@ -32,6 +32,7 @@ import YYModel
         model.giftName = self.giftName
         model.giftIcon = self.giftIcon
         model.giftEffect = self.giftEffect
+        model.effectMD5 = self.effectMD5
         model.selected = self.selected
         let user = AUIUserThumbnailInfo()
         user.userId = self.sendUser.userId
