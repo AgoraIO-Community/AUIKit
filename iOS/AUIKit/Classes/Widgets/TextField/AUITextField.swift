@@ -90,6 +90,7 @@ public class AUITextField: UIView {
             textFieldLeftCons?.constant = position == .all ? 16 : 0
             textFieldLeftCons?.isActive = true
             stackViewLeftCons?.constant = ((position == nil || position == .bottom) && leftIconImage != nil) ? -15 : 0
+            stackViewLeftCons?.constant = 0
             stackViewLeftCons?.isActive = true
         }
     }

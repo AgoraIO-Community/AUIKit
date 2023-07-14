@@ -1,7 +1,7 @@
 {
   "CommonColor": {
-      "primary": "#7800ff",
-      "primary35": "#7800ff5a",
+      "primary": "#099DFD",
+      "primary35": "#099DFD5a",
       "black": "#1b1067",
       "white":"#ffffff",
       "white35":"#ffffff5a",
@@ -18,7 +18,7 @@
       
       "normalTextColor": "#ffffff",
       "normalTextColor50": "#ffffff80",
-      "normalTextColor35": "#ffffff5a",
+      "normalTextÔColor35": "#ffffff5a",
       
       "clear": "#00000000",
       
