@@ -161,10 +161,19 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
      */
     private fun getMicSeatCoordinate(){
         if (mRadius == 0) {
-            if (micSeatCount == 5 || micSeatCount == 6){
-                mRadius = min(mWidth, mHeight) / 3
-            }else if (micSeatCount == 4 || micSeatCount == 3){
-                mRadius = (min(mWidth, mHeight) / 4.5).toInt()
+            when (micSeatCount) {
+                3 -> {
+                    mRadius = (min(mWidth, mHeight) / 4.5).toInt()
+                }
+                4 -> {
+                    mRadius = ((min(mWidth, mHeight) / 4.5)* 1.2).toInt()
+                }
+                5 -> {
+                    mRadius = (min(mWidth, mHeight) / 3.3).toInt()
+                }
+                6 -> {
+                    mRadius = ((min(mWidth, mHeight) / 3)* 1.2).toInt()
+                }
             }
         }
         val r: Float = (2 * mRadius * sin(Math.PI / micSeatCount)).toFloat() // 边长

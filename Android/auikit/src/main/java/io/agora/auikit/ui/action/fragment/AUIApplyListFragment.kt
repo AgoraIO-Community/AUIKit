@@ -169,7 +169,11 @@ class VoiceApplyAdapter constructor(
 
     override fun onBindViewHolder(holder: ApplyViewHolder, position: Int) {
         val userInfo = dataList[position]
-        holder.name.text = userInfo?.userName
+        if (userInfo?.userName.isNullOrEmpty()){
+            holder.name.text = userInfo?.userId
+        }else{
+            holder.name.text = userInfo?.userName
+        }
         holder.action.text = mContext?.getString(R.string.aui_room_apply_accept)
         holder.action.alpha = 1.0f
         ThreadManager.getInstance().runOnMainThread{
