@@ -28,7 +28,9 @@ import UIKit
     
     public weak var dataSource: AUIMicSeatCircleLayoutDataSource? {
         didSet {
-            self.radius = self.dataSource?.radius ?? 70
+            if self.dataSource?.radius ?? 70 > 0 {
+                self.radius = self.dataSource?.radius ?? 70
+            }
         }
     }
     
@@ -39,7 +41,7 @@ import UIKit
         let size = self.collectionView?.frame.size ?? .zero
         self.rows = self.collectionView?.numberOfItems(inSection: 0) ?? 0
         self.center = CGPoint(x: size.width / 2, y: size.height / 2)
-        self.radius = self.dataSource?.radius ?? min(size.width, size.height) / 3
+        self.radius = self.dataSource?.radius ?? min(size.width, size.height) / 3.0
     }
     
     
