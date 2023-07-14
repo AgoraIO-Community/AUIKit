@@ -76,9 +76,7 @@ public class AUIGiftListView: UIView, UICollectionViewDelegate, UICollectionView
         self.gifts = gifts
         self.giftList.bounces = false
         self.addSubViews([self.giftList])
-        self.giftList.isPagingEnabled = true
         self.giftList.alwaysBounceHorizontal = true
-        
         self.backgroundColor = .clear
     }
 
