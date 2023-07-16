@@ -11,8 +11,8 @@ public class AUIRoomConfig {
     @NonNull public String rtcToken007 = "";     //rtm join用
 
     @NonNull public String rtcChannelName = "";  //rtc使用的频道
-    @NonNull public String rtcRtcToken006 = "";  //rtc join使用
-    @NonNull public String rtcRtmToken006 = "";  //rtc mcc使用，只能006
+    @NonNull public String rtcRtcToken = "";  //rtc join使用
+    @NonNull public String rtcRtmToken = "";  //rtc mcc使用，只能006
     @NonNull public String rtcChorusChannelName = "";  //rtc 合唱使用的频道
     @NonNull public String rtcChorusRtcToken007 = "";  //rtc 合唱join使用
 

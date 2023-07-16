@@ -9,8 +9,8 @@
     <string name="aui_micseat_dialog_up_seat">上麦</string>
     <string name="aui_micseat_dialog_down_seat">下麦</string>
     <string name="aui_micseat_dialog_kick_out_seat">踢人下麦</string>
-    <string name="aui_micseat_dialog_close_seat">封禁</string>
-    <string name="aui_micseat_dialog_open_seat">取消封禁</string>
+    <string name="aui_micseat_dialog_close_seat">锁麦</string>
+    <string name="aui_micseat_dialog_open_seat">取消锁麦</string>
     <string name="aui_micseat_dialog_mute_audio">静音</string>
     <string name="aui_micseat_dialog_unmute_audio">取消静音</string>
     <string name="aui_micseat_dialog_mute_video">关闭视频</string>
