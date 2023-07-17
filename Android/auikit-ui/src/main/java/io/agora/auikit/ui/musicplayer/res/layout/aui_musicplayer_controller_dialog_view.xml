@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="?attr/aui_musicPlayerControllerDialog_background"
+    android:paddingVertical="16sp"
+    android:theme="?attr/aui_musicPlayerControllerDialog_appearance">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="@string/aui_musicplayer_audio_effect"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_titleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_titleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_in_ear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/aui_musicplayer_inear_monitoring"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_titleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_titleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_in_ear_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/aui_musicplayer_inear_monitoring_tips"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_subTitleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_subTitleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_in_ear" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/switch_inear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:button="?attr/aui_musicPlayerControllerDialog_checkbox"
+        android:checked="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_in_ear" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="?attr/aui_musicPlayerControllerDialog_dividerHeight"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/aui_musicPlayerControllerDialog_dividerColor"
+        app:layout_constraintTop_toBottomOf="@id/tv_in_ear_tips" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_music_vol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/aui_musicplayer_music_volume"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_titleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_titleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_in_ear_tips" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seek_music_vol"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="90dp"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="?attr/aui_musicPlayerControllerDialog_seekbarProgressDrawable"
+        android:thumb="?attr/aui_musicPlayerControllerDialog_seekbarThumb"
+        app:layout_constraintBottom_toBottomOf="@id/tv_music_vol"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_music_vol" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/aui_musicPlayerControllerDialog_dividerColor"
+        android:layout_height="?attr/aui_musicPlayerControllerDialog_dividerHeight"
+        app:layout_constraintTop_toBottomOf="@id/tv_music_vol" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_signal_vol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/aui_musicplayer_human_volume"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_titleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_titleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_music_vol" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seek_signal_vol"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="90dp"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="?attr/aui_musicPlayerControllerDialog_seekbarProgressDrawable"
+        android:thumb="?attr/aui_musicPlayerControllerDialog_seekbarThumb"
+        app:layout_constraintBottom_toBottomOf="@id/tv_signal_vol"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_signal_vol" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/aui_musicPlayerControllerDialog_dividerColor"
+        android:layout_height="?attr/aui_musicPlayerControllerDialog_dividerHeight"
+        app:layout_constraintTop_toBottomOf="@id/tv_signal_vol" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_music_pitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/aui_musicplayer_pitch"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_titleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_titleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_signal_vol" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seek_music_pitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="90dp"
+        android:max="24"
+        android:progress="12"
+        android:progressDrawable="?attr/aui_musicPlayerControllerDialog_seekbarProgressDrawable"
+        android:thumb="?attr/aui_musicPlayerControllerDialog_seekbarThumb"
+        app:layout_constraintBottom_toBottomOf="@id/tv_music_pitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_music_pitch" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_music_reverb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/aui_musicplayer_reverb"
+        android:textColor="?attr/aui_musicPlayerControllerDialog_titleTextColor"
+        android:textSize="?attr/aui_musicPlayerControllerDialog_titleTextSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_music_pitch" />
+
+    <io.agora.auikit.ui.basic.AUIRecyclerView
+        android:id="@+id/rv_audio_reverb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:aui_spaceHorizontal="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_music_reverb"
+        tools:listitem="@layout/aui_musicplayer_effect_item_view" />
+</androidx.constraintlayout.widget.ConstraintLayout>
