@@ -57,7 +57,7 @@ import SwiftTheme
         tabStyle.selectedTitleColor = UIColor(0x171a1c)
         tabStyle.normalTitleColor = UIColor(0xFFFFFF)
         tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
-        let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Invite List"]).backgroundColor(.clear)
+        let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: [aui_localized("Invite List")]).backgroundColor(.clear)
         tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
         tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
         tab.theme_backgroundColor = AUIColor("Invitation.backgroundColor")
@@ -189,7 +189,7 @@ extension AUIInvitationView: UITableViewDelegate, UITableViewDataSource {
         tabStyle.normalTitleColor = .white
         tabStyle.titleFont = .systemFont(ofSize: 16, weight: .semibold)
         
-        let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: ["Application List"]).backgroundColor(.clear)
+        let tab = AUITabs(frame: CGRect(x: 0, y: 10, width: self.frame.width, height: 44), segmentStyle: tabStyle, titles: [aui_localized("Application List")]).backgroundColor(.clear)
         tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
         tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
         tab.theme_backgroundColor = AUIColor("Apply.backgroundColor")
@@ -278,7 +278,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
         var cell = tableView.dequeueReusableCell(withIdentifier: kAUIApplyCellId) as? AUIUserOperationCell
         if cell == nil {
             let config = AUIUserOperationCellConfig()
-            config.actionTitle = "申请"
+            config.actionTitle = aui_localized("Accept")
             cell = AUIUserOperationCell(reuseIdentifier: kAUIApplyCellId,config: config)
         }
         let user = userList[indexPath.row]
@@ -368,7 +368,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     public var textColor: UIColor = UIColor(0x171A1C)
     
-    public var actionTitle: String = "邀请".a.localize(type: .gift)
+    public var actionTitle: String = aui_localized("Invite")
     
     var mode: AUIThemeMode = .light {
         willSet {
