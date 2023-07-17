@@ -18,7 +18,7 @@ import io.agora.auikit.ui.basic.AUIBottomDialog;
 
 public class BasicUiListActivity extends AppCompatActivity {
 
-    private int themeId = io.agora.auikit.R.style.Theme_AUIKit_Basic;
+    private int themeId = io.agora.auikit.ui.R.style.Theme_AUIKit_Basic;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +36,10 @@ public class BasicUiListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == 1001) {
-            if (themeId == io.agora.auikit.R.style.Theme_AUIKit_Basic) {
-                themeId = io.agora.auikit.R.style.Theme_AUIKit_Basic_Dark;
+            if (themeId == io.agora.auikit.ui.R.style.Theme_AUIKit_Basic) {
+                themeId = io.agora.auikit.ui.R.style.Theme_AUIKit_Basic_Dark;
             } else {
-                themeId = io.agora.auikit.R.style.Theme_AUIKit_Basic;
+                themeId = io.agora.auikit.ui.R.style.Theme_AUIKit_Basic;
             }
             setTheme(themeId);
             setContentView(R.layout.basic_ui_list_activity);
@@ -158,7 +158,7 @@ public class BasicUiListActivity extends AppCompatActivity {
     }
 
     public void showAlertDialog08(View view) {
-        AUIAlertDialog dialog = new AUIAlertDialog(this, io.agora.auikit.R.attr.aui_alertDialog_appearance_outline);
+        AUIAlertDialog dialog = new AUIAlertDialog(this, io.agora.auikit.ui.R.attr.aui_alertDialog_appearance_outline);
         dialog.setTitle("Confirm");
         dialog.setInput("请输入姓名", "", true);
         dialog.setTitleCloseButton(v -> dialog.dismiss());
@@ -183,7 +183,7 @@ public class BasicUiListActivity extends AppCompatActivity {
     }
 
     public void showAlertDialog10(View view) {
-        AUIAlertDialog dialog = new AUIAlertDialog(this, io.agora.auikit.R.attr.aui_alertDialog_appearance_outline);
+        AUIAlertDialog dialog = new AUIAlertDialog(this, io.agora.auikit.ui.R.attr.aui_alertDialog_appearance_outline);
         dialog.setTitle("Confirm");
         dialog.setInput("请输入姓名", "", false);
         dialog.setTitleCloseButton(v -> dialog.dismiss());

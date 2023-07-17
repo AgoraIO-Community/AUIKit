@@ -2,7 +2,11 @@ package io.agora.auikit.service.http
 
 import android.util.SparseArray
 import io.agora.auikit.BuildConfig
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -47,7 +51,7 @@ object TokenGenerator {
             try {
                 val out = SparseArray<String>()
                 tokens.forEach {
-                    out[it.id] = fetchToken(appId, appCert, it.channelName, it.uid, it.genType, it.tokenType)
+                    out.put(it.id, fetchToken(appId, appCert, it.channelName, it.uid, it.genType, it.tokenType))
                 }
                 success.invoke(out)
             } catch (e: Exception) {

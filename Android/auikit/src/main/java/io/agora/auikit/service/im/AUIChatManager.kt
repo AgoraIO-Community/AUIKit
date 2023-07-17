@@ -8,7 +8,12 @@ import io.agora.CallBack
 import io.agora.ChatRoomChangeListener
 import io.agora.MessageListener
 import io.agora.ValueCallBack
-import io.agora.auikit.model.*
+import io.agora.auikit.model.AUIChatEntity
+import io.agora.auikit.model.AUICustomMsgType
+import io.agora.auikit.model.AUIGiftEntity
+import io.agora.auikit.model.AUIRoomContext
+import io.agora.auikit.model.AUIUserThumbnailInfo
+import io.agora.auikit.model.AgoraChatMessage
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIChatMsgCallback
 import io.agora.auikit.service.callback.AUIException
@@ -20,7 +25,11 @@ import io.agora.auikit.service.http.user.CreateUserRsp
 import io.agora.auikit.service.http.user.UserInterface
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ThreadManager
-import io.agora.chat.*
+import io.agora.chat.ChatClient
+import io.agora.chat.ChatMessage
+import io.agora.chat.ChatRoom
+import io.agora.chat.CustomMessageBody
+import io.agora.chat.TextMessageBody
 import io.agora.chat.adapter.EMAChatRoomManagerListener
 import org.json.JSONObject
 import retrofit2.Call
@@ -160,7 +169,7 @@ class AUIChatManager(
             override fun onSuccess(value: ChatRoom?) {
                 Log.e("apex","joinRoom onSuccess $roomId")
                 //加入成功后 返回成员加入消息
-                sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback{
+                sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback {
                     override fun onOriginalResult(error: AUIException?, message: ChatMessage?) {
                         if (error == null){
                             ThreadManager.getInstance().runOnMainThreadDelay({callback.onOriginalResult(null,message)},300)
