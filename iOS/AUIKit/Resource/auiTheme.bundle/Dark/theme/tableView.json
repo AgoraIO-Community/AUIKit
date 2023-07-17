@@ -3,8 +3,12 @@
       "backgroundColor": "#00000000"
   },
   "TableViewCell": {
-      "titleFont": "PingFangSC-Semibold,17",
-      "subTitleFont": "PingFangSC-Semibold,12",
+      
+      "titleColor":"#F9FAFA",
+      "subtitleColor":"#919BA1",
+      
+      "titleFont": "PingFangSC-Regular,17",
+      "subTitleFont": "PingFangSC-Regular,12",
       "detailFont": "PingFangSC-Semibold,17",
       "badgeFont": "PingFangSC-Semibold,12",
       "arrow": "aui_common_tableview_arrow"

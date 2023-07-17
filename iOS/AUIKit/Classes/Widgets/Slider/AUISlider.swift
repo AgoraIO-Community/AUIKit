@@ -16,8 +16,8 @@ public class AUISliderTheme: NSObject {
 public class AUISliderDynamicTheme: AUISliderTheme {
     
     public var backgroundColor: ThemeColorPicker = "CommonColor.black"              //背景色
-    public var minimumTrackColor: ThemeColorPicker = "CommonColor.primary"          //滑块左边部分颜色
-    public var maximumTrackColor: ThemeColorPicker = "CommonColor.primary35"        //滑块右边部分颜色
+    public var minimumTrackColor: ThemeColorPicker = "Slider.minimumTrackColor"          //滑块左边部分颜色
+    public var maximumTrackColor: ThemeColorPicker = "Slider.maximumTrackColor"        //滑块右边部分颜色
     public var thumbColor: ThemeColorPicker = "CommonColor.normalTextColor"         //滑块颜色
     public var thumbBorderColor: ThemeCGColorPicker = "CommonColor.primary"         //滑块边框颜色
     public var trackBigLabelFont: ThemeFontPicker = "Slider.numberBigLabelFont"     //数值描述的字体(文字描述居于左右时)
@@ -31,7 +31,7 @@ public class AUISliderDynamicTheme: AUISliderTheme {
         slider.textLabel.theme_font = titleLabelFont
         slider.textLabel.theme_textColor = titleLabelColor
         
-        slider.minimumTrackLine.theme_backgroundColor = minimumTrackColor
+        slider.minimumTrackLine.theme_backgroundColor = "Slider.minimumTrackColor"
         slider.maximumTrackLine.theme_backgroundColor = maximumTrackColor
         slider.thumbView.theme_backgroundColor = thumbColor
         slider.thumbView.layer.theme_borderColor = thumbBorderColor
@@ -189,8 +189,8 @@ open class AUISlider: UIControl {
     
     private func _loadSubViews() {
         addSubview(textLabel)
-        addSubview(minimumTrackLine)
         addSubview(maximumTrackLine)
+        addSubview(minimumTrackLine)
         addSubview(headSplitLine)
         addSubview(tailSplitLine)
         addSubview(thumbView)

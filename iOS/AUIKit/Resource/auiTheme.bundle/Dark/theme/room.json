@@ -9,7 +9,7 @@
       "membersMoreIconHeight": 24,
       "membersMoreWidth": 32,
       "membersMoreHeight": 32,
-      "membersMoreBgColor": "#00000051",
+      "membersMoreBgColor": "#00000000",
       "membersMoreCornerRadius": 16,
       
       "offBtnIcon": "aui_karaoke_room_close",
@@ -17,7 +17,7 @@
       "offBtnIconHeight": 24,
       "offBtnWidth": 40,
       "offBtnHeight": 40,
-      "offBtnBgColor": "#ffffff40",
+      "offBtnBgColor": "#000000",
       "offBtnCornerRadius": 20,
       
       

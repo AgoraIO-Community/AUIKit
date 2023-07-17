@@ -5,6 +5,7 @@
       "musicTitleIcon": "aui_player_audio_icon_title",
       "musicTitleFont": "PingFangSC-Semibold,14",
       "musicTitleColor": "#ACB4B9",
+      "musicControlTitleColor":"#464E53BF",
       "ownerTitleFont": "PingFangSC-Semibold,12",
       "ownerTitleColor": "#ffffffc0",
       "audioSettingIcon": "aui_player_audio_setting",
@@ -38,6 +39,7 @@
       "skipCancleButtonWidth": 24,
       "skipCancleButtonHeight": 24,
       "skipButtonHeight": 32,
+      "skipButtonTitleColor": "#ffffff",
       
       "voiceConversionDialogItemType": 0,
       "voiceConversionDialogItemHeight": 97,

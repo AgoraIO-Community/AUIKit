@@ -81,6 +81,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         theme.padding = "SeatItem.padding"
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
         theme.iconHeight = "SeatItem.micRoleButtonIconHeight"
+        theme.titleColor = AUIColor("micRoleButtonTitleColor")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageLeftTextRight

@@ -28,9 +28,9 @@ open class AUITableViewCellTheme: NSObject {
 
 open class AUITableViewCellDynamicTheme: AUITableViewCellTheme {
     public var titleFont: ThemeFontPicker = "TableViewCell.titleFont"           //主标题字体
-    public var titleColor: ThemeColorPicker = "CommonColor.normalTextColor"         //主标题字体颜色
+    public var titleColor: ThemeColorPicker = "TableViewCell.titleColor"         //主标题字体颜色
     public var subTitleFont: ThemeFontPicker = "TableViewCell.subTitleFont"        //副标题字体
-    public var subTitleColor: ThemeColorPicker = "CommonColor.normalTextColor50"      //副标题字体颜色
+    public var subTitleColor: ThemeColorPicker = "TableViewCell.subtitleColor"      //副标题字体颜色
     public var detailFont: ThemeFontPicker = "TableViewCell.detailFont"     //详情字体
     public var detailColor: ThemeColorPicker = "CommonColor.grey"     //详情字体颜色
     

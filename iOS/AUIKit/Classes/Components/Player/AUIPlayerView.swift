@@ -52,6 +52,7 @@ open class AUIPlayerView: UIView {
     
     public lazy var karaokeLrcView: AUIKaraokeLrcView = {
         let karaokeLrcView = AUIKaraokeLrcView(frame: CGRect(x: 0, y: 0, width: aui_width, height: aui_height - 60))
+        karaokeLrcView.lrcView.scoringView.standardPitchStickViewColor = UIColor(hex: "#099DFD", alpha: 0.5)
         return karaokeLrcView
     }()
     
