@@ -226,6 +226,8 @@ open class AUIPlayerView: UIView {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "Player.JoinChorusButtonWidth"
         theme.buttonHeight = "Player.JoinChorusButtonHeight"
+        theme.iconWidth = "Player.JoinChorusButtonWidth"
+        theme.iconHeight = "Player.JoinChorusButtonHeight"
         theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconJoinChorus")
         theme.cornerRadius = nil
         let button = AUIButton()
