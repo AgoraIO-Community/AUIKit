@@ -97,7 +97,7 @@ task downloadAndUnzipFile(dependsOn: downloadZipFile, type: Copy) {
     }
 }
 
-preBuild.dependsOn downloadZipFile
+preBuild.dependsOn downloadAndUnzipFile
 // Because the components are created only during the afterEvaluate phase, you must
 // configure your publications using the afterEvaluate() lifecycle method.
 afterEvaluate {
