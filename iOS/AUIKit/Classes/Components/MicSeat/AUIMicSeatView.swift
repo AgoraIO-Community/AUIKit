@@ -51,6 +51,16 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
         super.init(frame: frame)
     }
     
+    ///  Chinese
+    /// - Parameters:
+    ///   - frame: frame
+    ///   - layout: 布局
+    ///   - hiddenRipple: 是否显示呼吸灯麦位动画
+    ///  English
+    /// - Parameters:
+    ///   - frame: frame
+    ///   - layout: layout
+    ///   - hiddenRipple: Whether to display the breathing light animation
     @objc public convenience init(frame: CGRect, layout: UICollectionViewLayout,hiddenRipple: Bool = true) {
         self.init(frame: frame)
         self.hiddenRipple = hiddenRipple
