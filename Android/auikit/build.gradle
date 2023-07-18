@@ -4,6 +4,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 apply plugin: 'de.undercouch.download'
 
+import de.undercouch.gradle.tasks.download.Download
+
 android {
     compileSdkVersion 30
 
