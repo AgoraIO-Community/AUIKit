@@ -49,8 +49,8 @@ public class AUITabsPageContainer: UIView {
         self.tabStyle.titleFont = .systemFont(ofSize: 14, weight: .semibold)
         self.tabStyle.alignment = .left
         let tab = AUITabs(frame: CGRect(x: 0, y: 24, width: self.frame.width, height: 44), segmentStyle: self.tabStyle, titles: self.titles).backgroundColor(.clear)
-        tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
-        tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "Alert.titleColor")
+        tab.theme_selectedTitleColor = ThemeColorPicker(keyPath: "#171A1C")
+        tab.theme_normalTitleColor = ThemeColorPicker(keyPath: "#171A1C")
         return tab
     }()
     
