@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'de.undercouch:gradle-download-task:2.0.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -16,9 +17,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
         google()
         mavenCentral()
-        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
         maven { url 'https://www.jitpack.io' }
     }
 }
