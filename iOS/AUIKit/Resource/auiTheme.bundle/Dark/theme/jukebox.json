@@ -46,9 +46,9 @@
       "deleteIcon": "aui_jukebox_delete",
       "nextSongIcon": "aui_jukebox_next_song",
       
-      "selectedButtonTitleColor": "CommonColor.lightGrey",
-      "normalButtonTitleColor": "CommonColor.normalTextColor",
-      "selectedButtonBorderColor": "CommonColor.lightGrey",
+      "selectedButtonTitleColor": "#F9FAFA",
+      "normalButtonTitleColor": "#F9FAFA",
+      "selectedButtonBorderColor": "#5E686E",
       "normalButtonBorderColor": "CommonColor.clear"
   }
 }

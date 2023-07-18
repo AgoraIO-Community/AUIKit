@@ -1,7 +1,7 @@
 {
   "Button": {
       "cornerRadius": 25,
-      "backgroundColor": "CommonColor.primary",
+      "backgroundColor": "#00000000",
       "buttonWidth": 240,
       "buttonHeight": 50,
       "titleFont": "PingFangSC-Semibold,17",

@@ -2,6 +2,8 @@
   "Slider": {
       "numberBigLabelFont": "PingFangSC-Semibold,17",
       "numberSmallLabelFont": "PingFangSC-Semibold,14",
-      "titleLabelFont": "PingFangSC-Semibold,12"
+      "titleLabelFont": "PingFangSC-Semibold,12",
+      "minimumTrackColor": "#7800FF",
+      "maximumTrackColor": "#7800FF59"
   }
 }

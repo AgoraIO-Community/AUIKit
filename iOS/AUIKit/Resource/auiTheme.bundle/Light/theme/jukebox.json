@@ -29,7 +29,7 @@
       "titleColor": "#171A1C",
       "titleFont": "PingFangSC-Semibold,17",
       "subTitleFont": "PingFangSC-Semibold,12",
-      "subTitleColor": "#ffffff80",
+      "subTitleColor": "#171A1C80",
       "selectedButtonBackgroundColor": "#00000000",
       "unselectedButtonBackgroundColor": "CommonColor.primary",
       "selectedButtonWidth": 80,
@@ -46,9 +46,9 @@
       "deleteIcon": "aui_jukebox_delete",
       "nextSongIcon": "aui_jukebox_next_song",
       
-      "selectedButtonTitleColor": "CommonColor.lightGrey",
-      "normalButtonTitleColor": "CommonColor.normalTextColor",
-      "selectedButtonBorderColor": "CommonColor.lightGrey",
+      "selectedButtonTitleColor": "#464E53",
+      "normalButtonTitleColor": "#FFFFFF",
+      "selectedButtonBorderColor": "#ACB4B9",
       "normalButtonBorderColor": "CommonColor.clear"
   }
 }

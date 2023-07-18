@@ -1,6 +1,6 @@
 {
   "JukeBox": {
-      "backgroundColor": "#00000000",
+      "backgroundColor": "#1B1067E5",
       "searchCornerRadius": 25,
       "searchBackgroundColor": "CommonColor.primary35",
       "searchPlaceHolderColor": "CommonColor.normalTextColor35",
@@ -11,6 +11,7 @@
       "searchTextFieldCornerRadius": 25,
       "searchPlaceHolderFont": "PingFangSC-Semibold,17",
       "segmentViewIndicatorColor": "CommonColor.primary",
+      "segmentViewTitleNormalColor": "CommonColor.primary",
       "segmentViewBorderColor": "CommonColor.primary",
       "tabsIndicatorWidth": 50,
       "tabsIndicatorColor": "CommonColor.primary",

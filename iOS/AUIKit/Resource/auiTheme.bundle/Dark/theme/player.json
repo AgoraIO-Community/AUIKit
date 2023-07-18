@@ -1,10 +1,11 @@
 {
   "Player": {
       "cornerRadius": 32,
-      "backgroundColor": "CommonColor.navy",
+      "backgroundColor": "#171A1CCC",
       "musicTitleIcon": "aui_player_audio_icon_title",
       "musicTitleFont": "PingFangSC-Semibold,14",
-      "musicTitleColor": "#ffffff",
+      "musicTitleColor": "#ACB4B9",
+      "musicControlTitleColor":"#464E53BF",
       "ownerTitleFont": "PingFangSC-Semibold,12",
       "ownerTitleColor": "#ffffffc0",
       "audioSettingIcon": "aui_player_audio_setting",
@@ -22,14 +23,14 @@
       "LoadingViewBackgroundColor": "CommonColor.black",
       "LoadingIndicatorColor": "CommonColor.white",
       
-      "selectSongBackgroundColor": "CommonColor.primary",
-      "SelectSongIcon": "aui_transparent_icon",
-      "SelectSongTextAlpha": 1,
+      "selectSongBackgroundColor": "#00000000",
+      "SelectSongIcon": "aui_player_select_song",
+      "SelectSongTextAlpha": 0,
       
-      "selectSongIconWidth": 0,
-      "selectSongIconHeight": 0,
-      "selectSongButtonWidth": 80,
-      "selectSongButtonHeight": 38,
+      "selectSongIconWidth": 83,
+      "selectSongIconHeight": 42,
+      "selectSongButtonWidth": 83,
+      "selectSongButtonHeight": 42,
       "selectSongButtonRadius": 19,
       "playButtonWidth": 25,
       "playButtonHeight": 50,
@@ -38,6 +39,7 @@
       "skipCancleButtonWidth": 24,
       "skipCancleButtonHeight": 24,
       "skipButtonHeight": 32,
+      "skipButtonTitleColor": "#ffffff",
       
       "voiceConversionDialogItemType": 0,
       "voiceConversionDialogItemHeight": 97,
@@ -82,6 +84,5 @@
       "playerLrcItemIconAcc": "aui_player_acc",
       "playerLrcItemIconChooseSong": "aui_player_chooseSong",
       "playerLrcItemSkipItem": "aui_player_skip_end"
-      
   }
 }
