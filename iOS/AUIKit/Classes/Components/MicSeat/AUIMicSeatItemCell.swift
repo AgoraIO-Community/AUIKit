@@ -24,6 +24,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         }
     }
     
+    public var hiddenRipple = false
+    
     lazy var rippleView: AUIRippleAnimationView = {
         let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)).backgroundColor(.clear)//"SeatItem.defaultImageWidth" 56
         return ripple
@@ -261,16 +263,21 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         } else {
             rippleView.isHidden = true
         }
+        if self.hiddenRipple {
+            rippleView.isHidden = self.hiddenRipple
+        }
         setNeedsLayout()
     }
     
     func updateVolume(_ volume: Int) {
-        if volume > 1 {
-            if !rippleView.isAnimating {
-                rippleView.startAnimation()
+        if !self.hiddenRipple {
+            if volume > 1 {
+                if !rippleView.isAnimating {
+                    rippleView.startAnimation()
+                }
+            } else {
+                rippleView.stopAnimation()
             }
-        } else {
-            rippleView.stopAnimation()
         }
     }
     
