@@ -1,6 +1,6 @@
 //
 //  StringExtension.swift
-//  AgoraLyricsScore
+//  AUIKit
 //
 //  Created by 朱继超 on 2023/5/15.
 //
@@ -18,11 +18,21 @@ public extension String {
 
 public extension AUIKitSwiftLib where Base == String {
     
+    /// Description jsonString convert dic
+    /// - Returns: Dictionary
+    func jsonToDictionary() -> Dictionary<String,Any> {
+        base.data(using: .utf8)?.a.toDictionary() ?? [:]
+    }
+    
+    func jsonToDics() -> [Dictionary<String,Any>] {
+        base.data(using: .utf8)?.a.toArray() ?? []
+    }
+    
     /// Description Localized string in current bundle
     /// - Parameter type: AUIBundleType
     /// - Returns: Localized result
     func localize(type: AUIBundleType) -> Base {
-        LanguageManager.localValue(key: base, type: .voiceRoom)
+        LanguageManager.localValue(key: base, type: .chat)
     }
     
     

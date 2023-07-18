@@ -10,10 +10,10 @@ import SwiftTheme
 import SDWebImage
 
 public enum MicRole: Int {
-    case mainSinger
-    case coSinger
-    case onlineAudience
-    case offlineAudience
+    case mainSinger // 主唱
+    case coSinger   // 副唱
+    case onlineAudience // 上麦观众
+    case offlineAudience    // 没有上麦的观众
 }
 
 /// 麦位管理对话框cell
@@ -23,6 +23,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
             reloadData()
         }
     }
+    
+    public var hiddenRipple = false
+    
+    lazy var rippleView: AUIRippleAnimationView = {
+        let ripple = AUIRippleAnimationView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)).backgroundColor(.clear)//"SeatItem.defaultImageWidth" 56
+        return ripple
+    }()
     
     public lazy var canvasView: UIView = {
         let view = UIView()
@@ -70,12 +77,13 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "SeatItem.micRoleButtonWidth"
         theme.buttonHeight = "SeatItem.micRoleButtonHeight"
-        theme.icon =  ThemeAnyPicker(keyPath:"SeatItem.micSeatItemIconMainSinger")
-        theme.selectedIcon =  ThemeAnyPicker(keyPath:"SeatItem.micSeatItemIconCoSinger")
+        theme.icon = ThemeAnyPicker(keyPath: "SeatItem.micSeatItemIconMainSinger")
+        theme.selectedIcon = ThemeAnyPicker(keyPath: "SeatItem.micSeatItemIconCoSinger")
         theme.titleFont = "CommonFont.small"
         theme.padding = "SeatItem.padding"
         theme.iconWidth = "SeatItem.micRoleButtonIconWidth"
         theme.iconHeight = "SeatItem.micRoleButtonIconHeight"
+        theme.titleColor = AUIColor("micRoleButtonTitleColor")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageLeftTextRight
@@ -86,10 +94,18 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     }()
     
     //房主标记
+    lazy var subTitle: UILabel = {
+        let label = UILabel(frame: CGRect(x: 5, y: self.avatarView.frame.maxY + 5, width: self.contentView.frame.width-10, height: 14)).backgroundColor(.clear).textAlignment(.center)
+        label.theme_font = "CommonFont.small"
+        label.theme_textColor = "SeatItem.labelTextColor"
+        return label
+    }()
+    
+    //房主标记
     lazy var hostIcon: AUIButton = {
         let theme = AUIButtonDynamicTheme()
         theme.titleFont = "SeatItem.micSeatHostSmall"
-        theme.icon =  ThemeAnyPicker(keyPath:"SeatItem.micSeatHostIcon")
+        theme.icon = ThemeAnyPicker(keyPath: "SeatItem.micSeatHostIcon")
         theme.buttonWidth = "SeatItem.micHostButtonWidth"
         theme.buttonHeight = "SeatItem.micHostButtonHeight"
         let button = AUIButton()
@@ -112,12 +128,14 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     private func _loadView() {
         addSubview(avatarView)
         addSubview(defaultImageView)
+        addSubview(rippleView)
         addSubview(avatarImageView)
         addSubview(seatLabel)
         addSubview(micRoleBtn)
         addSubview(hostIcon)
         addSubview(statusImageView)
         avatarImageView.addSubview(canvasView)
+        addSubview(subTitle)
         micRoleBtn.isHidden = true
         hostIcon.isHidden = true
     }
@@ -139,11 +157,19 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        
-        avatarView.theme_width = "SeatItem.avatarWidth"
-        avatarView.theme_height = "SeatItem.avatarHeight"
+        avatarView.aui_left = 15
+        avatarView.aui_right = 15
+        avatarView.aui_top = 5
+        rippleView.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
+        rippleView.minimumCircleRadius = self.contentView.frame.width-48
+        rippleView.diskRadius = (self.contentView.frame.width-30)/2.0
+
+        avatarView.aui_size = CGSize(width: self.contentView.frame.width-30, height: self.contentView.frame.width-30)
+        rippleView.aui_centerX = self.contentView.aui_centerX
+
+        rippleView.animationDuration = 0.35
+
 //        avatarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.frame.width)
-        
         defaultImageView.theme_width = "SeatItem.defaultImageWidth"
         defaultImageView.theme_height = "SeatItem.defaultImageHeight"
         let size = defaultImageView.aui_size
@@ -151,21 +177,30 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
                                         y: (avatarView.bounds.height - size.height) / 2,
                                         width: size.width,
                                         height: size.height)
+        defaultImageView.aui_centerX = self.contentView.aui_centerX
+        defaultImageView.aui_centerY = self.avatarView.aui_centerY
         avatarImageView.frame = avatarView.bounds
-        
-        statusImageView.aui_size = CGSize(width: size.width, height: size.height)
-        statusImageView.theme_centerX = "SeatItem.muteCenterX"
-        statusImageView.theme_centerY = "SeatItem.muteCenterY"
+        let r = self.rippleView.frame.width / 4.0
+        let length = CGFloat(ceilf(Float(r) / sqrt(2)))
+        self.statusImageView.frame = CGRect(x: r + length + size.width, y: r + length + size.height/2.0, width: size.width, height: size.height)
+//        statusImageView.aui_size = CGSize(width: size.width, height: size.height)
+//        statusImageView.theme_centerX = "SeatItem.muteCenterX"
+//        statusImageView.theme_centerY = "SeatItem.muteCenterY"
         statusImageView.theme_width = "SeatItem.muteWidth"
         statusImageView.theme_height = "SeatItem.muteHeight"
         
-        seatLabel.frame = CGRect(x: 0, y: avatarView.frame.height + 4, width: frame.width, height: 20)
+        seatLabel.frame = CGRect(x: 5, y: avatarView.frame.height + 5, width: frame.width-10, height: 20)
+
         
-        avatarView.layer.theme_cornerRadius = "SeatItem.avatarCornerRadius"
-        avatarImageView.layer.theme_cornerRadius = "SeatItem.avatarCornerRadius"
+        subTitle.frame = CGRect(x: 5, y: self.seatLabel.frame.maxY, width: self.seatLabel.frame.width, height: 14)
+        avatarView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0
+        avatarImageView.layer.cornerRadius = (self.contentView.frame.width-30)/2.0
         avatarView.clipsToBounds = true
         avatarImageView.clipsToBounds = true
-        
+        avatarView.aui_centerX = self.contentView.aui_centerX
+        avatarImageView.aui_centerX = self.contentView.aui_centerX
+        avatarImageView.aui_centerY = avatarView.aui_centerY
+        rippleView.aui_centerY = avatarView.aui_centerY
         micRoleBtn.aui_centerX = aui_width / 2.0
         micRoleBtn.aui_top = seatLabel.aui_bottom
         
@@ -173,12 +208,25 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         hostIcon.aui_centerX = aui_width / 2.0
         
         canvasView.frame = avatarImageView.bounds
+        canvasView.aui_centerX = self.contentView.aui_centerX
     }
     
     private func reloadData() {
         aui_info("reload seat name \(item?.seatName ?? "") url: \(item?.avatarUrl ?? "") mute video: \(item?.isMuteVideo ?? true)", tag: "AUIMicSeatItemCell")
         avatarImageView.sd_setImage(with: URL(string: item?.avatarUrl ?? ""))
         seatLabel.text = item?.seatName
+        if let subIcon = item?.subIcon,let subtitle = item?.subTitle {
+            SDWebImageManager.shared.loadImage(with: URL(string: subIcon), context: nil, progress: nil) { [weak self] image, data, error, type, res, url in
+                guard let img = image else { return }
+                self?.subTitle.attributedText = NSAttributedString({
+                    ImageAttachment(img,size: CGSize(width: 14, height: 14))
+                    AttributedText(subtitle).font(.systemFont(ofSize: 11, weight: .regular)).foregroundColor(Color(0xFFFFFF))
+                })
+            }
+        } else {
+            subTitle.text = item?.subTitle
+        }
+        
         if let _ = item?.avatarUrl {
             avatarImageView.layer.theme_borderColor = "SeatItem.avatarBorderColor"
             avatarImageView.layer.theme_borderWidth = "SeatItem.avatarBorderWidth"
@@ -190,18 +238,15 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         
         if item?.isLock ?? false {
             defaultImageView.theme_image = "SeatItem.lockImage"
-            statusImageView.theme_image = nil
-        } else if item?.isMuteAudio ?? false {
-            defaultImageView.theme_image = "SeatItem.defaultImage"
-            statusImageView.theme_image = "SeatItem.muteAudioImage"
-        } else if item?.isMuteVideo ?? false {
-            defaultImageView.theme_image = "SeatItem.defaultImage"
-            statusImageView.theme_image = nil//SeatItem.muteVideoImage"
-            statusImageView.image = nil
         } else {
+            defaultImageView.theme_image = "SeatItem.defaultImage"
+        }
+        
+        if item?.isMuteAudio ?? false {
+            statusImageView.theme_image = "SeatItem.muteAudioImage"
+        }else{
             statusImageView.theme_image = nil
             statusImageView.image = nil
-            defaultImageView.theme_image = "SeatItem.defaultImage"
         }
         
         if item?.avatarUrl?.count ?? 0 > 0 {
@@ -211,8 +256,29 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         }
         
         hostIcon.isHidden = item?.micSeat != 0
-        
         updateRoleUI(with: item?.role ?? .offlineAudience)
+        guard let mic = item else { return }
+        if mic.role == .onlineAudience,mic.isMuteAudio == false,mic.isLock == false {
+            rippleView.isHidden = false
+        } else {
+            rippleView.isHidden = true
+        }
+        if self.hiddenRipple {
+            rippleView.isHidden = self.hiddenRipple
+        }
         setNeedsLayout()
     }
+    
+    func updateVolume(_ volume: Int) {
+        if !self.hiddenRipple {
+            if volume > 1 {
+                if !rippleView.isAnimating {
+                    rippleView.startAnimation()
+                }
+            } else {
+                rippleView.stopAnimation()
+            }
+        }
+    }
+    
 }

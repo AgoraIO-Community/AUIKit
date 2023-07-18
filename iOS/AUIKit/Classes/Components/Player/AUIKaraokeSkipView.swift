@@ -34,6 +34,7 @@ open class AUIKaraokeSkipView: UIView {
         theme.buttonWidth = "Player.skipButtonWidth"
         theme.buttonHeight = "Player.skipButtonHeight"
         theme.titleFont = "CommonFont.middleBold"
+        theme.titleColor = AUIColor("Player.skipButtonTitleColor")
         theme.cornerRadius = nil
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter

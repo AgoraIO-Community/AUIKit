@@ -35,16 +35,33 @@ TODO: Add long description of the pod here.
       core.source_files = 'AUIKit/Classes/Core/**/*'
   end
   
+  s.subspec 'AUIKit' do |invitation|
+    invitation.source_files = 'AUIKit/Classes/Components/Invitation/*'
+    invitation.resource = 'AUIKit/Resource/Invitation.bundle'
+  end
+  
+  s.subspec 'AUIKit' do |room|
+    room.source_files = 'AUIKit/Classes/Components/Room/*'
+  end
+  
   s.subspec 'AUIKit' do |service|
       service.source_files = 'AUIKit/Classes/Service/**/*'
   end
 
   s.subspec 'AUIKit' do |chat|
       chat.source_files = 'AUIKit/Classes/Components/IM/**/*'
-      chat.resource = 'AUIKit/Classes/Components/IM/Resource/VoiceChatRoomResource.bundle'
+      chat.resource = 'AUIKit/Resource/ChatResource.bundle'
       chat.dependency 'Agora_Chat_iOS'
       chat.dependency 'AUIKit/Core'
       chat.dependency 'AUIKit/Service'
+  end
+  
+  s.subspec 'AUIKit' do |gift|
+      gift.source_files = 'AUIKit/Classes/Components/Gift/**/*'
+      gift.resource = 'AUIKit/Resource/Gift.bundle'
+      gift.dependency 'Agora_Chat_iOS'
+      gift.dependency 'AUIKit/Core'
+      gift.dependency 'AUIKit/Service'
   end
   
   s.subspec 'AUIKit' do |player|
@@ -56,12 +73,13 @@ TODO: Add long description of the pod here.
       player.dependency 'AUIKit/Service'
   end
   
-  s.source_files = 'AUIKit/Classes/**/*'
+  s.source_files = 'AUIKit/Classes/**/*.swift'
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = 'AUIKit/Resource/*.bundle'
+  s.resource = ['AUIKit/Resource/*.bundle']
+
   
   # s.resource_bundles = {
   #   'AUIKit' => ['AUIKit/Assets/*.png']
@@ -71,12 +89,13 @@ TODO: Add long description of the pod here.
   s.frameworks = 'UIKit', 'Foundation'
   s.dependency 'AgoraRtcEngine_iOS'
   s.dependency 'YYModel'
-  s.dependency 'SwiftyBeaver', '~>1.9.5'
+  s.dependency 'SwiftyBeaver', '1.9.5'
   s.dependency 'Zip'
   s.dependency 'Alamofire'
   s.dependency 'SwiftTheme'
-  s.dependency 'SDWebImage', '~>5.12.6'
+  s.dependency 'SDWebImage'
   s.dependency 'MJRefresh'
   s.dependency 'ScoreEffectUI'
   s.dependency 'AgoraLyricsScore'
+  s.dependency 'Agora_Chat_iOS'
 end

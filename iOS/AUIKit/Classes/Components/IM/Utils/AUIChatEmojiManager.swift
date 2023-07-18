@@ -1,13 +1,20 @@
 //
 //  AUIChatEmojiManager.swift
-//  AgoraLyricsScore
+//  AUIKit
 //
 //  Created by 朱继超 on 2023/5/15.
 //
 
 import Foundation
 fileprivate let manager = AUIChatEmojiManager()
-
+/*!
+ *  \~Chinese
+ *  表情资源管理类
+ *
+ *  \~English
+ *  Emoticon resource management class
+ *
+ */
 @objc open class AUIChatEmojiManager: NSObject {
     
     @objc static let shared = manager
@@ -31,7 +38,7 @@ fileprivate let manager = AUIChatEmojiManager()
         let text = NSMutableAttributedString(attributedString: input)
         for range in ranges.reversed() {
             if range.location != NSNotFound, range.length != NSNotFound {
-                let value = self.emojiMap.isEmpty ? UIImage(symbol,.voiceRoom):self.emojiMap[symbol]
+                let value = self.emojiMap.isEmpty ? UIImage.aui_Image(named: symbol):self.emojiMap[symbol]
                 let attachment = NSTextAttachment()
                 attachment.image = value
                 attachment.bounds = CGRect(x: 0, y: -1.5, width: 14, height: 14)

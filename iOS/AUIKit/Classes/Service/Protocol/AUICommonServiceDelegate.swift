@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol AUICommonServiceDelegate: NSObjectProtocol {
+@objc public protocol AUICommonServiceDelegate: NSObjectProtocol {
     
     func getChannelName() -> String
     

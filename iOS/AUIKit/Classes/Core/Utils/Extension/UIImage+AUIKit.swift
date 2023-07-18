@@ -19,7 +19,6 @@ extension UIImage {
         if let filePath = ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path {
             return UIImage(contentsOfFile: filePath)
         }
-        
         return nil
     }
 }

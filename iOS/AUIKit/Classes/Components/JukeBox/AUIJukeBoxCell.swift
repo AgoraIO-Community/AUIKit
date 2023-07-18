@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SDWebImage
 
 public enum AUIJukeSongCellStyle: Int {
     case selectSong      //点歌

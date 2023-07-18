@@ -35,7 +35,7 @@ public class AUIButtonDynamicTheme: AUIButtonStyle {
     public var titleFont: ThemeFontPicker = "Button.titleFont"
     public var titleColor: ThemeColorPicker = "Button.titleColor"
     public var selectedTitleColor: ThemeColorPicker = "Button.titleColor"
-    public var backgroundColor: ThemeColorPicker = "Button.backgroundColor"
+    public var backgroundColor: ThemeColorPicker = AUIColor("Button.backgroundColor")
     public var cornerRadius: ThemeCGFloatPicker? = "Button.cornerRadius"
     public var textAlpha: ThemeCGFloatPicker = "Button.titleAlpha"
     public var highlightedBackgroundColor: ThemeColorPicker?
@@ -244,6 +244,7 @@ open class AUIButton: UIButton {
     
     @objc fileprivate func aui_setImage(_ image: String?, for state: UIControl.State) {
         guard let image = image else { return }
+        
         if let fileUrl = URL.aui_imageFileURL(named: image) {
             self.sd_setImage(with: fileUrl, for: state)
         }

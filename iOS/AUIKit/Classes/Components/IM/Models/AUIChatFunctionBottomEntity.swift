@@ -1,20 +1,30 @@
 //
 //  AUIChatFunctionBottomEntity.swift
-//  AgoraLyricsScore
+//  AUIKit
 //
 //  Created by 朱继超 on 2023/5/15.
 //
 
 import Foundation
 
-public class AUIChatFunctionBottomEntity: NSObject {
+@objc public enum AUIChatFunctionBottomEntityType: Int {
+    case more
+    case mic
+    case gift
+    case like
+    case unknown = -1
+}
+
+@objcMembers public class AUIChatFunctionBottomEntity: NSObject {
     
-    var selected: Bool?
+    public var showRedDot: Bool = false
     
-    var selectedImage: UIImage?
+    public var selected: Bool = false
     
-    var normalImage: UIImage?
+    public var selectedImage: UIImage?
     
-    var index: Int?
+    public var normalImage: UIImage?
+    
+    public var type: AUIChatFunctionBottomEntityType = .more
     
 }
