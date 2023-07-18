@@ -34,6 +34,8 @@ private let kMicSeatCellId = "kMicSeatCellId"
 public class AUIMicSeatView: UIView,IAUIMicSeatView {
         
     public weak var uiDelegate: AUIMicSeatViewDelegate?
+    
+    public var hiddenRipple = false
         
     public lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: bounds, collectionViewLayout: UICollectionViewLayout())
@@ -49,8 +51,9 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
         super.init(frame: frame)
     }
     
-    @objc public convenience init(frame: CGRect, layout: UICollectionViewLayout) {
+    @objc public convenience init(frame: CGRect, layout: UICollectionViewLayout,hiddenRipple: Bool = true) {
         self.init(frame: frame)
+        self.hiddenRipple = hiddenRipple
         _loadSubViews()
         self.collectionView.setCollectionViewLayout(layout, animated: true)
     }
@@ -97,6 +100,7 @@ extension AUIMicSeatView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: AUIMicSeatItemCell = collectionView.dequeueReusableCell(withReuseIdentifier: kMicSeatCellId, for: indexPath) as! AUIMicSeatItemCell
+        cell.hiddenRipple = self.hiddenRipple
         let seatInfo = uiDelegate?.seatItems(view: self)[indexPath.item]
         cell.item = seatInfo
         uiDelegate?.onMuteVideo(view: self, seatIndex: indexPath.item, canvas: cell.canvasView, isMuteVideo: seatInfo?.isMuteAudio ?? true)
