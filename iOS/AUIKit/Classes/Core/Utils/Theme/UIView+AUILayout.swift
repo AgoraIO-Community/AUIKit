@@ -8,6 +8,18 @@
 import Foundation
 import SwiftTheme
 
+@objc public class AUIEdges: NSObject {
+    var top: CGFloat = 0.0
+    var left: CGFloat = 0.0
+    var bottom: CGFloat = 0.0
+    var right: CGFloat = 0.0
+    
+    public override init() {
+        
+    }
+    
+}
+
 public func aui_getThemePicker(
     _ object : NSObject,
     _ selector : String
@@ -24,6 +36,27 @@ public func aui_setThemePicker(
 }
 
 @objc public extension UIView {
+    
+    var theme_top: ThemeCGFloatPicker? {
+        get { return aui_getThemePicker(self, "setAui_top:") as? ThemeCGFloatPicker }
+        set { aui_setThemePicker(self, "setAui_top:", newValue) }
+    }
+    
+    var theme_bottom: ThemeCGFloatPicker? {
+        get { return aui_getThemePicker(self, "setAui_bottom:") as? ThemeCGFloatPicker }
+        set { aui_setThemePicker(self, "setAui_bottom:", newValue) }
+    }
+    
+    var theme_left: ThemeCGFloatPicker? {
+        get { return aui_getThemePicker(self, "setAui_left:") as? ThemeCGFloatPicker }
+        set { aui_setThemePicker(self, "setAui_left:", newValue) }
+    }
+    
+    var theme_right: ThemeCGFloatPicker? {
+        get { return aui_getThemePicker(self, "setAui_right:") as? ThemeCGFloatPicker }
+        set { aui_setThemePicker(self, "setAui_right:", newValue) }
+    }
+    
     var theme_width: ThemeCGFloatPicker? {
         get { return aui_getThemePicker(self, "setAui_width:") as? ThemeCGFloatPicker }
         set { aui_setThemePicker(self, "setAui_width:", newValue) }
@@ -43,6 +76,25 @@ public func aui_setThemePicker(
         get { return aui_getThemePicker(self, "setAui_centerY:") as? ThemeCGFloatPicker }
         set { aui_setThemePicker(self, "setAui_centerY:", newValue) }
     }
+    
+    var theme_edges: AUIEdges {
+        get {
+            var edges = AUIEdges()
+            edges.top = 0
+            edges.left = 0
+            edges.bottom = 0
+            edges.right = 0
+            return edges
+        }
+        set {
+            theme_top = ThemeCGFloatPicker(keyPath: "\(newValue.top)")
+            theme_left = ThemeCGFloatPicker(keyPath: "\(newValue.left)")
+            theme_bottom = ThemeCGFloatPicker(keyPath: "\(newValue.bottom)")
+            theme_right = ThemeCGFloatPicker(keyPath: "\(newValue.right)")
+        }
+    }
+    
+    
 }
 
 @objc public extension CALayer {

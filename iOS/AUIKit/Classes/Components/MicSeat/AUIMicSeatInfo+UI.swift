@@ -8,6 +8,14 @@
 import Foundation
 
 extension AUIMicSeatInfo: AUIMicSeatCellDataProtocol {
+    public var subTitle: String {
+        ""
+    }
+    
+    public var subIcon: String {
+        ""
+    }
+    
     public var isMuteAudio: Bool {
         var userMuteAudio = kUserMuteAudioInitStatus
         if let fullUser = user as? AUIUserInfo {

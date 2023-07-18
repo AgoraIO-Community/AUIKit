@@ -19,6 +19,7 @@ open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
     public var userName: String?
     public var userAvatar: String?
     public var micSeatCount: UInt = 8
+    public var micSeatStyle: String = "8"
     
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil
@@ -48,3 +49,17 @@ open class AUIRoomDestoryNetworkModel: AUICommonNetworkModel {
     
     public var roomId: String?
 }
+
+
+open class AUIRoomAnnouncementNetworkModel: AUICommonNetworkModel {
+    public override init() {
+        super.init()
+        interfaceName = "/v1/room/notice"
+    }
+    
+    public var roomId: String?
+        
+    public var notice: String?
+    
+}
+

@@ -44,7 +44,7 @@ open class AUIMusicServiceImpl: NSObject {
     private var ktvApi: KTVApiDelegate!
     
     deinit {
-        rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
+        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         aui_info("deinit AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
     }
     
@@ -54,14 +54,13 @@ open class AUIMusicServiceImpl: NSObject {
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.ktvApi = ktvApi
-        rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
+        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
     }
 }
 
-
 //MARK: AUIRtmMsgProxyDelegate
-extension AUIMusicServiceImpl: AUIRtmMsgProxyDelegate {
-    public func onMsgDidChanged(channelName: String, key: String, value: Any) {
+extension AUIMusicServiceImpl: AUIRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kChooseSongKey {
             aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
@@ -137,6 +136,11 @@ extension AUIMusicServiceImpl: AUIRtmMsgProxyDelegate {
 let jsonOption = "{\"needLyric\":true,\"pitchType\":1}"
 //MARK: AUIMusicServiceDelegate
 extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIMusicRespDelegate) {
         respDelegates.add(delegate)
     }
@@ -259,7 +263,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         networkModel.owner = owner
         chooseModel.owner = owner
         networkModel.request(completion: { err, _ in
-            completion?(err)
+            completion?(err as? NSError)
         })
     }
     
@@ -270,7 +274,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         model.songCode = songCode
         model.roomId = channelName
         model.request { err, _ in
-            completion?(err)
+            completion?(err as? NSError)
         }
     }
     
@@ -281,7 +285,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         model.songCode = songCode
         model.roomId = channelName
         model.request { err, _ in
-            completion?(err)
+            completion?(err as? NSError)
         }
     }
     
@@ -293,7 +297,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             model.songCode = songCode
             model.roomId = channelName
             model.request { err, _ in
-                completion?(err)
+                completion?(err as? NSError)
             }
         } else {
             let model = AUISongStopNetworkModel()
@@ -301,7 +305,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             model.songCode = songCode
             model.roomId = channelName
             model.request { err, _ in
-                completion?(err)
+                completion?(err as? NSError)
             }
         }
     }
