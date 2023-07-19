@@ -122,9 +122,7 @@
         <item name="aui_button_drawablePressedTint">@color/aui_grey_light</item>
         <item name="aui_button_drawableDisableTint">@color/aui_grey_light_35</item>
 
-        <item name="aui_button_backgroundNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke_dark</item>
     </style>
 
     <style name="AUIButton.Mini.Stroke.Dark">
@@ -136,9 +134,7 @@
         <item name="aui_button_drawablePressedTint">@color/aui_grey_light</item>
         <item name="aui_button_drawableDisableTint">@color/aui_grey_light_35</item>
 
-        <item name="aui_button_backgroundNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke_dark</item>
     </style>
 
     <style name="AUIButton.Circle.Stroke.Dark">
@@ -149,10 +145,6 @@
         <item name="aui_button_drawableTint">@color/aui_grey_light</item>
         <item name="aui_button_drawablePressedTint">@color/aui_grey_light</item>
         <item name="aui_button_drawableDisableTint">@color/aui_grey_light_35</item>
-
-        <item name="aui_button_backgroundNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_grey_light_35</item>
     </style>
 
     <style name="AUIDividers.Dark">
