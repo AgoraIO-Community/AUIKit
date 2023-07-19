@@ -106,9 +106,9 @@
 
     <style name="AUIButton.Stroke">
         <item name="aui_button_background">@drawable/aui_button_stroke</item>
-        <item name="aui_button_textNormalColor">@color/aui_primary</item>
-        <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_textDisableColor">@color/aui_primary_light</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
 
         <item name="aui_button_drawableTint">@color/aui_primary</item>
         <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
@@ -127,9 +127,9 @@
 
     <style name="AUIButton.Mini.Stroke">
         <item name="aui_button_background">@drawable/aui_button_stroke</item>
-        <item name="aui_button_textNormalColor">@color/aui_primary</item>
-        <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_textDisableColor">@color/aui_primary_light</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
 
         <item name="aui_button_drawableTint">@color/aui_primary</item>
         <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
@@ -151,9 +151,9 @@
 
     <style name="AUIButton.Circle.Stroke">
         <item name="aui_button_background">@drawable/aui_button_stroke</item>
-        <item name="aui_button_textNormalColor">@color/aui_primary</item>
-        <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_textDisableColor">@color/aui_primary_light</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
 
         <item name="aui_button_drawableTint">@color/aui_primary</item>
         <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
