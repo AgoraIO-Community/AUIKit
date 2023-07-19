@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.AUIChatListView.Dark">
+        <item name="aui_chatListView_appearance">@style/AUIChatListView.Appearance.Dark</item>
+    </style>
+
+    <style name="AUIChatListView.Appearance.Dark" parent="AUIChatListView.Appearance">
+        <item name="aui_barrage_normal_layout_bg">@drawable/aui_bg_barrage_shape_dark</item>
+        <item name="aui_barrage_system_layout_bg">@drawable/aui_bg_barrage_system_shape_dark</item>
+    </style>
+
+</resources>

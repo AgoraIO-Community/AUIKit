@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.AUIAction.Dark">
+        <item name="aui_action_appearance">@style/AUIAction.Appearance.Dark</item>
+    </style>
+
+    <style name="AUIAction.Appearance.Dark" parent="AUIAction.Appearance">
+        <item name="aui_invitation_layout_bg">@drawable/voice_bg_rect_top_radius20_dark</item>
+        <item name="aui_invitation_view_layout_bg">@drawable/voice_bg_rect_top_radius20_gradient_dark</item>
+
+        <item name="aui_tabLayout_selected_textColor">@color/aui_color_F9FAFA</item>
+        <item name="aui_tabLayout_unselected_textColor">@color/aui_color_6c7192</item>
+        <item name="aui_userinfo_layout_bg">@color/aui_color_171A1C</item>
+        <item name="aui_top_title_color">@color/aui_color_F9FAFA</item>
+
+        <item name="aui_invitation_item_layout_bg">@color/aui_color_171A1C</item>
+        <item name="aui_invitation_item_title_color">@color/aui_color_F9FAFA</item>
+    </style>
+
+</resources>

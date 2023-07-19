@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/voice_bg_rect_top_radius20_white">
+    android:theme="?attr/aui_action_appearance"
+    android:background="?attr/aui_invitation_layout_bg">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/voice_bg_rect_top_radius20_gradient_white"
+        android:background="?attr/aui_invitation_view_layout_bg"
         app:layout_constraintTop_toTopOf="@+id/ivSheetTitle"
         app:layout_constraintBottom_toBottomOf="@+id/tabApplyLayout"/>
 
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:src="@drawable/aui_icon_rectangle"
+        android:src="?attr/aui_top_view_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

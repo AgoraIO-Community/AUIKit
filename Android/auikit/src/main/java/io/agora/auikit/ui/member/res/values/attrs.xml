@@ -2,13 +2,13 @@
 <resources>
 
     <!--================= 主题属性 =================-->
-    <attr name="aui_upperRight_appearance" format="reference"/>
+    <attr name="aui_memberInfo_appearance" format="reference"/>
 
     <!--================= 样式属性 =================-->
 
     <!-- 房间人数和用户展示样式 -->
     <declare-styleable name="AUIUpperRightInformationView">
-        <attr name="aui_upperRight_appearance"/>
+        <attr name="aui_memberInfo_appearance"/>
 
         <!-- ==根布局宽、高== -->
         <attr name="aui_upperRight_root_layout_width" format="dimension">

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.AUIChatBottomView">
+        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance</item>
+    </style>
+
+    <style name="Theme.AUIKit.AUIEmojiView">
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance</item>
+    </style>
+
+
+</resources>

@@ -136,7 +136,7 @@ class AUIRoomManagerImpl(
     override fun enterRoom(roomId: String, token: String, callback: AUICallback?) {
         subChannelStream.set(false)
         subChannelMsg.set(false)
-        val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, String>
+        val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, Any>
         if (user == null) {
             AUILogger.logger().d("EnterRoom", "user == null")
             callback?.onResult(

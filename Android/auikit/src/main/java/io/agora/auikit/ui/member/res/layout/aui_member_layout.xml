@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
-    android:theme="?attr/aui_upperRight_appearance"
+    android:theme="?attr/aui_memberInfo_appearance"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >

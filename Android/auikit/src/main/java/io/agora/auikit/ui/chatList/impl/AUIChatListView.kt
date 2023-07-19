@@ -37,14 +37,14 @@ class AUIChatListView : RelativeLayout,
         defStyleAttr
     ) {
         addView(mViewBinding.root)
-        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIBarrageView, defStyleAttr, 0)
-        appearanceId = themeTa.getResourceId(R.styleable.AUIMicSeatItemView_aui_micSeatItem_appearance, 0)
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIChatListView, defStyleAttr, 0)
+        appearanceId = themeTa.getResourceId(R.styleable.AUIChatListView_aui_chatListView_appearance, 0)
         themeTa.recycle()
         initListener()
     }
 
     override fun initView(ownerId: String?){
-        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIBarrageView)
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIChatListView)
         adapter = AUIChatListAdapter(context,ownerId,typedArray)
         val linearLayout = LinearLayoutManager(context)
 //        val scrollSpeedLinearLayoutManger = ScrollSpeedLinearLayoutManger(context)
