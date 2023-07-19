@@ -7,7 +7,7 @@ AUIKit UI provides basic ui components and functional ui components. Based on th
 ## Directory Structure
 ```
 Functional ui components:
-auikit/src/main/java/io/agora/auikit/ui
+auikit-ui/src/main/java/io/agora/auikit/ui
 ├── micseats                                            micseat ui component
 │ ├── IMicSeatsView.java                                microphone ui control interface
 │ ├── IMicSeatItemView.java                             Maibit Item ui control interface
@@ -74,7 +74,7 @@ auikit/src/main/java/io/agora/auikit/ui
 
 
 Basic ui components:
-auikit/src/main/java/io/agora/auikit/ui/basic
+auikit-ui/src/main/java/io/agora/auikit/ui/basic
 ├── AUIAlertDialog.java                                 public pop-up window
 ├── AUIBottomDialog.java                                public bottom pop-up window
 ├── AUIButton.java                                      public button
@@ -108,17 +108,17 @@ The theme here is a concept with the theme that comes with Android, and the them
 By using themes, you can achieve global and unified UI modification, and you can also achieve dynamic skinning.
 
 * For **basic ui components**, AUIKit provides two sets of basic ui themes, as follows
-  Light theme (default) -> [Theme.AUIKit.Basic](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/themes.xml)
-  Dark theme -> [Theme.AUIKit.Basic.Dark](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/themes_dark.xml)
+  Light theme (default) -> [Theme.AUIKit.Basic](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/themes.xml)
+  Dark theme -> [Theme.AUIKit.Basic.Dark](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/themes_dark.xml)
 
 Developers can define their own themes based on these two sets of themes, and then modify the default style of the basic UI components by modifying the appearance configuration of the components in their own themes.
 
-* For **functional ui components**, AUIKit provides a set of functional ui themes, namely [Theme.AUIKit](../auikit/src/main/res/values/themes.xml)
+* For **functional ui components**, AUIKit provides a set of functional ui themes, namely [Theme.AUIKit](../auikit-ui/src/main/res/values/themes.xml)
 
 Developers can also define their own themes based on this set of themes, and then modify the default style of functional ui components by modifying the appearance configuration of the components in their own themes.
 
 ### <span>**`Theme usage`**</span>
-The following uses the [Theme.AUIKit](../auikit/src/main/res/values/themes.xml) theme as an example to illustrate how to use the theme.
+The following uses the [Theme.AUIKit](../auikit-ui/src/main/res/values/themes.xml) theme as an example to illustrate how to use the theme.
 
 - Integrate [auikit](../auikit) source code in the project
 - Defined in src/main/res/value/themes.xml of the app module
@@ -179,9 +179,9 @@ The following describes the value of the functional ui components provided by AU
 ### <span>**`Functional ui component`**</span>
 #### **Wheat bit component**
 
-Wheat ui control -> [AUIMicSeatsView](../auikit/src/main/java/io/agora/auikit/ui/micseats/impl/AUIMicSeatsView.java)
-Microseat custom attributes -> [AUIMicSeatsViewAttrs](../auikit/src/main/java/io/agora/auikit/ui/micseats/res/values/attrs.xml)
-Default style of microphone seats -> [AUIMicSeatsViewStyle](../auikit/src/main/java/io/agora/auikit/ui/micseats/res/values/styles.xml)
+Wheat ui control -> [AUIMicSeatsView](../auikit-ui/src/main/java/io/agora/auikit/ui/micseats/impl/AUIMicSeatsView.java)
+Microseat custom attributes -> [AUIMicSeatsViewAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/micseats/res/values/attrs.xml)
+Default style of microphone seats -> [AUIMicSeatsViewStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/micseats/res/values/styles.xml)
 
 **Theme Properties**
 | Properties | Comments |
@@ -269,9 +269,9 @@ Default style of microphone seats -> [AUIMicSeatsViewStyle](../auikit/src/main/j
 
 #### **Voice component**
 
-Juke ui control -> [AUIJukeboxView](../auikit/src/main/java/io/agora/auikit/ui/jukebox/impl/AUIJukeboxView.java)
-Juke Custom Attributes -> [AUIJukeboxViewAttrs](../auikit/src/main/java/io/agora/auikit/ui/jukebox/res/values/attrs.xml)
-Juke default style -> [AUIJukeboxViewStyle](../auikit/src/main/java/io/agora/auikit/ui/jukebox/res/values/styles.xml)
+Juke ui control -> [AUIJukeboxView](../auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/impl/AUIJukeboxView.java)
+Juke Custom Attributes -> [AUIJukeboxViewAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/res/values/attrs.xml)
+Juke default style -> [AUIJukeboxViewStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/res/values/styles.xml)
 
 **Theme Properties**
 | Properties | Comments |
@@ -407,9 +407,9 @@ Juke default style -> [AUIJukeboxViewStyle](../auikit/src/main/java/io/agora/aui
 
 #### **play component**
 
-Play ui control -> [AUIMusicPlayerView](../auikit/src/main/java/io/agora/auikit/ui/musicplayer/impl/AUIMusicPlayerView.java)
-Play custom attributes -> [AUIMusicPlayerViewAttrs](../auikit/src/main/java/io/agora/auikit/ui/musicplayer/res/values/attrs.xml)
-Play default style -> [AUIMusicPlayerViewStyle](../auikit/src/main/java/io/agora/auikit/ui/musicplayer/res/values/styles.xml)
+Play ui control -> [AUIMusicPlayerView](../auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/impl/AUIMusicPlayerView.java)
+Play custom attributes -> [AUIMusicPlayerViewAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/res/values/attrs.xml)
+Play default style -> [AUIMusicPlayerViewStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/res/values/styles.xml)
 
 **Theme Properties**
 | Properties | Comments |
@@ -483,9 +483,9 @@ Play default style -> [AUIMusicPlayerViewStyle](../auikit/src/main/java/io/agora
 ### <span>**`Basic ui components`**</span>
 #### **Button**
 
-Button control -> [AUIButton](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIButton.java)
-Button Custom Attributes -> [AUIButtonAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
-Button default style -> [AUIButtonwStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
+Button control -> [AUIButton](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIButton.java)
+Button Custom Attributes -> [AUIButtonAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
+Button default style -> [AUIButtonwStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
 
 **Theme Properties**
 | Properties | Comments |
@@ -500,9 +500,9 @@ Button default style -> [AUIButtonwStyle](../auikit/src/main/java/io/agora/auiki
 
 #### **EditText**
 
-Input box control -> [AUIEditText](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIEditText.java)
-Input box custom attributes -> [AUIEditTextAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
-Input box default style -> [AUIEditTextStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
+Input box control -> [AUIEditText](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIEditText.java)
+Input box custom attributes -> [AUIEditTextAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
+Input box default style -> [AUIEditTextStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
 
 **Theme Properties**
 | Properties | Comments |
@@ -512,9 +512,9 @@ Input box default style -> [AUIEditTextStyle](../auikit/src/main/java/io/agora/a
 
 #### **AlertDialog**
 
-Pop-up control -> [AUIAlertDialog](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIAlertDialog.java)
-Pop-up custom attributes -> [AUIAlertDialogAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
-Default popup style -> [AUIAlertDialogStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
+Pop-up control -> [AUIAlertDialog](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIAlertDialog.java)
+Pop-up custom attributes -> [AUIAlertDialogAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
+Default popup style -> [AUIAlertDialogStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
 
 **Theme Properties**
 | Properties | Comments |
@@ -524,9 +524,9 @@ Default popup style -> [AUIAlertDialogStyle](../auikit/src/main/java/io/agora/au
 
 #### **BottomDialog**
 
-Bottom popup control -> [AUIBottomDialog](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIBottomDialog.java)
-Bottom pop-up custom attributes -> [AUIBottomDialogAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
-Bottom popup default style -> [AUIBottomDialogStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
+Bottom popup control -> [AUIBottomDialog](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIBottomDialog.java)
+Bottom pop-up custom attributes -> [AUIBottomDialogAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
+Bottom popup default style -> [AUIBottomDialogStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
 
 **Theme Properties**
 | Properties | Comments |
