@@ -8,7 +8,7 @@ AUIKit Service provides a set of common service interfaces that can be used for 
 ## Directory Structure
 ```
 service interface:
-auikit/src/main/java/io/agora/auikit/service
+auikit-ui/src/main/java/io/agora/auikit/service
 ├── IAUICommonService.java                          basic service abstract class
 ├── IAUIRoomManager.java                            room management
 ├── IAUIUserService.java                            user management
@@ -20,7 +20,7 @@ auikit/src/main/java/io/agora/auikit/service
 └── callback                                        callback interface
 
 data structure:
-auikit/src/main/java/io/agora/auikit/model
+auikit-ui/src/main/java/io/agora/auikit/model
 ├── AUICommonConfig.java                            public configuration class
 ├── AUIRoomConfig.java                              room configuration
 ├── AUIRoomContext.java                             room context
@@ -43,7 +43,7 @@ auikit/src/main/java/io/agora/auikit/model
 
 ### <span>**`service interface`**</span>
 
-* **Basic service abstract class ->** [IAUICommonService](../auikit/src/main/java/io/agora/auikit/service/IAUICommonService.java)
+* **Basic service abstract class ->** [IAUICommonService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUICommonService.java)
   | method | annotation |
   | :- | :- |
   | bindRespDelegate | Bind response events |
@@ -54,8 +54,8 @@ auikit/src/main/java/io/agora/auikit/model
 
 * **Room Management**
 
-Room management abstract class -> [IAUIRoomManager](../auikit/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
-Agora room management class -> [AUIRoomManagerImpl](../auikit/src/main/java/io/agora/auikit/service/imp/AUIRoomServiceImpl.kt)
+Room management abstract class -> [IAUIRoomManager](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+Agora room management class -> [AUIRoomManagerImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIRoomServiceImpl.kt)
 
 | method | annotation |
 | :- | :- |
@@ -65,7 +65,7 @@ Agora room management class -> [AUIRoomManagerImpl](../auikit/src/main/java/io/a
 | exitRoom | Exit the room (listener call) |
 | getRoomInfoList | Get the detailed information of the specified room id list, if the room id list is empty, get the information of all rooms |
 
-Room information callback interface -> [IAUIRoomManager.AUIRoomRespDelegate](../auikit/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+Room information callback interface -> [IAUIRoomManager.AUIRoomRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
 
 | method | annotation |
 | :- | :- |
@@ -74,8 +74,8 @@ Room information callback interface -> [IAUIRoomManager.AUIRoomRespDelegate](../
 
 * **User Management**
 
-User management abstract class -> [IAUIUserService](../auikit/src/main/java/io/agora/auikit/service/IAUIUserService.java)
-Agora user management class -> [AUIUserServiceImpl](../auikit/src/main/java/io/agora/auikit/service/imp/AUIUserServiceImpl.kt)
+User management abstract class -> [IAUIUserService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+Agora user management class -> [AUIUserServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIUserServiceImpl.kt)
 
 | method | annotation |
 | :- | :- |
@@ -84,7 +84,7 @@ Agora user management class -> [AUIUserServiceImpl](../auikit/src/main/java/io/a
 | muteUserAudio | Mute/unmute yourself |
 | muteUserVideo | Forbid/unban camera for yourself |
 
-User information callback interface -> [IAUIUserService.AUIUserRespDelegate](../auikit/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+User information callback interface -> [IAUIUserService.AUIUserRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIUserService.java)
 
 | method | annotation |
 | :- | :- |
@@ -97,8 +97,8 @@ User information callback interface -> [IAUIUserService.AUIUserRespDelegate](../
 
 * **Wheat bit management**
 
-Wheat seat management abstract class -> [IAUIMicSeatService](../auikit/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
-Agora wheat seat management class -> [AUIMicSeatServiceImpl](../auikit/src/main/java/io/agora/auikit/service/imp/AUIMicSeatServiceImpl.kt)
+Wheat seat management abstract class -> [IAUIMicSeatService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+Agora wheat seat management class -> [AUIMicSeatServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIMicSeatServiceImpl.kt)
 
 | method | annotation |
 | :- | :- |
@@ -112,7 +112,7 @@ Agora wheat seat management class -> [AUIMicSeatServiceImpl](../auikit/src/main/
 | closeSeat | Block/unblock a seat (call by the homeowner) |
 | getMicSeatInfo | Get the specified microphone seat information |
 
-Microphone information callback interface -> [IAUIMicSeatService.AUIMicSeatRespDelegate](../auikit/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+Microphone information callback interface -> [IAUIMicSeatService.AUIMicSeatRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
 
 | method | annotation |
 | :- | :- |
@@ -125,8 +125,8 @@ Microphone information callback interface -> [IAUIMicSeatService.AUIMicSeatRespD
 
 * **Voice Management**
 
-Juke management abstract class -> [IAUIJukeboxService](../auikit/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
-Agora juke management class -> [AUIJukeboxServiceImpl](../auikit/src/main/java/io/agora/auikit/service/imp/AUIJukeboxServiceImpl.kt)
+Juke management abstract class -> [IAUIJukeboxService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+Agora juke management class -> [AUIJukeboxServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIJukeboxServiceImpl.kt)
 
 | method | annotation |
 | :- | :- |
@@ -138,7 +138,7 @@ Agora juke management class -> [AUIJukeboxServiceImpl](../auikit/src/main/java/i
 | pingSong | Top songs |
 | updatePlayStatus | Update Play Status |
 
-Juke information callback interface -> [IAUIJukeboxService.AUIJukeboxRespDelegate](../auikit/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+Juke information callback interface -> [IAUIJukeboxService.AUIJukeboxRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
 
 | method | annotation |
 | :- | :- |
@@ -149,8 +149,8 @@ Juke information callback interface -> [IAUIJukeboxService.AUIJukeboxRespDelegat
 
 * **Chorus Management**
 
-Chorus management abstract class -> [IAUIChorusService](../auikit/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
-Agora chorus management class -> [AUIChorusServiceImpl](../auikit/src/main/java/io/agora/auikit/service/imp/AUIChorusServiceImpl.kt)
+Chorus management abstract class -> [IAUIChorusService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+Agora chorus management class -> [AUIChorusServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIChorusServiceImpl.kt)
 
 | method | annotation |
 | :- | :- |
@@ -159,7 +159,7 @@ Agora chorus management class -> [AUIChorusServiceImpl](../auikit/src/main/java/
 | leaveChorus | leave the chorus |
 | switchSingerRole | switch role |
 
-Chorus information callback interface -> [IAUIChorusService.AUIChorusRespDelegate](../auikit/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+Chorus information callback interface -> [IAUIChorusService.AUIChorusRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
 
 | method | annotation |
 | :- | :- |
@@ -170,8 +170,8 @@ Chorus information callback interface -> [IAUIChorusService.AUIChorusRespDelegat
 
 * **Play Management**
 
-Play management abstract class -> [IAUIMusicPlayerService](../auikit/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
-Agora playback management class -> [AUIMusicPlayerServiceImpl](../auikit/src/main/java/io/agora/auikit/service/imp/AUIMusicPlayerServiceImpl.kt)
+Play management abstract class -> [IAUIMusicPlayerService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+Agora playback management class -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIMusicPlayerServiceImpl.kt)
 
 | method | annotation |
 | :- | :- |
@@ -192,7 +192,7 @@ Agora playback management class -> [AUIMusicPlayerServiceImpl](../auikit/src/mai
 | effectProperties | sound mapping key |
 | enableEarMonitoring | Ear monitor on and off |
 
-Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDelegate](../auikit/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
 
 | method | annotation |
 | :- | :- |
@@ -207,7 +207,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 
 ### <span>**`Data Structure`**</span>
 
-* **Common configuration class ->** [AUICommonConfig](../auikit/src/main/java/io/agora/auikit/model/AUICommonConfig.java)
+* **Common configuration class ->** [AUICommonConfig](../auikit-ui/src/main/java/io/agora/auikit/model/AUICommonConfig.java)
 
 | field | comment |
 | :- | :- |
@@ -217,7 +217,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | userName | local username |
 | userAvatar | local user avatar |
 
-* **Room configuration information ->** [AUIRoomConfig](../auikit/src/main/java/io/agora/auikit/model/AUIRoomConfig.java)
+* **Room configuration information ->** [AUIRoomConfig](../auikit-ui/src/main/java/io/agora/auikit/model/AUIRoomConfig.java)
 
 | field | comment |
 | :- | :- |
@@ -226,7 +226,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | ktvChorusChannelName | channel name used by chorus |
 | tokenMap | All token tables used internally |
 
-* **Room Context ->** [AUIRoomContext](../auikit/src/main/java/io/agora/auikit/model/AUIRoomContext.java)
+* **Room Context ->** [AUIRoomContext](../auikit-ui/src/main/java/io/agora/auikit/model/AUIRoomContext.java)
 
 | field | comment |
 | :- | :- |
@@ -234,7 +234,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | roomConfig | room configuration information |
 | roomInfoMap | List of all rooms joined |
 
-* **Create room information ->** [AUICreateRoomInfo](../auikit/src/main/java/io/agora/auikit/model/AUICreateRoomInfo.java)
+* **Create room information ->** [AUICreateRoomInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUICreateRoomInfo.java)
 
 | field | comment |
 | :- | :- |
@@ -243,7 +243,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | seatCount | Number of seats |
 | password | Room password |
 
-* **Room Information ->** [AUIRoomInfo](../auikit/src/main/java/io/agora/auikit/model/AUIRoomInfo.java)
+* **Room Information ->** [AUIRoomInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIRoomInfo.java)
 
 | field | comment |
 | :- | :- |
@@ -252,7 +252,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | onlineUsers | Number of people in the room |
 | createTime | room creation time |
 
-* **Basic user information ->** [AUIUserThumbnailInfo](../auikit/src/main/java/io/agora/auikit/model/AUIUserThumbnailInfo.java)
+* **Basic user information ->** [AUIUserThumbnailInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIUserThumbnailInfo.java)
 
 | field | comment |
 | :- | :- |
@@ -260,7 +260,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | userName | username |
 | userAvatar | User Avatar |
 
-* **Complete user information ->** [AUIUserInfo](../auikit/src/main/java/io/agora/auikit/model/AUIUserInfo.java)
+* **Complete user information ->** [AUIUserInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIUserInfo.java)
 
 | field | comment |
 | :- | :- |
@@ -270,7 +270,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | muteAudio | Mute or not |
 | muteVideo | Whether to turn off the video state |
 
-* **Microseat Information ->** [AUIMicSeatInfo](../auikit/src/main/java/io/agora/auikit/model/AUIMicSeatInfo.java)
+* **Microseat Information ->** [AUIMicSeatInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIMicSeatInfo.java)
 
 | field | comment |
 | :- | :- |
@@ -280,7 +280,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | muteAudio | Mic disable sound, 0: no, 1: yes |
 | muteVideo | Mic disable video, 0: no, 1: yes |
 
-* **Sing song information ->** [AUIMusicModel](../auikit/src/main/java/io/agora/auikit/model/AUIMusicModel.java)
+* **Sing song information ->** [AUIMusicModel](../auikit-ui/src/main/java/io/agora/auikit/model/AUIMusicModel.java)
 
 | field | comment |
 | :- | :- |
@@ -293,7 +293,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | musicUrl | song url, mcc is empty |
 | lrcUrl | lyrics url, mcc is empty |
 
-* **Selected song information ->** [AUIChooseMusicModel](../auikit/src/main/java/io/agora/auikit/model/AUIChooseMusicModel.java)
+* **Selected song information ->** [AUIChooseMusicModel](../auikit-ui/src/main/java/io/agora/auikit/model/AUIChooseMusicModel.java)
 
 | field | comment |
 | :- | :- |
@@ -311,7 +311,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | status | Playing status, 0 is waiting to play, 1 is playing |
 
 
-* ** Chorus information ->** [AUIChoristerModel](../auikit/src/main/java/io/agora/auikit/model/AUIChoristerModel.java)
+* ** Chorus information ->** [AUIChoristerModel](../auikit-ui/src/main/java/io/agora/auikit/model/AUIChoristerModel.java)
 
 | field | comment |
 | :- | :- |
@@ -319,7 +319,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | chorusSongNo | Chorus singing a song |
 | owner | chorus information |
 
-* **Play audio information ->** [AUIEffectVoiceInfo](../auikit/src/main/java/io/agora/auikit/model/AUIEffectVoiceInfo.java)
+* **Play audio information ->** [AUIEffectVoiceInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIEffectVoiceInfo.java)
 
 | field | comment |
 | :- | :- |
@@ -328,7 +328,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | resId | icon resource Id |
 | name | name resource Id |
 
-* **Play loading music configuration ->** [AUILoadMusicConfiguration](../auikit/src/main/java/io/agora/auikit/model/AUILoadMusicConfiguration.java)
+* **Play loading music configuration ->** [AUILoadMusicConfiguration](../auikit-ui/src/main/java/io/agora/auikit/model/AUILoadMusicConfiguration.java)
 
 | field | comment |
 | :- | :- |
@@ -336,7 +336,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespDe
 | mainSingerUid | main singer user id |
 | loadMusicMode | load music mode, 0: LOAD Music Only, 1: audience, 2: lead singer |
 
-* **Play music configuration information ->** [AUIMusicSettingInfo](../auikit/src/main/java/io/agora/auikit/model/AUIMusicSettingInfo.java)
+* **Play music configuration information ->** [AUIMusicSettingInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIMusicSettingInfo.java)
 
 | field | comment |
 | :- | :- |
