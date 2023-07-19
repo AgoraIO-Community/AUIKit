@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/aui_bg_barrage_shape"
+    android:theme="?attr/aui_chatListView_appearance"
+    android:background="?attr/aui_barrage_normal_layout_bg"
     android:layout_marginLeft="15dp"
     android:layout_marginStart="15dp"
     android:paddingTop="9dp"
     android:paddingBottom="9dp"
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
-    android:theme="?attr/aui_barrage_appearance"
     >
 
     <TextView

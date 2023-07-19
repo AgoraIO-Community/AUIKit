@@ -23,6 +23,7 @@ import io.agora.rtm.StreamChannel
 import io.agora.rtm.SubscribeOptions
 import io.agora.rtm.WhoNowResult
 import org.json.JSONObject
+import kotlin.math.abs
 
 class AUIRtmManager(
     context: Context,
@@ -64,7 +65,8 @@ class AUIRtmManager(
             }
 
             override fun onFailure(errorInfo: ErrorInfo?) {
-                if(errorInfo?.errorCode == RtmConstants.RTM_ERR_ALREADY_LOGIN){
+                val rtmConstantsCode = RtmConstants.RTM_ERR_ALREADY_LOGIN * -1
+                if(errorInfo?.errorCode == rtmConstantsCode){
                     isLogin = true
                     completion.invoke(null)
                 }else{

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.Dark" parent="Theme.AUIKit.Basic.Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/aui_primary</item>
+        <item name="colorPrimaryVariant">@color/aui_primary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/aui_grey_light</item>
+        <item name="colorSecondaryVariant">@color/aui_grey_light</item>
+        <item name="colorOnSecondary">@color/aui_black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- 麦位组件 -->
+        <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
+        <item name="aui_micSeatItem_appearance">@style/AUIMicSeatItem.Appearance</item>
+        <item name="aui_micSeatDialog_appearance">@style/AUIMicSeatDialog.Appearance</item>
+
+        <!-- 点歌器组件 -->
+        <item name="aui_jukebox_appearance">@style/AUIJukebox.Appearance</item>
+        <item name="aui_jukeboxChoose_appearance">@style/AUIJukeboxChoose.Appearance</item>
+        <item name="aui_jukeboxChosen_appearance">@style/AUIJukeboxChosen.Appearance</item>
+        <item name="aui_jukeboxChooseItem_appearance">@style/AUIJukeboxChooseItem.Appearance</item>
+        <item name="aui_jukeboxChosenItem_appearance">@style/AUIJukeboxChosenItem.Appearance</item>
+
+        <!--  播放器组件      -->
+        <item name="aui_musicPlayer_appearance">@style/AUIMusicPlayer.Appearance</item>
+        <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance</item>
+        <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance</item>
+
+
+        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Dark</item>
+        <item name="aui_memberInfo_appearance">@style/AUIRoomMemberInfo.Dark</item>
+        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Dark</item>
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Dark</item>
+        <item name="aui_chatListView_appearance">@style/AUIChatListView.Dark</item>
+        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Dark</item>
+        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Dark</item>
+        <item name="aui_action_appearance">@style/AUIAction.Dark</item>
+
+    </style>
+
+    <!--         AUIRoomInfo       -->
+    <style name="AUIRoomInfo.Dark" parent="Theme.AUIKit.RoomInfo.Dark"/>
+    <!--         AUIRoomMemberInfo       -->
+    <style name="AUIRoomMemberInfo.Dark" parent="Theme.AUIKit.AUIMemberInfo.Dark"/>
+    <!--         Bottom component       -->
+    <style name="AUIChatBottomView.Dark" parent="Theme.AUIKit.AUIChatBottomView.Dark"/>
+    <style name="AUIEmojiView.Dark" parent="Theme.AUIKit.AUIEmojiView.Dark"/>
+    <!--         chat、gift component       -->
+    <style name="AUIChatListView.Dark" parent="Theme.AUIKit.AUIChatListView.Dark"/>
+    <style name="AUIGiftBarrageView.Dark" parent="AUIGiftBarrageView.Appearance.Dark"/>
+    <style name="AUIGiftBottomDialog.Dark" parent="Theme.AUIKit.AUIGiftBottomDialog.Dark"/>
+    <!--         Invitation application component       -->
+    <style name="AUIAction.Dark" parent="Theme.AUIKit.AUIAction.Dark"/>
+
+</resources>

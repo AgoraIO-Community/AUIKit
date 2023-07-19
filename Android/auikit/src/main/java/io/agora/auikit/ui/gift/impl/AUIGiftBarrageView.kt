@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.agora.auikit.R
 import io.agora.auikit.databinding.AuiGiftBarrageLayoutBinding
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.ui.gift.IAUIGiftBarrageView
@@ -33,16 +34,19 @@ class AUIGiftBarrageView : LinearLayout,
     ) {
         this.mContext = context
         addView(aGiftViewBinding.root)
-        initView()
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIGiftBarrageView, defStyleAttr, 0)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIGiftBarrageView_aui_giftBarrage_appearance, 0)
+        themeTa.recycle()
+        initView(appearanceId)
     }
 
     init {
         mMainHandler = Handler(Looper.getMainLooper())
     }
 
-    fun initView(){
-        // 获取缓存中 指定房间的礼物列表
-        adapter = AUIGiftRowAdapter(mContext)
+    fun initView(appearanceId:Int){
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIGiftBarrageView)
+        adapter = AUIGiftRowAdapter(mContext,typedArray)
         val linearLayoutManager = LinearLayoutManager(mContext)
         aGiftViewBinding.recyclerView.layoutManager = linearLayoutManager
         aGiftViewBinding.recyclerView.adapter = adapter

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--================= 主题属性 =================-->
-    <attr name="aui_barrage_appearance" format="reference"/>
+    <attr name="aui_chatListView_appearance" format="reference"/>
 
     <declare-styleable name="voice_SubtitleView">
         <attr name="voice_customScrollSpeed">
@@ -13,15 +13,17 @@
     </declare-styleable>
 
 
-    <declare-styleable name="AUIBarrageView">
-        <attr name="aui_barrage_appearance"/>
+    <declare-styleable name="AUIChatListView">
+        <attr name="aui_chatListView_appearance"/>
 
         <attr name="aui_barrage_normal_title_tag_icon" format="reference"/>
         <attr name="aui_barrage_normal_title_TextColor" format="reference|color"/>
         <attr name="aui_barrage_normal_content_TextColor" format="reference|color"/>
+        <attr name="aui_barrage_normal_layout_bg" format="reference|color"/>
         <attr name="aui_barrage_system_title_TextColor" format="reference|color"/>
         <attr name="aui_barrage_system_content_TextColor" format="reference|color"/>
-        <attr name="aui_barrage_system_endIcon_resource" format="reference|color"/>
+        <attr name="aui_barrage_system_endIcon_resource" format="reference"/>
+        <attr name="aui_barrage_system_layout_bg" format="reference|color"/>
 
     </declare-styleable>
 

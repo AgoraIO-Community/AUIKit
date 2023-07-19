@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.RoomInfo">
+        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance</item>
+    </style>
+
+</resources>

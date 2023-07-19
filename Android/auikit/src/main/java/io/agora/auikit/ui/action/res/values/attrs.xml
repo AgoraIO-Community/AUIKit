@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--================= 主题属性 =================-->
+    <attr name="aui_action_appearance" format="reference"/>
+
+    <!--================= 样式属性 =================-->
+    <declare-styleable name="AUIAction">
+        <attr name="aui_action_appearance"/>
+
+        <attr name="aui_invitation_layout_bg" format="reference|color"/>
+        <attr name="aui_invitation_view_layout_bg" format="reference|color"/>
+        <attr name="aui_top_view_icon" format="reference|color"/>
+        <attr name="aui_top_title_color" format="color"/>
+        <attr name="aui_userinfo_layout_bg" format="reference|color"/>
+        <attr name="aui_tabLayout_selected_textColor" format="reference|color"/>
+        <attr name="aui_tabLayout_unselected_textColor" format="reference|color"/>
+        <attr name="aui_invitation_item_layout_bg" format="reference|color"/>
+        <attr name="aui_invitation_item_title_color" format="reference|color"/>
+
+    </declare-styleable>
+
+</resources>

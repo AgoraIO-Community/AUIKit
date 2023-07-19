@@ -1,6 +1,9 @@
 package io.agora.auikit.ui.gift.impl.dialog
 import android.content.Context
+import android.content.res.TypedArray
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,10 +18,11 @@ import io.agora.auikit.R
 import io.agora.auikit.databinding.AuiGiftListViewLayoutBinding
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIGiftTabEntity
-import io.agora.auikit.ui.basic.AUISheetFragmentDialog
 import io.agora.auikit.ui.basic.AUIImageView
+import io.agora.auikit.ui.basic.AUISheetFragmentDialog
 import io.agora.auikit.ui.gift.IAUIGiftBarrageView
 import io.agora.auikit.utils.DeviceTools
+import io.agora.auikit.utils.ResourcesTools
 
 class AUiGiftListView constructor(
     context: Context,
@@ -29,6 +33,9 @@ class AUiGiftListView constructor(
     private var tapList: MutableList<Int> = mutableListOf()
     private var mContext:Context
     private var listener:ActionListener?=null
+    private var giftDialogBg:Int = 0
+    private var mTabSelectedColor:Int = 0
+    private var mTabUnSelectedColor:Int = 0
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -49,11 +56,32 @@ class AUiGiftListView constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
         binding?.root?.let { setOnApplyWindowInsets(it) }
-        initView()
+
+        // 获取自定义样式的ID
+        val themeTa: TypedArray = mContext.theme.obtainStyledAttributes(R.styleable.AUIGiftBottomDialog)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIGiftBottomDialog_aui_giftBottomDialog_appearance, 0)
+        themeTa.recycle()
+
+        initView(appearanceId)
         initListener()
     }
 
-    fun initView() {
+    fun initView(appearanceId:Int) {
+        val typedArray = mContext.obtainStyledAttributes(appearanceId, R.styleable.AUIGiftBottomDialog)
+        giftDialogBg = typedArray.getResourceId(
+            R.styleable.AUIGiftBottomDialog_aui_giftBottomDialog_bg,
+            R.drawable.aui_gift_r20_white_bg_light
+        )
+        mTabSelectedColor = typedArray.getResourceId(
+            R.styleable.AUIGiftBottomDialog_aui_giftBottomDialog_tabLayout_title_color,
+            R.color.voice_gift_black_171A1C
+        )
+        mTabUnSelectedColor = typedArray.getResourceId(
+            R.styleable.AUIGiftBottomDialog_aui_giftBottomDialog_tabLayout_title_color,
+            R.color.voice_gift_grey_ACB4B9
+        )
+        typedArray.recycle()
+
         binding?.viewPager?.adapter = object :
             FragmentStateAdapter(this.requireActivity().supportFragmentManager, this.lifecycle) {
             override fun getItemCount(): Int {
@@ -77,6 +105,11 @@ class AUiGiftListView constructor(
                     val title = tab.customView?.findViewById<TextView>(R.id.tab_item_title)
                     title?.text = mGiftList[position].displayName
                     binding?.tabLayout?.getTabAt(0)?.select() //默认选中某项放在加载viewpager之后
+                    if (position == 0){
+                        onTabLayoutSelected(tab)
+                    }else{
+                        onTabLayoutUnselected(tab)
+                    }
                 }
             }
         }
@@ -91,24 +124,11 @@ class AUiGiftListView constructor(
     private fun initListener(){
         binding?.tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                if (tab.customView != null) {
-                    val title = tab.customView?.findViewById<TextView>(R.id.tab_item_title)
-                    val tagIcon = tab.customView?.findViewById<AUIImageView>(R.id.tab_bg)
-                    val layoutParams = title?.layoutParams
-                    layoutParams?.height = DeviceTools.dp2px(mContext, 26f).toInt()
-                    title?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                    title?.gravity = Gravity.CENTER
-                    tagIcon?.visibility = View.VISIBLE
-                }
+                onTabLayoutSelected(tab)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                if (tab.customView != null) {
-                    val title = tab.customView!!.findViewById<TextView>(R.id.tab_item_title)
-                    val tagIcon = tab.customView?.findViewById<AUIImageView>(R.id.tab_bg)
-                    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
-                    tagIcon?.visibility = View.GONE
-                }
+                onTabLayoutUnselected(tab)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
@@ -123,5 +143,27 @@ class AUiGiftListView constructor(
 
     interface ActionListener{
         fun onGiftSend(bean: AUIGiftEntity?){}
+    }
+
+    private fun onTabLayoutSelected(tab: TabLayout.Tab?) {
+        tab?.customView?.let {
+            val tabText = it.findViewById<TextView>(R.id.tab_item_title)
+            tabText.setTextColor(ResourcesTools.getColor(resources, mTabSelectedColor))
+            tabText.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+            tabText?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            val tabTip = it.findViewById<AUIImageView>(R.id.tab_bg)
+            tabTip.visibility = View.VISIBLE
+        }
+    }
+
+    private fun onTabLayoutUnselected(tab: TabLayout.Tab?) {
+        tab?.customView?.let {
+            val tabText = it.findViewById<TextView>(R.id.tab_item_title)
+            tabText.setTextColor(ResourcesTools.getColor(resources, mTabUnSelectedColor))
+            tabText.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+            tabText?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+            val tabTip = it.findViewById<AUIImageView>(R.id.tab_bg)
+            tabTip.visibility = View.GONE
+        }
     }
 }

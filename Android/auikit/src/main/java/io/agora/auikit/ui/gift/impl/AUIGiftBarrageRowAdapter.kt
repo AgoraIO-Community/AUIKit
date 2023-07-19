@@ -2,6 +2,7 @@ package io.agora.auikit.ui.gift.impl
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.TextUtils
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
@@ -19,12 +21,18 @@ import io.agora.auikit.utils.ThreadManager
 
 class AUIGiftRowAdapter constructor(
     private val context: Context,
+    typedArray: TypedArray
 ): RecyclerView.Adapter<GiftViewHolder>() {
     var dataList:ArrayList<AUIGiftEntity> = ArrayList<AUIGiftEntity>()
     private var mContext:Context?=null
+    private var giftBarrageLayoutBg: Int
 
     init {
         this.mContext = context
+        giftBarrageLayoutBg = typedArray.getResourceId(
+            R.styleable.AUIGiftBarrageView_aui_giftBarrage_layout_bg,
+            R.drawable.aui_gift_widget_bg_light
+        )
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GiftViewHolder {
@@ -35,6 +43,7 @@ class AUIGiftRowAdapter constructor(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: GiftViewHolder, position: Int) {
+        holder.baseLayout.setBackgroundResource(giftBarrageLayoutBg)
         val auiGiftInfo = dataList[position]
         Log.e("apex"," data $dataList")
         show(holder.avatar, holder.icon, holder.name, auiGiftInfo)
@@ -115,11 +124,13 @@ class GiftViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var icon: AUIImageView
     var iconCount: MaterialTextView
     var avatar: AUIImageView
+    var baseLayout:ConstraintLayout
 
     init {
         avatar = itemView.findViewById(R.id.avatar)
         name = itemView.findViewById(R.id.nick_name)
         icon = itemView.findViewById(R.id.icon)
         iconCount = itemView.findViewById(R.id.gift_count)
+        baseLayout = itemView.findViewById(R.id.rootLayout)
     }
 }
