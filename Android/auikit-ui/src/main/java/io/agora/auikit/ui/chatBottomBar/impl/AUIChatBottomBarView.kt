@@ -143,8 +143,8 @@ class AUIChatBottomBarView : RelativeLayout,
                 val imageView = ImageView(it)
                 val marginLayoutParams = LinearLayoutCompat.LayoutParams(
                     DeviceTools.dp2px(
-                        it, 38f
-                    ), DeviceTools.dp2px(it, 38f)
+                        it, 45f
+                    ), DeviceTools.dp2px(it, 45f)
                 )
                 marginLayoutParams.marginStart = DeviceTools.dp2px(it, 8f)
                 imageView.setPadding(
