@@ -9,22 +9,9 @@
     <attr name="aui_button_appearance_circle_stroke" format="reference"/>
 
     <declare-styleable name="AUIButton">
-        <!-- 圆角大小 -->
-        <!--       java: setCornersRadius(topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius) -->
-        <attr name="aui_button_cornersRadius" format="dimension" />
-        <attr name="aui_button_cornersTopLeftRadius" format="dimension" />
-        <attr name="aui_button_cornersTopRightRadius" format="dimension" />
-        <attr name="aui_button_cornersBottomLeftRadius" format="dimension" />
-        <attr name="aui_button_cornersBottomRightRadius" format="dimension" />
 
         <!-- 背景颜色 -->
-        <attr name="aui_button_backgroundNormalColor" format="color" />
-        <attr name="aui_button_backgroundPressedColor" format="color" />
-        <attr name="aui_button_backgroundDisableColor" format="color" />
-        <attr name="aui_button_backgroundMode">
-            <enum name="solid" value="0x01" /> <!-- 实心 -->
-            <enum name="stroke" value="0x02" /> <!-- 线条 -->
-        </attr>
+        <attr name="aui_button_background" format="color|reference" />
 
         <!-- 文字颜色大小 -->
         <attr name="aui_button_text" format="string" />
@@ -83,16 +70,7 @@
         <item name="android:paddingTop">@null</item>
         <item name="android:paddingBottom">@null</item>
 
-        <item name="aui_button_cornersRadius">999dp</item>
-        <item name="aui_button_cornersTopLeftRadius">@null</item>
-        <item name="aui_button_cornersTopRightRadius">@null</item>
-        <item name="aui_button_cornersBottomLeftRadius">@null</item>
-        <item name="aui_button_cornersBottomRightRadius">@null</item>
-
-        <item name="aui_button_backgroundNormalColor">@color/aui_primary</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_primary_light</item>
-        <item name="aui_button_backgroundMode">solid</item>
+        <item name="aui_button_background">@drawable/aui_button_normal</item>
 
         <item name="aui_button_textSize">16sp</item>
         <item name="aui_button_textNormalColor">@color/aui_white</item>
@@ -127,10 +105,10 @@
     </style>
 
     <style name="AUIButton.Stroke">
-        <item name="aui_button_backgroundMode">stroke</item>
-        <item name="aui_button_textNormalColor">@color/aui_primary</item>
-        <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_textDisableColor">@color/aui_primary_light</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
 
         <item name="aui_button_drawableTint">@color/aui_primary</item>
         <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
@@ -148,10 +126,10 @@
     </style>
 
     <style name="AUIButton.Mini.Stroke">
-        <item name="aui_button_backgroundMode">stroke</item>
-        <item name="aui_button_textNormalColor">@color/aui_primary</item>
-        <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_textDisableColor">@color/aui_primary_light</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
 
         <item name="aui_button_drawableTint">@color/aui_primary</item>
         <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
@@ -172,12 +150,10 @@
     </style>
 
     <style name="AUIButton.Circle.Stroke">
-        <item name="aui_button_backgroundMode">stroke</item>
-        <item name="aui_button_textNormalColor">@color/aui_primary</item>
-        <item name="aui_button_textPressedColor">@color/aui_primary_overlay</item>
-        <item name="aui_button_textDisableColor">@color/aui_primary_light</item>
-
-        <item name="aui_button_backgroundDisableColor">@color/aui_primary</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
 
         <item name="aui_button_drawableTint">@color/aui_primary</item>
         <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>

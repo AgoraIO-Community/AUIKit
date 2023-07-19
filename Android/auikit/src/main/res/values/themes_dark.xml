@@ -31,30 +31,15 @@
         <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance</item>
         <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance</item>
 
-
-        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Dark</item>
-        <item name="aui_memberInfo_appearance">@style/AUIRoomMemberInfo.Dark</item>
-        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Dark</item>
-        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Dark</item>
-        <item name="aui_chatListView_appearance">@style/AUIChatListView.Dark</item>
-        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Dark</item>
-        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Dark</item>
-        <item name="aui_action_appearance">@style/AUIAction.Dark</item>
+        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance.Dark</item>
+        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance</item>
+        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance.Dark</item>
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance.Dark</item>
+        <item name="aui_chatListView_appearance">@style/AUIChatListView.Appearance.Dark</item>
+        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Appearance.Dark</item>
+        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Appearance.Dark</item>
+        <item name="aui_action_appearance">@style/AUIAction.Appearance.Dark</item>
 
     </style>
-
-    <!--         AUIRoomInfo       -->
-    <style name="AUIRoomInfo.Dark" parent="Theme.AUIKit.RoomInfo.Dark"/>
-    <!--         AUIRoomMemberInfo       -->
-    <style name="AUIRoomMemberInfo.Dark" parent="Theme.AUIKit.AUIMemberInfo.Dark"/>
-    <!--         Bottom component       -->
-    <style name="AUIChatBottomView.Dark" parent="Theme.AUIKit.AUIChatBottomView.Dark"/>
-    <style name="AUIEmojiView.Dark" parent="Theme.AUIKit.AUIEmojiView.Dark"/>
-    <!--         chat、gift component       -->
-    <style name="AUIChatListView.Dark" parent="Theme.AUIKit.AUIChatListView.Dark"/>
-    <style name="AUIGiftBarrageView.Dark" parent="AUIGiftBarrageView.Appearance.Dark"/>
-    <style name="AUIGiftBottomDialog.Dark" parent="Theme.AUIKit.AUIGiftBottomDialog.Dark"/>
-    <!--         Invitation application component       -->
-    <style name="AUIAction.Dark" parent="Theme.AUIKit.AUIAction.Dark"/>
 
 </resources>

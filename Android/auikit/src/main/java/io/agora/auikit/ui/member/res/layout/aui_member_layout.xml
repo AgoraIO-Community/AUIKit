@@ -87,7 +87,7 @@
         android:layout_height="?attr/aui_roomMoreUser_height"
         android:layout_marginStart="?attr/aui_roomMoreUser_marginStart"
         android:visibility="?attr/aui_roomMoreUser_Visibility"
-        app:aui_button_backgroundNormalColor="?attr/aui_roomButton_normalColor"
+        app:aui_button_background="@drawable/aui_member_btn_bg"
         app:aui_button_drawableCenter="?attr/aui_roomMoreUser_drawable" />
 
     <io.agora.auikit.ui.basic.AUIButton
@@ -100,7 +100,7 @@
         android:layout_height="?attr/aui_roomClose_height"
         android:layout_marginStart="?attr/aui_roomClose_marginStart"
         android:visibility="?attr/aui_roomClose_Visibility"
-        app:aui_button_backgroundNormalColor="?attr/aui_roomButton_normalColor"
+        app:aui_button_background="@drawable/aui_member_btn_bg"
         app:aui_button_drawableCenter="?attr/aui_roomClose_drawable" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
