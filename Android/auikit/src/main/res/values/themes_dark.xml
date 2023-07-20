@@ -59,6 +59,7 @@
     <style name="AUIMicSeatDialog.Appearance.Dark">
         <item name="aui_micSeatDialog_titleTextColor">#F9FAFA</item>
         <item name="aui_micSeatDialog_buttonNormalTextColor">#F9FAFA</item>
+        <item name="aui_micSeatDialog_buttonsDividerColor">#2F3437</item>
     </style>
 
 

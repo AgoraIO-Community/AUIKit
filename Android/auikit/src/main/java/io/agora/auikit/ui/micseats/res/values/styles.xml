@@ -98,6 +98,7 @@
         <!-- 操作按钮 -->
         <item name="aui_micSeatDialog_buttonsOrientation">vertical</item>
         <item name="aui_micSeatDialog_buttonsDivider">@drawable/aui_micseat_dialog_btn_divider</item>
+        <item name="aui_micSeatDialog_buttonsDividerColor">#E3E6E8</item>
         <item name="aui_micSeatDialog_buttonsDividerPadding">0dp</item>
         <item name="aui_micSeatDialog_buttonsMarginTop">10dp</item>
         <item name="aui_micSeatDialog_buttonsMarginBottom">20dp</item>

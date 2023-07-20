@@ -9,7 +9,7 @@
 
             <size android:height="0.5dp" />
 
-            <solid android:color="#E3E6E8" />
+            <solid android:color="?attr/aui_micSeatDialog_buttonsDividerColor" />
         </shape>
     </item>
 </layer-list>
