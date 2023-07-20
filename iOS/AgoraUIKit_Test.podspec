@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AgoraUIKit_Test'
-  s.version          = '0.2.0-beta'
+  s.version          = '0.2.0-beta-ios'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
