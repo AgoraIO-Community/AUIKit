@@ -8,9 +8,10 @@
 import UIKit
 import SwiftTheme
 
+//public var themeResourcePaths: Set<URL> = Set()
 extension UIImage {
     public class func aui_Image(named: String) -> UIImage? {
-        for path in AUIRoomContext.shared.themeResourcePaths {
+        for path in AUIThemeManager.shared.themeResourcePaths {
             let filePath = path.appendingPathComponent(named).path
             if let image = UIImage(contentsOfFile: filePath) {
                 return image
@@ -25,7 +26,7 @@ extension UIImage {
 
 extension String {
     public static func aui_imageFilePath(named: String) -> String? {
-        for path in AUIRoomContext.shared.themeResourcePaths {
+        for path in AUIThemeManager.shared.themeResourcePaths {
             let filePath = path.appendingPathComponent(named).path.appendPngExentionIfEmpty()
             if FileManager.default.fileExists(atPath: filePath) {
                 return filePath

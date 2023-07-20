@@ -31,8 +31,8 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '13.0'
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
 
-  s.subspec 'AUIKit' do |core|
-      core.source_files = 'AUIKit/Classes/Core/**/*'
+  s.subspec 'core' do |ss|
+      ss.source_files = 'AUIKit/Classes/Core/**/*'
   end
   
   s.subspec 'AUIKit' do |invitation|
@@ -71,6 +71,20 @@ TODO: Add long description of the pod here.
       player.dependency 'AgoraLyricsScore'
       player.dependency 'AUIKit/Core'
       player.dependency 'AUIKit/Service'
+  end
+  
+  s.subspec 'widgets' do |ss|
+        ss.source_files = [
+        'AUIKit/Classes/Widgets/**/*',
+        'AUIKit/Classes/Core/Utils/Extension/*',
+        'AUIKit/Classes/Core/Utils/Theme/*',
+        'AUIKit/Classes/Core/Utils/Log/*',
+        'AUIKit/Classes/Core/Utils/Localized/*',
+        'AUIKit/Classes/Core/UIConstans/*',
+        'AUIKit/Classes/Core/FoundationExtension/*'
+        ]
+        ss.resource = 'AUIKit/Resource/auiTheme.bundle'
+
   end
   
   s.source_files = 'AUIKit/Classes/**/*.swift'

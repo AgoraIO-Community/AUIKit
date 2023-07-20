@@ -50,13 +50,13 @@ import YYModel
     ///   - appKey: application key
     ///   - user: user
     ///   - completion: <#completion description#>
-    func configIM(user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void)
+//    func configIM(user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void)
     
     /// Description 创建聊天室
     /// - Parameters:
     ///   - roomId: 语聊房id
     ///   - completion: 回调 成功后会将聊天室id存储在implement实现类中
-    func createChatRoom(roomId: String,completion: @escaping (String,NSError?) -> Void)
+//    func createChatRoom(roomId: String,completion: @escaping (String,NSError?) -> Void)
     /// Description 发送聊天室消息
     /// - Parameters:
     ///   - roomId: 聊天室id
@@ -69,7 +69,7 @@ import YYModel
     /// - Parameters:
     ///   - roomId: 聊天室id
     ///   - completion: 回调包含聊天室id以及错误
-    func joinedChatRoom(roomId: String, completion: @escaping ((AgoraChatTextMessage?, NSError?) -> Void))
+//    func joinedChatRoom(roomId: String, completion: @escaping ((AgoraChatTextMessage?, NSError?) -> Void))
     
     /// Description 退出聊天室
     /// - Parameter completion: 错误为空即为成功

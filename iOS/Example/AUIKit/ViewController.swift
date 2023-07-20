@@ -30,11 +30,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        AUIThemeManager.shared.themeNames = ["UIKit", "KTV"]
         //设置皮肤路径
         if let folderPath = Bundle.main.path(forResource: "exampleTheme", ofType: "bundle") {
-            AUIRoomContext.shared.addThemeFolderPath(path: URL(fileURLWithPath: folderPath) )
+            AUIThemeManager.shared.addThemeFolderPath(path: URL(fileURLWithPath: folderPath) )
         }
-        
+        AUIThemeManager.shared.switchTheme(themeName: "UIKit")
         self.navigationItem.titleView = self.titleLabel
         self.navigationItem.rightBarButtonItem = rightItem
         view.theme_backgroundColor = AUIColor("ExampleMainColor.background")
@@ -53,7 +54,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func didClickRightBarButtonItem(){
-        AUIRoomContext.shared.switchThemeToNext()
+        AUIThemeManager.shared.switchThemeToNext()
     }
     
     private func layoutScrollView(){
