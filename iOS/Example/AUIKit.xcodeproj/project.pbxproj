@@ -306,11 +306,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiTheme.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/ChatResource.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/Gift.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/Invitation.bundle",
+				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/ChatResource.bundle",
+				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/Gift.bundle",
+				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/Invitation.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (

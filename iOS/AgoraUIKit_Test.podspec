@@ -30,31 +30,27 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '13.0'
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
-
-  s.subspec 'Core' do |ss|
-      ss.source_files = 'AUIKit/Classes/Core/**/*'
-  end
   
   s.subspec 'Widgets' do |ss|
         ss.source_files = [
-        'AUIKit/Classes/Widgets/**/*',
-        'AUIKit/Classes/Core/Utils/Extension/*',
-        'AUIKit/Classes/Core/Utils/Theme/*',
-        'AUIKit/Classes/Core/Utils/Log/*',
-        'AUIKit/Classes/Core/Utils/Localized/*',
-        'AUIKit/Classes/Core/UIConstans/*',
-        'AUIKit/Classes/Core/FoundationExtension/*'
+        'AgoraUIKit_Test/Classes/Widgets/**/*',
+        'AgoraUIKit_Test/Classes/Core/Utils/Extension/*',
+        'AgoraUIKit_Test/Classes/Core/Utils/Theme/*',
+        'AgoraUIKit_Test/Classes/Core/Utils/Log/*',
+        'AgoraUIKit_Test/Classes/Core/Utils/Localized/*',
+        'AgoraUIKit_Test/Classes/Core/UIConstans/*',
+        'AgoraUIKit_Test/Classes/Core/FoundationExtension/*'
         ]
-        ss.resource = 'AUIKit/Resource/auiTheme.bundle'
+        ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 
   end
   
-  s.source_files = 'AUIKit/Classes/**/*.swift'
+  s.source_files = 'AgoraUIKit_Test/Classes/**/*.swift'
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = ['AUIKit/Resource/*.bundle']
+  s.resource = ['AgoraUIKit_Test/Resource/*.bundle']
 
   
   # s.resource_bundles = {
