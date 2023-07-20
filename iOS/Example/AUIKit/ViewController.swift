@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AgoraUIKit
+import AgoraUIKit_Test
 import SwiftTheme
 import SDWebImage
 

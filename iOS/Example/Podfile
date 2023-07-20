@@ -4,7 +4,7 @@ platform :ios, '13.0'
 
 target 'AUIKit_Example' do
   pod 'AgoraUIKit_Test', :path => '../'
-#  pod 'AgoraUIKit/widgets', :path => '../'
+#  pod 'AgoraUIKit_Test/widgets', :path => '../'
   pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'
   pod 'AgoraLyricsScore', '1.1.1-beta-3'

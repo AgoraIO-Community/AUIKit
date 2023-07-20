@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '13.0'
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
 
-  s.subspec 'core' do |ss|
+  s.subspec 'Core' do |ss|
       ss.source_files = 'AUIKit/Classes/Core/**/*'
   end
   
@@ -73,7 +73,7 @@ TODO: Add long description of the pod here.
       player.dependency 'AUIKit/Service'
   end
   
-  s.subspec 'widgets' do |ss|
+  s.subspec 'Widgets' do |ss|
         ss.source_files = [
         'AUIKit/Classes/Widgets/**/*',
         'AUIKit/Classes/Core/Utils/Extension/*',
