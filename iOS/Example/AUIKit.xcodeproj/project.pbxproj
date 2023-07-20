@@ -46,7 +46,7 @@
 		A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = exampleTheme.bundle; sourceTree = "<group>"; };
 		B9CD0CD6559B14E3F0A33E06 /* Pods-AUIKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E9CAC8BDC6BC7995118FF6EC /* Pods-AUIKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		FC714ADFC100525CBA50C370 /* AUIKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AUIKit.podspec; path = ../AUIKit.podspec; sourceTree = "<group>"; };
+		FC714ADFC100525CBA50C370 /* FPAgoraUIKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FPAgoraUIKit.podspec; path = ../FPAgoraUIKit.podspec; sourceTree = "<group>"; };
 		FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -131,7 +131,7 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				FC714ADFC100525CBA50C370 /* AUIKit.podspec */,
+				FC714ADFC100525CBA50C370 /* FPAgoraUIKit.podspec */,
 				82FDF13323844138E2902901 /* README.md */,
 				212D08FE84EE860B8652E908 /* LICENSE */,
 			);

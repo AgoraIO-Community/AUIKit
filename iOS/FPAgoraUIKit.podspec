@@ -7,8 +7,8 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'AUIKit'
-  s.version          = '0.1.0'
+  s.name             = 'FPAgoraUIKit'
+  s.version          = '0.2.0-beta'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.

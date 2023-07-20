@@ -1,5 +1,5 @@
 import XCTest
-import AUIKit
+import AgoraUIKit
 
 class Tests: XCTestCase {
     
