@@ -94,10 +94,13 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
         centerX = (mWidth/2).toFloat()
         centerY = (mHeight/2).toFloat()
 
-        invalidate()
-        if (!isReady){
-            initView(context)
-            isReady = true
+
+        post {
+            invalidate()
+            if (!isReady){
+                initView(context)
+                isReady = true
+            }
         }
     }
 
