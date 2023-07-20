@@ -1,7 +1,6 @@
 package io.agora.auikit.service.rtm
 
 import android.content.Context
-import android.util.Log
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
@@ -23,7 +22,6 @@ import io.agora.rtm.StreamChannel
 import io.agora.rtm.SubscribeOptions
 import io.agora.rtm.WhoNowResult
 import org.json.JSONObject
-import kotlin.math.abs
 
 class AUIRtmManager(
     context: Context,
@@ -113,6 +111,7 @@ class AUIRtmManager(
     fun subscribe(channelType:RtmChannelType,channelName: String, token: String, completion: (AUIRtmException?) -> Unit) {
         when (channelType) {
             RtmChannelType.MESSAGE -> {
+                proxy.skipMetaEmpty = 1
                 val option = SubscribeOptions()
                 option.withMetadata = true
                 option.withPresence = true
