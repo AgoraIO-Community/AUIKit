@@ -3,7 +3,7 @@ use_frameworks!
 platform :ios, '13.0'
 
 target 'AUIKit_Example' do
-  pod 'FPAgoraUIKit', :path => '../'
+  pod 'AgoraUIKit_Test', :path => '../'
 #  pod 'AgoraUIKit/widgets', :path => '../'
   pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'

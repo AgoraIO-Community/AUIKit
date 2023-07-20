@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'FPAgoraUIKit'
+  s.name             = 'AgoraUIKit_Test'
   s.version          = '0.2.0-beta'
   s.summary          = 'A short description of AUIKit.'
 
