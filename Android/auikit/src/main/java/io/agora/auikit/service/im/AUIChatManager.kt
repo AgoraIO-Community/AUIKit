@@ -103,8 +103,10 @@ class AUIChatManager(
         accessToken = ""
         currentMsgList.clear()
         currentGiftList.clear()
-        ChatClient.getInstance().chatManager().removeMessageListener(this)
-        ChatClient.getInstance().chatroomManager().removeChatRoomListener(this)
+        if (ChatClient.getInstance().isSdkInited) {
+            ChatClient.getInstance().chatManager().removeMessageListener(this)
+            ChatClient.getInstance().chatroomManager().removeChatRoomListener(this)
+        }
     }
 
     fun loginChat(userName:String,userToken:String,callback:CallBack){
@@ -152,8 +154,10 @@ class AUIChatManager(
         })
     }
 
-    fun logoutChat(){
-        ChatClient.getInstance().logout(false)
+    fun logoutChat() {
+        if (ChatClient.getInstance().isSdkInited) {
+            ChatClient.getInstance().logout(false)
+        }
     }
 
     /**
@@ -185,7 +189,9 @@ class AUIChatManager(
      * 离开房间
      */
     fun leaveChatRoom() {
-        ChatClient.getInstance().chatroomManager().leaveChatRoom(chatRoomId)
+        if(ChatClient.getInstance().isSdkInited){
+            ChatClient.getInstance().chatroomManager().leaveChatRoom(chatRoomId)
+        }
     }
 
     /**

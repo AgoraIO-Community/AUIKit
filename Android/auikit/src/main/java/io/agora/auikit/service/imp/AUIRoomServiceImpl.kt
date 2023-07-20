@@ -138,6 +138,7 @@ class AUIRoomManagerImpl(
             })
     }
     override fun enterRoom(roomId: String, token: String, callback: AUICallback?) {
+        mChannelName = roomId
         subChannelStream.set(false)
         subChannelMsg.set(false)
         val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, Any>
@@ -162,6 +163,8 @@ class AUIRoomManagerImpl(
                 )
             } else {
                 AUILogger.logger().d("EnterRoom", "subscribe room roomId=$roomId token=$token")
+
+                rtmManager.subscribeMsg(roomId, "", this)
                 rtmManager.subscribe(RtmConstants.RtmChannelType.MESSAGE,roomId, token) { subscribeError ->
                     if (subscribeError != null) {
                         callback?.onResult(
@@ -194,8 +197,6 @@ class AUIRoomManagerImpl(
 
     private fun checkSubChannel(roomId:String,callback: AUICallback?){
         if (subChannelMsg.get()  && subChannelStream.get()){
-            mChannelName = roomId
-            rtmManager.subscribeMsg(roomId, "", this)
             callback?.onResult(null)
         }
     }
@@ -293,7 +294,7 @@ class AUIRoomManagerImpl(
     }
 
     override fun onMsgRecvEmpty(channelName: String) {
-        if (channelName == getChannelName()){
+        if (channelName == getChannelName()) {
             delegateHelper.notifyDelegate {
                 it.onRoomDestroy(channelName)
             }
