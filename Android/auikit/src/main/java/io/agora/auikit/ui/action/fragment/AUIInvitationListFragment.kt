@@ -16,12 +16,11 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.textview.MaterialTextView
 import io.agora.auikit.R
 import io.agora.auikit.databinding.AuiInvitationListLayoutBinding
-import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.model.AUIActionModel
+import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.utils.DeviceTools.dp
 import io.agora.auikit.utils.ResourcesTools
-import io.agora.auikit.utils.ThreadManager
 
 class VoiceRoomInvitedListFragment : Fragment(),
     SwipeRefreshLayout.OnRefreshListener, VoiceInvitedAdapter.InvitedEventListener {
@@ -121,12 +120,13 @@ class VoiceRoomInvitedListFragment : Fragment(),
     }
 
     fun refreshData(userList:MutableList<AUIUserInfo?>){
-        userList.let {
-            total = it.size
-            checkEmpty()
-            invitedAdapter?.refresh(it)
+        mRoomViewBinding.root.post {
+            userList.let {
+                total = it.size
+                checkEmpty()
+                invitedAdapter?.refresh(it)
+            }
         }
-
     }
 
     override fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIUserInfo?) {
@@ -173,9 +173,7 @@ class VoiceInvitedAdapter constructor(
         holder.name.text = userInfo?.userName
         holder.action.text = mContext?.getString(R.string.aui_room_invited_action)
         holder.action.alpha = 1.0f
-        ThreadManager.getInstance().runOnMainThread{
-            mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
-        }
+        mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
         holder.action.setOnClickListener{
             invitedIndex?.let { index->
                 if (index != -1){
@@ -195,13 +193,11 @@ class VoiceInvitedAdapter constructor(
 
 
     fun refresh(data:MutableList<AUIUserInfo?>){
-        ThreadManager.getInstance().runOnMainThread {
-            data.let {
-                dataList = data
-            }
-
-            notifyDataSetChanged()
+        data.let {
+            dataList = data
         }
+
+        notifyDataSetChanged()
     }
 
     interface InvitedEventListener{

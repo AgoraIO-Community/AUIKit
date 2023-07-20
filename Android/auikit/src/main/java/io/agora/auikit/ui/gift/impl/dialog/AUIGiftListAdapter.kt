@@ -15,7 +15,6 @@ import io.agora.auikit.R
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
-import io.agora.auikit.utils.ThreadManager
 
 class AUIGiftListAdapter constructor(
     context: Context,
@@ -59,9 +58,7 @@ class AUIGiftListAdapter constructor(
             price?.text = giftInfo?.giftPrice
             name?.text = giftInfo?.giftName
 
-            ThreadManager.getInstance().runOnMainThread{
-                Glide.with(context).load(giftInfo?.giftIcon).error(R.drawable.aui_gift_default_icon).into(img)
-            }
+            Glide.with(context).load(giftInfo?.giftIcon).error(R.drawable.aui_gift_default_icon).into(img)
 
             selectedViewChange(giftInfo,action,name,itemLayout,selectedPosition == position)
 

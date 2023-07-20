@@ -18,7 +18,6 @@ import io.agora.auikit.R
 import io.agora.auikit.model.AUIChatEntity
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.chatBottomBar.impl.AUIEmojiUtils
-import io.agora.auikit.utils.ThreadManager
 
 
 class AUIChatListAdapter(
@@ -250,12 +249,10 @@ class AUIChatListAdapter(
     }
 
     fun refresh(msgList:ArrayList<AUIChatEntity>) {
-        ThreadManager.getInstance().runOnMainThread{
-            msgList.let {
-                messages = it
-            }
-            notifyDataSetChanged()
+        msgList.let {
+            messages = it
         }
+        notifyDataSetChanged()
     }
 
     class NormalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

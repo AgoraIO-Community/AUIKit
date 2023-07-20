@@ -13,7 +13,6 @@ import io.agora.auikit.model.MicSeatItem
 import io.agora.auikit.ui.micseats.IMicSeatItemView
 import io.agora.auikit.ui.micseats.IMicSeatsView
 import io.agora.auikit.utils.DeviceTools
-import io.agora.auikit.utils.ThreadManager
 import kotlin.math.min
 
 class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
@@ -101,12 +100,10 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
 
         Log.e("apex","onSizeChanged $mWidth $mHeight")
 
-        ThreadManager.getInstance().runOnMainThread{
-            invalidate()
-            if (!isReady){
-                initView(context)
-                isReady = true
-            }
+        invalidate()
+        if (!isReady){
+            initView(context)
+            isReady = true
         }
     }
 
