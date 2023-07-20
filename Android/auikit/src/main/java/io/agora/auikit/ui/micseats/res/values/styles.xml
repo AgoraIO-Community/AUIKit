@@ -77,7 +77,7 @@
         <item name="aui_micSeatDialog_titleVisibility">visible</item>
         <item name="aui_micSeatDialog_titleText">@string/aui_micseat_dialog_title</item>
         <item name="aui_micSeatDialog_titleTextSize">18sp</item>
-        <item name="aui_micSeatDialog_titleTextColor">@android:color/white</item>
+        <item name="aui_micSeatDialog_titleTextColor">#171A1C</item>
 
         <!-- 用户头像 -->
         <item name="aui_micSeatDialog_userAvatarIdle">@drawable/aui_micseat_dialog_avatar_idle</item>
@@ -103,7 +103,7 @@
         <item name="aui_micSeatDialog_buttonsMarginBottom">20dp</item>
         <item name="aui_micSeatDialog_buttonBackground">@null</item>
         <item name="aui_micSeatDialog_buttonTextSize">16sp</item>
-        <item name="aui_micSeatDialog_buttonNormalTextColor">@android:color/white</item>
+        <item name="aui_micSeatDialog_buttonNormalTextColor">#171A1C</item>
         <item name="aui_micSeatDialog_buttonAbandonTextColor">@android:color/holo_red_light</item>
         <item name="aui_micSeatDialog_buttonPaddingHorizontal">25dp</item>
         <item name="aui_micSeatDialog_buttonPaddingVertical">8dp</item>

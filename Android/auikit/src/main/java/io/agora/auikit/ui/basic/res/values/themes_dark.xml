@@ -101,10 +101,11 @@
     </style>
 
     <style name="AUIBottomDialog.Dark">
-        <item name="aui_bottomDialog_backgroundColor">#1B1067</item>
+        <item name="aui_bottomDialog_backgroundColor">#171A1C</item>
         <item name="aui_bottomDialog_backgroundShadowColor">#1B1067</item>
+        <item name="aui_bottomDialog_backgroundIndicatorColor">#464E53</item>
         <item name="aui_bottomDialog_titleTextColor">@android:color/white</item>
-        <item name="aui_bottomDialog_listDividerColor">#59C3C5FE</item>
+        <item name="aui_bottomDialog_listDividerColor">#2F3437</item>
         <item name="aui_bottomDialog_menu_appearance">@style/AUIBottomDialogMenu.Dark</item>
     </style>
 

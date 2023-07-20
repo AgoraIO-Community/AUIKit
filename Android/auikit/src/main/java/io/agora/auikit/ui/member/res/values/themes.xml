@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.AUIKit.AUIMemberInfo">
-        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance</item>
-    </style>
-</resources>

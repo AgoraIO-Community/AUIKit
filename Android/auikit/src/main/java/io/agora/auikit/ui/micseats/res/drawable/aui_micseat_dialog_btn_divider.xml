@@ -9,7 +9,7 @@
 
             <size android:height="0.5dp" />
 
-            <solid android:color="#C3C5FE" />
+            <solid android:color="#E3E6E8" />
         </shape>
     </item>
 </layer-list>
