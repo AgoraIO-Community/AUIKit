@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/AgoraIO-Usecase/AUIKit'
+  s.homepage         = 'https://github.com/AgoraIO-Community/AUIKit'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'wushengtao' => 'agora@agora.io' }
-  s.source           = { :git => 'https://github.com/AgoraIO-Usecase/AUIKit.git', :tag => s.version.to_s }
+  s.author           = { 'Agora Labs' => 'developer@agora.io' }
+  s.source           = { :git => 'https://github.com/AgoraIO-Community/AUIKit.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '13.0'
