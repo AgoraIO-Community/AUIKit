@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AgoraUIKit_Test'
-  s.version          = '0.2.0-beta-ios'
+  s.version          = '0.2.0.0-beta-ios'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -33,44 +33,6 @@ TODO: Add long description of the pod here.
 
   s.subspec 'Core' do |ss|
       ss.source_files = 'AUIKit/Classes/Core/**/*'
-  end
-  
-  s.subspec 'AUIKit' do |invitation|
-    invitation.source_files = 'AUIKit/Classes/Components/Invitation/*'
-    invitation.resource = 'AUIKit/Resource/Invitation.bundle'
-  end
-  
-  s.subspec 'AUIKit' do |room|
-    room.source_files = 'AUIKit/Classes/Components/Room/*'
-  end
-  
-  s.subspec 'AUIKit' do |service|
-      service.source_files = 'AUIKit/Classes/Service/**/*'
-  end
-
-  s.subspec 'AUIKit' do |chat|
-      chat.source_files = 'AUIKit/Classes/Components/IM/**/*'
-      chat.resource = 'AUIKit/Resource/ChatResource.bundle'
-      chat.dependency 'Agora_Chat_iOS'
-      chat.dependency 'AUIKit/Core'
-      chat.dependency 'AUIKit/Service'
-  end
-  
-  s.subspec 'AUIKit' do |gift|
-      gift.source_files = 'AUIKit/Classes/Components/Gift/**/*'
-      gift.resource = 'AUIKit/Resource/Gift.bundle'
-      gift.dependency 'Agora_Chat_iOS'
-      gift.dependency 'AUIKit/Core'
-      gift.dependency 'AUIKit/Service'
-  end
-  
-  s.subspec 'AUIKit' do |player|
-      player.source_files = 'AUIKit/Classes/Components/Player/*'
-#      player.resource = 'AUIKit/Classes/Components/Player/Resource/PlayerResource.bundle'
-      player.dependency 'ScoreEffectUI'
-      player.dependency 'AgoraLyricsScore'
-      player.dependency 'AUIKit/Core'
-      player.dependency 'AUIKit/Service'
   end
   
   s.subspec 'Widgets' do |ss|
