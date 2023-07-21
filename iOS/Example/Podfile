@@ -1,8 +1,5 @@
 use_frameworks!
 
-source 'https://gitee.com/fanpeng11/auikit-test-specs.git'
-source 'https://github.com/CocoaPods/Specs.git'
-
 platform :ios, '13.0'
 
 target 'AUIKit_Example' do

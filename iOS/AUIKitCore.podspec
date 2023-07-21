@@ -7,8 +7,8 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'AgoraUIKit_Test'
-  s.version          = '0.2.0-beta'
+  s.name             = 'AUIKitCore'
+  s.version          = '0.2.0-ui'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -34,35 +34,34 @@ TODO: Add long description of the pod here.
   
 #s.subspec 'Widgets' do |ss|
 #      ss.source_files = [
-#       'AgoraUIKit_Test/Classes/Widgets/**/*',
-#      'AgoraUIKit_Test/Classes/Core/Utils/Extension/*',
-#     'AgoraUIKit_Test/Classes/Core/Utils/Theme/*',
-#    'AgoraUIKit_Test/Classes/Core/Utils/Log/*',
-#   'AgoraUIKit_Test/Classes/Core/Utils/Localized/*',
-#    'AgoraUIKit_Test/Classes/Core/UIConstans/*',
-#    'AgoraUIKit_Test/Classes/Core/FoundationExtension/*'
+#       'AUIKitCore/Classes/Widgets/**/*',
+#      'AUIKitCore/Classes/Core/Utils/Extension/*',
+#     'AUIKitCore/Classes/Core/Utils/Theme/*',
+#    'AUIKitCore/Classes/Core/Utils/Log/*',
+#   'AUIKitCore/Classes/Core/Utils/Localized/*',
+#    'AUIKitCore/Classes/Core/UIConstans/*',
+#    'AUIKitCore/Classes/Core/FoundationExtension/*'
 #   ]
 #  ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 # end
   
 #  s.source_files = 'AgoraUIKit_Test/Sources/**/*.swift'
   
-    s.source_files = [
-        'iOS/AgoraUIKit_Test/Sources/Widgets/**/*',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
-    ]
-    #s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
-
+  s.source_files = [
+  'iOS/AUIKitCore/Sources/Widgets/**/*',
+  'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
+  'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
+  'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift'
+  ]
+  
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = ['iOS/AgoraUIKit_Test/Resource/*.bundle']
+  s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
 
   
   # s.resource_bundles = {
