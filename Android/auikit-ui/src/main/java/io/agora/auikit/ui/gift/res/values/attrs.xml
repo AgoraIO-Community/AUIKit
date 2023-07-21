@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--================= 主题属性 =================-->
+    <attr name="aui_giftBarrage_appearance" format="reference"/>
+
+    <attr name="aui_giftBottomDialog_appearance" format="reference"/>
+
+    <!--================= 样式属性 =================-->
+    <declare-styleable name="AUIGiftBarrageView">
+        <attr name="aui_giftBarrage_appearance"/>
+
+        <attr name="aui_giftBarrage_layout_bg" format="reference|color"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="AUIGiftBottomDialog">
+        <attr name="aui_giftBottomDialog_appearance"/>
+
+        <attr name="aui_giftBottomDialog_bg" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_topLayout_bg" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_topView_icon" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_tabLayout_title_color" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_tabLayout_hint_title_color" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_tabLayout_tag_bg" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_gift_textColor" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_gift_subtitle_textColor" format="reference|color"/>
+        <attr name="aui_giftBottomDialog_gift_subtitle_icon" format="reference|color"/>
+
+    </declare-styleable>
+
+</resources>

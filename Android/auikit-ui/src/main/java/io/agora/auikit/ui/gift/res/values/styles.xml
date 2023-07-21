@@ -13,4 +13,31 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="AUIGiftBarrageView">
+        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Appearance</item>
+    </style>
+
+    <style name="AUIGiftBottomDialog">
+        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Appearance</item>
+    </style>
+
+
+    <style name="AUIGiftBarrageView.Appearance" >
+        <item name="aui_giftBarrage_layout_bg">@drawable/aui_gift_widget_bg_light</item>
+    </style>
+
+    <style name="AUIGiftBottomDialog.Appearance" >
+        <item name="aui_giftBottomDialog_bg">@drawable/aui_gift_r20_white_bg_light</item>
+        <item name="aui_giftBottomDialog_topLayout_bg">@drawable/aui_gift_top_layout_bg</item>
+        <item name="aui_giftBottomDialog_topView_icon">@drawable/aui_gift_top_icon_bg_light</item>
+        <item name="aui_giftBottomDialog_tabLayout_title_color">@color/voice_gift_black_171A1C</item>
+        <item name="aui_giftBottomDialog_tabLayout_hint_title_color">@color/voice_gift_grey_ACB4B9</item>
+        <item name="aui_giftBottomDialog_tabLayout_tag_bg">@drawable/aui_gift_tablayout_tag_bg</item>
+
+        <item name="aui_giftBottomDialog_gift_textColor">@color/voice_gift_black_171A1C</item>
+        <item name="aui_giftBottomDialog_gift_subtitle_textColor">@color/voice_gift_grey_75828A</item>
+        <item name="aui_giftBottomDialog_gift_subtitle_icon">@drawable/aui_gift_icon_dollagora</item>
+
+    </style>
+
 </resources>

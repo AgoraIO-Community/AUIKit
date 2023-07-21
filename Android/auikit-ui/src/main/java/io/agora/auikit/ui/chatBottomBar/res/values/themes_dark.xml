@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.AUIChatBottomView.Dark">
+        <item name="aui_chatListView_appearance">@style/AUIChatBottomView.Appearance.Dark</item>
+    </style>
+
+    <style name="Theme.AUIKit.AUIEmojiView.Dark">
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance.Dark</item>
+    </style>
+
+    <style name="AUIChatBottomView.Appearance.Dark" parent="AUIChatBottomView.Appearance">
+        <item name="aui_primary_input_background">@drawable/aui_chat_bottom_bar_item_bg_dark</item>
+        <item name="aui_primary_tag_bg">@drawable/aui_chat_bottom_bar_item_bg_dark</item>
+        <item name="aui_primary_input_layout_bg">@color/voice_black_171A1C</item>
+        <item name="aui_primary_edit_background">@color/voice_black_2F3437</item>
+        <item name="aui_primary_edit_layout_background">@drawable/aui_chat_bottom_bar_input_edit_dark</item>
+        <item name="aui_primary_emoji_resource">@drawable/voice_icon_face_dark</item>
+        <item name="aui_primary_key_resource">@drawable/voice_icon_key_dark</item>
+        <item name="aui_primary_edit_hint_textColor">@color/voice_black_5E686E</item>
+        <item name="aui_primary_edit_textColor">@color/voice_white_F9FAFA</item>
+        <item name="aui_primary_expression_background">@color/voice_black_171A1C</item>
+
+
+    </style>
+
+    <style name="AUIEmojiView.Appearance.Dark" parent="AUIEmojiView.Appearance">
+        <item name="aui_emoji_view_background">@color/voice_black_171A1C</item>
+        <item name="aui_emoji_backspace">@drawable/voice_icon_backspace_dark</item>
+    </style>
+
+</resources>

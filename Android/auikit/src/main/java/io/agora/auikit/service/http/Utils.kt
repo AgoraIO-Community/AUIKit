@@ -14,8 +14,12 @@ class Utils {
             var msg = "error"
             if (errorMsg != null) {
                 val obj = JSONObject(errorMsg)
-                code = if (obj.has("code")) obj.getInt("code") else -1
-                msg = if (obj.has("message")) obj.getString("message") else "error"
+                if (obj.has("code")){
+                    code = obj.getInt("code")
+                }
+                if (obj.has("message")){
+                    msg = obj.getString("message")
+                }
             }
             return AUIException(code, msg)
         }

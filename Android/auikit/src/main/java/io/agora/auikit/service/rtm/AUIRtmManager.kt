@@ -1,7 +1,6 @@
 package io.agora.auikit.service.rtm
 
 import android.content.Context
-import android.util.Log
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
@@ -64,7 +63,8 @@ class AUIRtmManager(
             }
 
             override fun onFailure(errorInfo: ErrorInfo?) {
-                if(errorInfo?.errorCode == RtmConstants.RTM_ERR_ALREADY_LOGIN){
+                val rtmConstantsCode = RtmConstants.RTM_ERR_ALREADY_LOGIN * -1
+                if(errorInfo?.errorCode == rtmConstantsCode){
                     isLogin = true
                     completion.invoke(null)
                 }else{
@@ -111,6 +111,7 @@ class AUIRtmManager(
     fun subscribe(channelType:RtmChannelType,channelName: String, token: String, completion: (AUIRtmException?) -> Unit) {
         when (channelType) {
             RtmChannelType.MESSAGE -> {
+                proxy.skipMetaEmpty = 1
                 val option = SubscribeOptions()
                 option.withMetadata = true
                 option.withPresence = true

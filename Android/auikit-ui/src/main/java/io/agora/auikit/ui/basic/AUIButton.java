@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -61,20 +60,7 @@ public class AUIButton extends ConstraintLayout {
         float dimensionNone = -2f;
 
         // Background
-        float cornersRadius = typedArray.getDimension(R.styleable.AUIButton_aui_button_cornersRadius, dimensionNone);
-        float cornersTopLeftRadius = typedArray.getDimension(R.styleable.AUIButton_aui_button_cornersTopLeftRadius, dimensionNone);
-        float cornersTopRightRadius = typedArray.getDimension(R.styleable.AUIButton_aui_button_cornersTopRightRadius, dimensionNone);
-        float cornersBottomLeftRadius = typedArray.getDimension(R.styleable.AUIButton_aui_button_cornersBottomLeftRadius, dimensionNone);
-        float cornersBottomRightRadius = typedArray.getDimension(R.styleable.AUIButton_aui_button_cornersBottomRightRadius, dimensionNone);
-        int bgNormalColor = typedArray.getColor(R.styleable.AUIButton_aui_button_backgroundNormalColor, Color.TRANSPARENT);
-        int bgPressColor = typedArray.getColor(R.styleable.AUIButton_aui_button_backgroundPressedColor, Color.TRANSPARENT);
-        int bgDisableColor = typedArray.getColor(R.styleable.AUIButton_aui_button_backgroundDisableColor, Color.TRANSPARENT);
-        int bgMode = typedArray.getInt(R.styleable.AUIButton_aui_button_backgroundMode, BackgroundMode.Solid.value);
-
-        StateListDrawable bgDrawable = new StateListDrawable();
-        bgDrawable.addState(new int[]{android.R.attr.state_pressed}, createGradientDrawable(cornersRadius, cornersTopLeftRadius, cornersTopRightRadius, cornersBottomLeftRadius, cornersBottomRightRadius, bgPressColor, bgMode));
-        bgDrawable.addState(new int[]{-android.R.attr.state_enabled}, createGradientDrawable(cornersRadius, cornersTopLeftRadius, cornersTopRightRadius, cornersBottomLeftRadius, cornersBottomRightRadius, bgDisableColor, bgMode));
-        bgDrawable.addState(new int[]{}, createGradientDrawable(cornersRadius, cornersTopLeftRadius, cornersTopRightRadius, cornersBottomLeftRadius, cornersBottomRightRadius, bgNormalColor, bgMode));
+        Drawable bgDrawable = typedArray.getDrawable(R.styleable.AUIButton_aui_button_background);
         setBackground(bgDrawable);
 
         // Text style

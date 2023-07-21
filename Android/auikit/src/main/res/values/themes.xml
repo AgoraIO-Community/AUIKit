@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 系统基础主题 -->
-    <style name="Theme.AUIKit" parent="Theme.AUIKit.Basic.Dark">
+    <style name="Theme.AUIKit" parent="Theme.AUIKit.Basic">
 
         <!-- 麦位组件 -->
         <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
@@ -19,6 +19,25 @@
         <item name="aui_musicPlayer_appearance">@style/AUIMusicPlayer.Appearance</item>
         <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance</item>
         <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance</item>
+
+        <!--  头部组件      -->
+        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance</item>
+        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance</item>
+        <item name="aui_memberInfoList_appearance">@style/AUIRoomMemberListView</item>
+
+        <!--  底部组件      -->
+        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance</item>
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance</item>
+
+        <!--  聊天列表组件      -->
+        <item name="aui_chatListView_appearance">@style/AUIChatListView.Appearance</item>
+
+        <!--  礼物列表、礼物dialog组件      -->
+        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Appearance</item>
+        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Appearance</item>
+
+        <!--  邀请、申请组件      -->
+        <item name="aui_action_appearance">@style/AUIAction.Appearance</item>
 
     </style>
 

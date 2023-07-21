@@ -29,35 +29,35 @@ class AUIChatListAdapter(
     private var messages: ArrayList<AUIChatEntity> = ArrayList()
     private val ITEM_DEFAULT_TYPE = 0
     private val ITEM_SYSTEM_TYPE = 1
-    private var normalTagIcon: Int
-    private var normalTitleColor:Int
-    private var normalContentColor:Int
-    private var systemTitleColor:Int
-    private var systemContentColor:Int
+    private var normalTagIcon: Int = 0
+    private var normalTitleColor:Int = 0
+    private var normalContentColor:Int = 0
+    private var systemTitleColor:Int = 0
+    private var systemContentColor:Int = 0
 
     init {
         normalTagIcon = typedArray.getResourceId(
-            R.styleable.AUIBarrageView_aui_barrage_normal_title_tag_icon,
+            R.styleable.AUIChatListView_aui_barrage_normal_title_tag_icon,
             R.drawable.aui_icon_owner
         )
 
         normalTitleColor = typedArray.getColor(
-            R.styleable.AUIBarrageView_aui_barrage_normal_title_TextColor,
+            R.styleable.AUIChatListView_aui_barrage_normal_title_TextColor,
             context.resources.getColor(R.color.voice_color_8bb3ff)
         )
 
         normalContentColor = typedArray.getColor(
-            R.styleable.AUIBarrageView_aui_barrage_normal_content_TextColor,
+            R.styleable.AUIChatListView_aui_barrage_normal_content_TextColor,
             context.resources.getColor(R.color.voice_white)
         )
 
         systemTitleColor = typedArray.getColor(
-            R.styleable.AUIBarrageView_aui_barrage_system_title_TextColor,
+            R.styleable.AUIChatListView_aui_barrage_system_title_TextColor,
             context.resources.getColor(R.color.voice_color_8bb3ff)
         )
 
         systemContentColor = typedArray.getColor(
-            R.styleable.AUIBarrageView_aui_barrage_system_content_TextColor,
+            R.styleable.AUIChatListView_aui_barrage_system_content_TextColor,
             context.resources.getColor(R.color.voice_color_fcf0b3)
         )
 

@@ -106,9 +106,10 @@ class VoiceRoomApplyListFragment : Fragment(),
             recyclerView.layoutManager = LinearLayoutManager(it)
             recyclerView.addItemDecoration(
                 DividerItemDecoration(it, DividerItemDecoration.VERTICAL).apply {
-//                    dividerThickness = 1.dp.toInt()
-//                    dividerInsetStart = 15.dp.toInt()
-//                    dividerInsetEnd = 15.dp.toInt()
+                    // dividerThickness = 1.dp.toInt()
+                    // dividerInsetStart = 15.dp.toInt()
+                    // dividerInsetEnd = 15.dp.toInt()
+                    // dividerColor = ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)
                     setDrawable(ColorDrawable(ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)))
                 }
             )

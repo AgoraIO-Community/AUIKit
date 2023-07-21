@@ -307,11 +307,11 @@ public class AUIEditText extends FrameLayout {
         });
     }
 
-    public void setRightIconClickListener(View.OnClickListener clickListener){
+    public void setRightIconClickListener(OnClickListener clickListener){
         ivRight.setOnClickListener(clickListener);
     }
 
-    public void setLeftIconClickListener(View.OnClickListener clickListener){
+    public void setLeftIconClickListener(OnClickListener clickListener){
         ivLeft.setOnClickListener(clickListener);
     }
 

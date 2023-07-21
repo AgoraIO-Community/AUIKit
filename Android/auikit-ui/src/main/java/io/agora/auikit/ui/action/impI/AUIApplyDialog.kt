@@ -1,5 +1,6 @@
 package io.agora.auikit.ui.action.impI
 
+import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.SparseArray
@@ -40,6 +41,9 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
 
     private var adapter: RoomApplyFragmentAdapter?=null
     private var listener: AUIApplyDialogEventListener?=null
+    private var appearanceId:Int = 0
+    private var mTabSelectedColor:Int = 0
+    private var mTabUnSelectedColor:Int = 0
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -50,6 +54,14 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 获取自定义样式的ID
+        activity?.let {
+            val themeTa: TypedArray = it.theme.obtainStyledAttributes(R.styleable.AUIAction)
+            appearanceId = themeTa.getResourceId(R.styleable.AUIAction_aui_action_appearance, 0)
+            themeTa.recycle()
+        }
+
         initFragmentAdapter()
     }
 
@@ -59,6 +71,17 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
 
     private fun initFragmentAdapter() {
         activity?.let { fragmentActivity->
+            val typedArray = fragmentActivity.obtainStyledAttributes(appearanceId, R.styleable.AUIAction)
+            mTabSelectedColor = typedArray.getResourceId(
+                R.styleable.AUIAction_aui_tabLayout_selected_textColor,
+                R.color.aui_color_040925
+            )
+            mTabUnSelectedColor = typedArray.getResourceId(
+                R.styleable.AUIAction_aui_tabLayout_unselected_textColor,
+                R.color.aui_color_6c7192
+            )
+            typedArray.recycle()
+
             adapter = RoomApplyFragmentAdapter(fragmentActivity,roomBean,listener)
             binding?.apply {
                 setOnApplyWindowInsets(root)
@@ -101,7 +124,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
     private fun onTabLayoutSelected(tab: TabLayout.Tab?) {
         tab?.customView?.let {
             val tabText = it.findViewById<TextView>(R.id.mtTabText)
-            tabText.setTextColor(ResourcesTools.getColor(resources, R.color.aui_color_040925))
+            tabText.setTextColor(ResourcesTools.getColor(resources, mTabSelectedColor))
             tabText.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
             val tabTip = it.findViewById<View>(R.id.vTabTip)
             tabTip.visibility = View.VISIBLE
@@ -111,7 +134,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
     private fun onTabLayoutUnselected(tab: TabLayout.Tab?) {
         tab?.customView?.let {
             val tabText = it.findViewById<TextView>(R.id.mtTabText)
-            tabText.setTextColor(ResourcesTools.getColor(resources, R.color.aui_color_6c7192))
+            tabText.setTextColor(ResourcesTools.getColor(resources, mTabUnSelectedColor))
             tabText.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
             val tabTip = it.findViewById<View>(R.id.vTabTip)
             tabTip.visibility = View.GONE

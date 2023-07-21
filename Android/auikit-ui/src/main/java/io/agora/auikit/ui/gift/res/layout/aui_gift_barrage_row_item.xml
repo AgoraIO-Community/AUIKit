@@ -6,8 +6,10 @@
     android:minWidth="200dp"
     android:layout_marginTop="5dp"
     android:layout_marginStart="15dp"
+    android:id="@+id/rootLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/aui_gift_widget_bg">
+    android:theme="?attr/aui_giftBarrage_appearance"
+    android:background="?attr/aui_giftBarrage_layout_bg">
 
 
     <io.agora.auikit.ui.basic.AUIImageView

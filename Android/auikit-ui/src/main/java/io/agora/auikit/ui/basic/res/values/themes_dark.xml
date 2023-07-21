@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- 系统基础主题 -->
-    <style name="Theme.AUIKit.Basic.Dark" parent="Theme.MaterialComponents">
+    <style name="Theme.AUIKit.Basic.Dark" parent="Theme.MaterialComponents.DayNight">
         <item name="android:windowBackground">@android:color/black</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/aui_primary</item>
@@ -101,10 +101,11 @@
     </style>
 
     <style name="AUIBottomDialog.Dark">
-        <item name="aui_bottomDialog_backgroundColor">#1B1067</item>
+        <item name="aui_bottomDialog_backgroundColor">#171A1C</item>
         <item name="aui_bottomDialog_backgroundShadowColor">#1B1067</item>
+        <item name="aui_bottomDialog_backgroundIndicatorColor">#464E53</item>
         <item name="aui_bottomDialog_titleTextColor">@android:color/white</item>
-        <item name="aui_bottomDialog_listDividerColor">#59C3C5FE</item>
+        <item name="aui_bottomDialog_listDividerColor">#2F3437</item>
         <item name="aui_bottomDialog_menu_appearance">@style/AUIBottomDialogMenu.Dark</item>
     </style>
 
@@ -114,45 +115,37 @@
 
 
     <style name="AUIButton.Stroke.Dark">
-        <item name="aui_button_textNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_textPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_textDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_textNormalColor">#F1F2F3</item>
+        <item name="aui_button_textPressedColor">#F1F2F3</item>
+        <item name="aui_button_textDisableColor">#F1F2F3</item>
 
         <item name="aui_button_drawableTint">@color/aui_grey_light</item>
         <item name="aui_button_drawablePressedTint">@color/aui_grey_light</item>
         <item name="aui_button_drawableDisableTint">@color/aui_grey_light_35</item>
 
-        <item name="aui_button_backgroundNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke_dark</item>
     </style>
 
     <style name="AUIButton.Mini.Stroke.Dark">
-        <item name="aui_button_textNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_textPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_textDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_textNormalColor">#F1F2F3</item>
+        <item name="aui_button_textPressedColor">#F1F2F3</item>
+        <item name="aui_button_textDisableColor">#F1F2F3</item>
 
         <item name="aui_button_drawableTint">@color/aui_grey_light</item>
         <item name="aui_button_drawablePressedTint">@color/aui_grey_light</item>
         <item name="aui_button_drawableDisableTint">@color/aui_grey_light_35</item>
 
-        <item name="aui_button_backgroundNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_background">@drawable/aui_button_stroke_dark</item>
     </style>
 
     <style name="AUIButton.Circle.Stroke.Dark">
-        <item name="aui_button_textNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_textPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_textDisableColor">@color/aui_grey_light_35</item>
+        <item name="aui_button_textNormalColor">#F1F2F3</item>
+        <item name="aui_button_textPressedColor">#F1F2F3</item>
+        <item name="aui_button_textDisableColor">#F1F2F3</item>
 
         <item name="aui_button_drawableTint">@color/aui_grey_light</item>
         <item name="aui_button_drawablePressedTint">@color/aui_grey_light</item>
         <item name="aui_button_drawableDisableTint">@color/aui_grey_light_35</item>
-
-        <item name="aui_button_backgroundNormalColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundPressedColor">@color/aui_grey_light</item>
-        <item name="aui_button_backgroundDisableColor">@color/aui_grey_light_35</item>
     </style>
 
     <style name="AUIDividers.Dark">

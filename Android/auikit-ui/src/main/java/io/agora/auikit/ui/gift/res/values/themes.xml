@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.AUIGiftBarrageView">
+        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Appearance</item>
+    </style>
+
+    <style name="Theme.AUIKit.AUIGiftBottomDialog">
+        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Appearance</item>
+    </style>
+
+</resources>

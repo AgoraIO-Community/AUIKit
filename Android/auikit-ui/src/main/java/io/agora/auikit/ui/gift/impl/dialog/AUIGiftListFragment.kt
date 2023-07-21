@@ -1,6 +1,7 @@
 package io.agora.auikit.ui.gift.impl.dialog
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIGiftTabEntity
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.databinding.AuiGiftListFragmentLayoutBinding
 import io.agora.auikit.ui.gift.listener.AUIConfirmClickListener
 import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
@@ -21,6 +23,7 @@ class AUIGiftListFragment constructor(
     private var adapter: AUIGiftListAdapter? = null
     private var giftBean: AUIGiftEntity? = null
     private var listener: AUIConfirmClickListener? = null
+    private var mContext:Context
     private val mColumns = 4
     private var currentTag = 0
     private val aGiftListBinding = AuiGiftListFragmentLayoutBinding.inflate(LayoutInflater.from(context))
@@ -28,6 +31,7 @@ class AUIGiftListFragment constructor(
     private var map:MutableMap<Int,List<AUIGiftEntity>> = mutableMapOf()
 
     init {
+        this.mContext = context
         for (auiGiftTabEntity in gift) {
             map[auiGiftTabEntity.tabId] = auiGiftTabEntity.gifts as List<AUIGiftEntity>
         }
@@ -45,19 +49,22 @@ class AUIGiftListFragment constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        // 获取自定义样式的ID
+        val themeTa: TypedArray = mContext.theme.obtainStyledAttributes(R.styleable.AUIGiftBottomDialog)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIGiftBottomDialog_aui_giftBottomDialog_appearance, 0)
+        themeTa.recycle()
+        initView(appearanceId)
     }
 
-    private fun initView() {
-        context.let {
-            aGiftListBinding.gridview.verticalSpacing = DeviceTools.dp2px(requireContext(), 20F)
-            aGiftListBinding.gridview.numColumns = mColumns
-            aGiftListBinding.gridview.verticalSpacing = 40
-            adapter = AUIGiftListAdapter(requireContext(), 1, map[currentTag] as List<AUIGiftEntity>)
-            aGiftListBinding.gridview.adapter = adapter
-            adapter?.setSelectedPosition(0)
-            adapter?.setOnItemClickListener(this)
-        }
+    private fun initView(appearanceId:Int) {
+        val typedArray = mContext.obtainStyledAttributes(appearanceId, R.styleable.AUIGiftBottomDialog)
+        aGiftListBinding.gridview.verticalSpacing = DeviceTools.dp2px(requireContext(), 20F)
+        aGiftListBinding.gridview.numColumns = mColumns
+        aGiftListBinding.gridview.verticalSpacing = 40
+        adapter = AUIGiftListAdapter(mContext, 1,typedArray, map[currentTag] as List<AUIGiftEntity>)
+        aGiftListBinding.gridview.adapter = adapter
+        adapter?.setSelectedPosition(0)
+        adapter?.setOnItemClickListener(this)
     }
 
     fun setOnItemSelectClickListener(listener: AUIConfirmClickListener?) {

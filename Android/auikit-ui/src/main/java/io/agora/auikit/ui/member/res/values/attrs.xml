@@ -2,13 +2,13 @@
 <resources>
 
     <!--================= 主题属性 =================-->
-    <attr name="aui_upperRight_appearance" format="reference"/>
+    <attr name="aui_memberInfo_appearance" format="reference"/>
+    <attr name="aui_memberInfoList_appearance" format="reference"/>
 
     <!--================= 样式属性 =================-->
 
     <!-- 房间人数和用户展示样式 -->
     <declare-styleable name="AUIUpperRightInformationView">
-        <attr name="aui_upperRight_appearance"/>
 
         <!-- ==根布局宽、高== -->
         <attr name="aui_upperRight_root_layout_width" format="dimension">
@@ -124,8 +124,18 @@
         <!-- 按钮 -->
         <attr name="aui_roomButton_normalColor" format="color"/>
 
-
     </declare-styleable>
 
+
+    <declare-styleable name="AUIRoomMemberListView">
+
+        <attr name="aui_memberInfoList_title_textColor" format="color"/>
+
+        <attr name="aui_memberInfoList_userName_textColor" format="color"/>
+        <attr name="aui_memberInfoList_userNameInfo_textColor" format="color"/>
+
+
+
+    </declare-styleable>
 
 </resources>

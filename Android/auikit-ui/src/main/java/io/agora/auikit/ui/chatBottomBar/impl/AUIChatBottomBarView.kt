@@ -37,6 +37,12 @@ class AUIChatBottomBarView : RelativeLayout,
     //是否显示表情
     private var isShowEmoji = false
     private var softKeyHeight = 0
+    private var appearanceId:Int=0
+    private var mTagIconBg: Int = 0
+    private var mMoreStatusBg: Int = 0
+    private var mFaceIcon:Int = 0
+    private var mKeyIcon:Int = 0
+    private var emojiViewBg:Int = 0
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -45,12 +51,16 @@ class AUIChatBottomBarView : RelativeLayout,
         attrs,
         defStyleAttr
     ) {
-        activity = context
         addView(mViewBinding.root)
+        activity = context
         inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        initListener()
-        mViewBinding.inputSend.setText(R.string.voice_room_send_tip)
+
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIChatBottomView, defStyleAttr, 0)
+        appearanceId = themeTa.getResourceId(R.styleable.AUIChatBottomView_aui_chatBottomView_appearance, 0)
+        themeTa.recycle()
+
         initMenu()
+        initListener()
     }
 
 
@@ -81,7 +91,7 @@ class AUIChatBottomBarView : RelativeLayout,
             mViewBinding.vKeyboardBg.visibility = INVISIBLE
             mViewBinding.inputIcon.visibility = GONE
             mViewBinding.inputIcon.isEnabled = false
-            mViewBinding.iconEmoji.setImageResource(R.drawable.voice_icon_face)
+            mViewBinding.iconEmoji.setImageResource(mFaceIcon)
             isShowEmoji = false
         }
 
@@ -115,7 +125,7 @@ class AUIChatBottomBarView : RelativeLayout,
                     DeviceTools.dp2px(it, 7f)
                 )
                 imageView.setImageResource(drawableRes)
-                imageView.setBackgroundResource(R.drawable.aui_chat_bottom_bar_item_icon)
+                imageView.setBackgroundResource(mTagIconBg)
                 imageView.id = itemId
                 imageView.setOnClickListener { v ->
                     listener?.onChatExtendMenuItemClick(v.id, v)
@@ -125,11 +135,34 @@ class AUIChatBottomBarView : RelativeLayout,
         }
     }
 
-    fun initMenu() {
+    private fun initMenu() {
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIChatBottomView)
+        mTagIconBg = typedArray.getResourceId(
+            R.styleable.AUIChatBottomView_aui_primary_tag_bg,
+            R.drawable.aui_chat_bottom_bar_item_bg_light
+        )
+        mMoreStatusBg = typedArray.getResourceId(
+            R.styleable.AUIChatBottomView_aui_primary_more_status,
+            R.drawable.aui_chat_bottom_bar_more_status_bg
+        )
+        mFaceIcon = typedArray.getResourceId(
+            R.styleable.AUIChatBottomView_aui_primary_emoji_resource,
+            R.drawable.voice_icon_face_light
+        )
+        mKeyIcon = typedArray.getResourceId(
+            R.styleable.AUIChatBottomView_aui_primary_key_resource,
+            R.drawable.voice_icon_key_light
+        )
+        emojiViewBg = typedArray.getResourceId(
+            R.styleable.AUIChatBottomView_aui_primary_expression_background,
+            R.color.voice_white_100
+        )
+        mViewBinding.inputSend.setText(R.string.voice_room_send_tip)
         mViewBinding.menuLayout.removeAllViews()
         mViewBinding.normalLayout.visibility = VISIBLE
         mViewBinding.inputIcon.visibility = VISIBLE
         mViewBinding.menuLayout.visibility = VISIBLE
+        mViewBinding.iconEmoji.setImageResource(mFaceIcon)
         registerMenuItem(R.drawable.voice_icon_more, R.id.voice_extend_item_more)
         registerMenuItem(R.drawable.voice_icon_mic_on, R.id.voice_extend_item_mic)
         registerMenuItem(R.drawable.voice_icon_gift, R.id.voice_extend_item_gift)
@@ -143,8 +176,8 @@ class AUIChatBottomBarView : RelativeLayout,
                 val imageView = ImageView(it)
                 val marginLayoutParams = LinearLayoutCompat.LayoutParams(
                     DeviceTools.dp2px(
-                        it, 45f
-                    ), DeviceTools.dp2px(it, 45f)
+                        it, 38f
+                    ), DeviceTools.dp2px(it, 38f)
                 )
                 marginLayoutParams.marginStart = DeviceTools.dp2px(it, 8f)
                 imageView.setPadding(
@@ -154,7 +187,7 @@ class AUIChatBottomBarView : RelativeLayout,
                     DeviceTools.dp2px(it, 7f)
                 )
                 imageView.setImageResource(itemModel.image)
-                imageView.setBackgroundResource(R.drawable.aui_chat_bottom_bar_item_icon)
+                imageView.setBackgroundResource(mTagIconBg)
                 imageView.id = itemModel.id
                 if (itemModel.id == R.id.voice_extend_item_more){
                     val relativeLayout = RelativeLayout(activity)
@@ -166,7 +199,7 @@ class AUIChatBottomBarView : RelativeLayout,
 
                     val status = ImageView(activity)
                     status.id = R.id.voice_extend_item_more_status
-                    status.setImageResource(R.drawable.aui_chat_bottom_bar_more_status_bg)
+                    status.setImageResource(mMoreStatusBg)
                     status.visibility = GONE
 
                     val imgLayout = LayoutParams(
@@ -211,6 +244,7 @@ class AUIChatBottomBarView : RelativeLayout,
 
     private fun softShowing(isShowEmoji: Boolean) {
         if (isShowEmoji) {
+            Log.e("apex","softShowing $softKeyHeight")
             setViewLayoutParams(
                 mViewBinding.expressionView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -275,30 +309,6 @@ class AUIChatBottomBarView : RelativeLayout,
         }
     }
 
-    override fun setShowLike(isShow: Boolean) {
-        post {
-            val like: ImageView =
-                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_like)
-            if (isShow) {
-                like.visibility = VISIBLE
-            } else {
-                like.visibility = GONE
-            }
-        }
-    }
-
-    override fun setShowMore(isShow: Boolean) {
-        post {
-            val more: ImageView =
-                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_more)
-            if (isShow) {
-                more.visibility = VISIBLE
-            } else {
-                more.visibility = GONE
-            }
-        }
-    }
-
     override fun setShowMoreStatus(isOwner: Boolean?, isShowHandStatus: Boolean) {
         post {
             val moreStatus: ImageView =
@@ -318,11 +328,11 @@ class AUIChatBottomBarView : RelativeLayout,
     private fun checkShowExpression(isShow: Boolean) {
         isShowEmoji = isShow
         if (isShowEmoji) {
-            mViewBinding.iconEmoji.setImageResource(R.drawable.voice_icon_key)
+            mViewBinding.iconEmoji.setImageResource(mKeyIcon)
             mViewBinding.expressionView.visibility = VISIBLE
             hideKeyboard()
         } else {
-            mViewBinding.iconEmoji.setImageResource(R.drawable.voice_icon_face)
+            mViewBinding.iconEmoji.setImageResource(mFaceIcon)
             mViewBinding.expressionView.visibility = INVISIBLE
             showInputMethod(mViewBinding.inputEditView)
         }

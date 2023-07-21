@@ -100,10 +100,12 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
 
         Log.e("apex","onSizeChanged $mWidth $mHeight")
 
-        invalidate()
-        if (!isReady){
-            initView(context)
-            isReady = true
+        post {
+            invalidate()
+            if (!isReady){
+                initView(context)
+                isReady = true
+            }
         }
     }
 
