@@ -2,13 +2,13 @@
 <resources>
 
     <!--================= 主题属性 =================-->
-    <attr name="aui_upperLeft_appearance" format="reference"/>
+    <attr name="aui_roomInfo_appearance" format="reference"/>
 
     <!--================= 样式属性 =================-->
 
     <!-- 房间信息样式 -->
-    <declare-styleable name="AUIUpperLeftInformationView">
-        <attr name="aui_upperLeft_appearance"/>
+    <declare-styleable name="AUIRoomInfoView">
+        <attr name="aui_roomInfo_appearance"/>
 
         <!-- ==根布局样式== -->
         <attr name="aui_upperLeft_rootLayout_style" format="enum">

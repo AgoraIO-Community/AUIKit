@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="230dp"
-    android:background="@drawable/aui_gift_r20_white_bg"
+    android:theme="?attr/aui_giftBottomDialog_appearance"
+    android:background="?attr/aui_giftBottomDialog_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_layout"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:background="@drawable/aui_gift_top_layout_bg"
+        android:background="?attr/aui_giftBottomDialog_topLayout_bg"
         android:layout_height="16dp">
 
         <View
@@ -17,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@drawable/aui_gift_top_icon_bg"
+            android:background="?attr/aui_giftBottomDialog_topView_icon"
             android:id="@+id/top_icon"
             android:layout_width="37dp"
             android:layout_height="3dp"/>

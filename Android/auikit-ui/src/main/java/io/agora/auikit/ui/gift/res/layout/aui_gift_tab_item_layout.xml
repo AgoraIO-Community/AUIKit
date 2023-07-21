@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="?attr/aui_giftBottomDialog_appearance"
     android:background="@color/transparent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,7 +21,7 @@
         <TextView
             android:id="@+id/tab_item_title"
             android:layout_width="wrap_content"
-            android:layout_height="17dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="12sp"
             android:maxLines="1"
@@ -29,13 +31,12 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:textColor="@color/aui_gift_tab_tag_color"
-            android:text="request"/>
+            tools:text="request"/>
 
         <io.agora.auikit.ui.basic.AUIImageView
             android:id="@+id/tab_bg"
             android:visibility="gone"
-            android:background="@drawable/aui_gift_tablayout_tag_bg"
+            android:background="?attr/aui_giftBottomDialog_tabLayout_tag_bg"
             android:layout_marginTop="6dp"
             app:layout_constraintTop_toBottomOf="@+id/tab_item_title"
             app:layout_constraintLeft_toLeftOf="parent"

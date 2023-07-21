@@ -3,7 +3,6 @@ package io.agora.auikit.service.imp
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIGiftTabEntity
 import io.agora.auikit.model.AUIRoomContext
-import io.agora.auikit.service.IAUIChatService
 import io.agora.auikit.service.IAUIGiftsService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
@@ -12,6 +11,7 @@ import io.agora.auikit.service.http.CommonResp
 import io.agora.auikit.service.http.HttpManager
 import io.agora.auikit.service.http.Utils
 import io.agora.auikit.service.http.gift.GiftInterface
+import io.agora.auikit.service.im.AUIChatManager
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
 import io.agora.auikit.utils.DelegateHelper
@@ -24,17 +24,15 @@ private const val giftKey = "AUIChatRoomGift"
 class AUIGiftServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
-    private val chatService:IAUIChatService
+    private val chatManager:AUIChatManager
 ) : IAUIGiftsService, AUIRtmMsgProxyDelegate {
 
-    private var auiChatServiceImpl:AUIChatServiceImpl
     private val delegateHelper = DelegateHelper<IAUIGiftsService.AUIGiftRespDelegate>()
     private var roomContext:AUIRoomContext
 
     init {
         rtmManager.subscribeMsg(channelName, giftKey, this)
         this.roomContext = AUIRoomContext.shared()
-        this.auiChatServiceImpl = chatService as AUIChatServiceImpl
     }
 
     override fun getGiftsFromService(callback: AUIGiftListCallback?) {
@@ -77,7 +75,7 @@ class AUIGiftServiceImpl constructor(
         if (key == giftKey){
             val gift = JSONObject(value.toString())
             GsonTools.toBean(gift["messageInfo"].toString(), AUIGiftEntity::class.java)?.let { it ->
-                auiChatServiceImpl.addGiftList(it)
+                chatManager.addGiftList(it)
                 this.delegateHelper.notifyDelegate { it1 ->
                     it1.onReceiveGiftMsg(it)
                 }

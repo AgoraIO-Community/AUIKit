@@ -32,8 +32,8 @@ class AUIRoomInfoView : ConstraintLayout,
     ) {
         this.aContext = context
         addView(aRoomViewBinding.root)
-        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIUpperLeftInformationView, defStyleAttr, 0)
-        val appearanceId = themeTa.getResourceId(R.styleable.AUIUpperLeftInformationView_aui_upperLeft_appearance, 0)
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIRoomInfoView, defStyleAttr, 0)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIRoomInfoView_aui_roomInfo_appearance, 0)
         themeTa.recycle()
         initListener()
         initView(appearanceId)
@@ -41,18 +41,18 @@ class AUIRoomInfoView : ConstraintLayout,
 
     @SuppressLint("CustomViewStyleable")
     private fun initView(appearanceId:Int){
-        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIUpperLeftInformationView)
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIRoomInfoView)
         val gradientType = typedArray.getInt(
-            R.styleable.AUIUpperLeftInformationView_aui_upperLeft_rootLayout_style,
+            R.styleable.AUIRoomInfoView_aui_upperLeft_rootLayout_style,
             0
         )
         val gradientColor = typedArray.getInt(
-            R.styleable.AUIUpperLeftInformationView_aui_upperLeft_Layout_background,
+            R.styleable.AUIRoomInfoView_aui_upperLeft_Layout_background,
             resources.getColor(R.color.aui_upper_left_bg)
         )
 
         val gradientRadius = typedArray.getInt(
-            R.styleable.AUIUpperLeftInformationView_aui_upperLeft_layout_radius,
+            R.styleable.AUIRoomInfoView_aui_upperLeft_layout_radius,
             0
         )
 

@@ -129,15 +129,15 @@ public class AUIJukeboxChosenItemView extends FrameLayout implements IAUIJukebox
         }
     }
 
-    public void setOnDeleteClickListener(View.OnClickListener listener) {
+    public void setOnDeleteClickListener(OnClickListener listener) {
         tvDelete.setOnClickListener(listener);
     }
 
-    public void setOnTopClickListener(View.OnClickListener listener) {
+    public void setOnTopClickListener(OnClickListener listener) {
         tvTop.setOnClickListener(listener);
     }
 
-    public void setOnPlayingClickListener(View.OnClickListener listener) {
+    public void setOnPlayingClickListener(OnClickListener listener) {
         tvPlaying.setOnClickListener(listener);
     }
 

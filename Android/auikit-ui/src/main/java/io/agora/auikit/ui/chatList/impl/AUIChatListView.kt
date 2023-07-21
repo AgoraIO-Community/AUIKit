@@ -36,14 +36,14 @@ class AUIChatListView : RelativeLayout,
         defStyleAttr
     ) {
         addView(mViewBinding.root)
-        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIBarrageView, defStyleAttr, 0)
-        appearanceId = themeTa.getResourceId(R.styleable.AUIMicSeatItemView_aui_micSeatItem_appearance, 0)
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIChatListView, defStyleAttr, 0)
+        appearanceId = themeTa.getResourceId(R.styleable.AUIChatListView_aui_chatListView_appearance, 0)
         themeTa.recycle()
         initListener()
     }
 
     override fun initView(ownerId: String?){
-        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIBarrageView)
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIChatListView)
         adapter = AUIChatListAdapter(context,ownerId,typedArray)
         val linearLayout = LinearLayoutManager(context)
 //        val scrollSpeedLinearLayoutManger = ScrollSpeedLinearLayoutManger(context)
@@ -104,7 +104,7 @@ class AUIChatListView : RelativeLayout,
             if (isScrollBottom) {
                 refreshSelectLast(msgList)
             } else {
-                mViewBinding.root.post {
+                post {
                     adapter?.refresh(msgList)
                 }
             }
@@ -113,12 +113,12 @@ class AUIChatListView : RelativeLayout,
 
     override fun refreshSelectLast(msgList: ArrayList<AUIChatEntity>?) {
         if (adapter != null) {
-            mViewBinding.root.post {
+            post {
                 Log.e("apex","refreshSelectLast ${msgList?.size}")
                 msgList?.let { adapter?.refresh(it) }
                 val position = adapter?.itemCount
                 if (position != null && position > 0) {
-                    mViewBinding.listview.smoothScrollToPosition(position - 1)
+                    mViewBinding.listview.smoothScrollToPosition( position - 1)
                 }
             }
         }

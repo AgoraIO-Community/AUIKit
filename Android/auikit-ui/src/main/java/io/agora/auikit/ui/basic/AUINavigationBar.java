@@ -253,7 +253,7 @@ public class AUINavigationBar extends LinearLayout {
         itemView.setScaleY(scale);
         // 占比
         int weight = typedArray.getInt(R.styleable.AUINavigationBarMenu_aui_navigationBarMenu_weight, 1);
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams itemParams = new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         itemParams.weight = weight;
         if (isFloating) {
             itemParams.bottomMargin = floatingOffsetBottom;

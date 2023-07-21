@@ -153,31 +153,31 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         Glide.with(ivAvatar).load(userInfo.userAvatar).apply(options).into(ivAvatar);
     }
 
-    public void setEnterSeatClickListener(View.OnClickListener clickListener){
+    public void setEnterSeatClickListener(OnClickListener clickListener){
         tvEnterSeat.setOnClickListener(clickListener);
     }
 
-    public void setLeaveSeatClickListener(View.OnClickListener clickListener){
+    public void setLeaveSeatClickListener(OnClickListener clickListener){
         tvLeaveSeat.setOnClickListener(clickListener);
     }
 
-    public void setKickSeatClickListener(View.OnClickListener clickListener){
+    public void setKickSeatClickListener(OnClickListener clickListener){
         tvKickSeat.setOnClickListener(clickListener);
     }
 
-    public void setMuteAudioClickListener(View.OnClickListener clickListener){
+    public void setMuteAudioClickListener(OnClickListener clickListener){
         tvMuteAudio.setOnClickListener(clickListener);
     }
 
-    public void setMuteVideoClickListener(View.OnClickListener clickListener){
+    public void setMuteVideoClickListener(OnClickListener clickListener){
         tvMuteVideo.setOnClickListener(clickListener);
     }
 
-    public void setCloseSeatClickListener(View.OnClickListener clickListener){
+    public void setCloseSeatClickListener(OnClickListener clickListener){
         tvLockSeat.setOnClickListener(clickListener);
     }
 
-    public void setInvitedClickListener(View.OnClickListener clickListener){
+    public void setInvitedClickListener(OnClickListener clickListener){
         tvInvited.setOnClickListener(clickListener);
     }
 

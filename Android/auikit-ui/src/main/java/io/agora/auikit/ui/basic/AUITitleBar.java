@@ -101,11 +101,11 @@ public class AUITitleBar extends ConstraintLayout {
         }
     }
 
-    public void setOnBackClickListener(View.OnClickListener listener) {
+    public void setOnBackClickListener(OnClickListener listener) {
         ivBack.setOnClickListener(listener);
     }
 
-    public void setOnStepClickListener(View.OnClickListener previousListener, View.OnClickListener nextListener) {
+    public void setOnStepClickListener(OnClickListener previousListener, OnClickListener nextListener) {
         tvStepPrevious.setOnClickListener(previousListener);
         tvStepNext.setOnClickListener(nextListener);
     }

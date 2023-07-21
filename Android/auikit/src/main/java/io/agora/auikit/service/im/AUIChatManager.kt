@@ -72,15 +72,11 @@ class AUIChatManager(
         Logger.t("AUIChatManager").d("initManager")
         ChatClient.getInstance().chatManager().addMessageListener(this)
         ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(this)
-        currentGiftList.clear()
-        currentMsgList.clear()
     }
 
     fun setChatRoom(chatRoomId: String?){
         this.chatRoomId = chatRoomId
         Log.e("apex","setChatRoomID $chatRoomId")
-        currentMsgList.clear()
-        currentGiftList.clear()
     }
 
     fun getCurrentRoom():String?{
@@ -107,8 +103,10 @@ class AUIChatManager(
         accessToken = ""
         currentMsgList.clear()
         currentGiftList.clear()
-        ChatClient.getInstance().chatManager().removeMessageListener(this)
-        ChatClient.getInstance().chatroomManager().removeChatRoomListener(this)
+        if (ChatClient.getInstance().isSdkInited) {
+            ChatClient.getInstance().chatManager().removeMessageListener(this)
+            ChatClient.getInstance().chatroomManager().removeChatRoomListener(this)
+        }
     }
 
     fun loginChat(userName:String,userToken:String,callback:CallBack){
@@ -156,8 +154,10 @@ class AUIChatManager(
         })
     }
 
-    fun logoutChat(){
-        ChatClient.getInstance().logout(false)
+    fun logoutChat() {
+        if (ChatClient.getInstance().isSdkInited) {
+            ChatClient.getInstance().logout(false)
+        }
     }
 
     /**
@@ -169,7 +169,7 @@ class AUIChatManager(
             override fun onSuccess(value: ChatRoom?) {
                 Log.e("apex","joinRoom onSuccess $roomId")
                 //加入成功后 返回成员加入消息
-                sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback {
+                sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback{
                     override fun onOriginalResult(error: AUIException?, message: ChatMessage?) {
                         if (error == null){
                             ThreadManager.getInstance().runOnMainThreadDelay({callback.onOriginalResult(null,message)},300)
@@ -189,7 +189,9 @@ class AUIChatManager(
      * 离开房间
      */
     fun leaveChatRoom() {
-        ChatClient.getInstance().chatroomManager().leaveChatRoom(chatRoomId)
+        if(ChatClient.getInstance().isSdkInited){
+            ChatClient.getInstance().chatroomManager().leaveChatRoom(chatRoomId)
+        }
     }
 
     /**

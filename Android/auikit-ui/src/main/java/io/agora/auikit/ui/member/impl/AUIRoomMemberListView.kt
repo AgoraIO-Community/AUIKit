@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -34,6 +34,7 @@ private class MemberItemModel (
         }
     }
 }
+
 class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
     IAUIMicSeatService.AUIMicSeatRespDelegate {
 
@@ -62,7 +63,7 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
     }
 
     private fun initView() {
-        mBinding.rvUserList.layoutManager = LinearLayoutManager(context)
+        mBinding.rvUserList.layoutManager = GridLayoutManager(context, 1)
         listAdapter =
             object : ListAdapter<MemberItemModel, BindingViewHolder<AuiMemberListItemBinding>>(object :
                 DiffUtil.ItemCallback<MemberItemModel>() {

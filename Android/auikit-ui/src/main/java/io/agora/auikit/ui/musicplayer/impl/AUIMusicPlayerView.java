@@ -43,7 +43,7 @@ import io.agora.karaoke_view.v11.model.LyricsModel;
 
 public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView {
     private IMusicPlayerActionListener mOnKaraokeActionListener;
-    private IMusicPlayerView.ActionDelegate mActionDelegate;
+    private ActionDelegate mActionDelegate;
 
     private TextView tvMusicName;
     private Button btChooseSong;

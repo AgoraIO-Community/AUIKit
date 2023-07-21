@@ -1,6 +1,7 @@
 package io.agora.auikit.ui.gift.impl.dialog
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -18,6 +19,7 @@ import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
 class AUIGiftListAdapter constructor(
     context: Context,
     resource: Int,
+    typedArray:TypedArray,
     objects: List<AUIGiftEntity>
 ): ArrayAdapter<AUIGiftEntity>(context,resource, objects)  {
 
@@ -27,10 +29,16 @@ class AUIGiftListAdapter constructor(
     private var mMainHandler: Handler? = null
     private var Animation_time = 3
     private var showTask: Runnable? = null
+    private var giftTextColor:Int = 0
 
     init {
         mContext = context
         mMainHandler = Handler(Looper.getMainLooper())
+
+        giftTextColor = typedArray.getResourceId(
+            R.styleable.AUIGiftBottomDialog_aui_giftBottomDialog_gift_textColor,
+            R.color.voice_gift_black_171A1C
+        )
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
