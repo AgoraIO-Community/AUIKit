@@ -6,13 +6,6 @@
     android:theme="?attr/aui_action_appearance"
     android:background="?attr/aui_invitation_layout_bg">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="?attr/aui_invitation_view_layout_bg"
-        app:layout_constraintTop_toTopOf="@+id/ivBottomSheetTitle"
-        app:layout_constraintBottom_toBottomOf="@+id/tabInvitedLayout"/>
-
     <io.agora.auikit.ui.basic.AUIImageView
         android:id="@+id/ivBottomSheetTitle"
         android:layout_width="wrap_content"

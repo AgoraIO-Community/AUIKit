@@ -8,7 +8,6 @@
         <attr name="aui_action_appearance"/>
 
         <attr name="aui_invitation_layout_bg" format="reference|color"/>
-        <attr name="aui_invitation_view_layout_bg" format="reference|color"/>
         <attr name="aui_top_view_icon" format="reference|color"/>
         <attr name="aui_top_title_color" format="color"/>
         <attr name="aui_userinfo_layout_bg" format="reference|color"/>

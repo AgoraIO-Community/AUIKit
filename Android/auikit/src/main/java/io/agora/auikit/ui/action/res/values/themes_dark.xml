@@ -7,7 +7,6 @@
 
     <style name="AUIAction.Appearance.Dark" parent="AUIAction.Appearance">
         <item name="aui_invitation_layout_bg">@drawable/voice_bg_rect_top_radius20_dark</item>
-        <item name="aui_invitation_view_layout_bg">@drawable/voice_bg_rect_top_radius20_gradient_dark</item>
 
         <item name="aui_tabLayout_selected_textColor">@color/aui_color_F9FAFA</item>
         <item name="aui_tabLayout_unselected_textColor">@color/aui_color_6c7192</item>
