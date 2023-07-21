@@ -364,10 +364,10 @@ class AUIChatManager(
      */
     fun sendTxtMsg(roomId: String?, content: String?, userInfo: AUIUserThumbnailInfo?, callBack: AUIChatMsgCallback) {
         val message = ChatMessage.createTextSendMessage(content, roomId)
-        message.let {
-            it?.setAttribute("user",GsonTools.beanToString(userInfo))
-            it?.chatType = ChatMessage.ChatType.ChatRoom
-            it?.setMessageStatusCallback(object : CallBack {
+        message?.let {
+            it.setAttribute("user",GsonTools.beanToString(userInfo))
+            it.chatType = ChatMessage.ChatType.ChatRoom
+            it.setMessageStatusCallback(object : CallBack {
                 override fun onSuccess() {
                     parseMsgChatEntity(it)
                     callBack.onResult(null,parseChatMessage(it))
