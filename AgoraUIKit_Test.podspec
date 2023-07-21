@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AgoraUIKit_Test'
-  s.version          = '0.2.0'
+  s.version          = '0.2.0-beta'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -47,14 +47,14 @@ TODO: Add long description of the pod here.
   #s.source_files = 'AgoraUIKit_Test/Classes/**/*.swift'
   
     s.source_files = [
-        'AgoraUIKit_Test/Sources/Widgets/**/*.swift',
-        'AgoraUIKit_Test/Sources/Widgets/**/**/*.swift',
-        'AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
-        'AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
-        'AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
-        'AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
-        'AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
-        'AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
+        'iOS/AgoraUIKit_Test/Sources/Widgets/**/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Widgets/**/**/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
     ]
     #s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 
@@ -62,7 +62,7 @@ TODO: Add long description of the pod here.
   
   s.swift_version = '5.0'
   
-  s.resource = ['AgoraUIKit_Test/Resource/*.bundle']
+  s.resource = ['iOS/AgoraUIKit_Test/Resource/*.bundle']
 
   
   # s.resource_bundles = {
