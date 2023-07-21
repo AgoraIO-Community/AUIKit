@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import io.agora.auikit.R
-import io.agora.auikit.databinding.AuiChatListLayoutBinding
 import io.agora.auikit.model.AUIChatEntity
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.chatList.IAUIChatListView
 import io.agora.auikit.ui.chatList.listener.AUIChatListItemClickListener
+import io.agora.auikit.ui.databinding.AuiChatListLayoutBinding
 import io.agora.auikit.utils.DeviceTools
 
 class AUIChatListView : RelativeLayout,

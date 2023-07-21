@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import io.agora.auikit.R;
+import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIBottomDialog;
 import io.agora.auikit.ui.basic.AUIRecyclerView;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
@@ -50,6 +50,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 return new RecyclerView.ViewHolder(new AUIMicSeatItemView(parent.getContext())) {
                 };
             }
+
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 AUIMicSeatItemView seatItemView = (AUIMicSeatItemView) holder.itemView;
@@ -59,6 +60,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                     showMicSeatDialog(position);
                 });
             }
+
             @Override
             public int getItemCount() {
                 return micSeatCount;
@@ -185,6 +187,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setTitleText(text);
             }
         }
+
         @Override
         public void setRoomOwnerVisibility(int visible) {
             this.roomOwnerVisibility = visible;
@@ -192,6 +195,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setRoomOwnerVisibility(visible);
             }
         }
+
         @Override
         public void setTitleIndex(int index) {
             this.titleIndex = index;

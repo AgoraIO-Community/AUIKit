@@ -169,7 +169,7 @@ class AUIChatManager(
             override fun onSuccess(value: ChatRoom?) {
                 Log.e("apex","joinRoom onSuccess $roomId")
                 //加入成功后 返回成员加入消息
-                sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback {
+                sendJoinMsg(roomId,roomContext?.currentUserInfo,object : AUIChatMsgCallback{
                     override fun onOriginalResult(error: AUIException?, message: ChatMessage?) {
                         if (error == null){
                             ThreadManager.getInstance().runOnMainThreadDelay({callback.onOriginalResult(null,message)},300)

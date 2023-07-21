@@ -10,9 +10,9 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.agora.auikit.R
-import io.agora.auikit.databinding.AuiGiftBarrageLayoutBinding
 import io.agora.auikit.model.AUIGiftEntity
+import io.agora.auikit.ui.R
+import io.agora.auikit.ui.databinding.AuiGiftBarrageLayoutBinding
 import io.agora.auikit.ui.gift.IAUIGiftBarrageView
 import io.agora.auikit.utils.DeviceTools
 

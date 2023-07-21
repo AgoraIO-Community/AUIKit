@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import io.agora.auikit.R
 import io.agora.auikit.model.MicSeatItem
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.micseats.IMicSeatItemView
 import io.agora.auikit.ui.micseats.IMicSeatsView
 import io.agora.auikit.utils.DeviceTools

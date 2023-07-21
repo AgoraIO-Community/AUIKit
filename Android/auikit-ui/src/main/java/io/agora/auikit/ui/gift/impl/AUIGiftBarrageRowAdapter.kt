@@ -14,8 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
-import io.agora.auikit.R
 import io.agora.auikit.model.AUIGiftEntity
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
 
 class AUIGiftRowAdapter constructor(

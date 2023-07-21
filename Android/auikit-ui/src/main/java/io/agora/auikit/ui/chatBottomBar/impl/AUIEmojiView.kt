@@ -5,10 +5,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.AdapterView
 import androidx.appcompat.widget.LinearLayoutCompat
-import io.agora.auikit.R
-import io.agora.auikit.databinding.AuiEmojiGridviewLayoutBinding
 import io.agora.auikit.model.AUIExpressionIcon
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.chatBottomBar.listener.AUIExpressionClickListener
+import io.agora.auikit.ui.databinding.AuiEmojiGridviewLayoutBinding
 import io.agora.auikit.utils.DeviceTools
 
 class AUIEmojiView : LinearLayoutCompat {

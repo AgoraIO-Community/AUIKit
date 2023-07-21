@@ -176,8 +176,8 @@ class AUIChatBottomBarView : RelativeLayout,
                 val imageView = ImageView(it)
                 val marginLayoutParams = LinearLayoutCompat.LayoutParams(
                     DeviceTools.dp2px(
-                        it, 45f
-                    ), DeviceTools.dp2px(it, 45f)
+                        it, 38f
+                    ), DeviceTools.dp2px(it, 38f)
                 )
                 marginLayoutParams.marginStart = DeviceTools.dp2px(it, 8f)
                 imageView.setPadding(
@@ -305,30 +305,6 @@ class AUIChatBottomBarView : RelativeLayout,
                 mic.visibility = VISIBLE
             } else {
                 mic.visibility = GONE
-            }
-        }
-    }
-
-    override fun setShowLike(isShow: Boolean) {
-        post {
-            val like: ImageView =
-                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_like)
-            if (isShow) {
-                like.visibility = VISIBLE
-            } else {
-                like.visibility = GONE
-            }
-        }
-    }
-
-    override fun setShowMore(isShow: Boolean) {
-        post {
-            val more: ImageView =
-                mViewBinding.menuLayout.findViewById<ImageView>(R.id.voice_extend_item_more)
-            if (isShow) {
-                more.visibility = VISIBLE
-            } else {
-                more.visibility = GONE
             }
         }
     }

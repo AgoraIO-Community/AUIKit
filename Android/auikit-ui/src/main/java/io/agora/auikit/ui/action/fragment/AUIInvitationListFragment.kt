@@ -1,6 +1,7 @@
 package io.agora.auikit.ui.action.fragment
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +9,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.textview.MaterialTextView
-import io.agora.auikit.R
-import io.agora.auikit.databinding.AuiInvitationListLayoutBinding
 import io.agora.auikit.model.AUIActionModel
 import io.agora.auikit.model.AUIUserInfo
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
-import io.agora.auikit.utils.DeviceTools.dp
+import io.agora.auikit.ui.databinding.AuiInvitationListLayoutBinding
 import io.agora.auikit.utils.ResourcesTools
 
 class VoiceRoomInvitedListFragment : Fragment(),
@@ -102,11 +102,12 @@ class VoiceRoomInvitedListFragment : Fragment(),
             invitedAdapter = VoiceInvitedAdapter(it,invitedIndex,members)
             recyclerView.layoutManager = LinearLayoutManager(it)
             recyclerView.addItemDecoration(
-                MaterialDividerItemDecoration(it, MaterialDividerItemDecoration.VERTICAL).apply {
-                    dividerThickness = 1.dp.toInt()
-                    dividerInsetStart = 15.dp.toInt()
-                    dividerInsetEnd = 15.dp.toInt()
-                    dividerColor = ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)
+                DividerItemDecoration(it, DividerItemDecoration.VERTICAL).apply {
+                    // dividerThickness = 1.dp.toInt()
+                    // dividerInsetStart = 15.dp.toInt()
+                    // dividerInsetEnd = 15.dp.toInt()
+                    // dividerColor = ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)
+                    setDrawable(ColorDrawable(ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)))
                 }
             )
             recyclerView.adapter = invitedAdapter

@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.agora.auikit.R
-import io.agora.auikit.databinding.AuiGiftListFragmentLayoutBinding
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIGiftTabEntity
-import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
+import io.agora.auikit.ui.R
+import io.agora.auikit.ui.databinding.AuiGiftListFragmentLayoutBinding
 import io.agora.auikit.ui.gift.listener.AUIConfirmClickListener
+import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
 import io.agora.auikit.utils.DeviceTools
 
 class AUIGiftListFragment constructor(

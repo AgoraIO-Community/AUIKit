@@ -3,9 +3,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import io.agora.auikit.R
-import io.agora.auikit.databinding.AuiGiftListViewLayoutBinding
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIGiftTabEntity
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.basic.AUISheetFragmentDialog
+import io.agora.auikit.ui.databinding.AuiGiftListViewLayoutBinding
 import io.agora.auikit.ui.gift.IAUIGiftBarrageView
-import io.agora.auikit.utils.DeviceTools
 import io.agora.auikit.utils.ResourcesTools
 
 class AUiGiftListView constructor(
