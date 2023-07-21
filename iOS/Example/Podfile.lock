@@ -33,7 +33,7 @@ PODS:
 DEPENDENCIES:
   - AgoraLyricsScore (= 1.1.1-beta-3)
   - AgoraRtcEngine_iOS (from `./libs`)
-  - AgoraUIKit_Test (from `../../`)
+  - AgoraUIKit_Test (from `../`)
   - FBSnapshotTestCase (~> 2.1.4)
 
 SPEC REPOS:
@@ -55,7 +55,7 @@ EXTERNAL SOURCES:
   AgoraRtcEngine_iOS:
     :path: "./libs"
   AgoraUIKit_Test:
-    :path: "../../"
+    :path: "../"
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
@@ -72,6 +72,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: d102d6aec75197d12713191e80fc83fbcf65802b
+PODFILE CHECKSUM: 8554838f2ba7b40fe2040302727c49663084219b
 
 COCOAPODS: 1.12.0

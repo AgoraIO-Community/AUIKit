@@ -10,7 +10,7 @@
 		25AA8B34B6C3BAF2498622D8 /* Pods_AUIKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */; };
 		4687DED6C4AE760A2A3C91C1 /* Pods_AUIKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
-		A83559BB2A6A6246003588A4 /* AgoraUIKit_Test.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A83559BA2A6A6246003588A4 /* AgoraUIKit_Test.podspec */; };
+		A83559BD2A6A6AE2003588A4 /* AgoraUIKit_Test.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A83559BC2A6A6AE2003588A4 /* AgoraUIKit_Test.podspec */; };
 		A87C9B722A285A4D002D9BD5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87C9B692A285A4D002D9BD5 /* ViewController.swift */; };
 		A87C9B732A285A4D002D9BD5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6A2A285A4D002D9BD5 /* LaunchScreen.xib */; };
 		A87C9B742A285A4D002D9BD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6C2A285A4D002D9BD5 /* Main.storyboard */; };
@@ -39,7 +39,7 @@
 		70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		82FDF13323844138E2902901 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A83559BA2A6A6246003588A4 /* AgoraUIKit_Test.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AgoraUIKit_Test.podspec; path = ../../AgoraUIKit_Test.podspec; sourceTree = "<group>"; };
+		A83559BC2A6A6AE2003588A4 /* AgoraUIKit_Test.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AgoraUIKit_Test.podspec; path = ../AgoraUIKit_Test.podspec; sourceTree = "<group>"; };
 		A87C9B692A285A4D002D9BD5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A87C9B6B2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A87C9B6D2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				A83559BA2A6A6246003588A4 /* AgoraUIKit_Test.podspec */,
+				A83559BC2A6A6AE2003588A4 /* AgoraUIKit_Test.podspec */,
 				A87C9B682A285A4D002D9BD5 /* AUIKit */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -164,7 +164,6 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */,
-				705C7D3266983BA3611A6224 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,7 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A87C9B762A285A4D002D9BD5 /* Images.xcassets in Resources */,
-				A83559BB2A6A6246003588A4 /* AgoraUIKit_Test.podspec in Resources */,
+				A83559BD2A6A6AE2003588A4 /* AgoraUIKit_Test.podspec in Resources */,
 				A87C9B732A285A4D002D9BD5 /* LaunchScreen.xib in Resources */,
 				A87C9B822A2899B2002D9BD5 /* exampleTheme.bundle in Resources */,
 				A87C9B742A285A4D002D9BD5 /* Main.storyboard in Resources */,
@@ -299,32 +298,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		705C7D3266983BA3611A6224 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/auiTheme.bundle",
-				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/ChatResource.bundle",
-				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/Gift.bundle",
-				"${PODS_ROOT}/../../AgoraUIKit_Test/Resource/Invitation.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiLocalizable.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ChatResource.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gift.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Invitation.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BE8B5F127B4E3BBDC0675725 /* [CP] Check Pods Manifest.lock */ = {
