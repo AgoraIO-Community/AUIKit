@@ -49,14 +49,12 @@ TODO: Add long description of the pod here.
   
     s.source_files = [
         'iOS/AgoraUIKit_Test/Sources/Widgets/**/*',
-        'iOS/AgoraUIKit_Test/Sources/Core/**/*',
-
-#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
-#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
-#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
-#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
-#        'iOS/AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
-#        'iOS/AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
+        'iOS/AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
     ]
     #s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 
