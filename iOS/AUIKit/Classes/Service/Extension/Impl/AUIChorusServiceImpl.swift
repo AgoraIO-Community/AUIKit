@@ -11,7 +11,7 @@ import YYModel
 
 private let kChorusKey = "chorus"
 
-open class AUIChorusServiceImpl: NSObject {
+@objc open class AUIChorusServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var ktvApi: KTVApiDelegate!
     private var rtcKit: AgoraRtcEngineKit!
@@ -21,21 +21,26 @@ open class AUIChorusServiceImpl: NSObject {
     
     deinit {
         aui_info("deinit AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
-        rtmManager.unsubscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
+        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
     
-    public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
+    @objc public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
         aui_info("init AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
         super.init()
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.rtcKit = rtcKit
         self.ktvApi = ktvApi
-        rtmManager.subscribeMsg(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
+        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
 }
 
 extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
+    
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIChorusRespDelegate) {
         respDelegates.add(delegate)
     }
@@ -54,7 +59,7 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
         model.request { err, _ in
-            completion(err)
+            completion(err as? NSError)
         }
     }
     
@@ -64,7 +69,7 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         model.userId = userId ?? getRoomContext().currentUserInfo.userId
         model.roomId = channelName
         model.request { err, _ in
-            completion(err)
+            completion(err as? NSError)
         }
     }
     
@@ -75,8 +80,8 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
 }
 
 //MARK: AUIRtmMsgProxyDelegate
-extension AUIChorusServiceImpl: AUIRtmMsgProxyDelegate {
-    public func onMsgDidChanged(channelName: String, key: String, value: Any) {
+extension AUIChorusServiceImpl: AUIRtmAttributesProxyDelegate {
+    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kChorusKey {
             aui_info("recv chorus attr did changed \(value)", tag: "AUIPlayerServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),

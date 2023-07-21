@@ -40,6 +40,12 @@ public protocol AUIUserServiceDelegate: AUICommonServiceDelegate {
     ///   - isMute: true: 关闭摄像头 false: 开启摄像头
     ///   - callback: 操作完成回调
     func muteUserVideo(isMute: Bool, callback: @escaping AUICallback)
+    
+    /// Description 踢出用户
+    /// - Parameters:
+    ///   - roomId: 房间id
+    ///   - userId: 被踢用户id
+    func kickUser(roomId: String ,userId: String, callback: @escaping AUICallback)
 }
 
 public protocol AUIUserRespDelegate: NSObjectProtocol {
@@ -79,4 +85,11 @@ public protocol AUIUserRespDelegate: NSObjectProtocol {
     ///   - userId: 用户id
     ///   - mute: 摄像头状态
     func onUserVideoMute(userId: String, mute: Bool)
+    
+    /// Description 用户被踢出房间
+    /// - Parameters:
+    ///   - roomId: 房间id
+    ///   - userId: 用户id
+    func onUserBeKicked(roomId: String, userId: String)
+    
 }

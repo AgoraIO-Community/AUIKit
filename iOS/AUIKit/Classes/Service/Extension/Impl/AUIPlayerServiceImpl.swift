@@ -37,6 +37,10 @@ open class AUIPlayerServiceImpl: NSObject {
 //MARK: AUIPlayerServiceDelegate
 extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
+    public func getRoomContext() -> AUIRoomContext {
+        return AUIRoomContext.shared
+    }
+    
     public func bindRespDelegate(delegate: AUIPlayerRespDelegate) {
         respDelegates.add(delegate)
     }
@@ -152,7 +156,7 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
     public func didKTVAPIReceiveStreamMessageFrom(uid: NSInteger, streamId: NSInteger, data: Data) {
         ktvApi.didKTVAPIReceiveStreamMessageFrom(uid: uid, streamId: streamId, data: data)
-        respDelegates.objectEnumerator().forEach { obj in
+        for obj in respDelegates.allObjects {
             (obj as? AUIPlayerRespDelegate)?.onDataStreamMsgReceived(with: uid, streamId: streamId, data: data)
         }
     }
@@ -293,4 +297,3 @@ extension AUIPlayerServiceImpl: IMusicLoadStateListener {
 //
 //
 }
-

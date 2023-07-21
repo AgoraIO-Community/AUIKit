@@ -9,14 +9,14 @@ import Foundation
 
 
 /// 合唱者模型
-open class AUIChoristerModel: NSObject {
+@objcMembers open class AUIChoristerModel: NSObject {
     @objc public var userId: String = ""
     public var chorusSongNo: String?          //合唱者演唱歌曲
     public var owner: AUIUserThumbnailInfo?   //合唱者信息
 }
 
 /// 合唱Service
-public protocol AUIChorusServiceDelegate: AUICommonServiceDelegate {
+@objc public protocol AUIChorusServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应协议
     func bindRespDelegate(delegate: AUIChorusRespDelegate)
@@ -41,7 +41,7 @@ public protocol AUIChorusServiceDelegate: AUICommonServiceDelegate {
 
 
 /// 合唱响应协议
-public protocol AUIChorusRespDelegate: NSObjectProtocol {
+@objc public protocol AUIChorusRespDelegate: NSObjectProtocol {
     
     /// 合唱者加入
     /// - Parameter chorus: 加入的合唱者信息

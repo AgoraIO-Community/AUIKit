@@ -30,12 +30,15 @@ public func AUICGColor(_ keyPath: String)-> ThemeCGColorPicker {
 public func AUIGradientColor(_ keyPath: String) -> ThemeAnyPicker {
     ThemeAnyPicker(keyPath: keyPath, map: { val in
         guard let array = val as? [String] else {
+            print("SwiftTheme WARNING: Not found string key path: \(keyPath)")
             return []
         }
         var colors: [CGColor] = []
         array.forEach { hex in
-            colors.append(UIColor(hex: hex, alpha: 1).cgColor)
+            let color = UIColor(rgba: hex)
+            colors.append(color.cgColor)
         }
+        print("SwiftTheme array: \(array) \(keyPath)")
         return colors
     })
 }

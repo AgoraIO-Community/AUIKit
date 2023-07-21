@@ -12,7 +12,14 @@ public enum AUITabsIndicatorStyle {
     case line, cover
 }
 
+public enum AUITabsAlignment: Int {
+    case center = 0
+    case left
+    case right
+}
+
 public struct AUITabsStyle {
+    public var alignment: AUITabsAlignment = .center
     public var indicatorStyle: AUITabsIndicatorStyle = .cover
     public var indicatorWidth: CGFloat = 0
     public var indicatorHeight: CGFloat = 0
@@ -27,6 +34,8 @@ public struct AUITabsStyle {
     public var selectedBorderColor = UIColor.clear
     public var normalBorderColor = UIColor.clear
     public var minimumWidth: CGFloat?
+    public var theme_normalTitleColor = ThemeColorPicker(keyPath: "CommonColor.primary")
+    public var theme_selectedTitleColor = UIColor.darkGray
     public init() {}
 }
 
@@ -128,7 +137,7 @@ public struct AUITabsStyle {
         self.init(frame: frame, segmentStyle: AUITabsStyle(), titles: titles)
     }
 
-    public init(frame: CGRect, segmentStyle: AUITabsStyle = .init(), titles: [String]) {
+    public init(frame: CGRect, segmentStyle: AUITabsStyle , titles: [String]) {
         self.style = segmentStyle
         self._titleElements = titles.map({ TitleElement(title: $0)})
         super.init(frame: frame)
@@ -153,16 +162,12 @@ public struct AUITabsStyle {
         reloadData()
     }
 
-    public func setSelectIndex(index: Int, animated: Bool = true) {
-        setSelectIndex(index: index, animated: animated, sendAction: true)
-    }
-
     // Target action
     @objc private func handleTapGesture(_ gesture: UITapGestureRecognizer) {
         let x = gesture.location(in: self).x + scrollView.contentOffset.x
         for (i, label) in titleLabels.enumerated() {
             if x >= label.frame.minX && x <= label.frame.maxX {
-                setSelectIndex(index: i, animated: true)
+                setSelectIndex(index: i, animated: true, sendAction: true)
                 break
             }
         }
@@ -173,7 +178,7 @@ public struct AUITabsStyle {
         self._titleElements = titles
     }
 
-    private func setSelectIndex(index: Int, animated: Bool, sendAction: Bool, forceUpdate: Bool = false) {
+    public func setSelectIndex(index: Int, animated: Bool = true, sendAction: Bool = false, forceUpdate: Bool = false) {
 
         guard (index != selectIndex || forceUpdate), index >= 0, index < titleLabels.count else { return }
         preLabel?.textColor = style.normalTitleColor
@@ -247,7 +252,6 @@ public struct AUITabsStyle {
         layoutIfNeeded()
         // Set titles
         let font = style.titleFont
-        var titleX: CGFloat = 0.0
         var titleH = font.lineHeight
         if titleElements.contains(where: { $0.normalImage != nil }) || titleElements.contains(where: { $0.selectedImage != nil }) {
             titleH = titleH + style.titlePendingVertical
@@ -267,20 +271,39 @@ public struct AUITabsStyle {
             }
             return result
         }
-        for (index, item) in titleElements.enumerated() {
-
+        
+        var totalTitleW: CGFloat = 0.0
+        var titleWArray: [CGFloat] = []
+        for (_, item) in titleElements.enumerated() {
             var titlePendingHorizontal = style.titlePendingHorizontal
 
             //if we are using images, then add a bit of extra horizontal spacing
             if item.normalImage != nil || item.selectedImage != nil {
                 titlePendingHorizontal = titlePendingHorizontal + font.lineHeight
             }
-
             let titleW = toToSize(item.title) + titlePendingHorizontal * 2
-            let titleMargin = abs(style.titleMargin > 0 ? style.titleMargin : ((frame.width - titlePendingHorizontal * 3 - titleW * CGFloat(titles.count)) / CGFloat(titles.count)))
-            
-            titleX = (titleLabels.last?.frame.maxX ?? 0 ) + titleMargin
+            titleWArray.append(titleW)
+            totalTitleW += titleW
+        }
+        
+        let titleMargin: CGFloat = style.titleMargin
+        var titleX: CGFloat = titleMargin
+        let totalDisplayW = totalTitleW + titleMargin * CGFloat(titles.count + 1)
+        if totalDisplayW < scrollView.frame.size.width {
+            switch style.alignment {
+            case .center:
+                titleX = (scrollView.frame.size.width - totalDisplayW) / 2
+            case .right:
+                titleX = scrollView.frame.size.width - totalDisplayW - titleMargin
+            default:
+                break
+            }
+        }
+        
+        for (index, item) in titleElements.enumerated() {
+            let titleW = titleWArray[index]
             let rect = CGRect(x: titleX, y: titleY, width: titleW, height: titleH)
+            titleX += titleW + titleMargin
 
             let backLabel = UILabel(frame: .zero)
             backLabel.tag = index

@@ -9,7 +9,7 @@ import Foundation
 
 
 /// 麦位Service抽象协议
-public protocol AUIMicSeatServiceDelegate: AUICommonServiceDelegate {
+@objc public protocol AUIMicSeatServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应回调
     /// - Parameter delegate: 需要回调的对象
@@ -71,7 +71,7 @@ public protocol AUIMicSeatServiceDelegate: AUICommonServiceDelegate {
 }
 
 /// 麦位相关操作的响应
-public protocol AUIMicSeatRespDelegate: NSObjectProtocol {
+@objc public protocol AUIMicSeatRespDelegate: NSObjectProtocol {
     
     /// 有成员上麦（主动上麦/房主抱人上麦）
     /// - Parameters:

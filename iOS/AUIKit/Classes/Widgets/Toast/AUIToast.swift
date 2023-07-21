@@ -77,7 +77,8 @@ open class AUIToast: UIView {
             showAnimation(toastView: toastView, isRemove: false)
         }
     }
-    static func hidden(delay: CGFloat = 0.0) {
+    
+    public static func hidden(delay: CGFloat = 0.0) {
         if delay <= 0 {
             DispatchQueue.main.async {
                 self.currentToastView?.removeFromSuperview()

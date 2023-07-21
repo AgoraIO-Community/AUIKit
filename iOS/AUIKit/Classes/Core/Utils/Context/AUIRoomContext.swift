@@ -8,10 +8,10 @@
 import Foundation
 import SwiftTheme
 
-private let themeNames = ["UIKit", "KTV"]
 open class AUIRoomContext: NSObject {
     public static let shared: AUIRoomContext = AUIRoomContext()
     
+    public var themeNames = ["Light", "Dark"]
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {
@@ -25,6 +25,19 @@ open class AUIRoomContext: NSObject {
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
     
+    public var seatType: AUIMicSeatViewLayoutType = .eight {
+        willSet {
+            switch newValue {
+            case .one: self.seatCount = 1
+            case .six: self.seatCount = 6
+            case .eight: self.seatCount = 8
+            case .nine: self.seatCount = 9
+            }
+        }
+    }
+    
+    public var seatCount: UInt = 8
+    
     public func isRoomOwner(channelName: String) ->Bool {
         return roomInfoMap[channelName]?.owner?.userId == currentUserInfo.userId
     }
@@ -34,13 +47,15 @@ open class AUIRoomContext: NSObject {
         roomInfoMap[channelName] = nil
     }
     
+    public private(set) var currentThemeName: String?
+    
     override init() {
         super.init()
-        switchTheme(themeName: "UIKit")
+        switchTheme(themeName: "Light")
     }
     
     
-    var themeIdx = 0
+    public private(set) var themeIdx = 0
     
     
     public private(set) var themeResourcePaths: Set<URL> = Set()
@@ -48,7 +63,8 @@ open class AUIRoomContext: NSObject {
     
     public func addThemeFolderPath(path: URL) {
         themeFolderPaths.insert(path)
-        resetTheme()
+        guard let themeName = currentThemeName else {return}
+        switchTheme(themeName: themeName)
     }
     
     public func resetTheme() {
@@ -74,6 +90,8 @@ open class AUIRoomContext: NSObject {
             aui_error("SwiftTheme WARNING: Can't read json '\(themeName)' at: \(themeFolderPath)", tag: "AUIKaraokeRoomView")
             return
         }
+        
+        currentThemeName = themeName
         
         themeResourcePaths.removeAll()
         themeFolderPaths.forEach { path in

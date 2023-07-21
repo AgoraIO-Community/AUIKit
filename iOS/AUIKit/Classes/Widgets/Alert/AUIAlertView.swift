@@ -390,15 +390,15 @@ import SwiftTheme
 extension AUIAlertView {
     public class func theme_defaultAlert() -> AUIAlertView {
         let alert = AUIAlertView()
-            .theme_background(color: "CommonColor.black")
-            .theme_leftButtonBackground(color: "CommonColor.black20")
-            .theme_leftButton(color: "Alert.leftBorderColor")
-            .theme_leftButtonBorder(color: "Alert.leftBorderColor")
-            .theme_rightButtonBackground(color: "CommonColor.primary")
-            .theme_titleColor(color: "CommonColor.normalTextColor")
+            .theme_background(color: "Alert.backgroundColor")
+            .theme_leftButtonBackground(color: "Alert.leftBackgroundColor")
+            .theme_leftButton(color: "Alert.leftTextColor")
+            .theme_leftButtonBorder(color: "Alert.leftBorderColor").theme_rightButton(color: "Alert.rightTextColor")
+            .theme_rightButtonBackground(color: "Alert.rightBackgroundColor")
+            .theme_titleColor(color: "Alert.titleColor")
             .theme_titleFont(font: "CommonFont.big")
-            .theme_contentColor(color: "CommonColor.normalTextColor50")
-            .theme_contentFont(font: "CommonFont.middle")
+            .theme_contentColor(color: "Alert.contentTextColor")
+            .theme_contentFont(font: "CommonFont.middle").theme_textFieldBackground(color: "Alert.inputBackground").theme_textFieldTextColor(color: "Alert.inputTextColor")
         return alert
     }
     
@@ -419,6 +419,11 @@ extension AUIAlertView {
     
     public func theme_textFieldBackground(color: ThemeColorPicker?) -> AUIAlertView {
         textField.theme_backgroundColor = color
+        return self
+    }
+    
+    public func theme_textFieldTextColor(color: ThemeColorPicker?) -> AUIAlertView {
+        textField.theme_textColor = color
         return self
     }
     
@@ -452,6 +457,22 @@ extension AUIAlertView {
         rightButton.theme_backgroundColor = color
         return self
     }
+    
+    public func theme_backgroundImage(color: ThemeImagePicker?,state: UIControl.State) -> AUIAlertView {
+        self.rightButton.theme_setBackgroundImage(color, forState: state)
+        return self
+    }
+    
+    public func theme_titleColor(color: ThemeColorPicker?,state: UIControl.State) -> AUIAlertView {
+        self.rightButton.theme_setTitleColor(color, forState: state)
+        return self
+    }
+    
+    public func theme_rightButtonGradientBackground(color: ThemeColorPicker?) -> AUIAlertView {
+        rightButton.createThemeGradient("Alert.rightBackgroundGradientColors", [CGPoint(x: 0, y: 0),CGPoint(x: 0, y: 1)])
+        return self
+    }
+    
     public func rightButtonBorder(color: ThemeCGColorPicker?) -> AUIAlertView {
         rightButton.layer.theme_borderColor = color
         return self

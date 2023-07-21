@@ -7,6 +7,14 @@
 
 import Foundation
 
+@objc public protocol AUIInvitationUserDataProtocol: NSObjectProtocol {
+    var userAvatar: String {get}
+    var userId: String {get}
+    var userName: String {get}
+    var seatIndex: Int {set get}
+
+}
+
 
 /// 邀请Service抽象协议
 public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
@@ -24,66 +32,68 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
     /// - Returns: <#description#>
-    func sendInvitation(userId: String, seatIndex: Int?, callback: AUICallback)
+    func sendInvitation(userId: String, seatIndex: Int?, callback:@escaping AUICallback)
     
     /// 接受邀请
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - callback: <#callback description#>
-    func acceptInvitation(userId: String, seatIndex: Int?, callback: AUICallback)
+    func acceptInvitation(userId: String, seatIndex: Int?, callback:@escaping AUICallback)
     
     
     /// 拒绝邀请
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - callback: <#callback description#>
-    func rejectInvitation(userId: String, callback: AUICallback)
+    func rejectInvitation(userId: String, callback:@escaping AUICallback)
     
     /// 取消邀请
     /// - Parameters:
     ///   - id: <#id description#>
     ///   - callback: <#callback description#>
-    func cancelInvitation(userId: String, callback: AUICallback)
+    func cancelInvitation(userId: String, callback:@escaping AUICallback)
 
     /// 发送申请
     /// - Parameter callback: <#callback description#>
-    func sendApply(seatIndex: Int?, callback: AUICallback)
+    func sendApply(seatIndex: Int?, callback:@escaping AUICallback)
     
     /// 取消申请
     /// - Parameter callback: <#callback description#>
-    func cancelApply(callback: AUICallback)
+    func cancelApply(callback:@escaping AUICallback)
     
     /// 接受申请(房主同意)
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
-    func acceptApply(userId: String, seatIndex: Int?, callback: AUICallback)
+    func acceptApply(userId: String, seatIndex: Int?, callback:@escaping AUICallback)
     
     
     /// 拒绝申请(房主同意)
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - callback: <#callback description#>
-    func rejectApply(userId: String, callback: AUICallback)
+    func rejectApply(userId: String, callback:@escaping AUICallback)
 }
 
 
 /// 邀请相关操作的响应
-public protocol AUIInvitationRespDelegate: NSObjectProtocol {
+@objc public protocol AUIInvitationRespDelegate:AnyObject, NSObjectProtocol {
     
     /// 收到新的邀请请求(不动态显示content)
     /// - Parameters:
     ///   - userId: <#id description#>
     ///   - seatIndex: <#cmd description#>
-    func onReceiveNewInvitation(userId: String, seatIndex: Int?)
+    func onReceiveNewInvitation(userId: String, seatIndex: Int)
     
     
-    /// 被邀请者接受邀请
+    /// 被邀请者接受邀请且上麦成功
     /// - Parameters:
-    ///   - userId: <#id description#>
-    ///   - inviteeId: <#inviteeId description#>
+    ///   - userId: 用户id
     func onInviteeAccepted(userId: String)
     
+    /// 被邀请者接受邀请但是上麦失败
+    /// - Parameter userId: 用户id
+    func onInviteeAcceptedButFailed(userId: String)
     
     /// 被邀请者拒绝邀请
     /// - Parameters:
@@ -99,16 +109,26 @@ public protocol AUIInvitationRespDelegate: NSObjectProtocol {
     func onInvitationCancelled(userId: String)
     
     
+    /// Description 邀请列表数据更新
+    /// - Parameter inviteeList: 邀请列表
+    func onInviteeListUpdate(inviteeList: [String:AUIInvitationCallbackModel])
+
+    
+    
     /// 收到新的申请信息
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - seatIndex: <#seatIndex description#>
-    func onReceiveNewApply(userId: String, seatIndex: Int?)
+    func onReceiveNewApply(userId: String, seatIndex: Int)
     
     
-    /// 房主接受申请
-    /// - Parameter userId: <#userId description#>
+    /// 房主接受申请且上麦成功
+    /// - Parameter userId: 用户id
     func onApplyAccepted(userId: String)
+    
+    /// Description 房主接受上麦申请但是上麦失败
+    /// - Parameter userId: 用户id
+    func onApplyAcceptedButFailed(userId: String)
     
     
     /// 房主拒接申请
@@ -119,4 +139,10 @@ public protocol AUIInvitationRespDelegate: NSObjectProtocol {
     /// 取消申请
     /// - Parameter userId: <#userId description#>
     func onApplyCanceled(userId: String)
+    
+    /// Description 收到申请用户全量变更
+    /// - Parameter users info: users key is userId,value is apply index
+    func onReceiveApplyUsersUpdate(users: [String:AUIInvitationCallbackModel])
+
+
 }

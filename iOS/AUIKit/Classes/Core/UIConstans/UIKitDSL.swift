@@ -1,6 +1,6 @@
 //
 //  UIKitDSL.swift
-//  AgoraLyricsScore
+//  AUIKit
 //
 //  Created by 朱继超 on 2023/5/15.
 //
@@ -20,7 +20,7 @@ public extension UIView {
         let gradientColors: [CGColor] = colors.map { $0.cgColor }
         let startPoint = points[0]
         let endPoint = points[1]
-        let gradientLayer = CAGradientLayer().colors(gradientColors).startPoint(startPoint).endPoint(endPoint).frame(bounds).backgroundColor(UIColor.clear.cgColor)
+        let gradientLayer = CAGradientLayer().colors(gradientColors).startPoint(startPoint).endPoint(endPoint).frame(bounds).backgroundColor(UIColor.clear.cgColor).locations([0,1])
         layer.insertSublayer(gradientLayer, at: 0)
         return self
     }

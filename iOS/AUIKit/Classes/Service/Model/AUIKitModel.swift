@@ -8,20 +8,21 @@
 import Foundation
 import YYModel
 
-public typealias AUICallback = (Error?) -> ()
+public typealias AUICallback = (NSError?) -> ()
 
-public typealias AUICreateRoomCallback = (Error?, AUIRoomInfo?) -> ()
+public typealias AUICreateRoomCallback = (NSError?, AUIRoomInfo?) -> ()
 
-public typealias AUIUserListCallback = (Error?, [AUIUserInfo]?) -> ()
+public typealias AUIUserListCallback = (NSError?, [AUIUserInfo]?) -> ()
 
-public typealias AUIRoomListCallback = (Error?, [AUIRoomInfo]?) -> ()
+public typealias AUIRoomListCallback = (NSError?, [AUIRoomInfo]?) -> ()
 
 @objcMembers
 /// 创建房间信息对象，用于创建房间时传递
 open class AUICreateRoomInfo: NSObject {
     public var roomName: String = ""    //房间名称
     public var thumbnail: String = ""   //房间列表上的缩略图
-    public var seatCount: UInt = 0      //麦位个数
+    public var micSeatCount: UInt = 8      //麦位个数
+    public var micSeatStyle: UInt = 3    //麦位样式 1、6为6麦位环形样式 8麦位为长方形Collection 9为特殊layout的Collection
     public var password: String?        //房间密码
     
     class func modelCustomPropertyMapper()->NSDictionary {
@@ -63,11 +64,14 @@ open class AUIRoomInfo: AUICreateRoomInfo {
 
 @objcMembers
 ///用户简略信息，用于各个模型传递简单数据
-open class AUIUserThumbnailInfo: NSObject {
+open class AUIUserThumbnailInfo: NSObject,AUIUserCellUserDataProtocol {
+    
     public var userId: String = ""      //用户Id
     public var userName: String = ""    //用户名
     public var userAvatar: String = ""  //用户头像
-    
+    public var seatIndex: Int = -1 //用户是否在麦上
+    public var isOwner: Bool = false //是否是owner
+
     public func isEmpty() -> Bool {
         guard userId.count > 0, userName.count > 0 else {return true}
         
