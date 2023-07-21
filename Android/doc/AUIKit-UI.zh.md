@@ -7,7 +7,7 @@ AUIKit UI提供了基础ui组件和功能ui组件，基于这两套ui组件，�
 ## 目录结构
 ```
 功能ui组件：
-auikit/src/main/java/io/agora/auikit/ui
+auikit-ui/src/main/java/io/agora/auikit/ui
 ├── micseats                                            麦位ui组件
 │       ├── IMicSeatsView.java                          麦位ui控制接口
 │       ├── IMicSeatItemView.java                       麦位Item ui控制接口
@@ -74,7 +74,7 @@ auikit/src/main/java/io/agora/auikit/ui
 
 
 基础ui组件：
-auikit/src/main/java/io/agora/auikit/ui/basic
+auikit-ui/src/main/java/io/agora/auikit/ui/basic
 ├── AUIAlertDialog.java                                 公用弹窗
 ├── AUIBottomDialog.java                                公用底部弹窗
 ├── AUIButton.java                                      公用按钮
@@ -108,19 +108,19 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 通过使用主题，可以实现全局统一的ui修改，也可以实现动态换肤功能。
 
 * 对于**基础ui组件**，AUIKit提供了两套基础ui主题，如下
-亮主题(默认) -> [Theme.AUIKit.Basic](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/themes.xml)
-暗主题 -> [Theme.AUIKit.Basic.Dark](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/themes_dark.xml)
+亮主题(默认) -> [Theme.AUIKit.Basic](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/themes.xml)
+暗主题 -> [Theme.AUIKit.Basic.Dark](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/themes_dark.xml)
 
 开发者可以基于这两套主题定义自己的主题，然后在自己主题里通过修改组件的appearance配置来修改基础ui组件默认样式。
 
-* 对于**功能ui组件**，AUIKit提供了一套功能ui主题，即[Theme.AUIKit](../auikit/src/main/res/values/themes.xml)
+* 对于**功能ui组件**，AUIKit提供了一套功能ui主题，即[Theme.AUIKit](../auikit-ui/src/main/res/values/themes.xml)
 
 开发者同样可以基于这套主题定义自己的主题，然后在自己主题里通过修改组件的appearance配置来修改功能ui组件默认样式。
 
 ### <span>**`主题的使用`**</span>
-下面以[Theme.AUIKit](../auikit/src/main/res/values/themes.xml)主题的使用为例说明主题如何使用。
+下面以[Theme.AUIKit](../auikit-ui/src/main/res/values/themes.xml)主题的使用为例说明主题如何使用。
 
-- 在项目里集成[auikit](../auikit)源码
+- 在项目里集成[auikit](../auikit-ui)源码
 - 在app模块的src/main/res/value/themes.xml里定义
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -180,9 +180,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 ### <span>**`功能ui组件`**</span>
 #### **麦位组件**
 
-麦位ui控件 -> [AUIMicSeatsView](../auikit/src/main/java/io/agora/auikit/ui/micseats/impl/AUIMicSeatsView.java)
-麦位自定义属性 -> [AUIMicSeatsViewAttrs](../auikit/src/main/java/io/agora/auikit/ui/micseats/res/values/attrs.xml)
-麦位默认样式 -> [AUIMicSeatsViewStyle](../auikit/src/main/java/io/agora/auikit/ui/micseats/res/values/styles.xml)
+麦位ui控件 -> [AUIMicSeatsView](../auikit-ui/src/main/java/io/agora/auikit/ui/micseats/impl/AUIMicSeatsView.java)
+麦位自定义属性 -> [AUIMicSeatsViewAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/micseats/res/values/attrs.xml)
+麦位默认样式 -> [AUIMicSeatsViewStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/micseats/res/values/styles.xml)
 
 **主题属性**
 | 属性 | 注释 |
@@ -270,9 +270,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 
 #### **点唱组件**
 
-点唱ui控件 -> [AUIJukeboxView](../auikit/src/main/java/io/agora/auikit/ui/jukebox/impl/AUIJukeboxView.java)
-点唱自定义属性 -> [AUIJukeboxViewAttrs](../auikit/src/main/java/io/agora/auikit/ui/jukebox/res/values/attrs.xml)
-点唱默认样式 -> [AUIJukeboxViewStyle](../auikit/src/main/java/io/agora/auikit/ui/jukebox/res/values/styles.xml)
+点唱ui控件 -> [AUIJukeboxView](../auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/impl/AUIJukeboxView.java)
+点唱自定义属性 -> [AUIJukeboxViewAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/res/values/attrs.xml)
+点唱默认样式 -> [AUIJukeboxViewStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/res/values/styles.xml)
 
 **主题属性**
 | 属性 | 注释 |
@@ -408,9 +408,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 
 #### **播放组件**
 
-播放ui控件 -> [AUIMusicPlayerView](../auikit/src/main/java/io/agora/auikit/ui/musicplayer/impl/AUIMusicPlayerView.java)
-播放自定义属性 -> [AUIMusicPlayerViewAttrs](../auikit/src/main/java/io/agora/auikit/ui/musicplayer/res/values/attrs.xml)
-播放默认样式 -> [AUIMusicPlayerViewStyle](../auikit/src/main/java/io/agora/auikit/ui/musicplayer/res/values/styles.xml)
+播放ui控件 -> [AUIMusicPlayerView](../auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/impl/AUIMusicPlayerView.java)
+播放自定义属性 -> [AUIMusicPlayerViewAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/res/values/attrs.xml)
+播放默认样式 -> [AUIMusicPlayerViewStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/res/values/styles.xml)
 
 **主题属性**
 | 属性 | 注释 |
@@ -484,9 +484,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 ### <span>**`基础ui组件`**</span>
 #### **Button**
 
-按钮控件 -> [AUIButton](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIButton.java)
-按钮自定义属性 -> [AUIButtonAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
-按钮默认样式 -> [AUIButtonwStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
+按钮控件 -> [AUIButton](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIButton.java)
+按钮自定义属性 -> [AUIButtonAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
+按钮默认样式 -> [AUIButtonwStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_button.xml)
 
 **主题属性**
 | 属性 | 注释 |
@@ -501,9 +501,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 
 #### **EditText**
 
-输入框控件 -> [AUIEditText](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIEditText.java)
-输入框自定义属性 -> [AUIEditTextAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
-输入框默认样式 -> [AUIEditTextStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
+输入框控件 -> [AUIEditText](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIEditText.java)
+输入框自定义属性 -> [AUIEditTextAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
+输入框默认样式 -> [AUIEditTextStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_edittext.xml)
 
 **主题属性**
 | 属性 | 注释 |
@@ -513,9 +513,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 
 #### **AlertDialog**
 
-弹窗控件 -> [AUIAlertDialog](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIAlertDialog.java)
-弹窗自定义属性 -> [AUIAlertDialogAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
-弹窗默认样式 -> [AUIAlertDialogStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
+弹窗控件 -> [AUIAlertDialog](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIAlertDialog.java)
+弹窗自定义属性 -> [AUIAlertDialogAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
+弹窗默认样式 -> [AUIAlertDialogStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_alert_dialog.xml)
 
 **主题属性**
 | 属性 | 注释 |
@@ -525,9 +525,9 @@ auikit/src/main/java/io/agora/auikit/ui/basic
 
 #### **BottomDialog**
 
-底部弹窗控件 -> [AUIBottomDialog](../auikit/src/main/java/io/agora/auikit/ui/basic/AUIBottomDialog.java)
-底部弹窗自定义属性 -> [AUIBottomDialogAttrs](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
-底部弹窗默认样式 -> [AUIBottomDialogStyle](../auikit/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
+底部弹窗控件 -> [AUIBottomDialog](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIBottomDialog.java)
+底部弹窗自定义属性 -> [AUIBottomDialogAttrs](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
+底部弹窗默认样式 -> [AUIBottomDialogStyle](../auikit-ui/src/main/java/io/agora/auikit/ui/basic/res/values/attrs_aui_bottom_dialog.xml)
 
 **主题属性**
 | 属性 | 注释 |

@@ -7,7 +7,13 @@ import retrofit2.http.POST
 
 interface InvitationInterface {
 
-    @POST("application/create")
-    fun createApplication(@Body req: InvitationCreateReq): Call<CommonResp<Any>>
+    @POST("invitation/create")
+    fun initiateCreate(@Body req: InvitationCreateReq): Call<CommonResp<Any>>
+
+    @POST("invitation/accept")
+    fun acceptInitiate(@Body req: InvitationAcceptReq): Call<CommonResp<Any>>
+
+    @POST("invitation/cancel")
+    fun acceptCancel(@Body req: RejectInvitationAccept): Call<CommonResp<Any>>
 
 }

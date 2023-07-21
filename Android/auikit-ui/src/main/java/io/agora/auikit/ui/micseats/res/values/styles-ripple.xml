@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AUIRippleAnimation">
+        <item name="aui_ripple_appearance">@style/AUIRippleAnimation.Appearance</item>
+    </style>
+
+    <!-- 麦位水波纹默认样式 -->
+    <style name="AUIRippleAnimation.Appearance">
+        <item name="aui_ripple_color">@color/aui_ripple_stroke_color</item>
+        <item name="aui_ripple_stroke_width">2dp</item>
+        <item name="aui_ripple_initial_radius">90dp</item>
+        <item name="aui_ripple_max_radius">120dp</item>
+        <item name="aui_ripple_speed">500</item>
+        <item name="aui_ripple_max_radiusRate">0.85</item>
+    </style>
+
+</resources>

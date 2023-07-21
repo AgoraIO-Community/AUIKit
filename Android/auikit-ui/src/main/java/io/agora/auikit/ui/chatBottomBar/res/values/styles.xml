@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AUIPrimaryView">
+        <item name="aui_primary_appearance">@style/AUIPrimaryView.Appearance</item>
+    </style>
+
+    <!--输入样式-->
+    <style name="AUIPrimaryView.Appearance" >
+        <item name="aui_primary_contentPadding">7dp</item>
+        <item name="aui_primary_input_width">38dp</item>
+        <item name="aui_primary_input_height">38dp</item>
+        <item name="aui_primary_input_resource">@drawable/voice_icon_input</item>
+        <item name="aui_primary_input_background">@drawable/aui_chat_bottom_bar_item_icon</item>
+        <item name="aui_primary_input_marginStart">12dp</item>
+        <item name="aui_primary_input_mic_width">30dp</item>
+        <item name="aui_primary_input_mic_height">30dp</item>
+        <item name="aui_primary_input_mic_resource">@drawable/voice_icon_circle</item>
+
+        <item name="aui_primary_micVisibility">gone</item>
+        <item name="aui_primary_mic_marginEnd">8dp</item>
+
+        <item name="aui_primary_edit_layout_background">@drawable/aui_chat_bottom_bar_input_edit</item>
+        <item name="aui_primary_edit_layout_marginStart">18dp</item>
+        <item name="aui_primary_edit_layout_marginEnd">5dp</item>
+        <item name="aui_primary_edit_background">@color/voice_white</item>
+        <item name="aui_primary_edit_maxLines">1</item>
+        <item name="aui_primary_edit_singleLine">true</item>
+        <item name="aui_primary_edit_textSize">16sp</item>
+        <item name="aui_primary_edit_textColor">@color/voice_color_333333</item>
+
+        <item name="aui_primary_emoji_resource">@drawable/voice_icon_face</item>
+        <item name="aui_primary_emoji_width">28dp</item>
+        <item name="aui_primary_emoji_height">28dp</item>
+
+        <item name="aui_primary_send_background">@drawable/aui_chat_bottom_bar_send_bg</item>
+        <item name="aui_primary_send_textColor">@color/voice_white</item>
+        <item name="aui_primary_send_textSize">16sp</item>
+        <item name="aui_primary_send_marginEnd">15dp</item>
+        <item name="aui_primary_send_width">67dp</item>
+        <item name="aui_primary_send_height">36dp</item>
+
+        <item name="aui_primary_expression_background">@null</item>
+    </style>
+
+</resources>
