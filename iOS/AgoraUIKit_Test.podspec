@@ -47,15 +47,16 @@ TODO: Add long description of the pod here.
   #s.source_files = 'AgoraUIKit_Test/Classes/**/*.swift'
   
     s.source_files = [
-        'AgoraUIKit_Test/Classes/Widgets/**/*',
-        'AgoraUIKit_Test/Classes/Core/Utils/Extension/*',
-        'AgoraUIKit_Test/Classes/Core/Utils/Theme/*',
-        'AgoraUIKit_Test/Classes/Core/Utils/Log/*',
-        'AgoraUIKit_Test/Classes/Core/Utils/Localized/*',
-        'AgoraUIKit_Test/Classes/Core/UIConstans/*',
-        'AgoraUIKit_Test/Classes/Core/FoundationExtension/*'
+        'AgoraUIKit_Test/Classes/Widgets/**/*.swift',
+        'AgoraUIKit_Test/Classes/Widgets/**/**/*.swift',
+        'AgoraUIKit_Test/Classes/Core/Utils/Extension/*.swift',
+        'AgoraUIKit_Test/Classes/Core/Utils/Theme/*.swift',
+        'AgoraUIKit_Test/Classes/Core/Utils/Log/*.swift',
+        'AgoraUIKit_Test/Classes/Core/Utils/Localized/*.swift',
+        'AgoraUIKit_Test/Classes/Core/UIConstans/*.swift',
+        'AgoraUIKit_Test/Classes/Core/FoundationExtension/*.swift'
     ]
-    s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
+    #s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 
   s.static_framework = true
   

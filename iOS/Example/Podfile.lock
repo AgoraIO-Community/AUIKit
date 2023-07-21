@@ -2,7 +2,7 @@ PODS:
   - Agora_Chat_iOS (1.1.0)
   - AgoraLyricsScore (1.1.1-beta-3)
   - AgoraRtcEngine_iOS (1.0)
-  - AgoraUIKit_Test (0.2.0.1-beta-ios):
+  - AgoraUIKit_Test (0.2.0-beta-ios):
     - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_iOS
@@ -60,7 +60,7 @@ SPEC CHECKSUMS:
   Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
   AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
-  AgoraUIKit_Test: 043411730721073427a7964ddb45e00bb58d58cb
+  AgoraUIKit_Test: 5221381771263fc50a02bd764855265e808b5751
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
