@@ -44,6 +44,7 @@ class AUIRtmMsgProxy : RtmEventListener {
     private val msgCacheAttr: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
     private val userDelegates: MutableList<AUIRtmUserProxyDelegate> = mutableListOf()
     private val errorDelegates: MutableList<AUIRtmErrorProxyDelegate> = mutableListOf()
+    var skipMetaEmpty = 0
 
     fun cleanCache(channelName: String) {
         msgCacheAttr.remove(channelName)
@@ -89,6 +90,10 @@ class AUIRtmMsgProxy : RtmEventListener {
         originEventListeners?.onStorageEvent(event)
         event ?: return
         if (event.data.metadataItems.isEmpty()) {
+            if(skipMetaEmpty > 0){
+                skipMetaEmpty --
+                return
+            }
             val delegateKey = "${event.target}__"
             msgDelegates[delegateKey]?.forEach { delegate ->
                 delegate.onMsgRecvEmpty(event.target)

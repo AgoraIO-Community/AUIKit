@@ -26,7 +26,11 @@ import io.agora.auikit.service.http.user.UserInterface
 import io.agora.auikit.service.rtm.AUIRtmErrorProxyDelegate
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.*
+import io.agora.auikit.utils.AUILogger
+import io.agora.auikit.utils.AgoraEngineCreator
+import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.utils.MapperUtils
+import io.agora.auikit.utils.ThreadManager
 import io.agora.rtm.RtmClient
 import io.agora.rtm.RtmConstants
 import retrofit2.Call
@@ -134,6 +138,7 @@ class AUIRoomManagerImpl(
             })
     }
     override fun enterRoom(roomId: String, token: String, callback: AUICallback?) {
+        mChannelName = roomId
         subChannelStream.set(false)
         subChannelMsg.set(false)
         val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, Any>
@@ -158,6 +163,8 @@ class AUIRoomManagerImpl(
                 )
             } else {
                 AUILogger.logger().d("EnterRoom", "subscribe room roomId=$roomId token=$token")
+
+                rtmManager.subscribeMsg(roomId, "", this)
                 rtmManager.subscribe(RtmConstants.RtmChannelType.MESSAGE,roomId, token) { subscribeError ->
                     if (subscribeError != null) {
                         callback?.onResult(
@@ -190,8 +197,6 @@ class AUIRoomManagerImpl(
 
     private fun checkSubChannel(roomId:String,callback: AUICallback?){
         if (subChannelMsg.get()  && subChannelStream.get()){
-            mChannelName = roomId
-            rtmManager.subscribeMsg(roomId, "", this)
             callback?.onResult(null)
         }
     }
@@ -289,7 +294,7 @@ class AUIRoomManagerImpl(
     }
 
     override fun onMsgRecvEmpty(channelName: String) {
-        if (channelName == getChannelName()){
+        if (channelName == getChannelName()) {
             delegateHelper.notifyDelegate {
                 it.onRoomDestroy(channelName)
             }

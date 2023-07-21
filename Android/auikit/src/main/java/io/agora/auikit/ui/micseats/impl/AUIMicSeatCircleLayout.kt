@@ -15,7 +15,6 @@ import io.agora.auikit.ui.micseats.IMicSeatItemView
 import io.agora.auikit.ui.micseats.IMicSeatItemView.ChorusType
 import io.agora.auikit.ui.micseats.IMicSeatsView
 import io.agora.auikit.utils.DeviceTools
-import io.agora.auikit.utils.ThreadManager
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -95,7 +94,8 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
         centerX = (mWidth/2).toFloat()
         centerY = (mHeight/2).toFloat()
 
-        ThreadManager.getInstance().runOnMainThread{
+
+        post {
             invalidate()
             if (!isReady){
                 initView(context)

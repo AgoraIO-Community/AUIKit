@@ -23,6 +23,7 @@
         <!--  头部组件      -->
         <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance</item>
         <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance</item>
+        <item name="aui_memberInfoList_appearance">@style/AUIRoomMemberListView</item>
 
         <!--  底部组件      -->
         <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance</item>

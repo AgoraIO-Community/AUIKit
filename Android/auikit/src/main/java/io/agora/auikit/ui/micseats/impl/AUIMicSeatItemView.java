@@ -171,7 +171,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView,
     @Override
     public void setUserAvatarImageUrl(String url) {
         RequestOptions options = RequestOptions.circleCropTransform();
-        Glide.with(ivUserAvatar).load(url).apply(options).into(ivUserAvatar);
+        Glide.with(getContext()).load(url).apply(options).into(ivUserAvatar);
     }
 
     @Override

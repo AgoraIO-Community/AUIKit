@@ -17,12 +17,11 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.android.material.textview.MaterialTextView
 import io.agora.auikit.R
 import io.agora.auikit.databinding.AuiApplyListLayoutBinding
-import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.model.AUIActionModel
+import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.utils.DeviceTools.dp
 import io.agora.auikit.utils.ResourcesTools
-import io.agora.auikit.utils.ThreadManager
 
 class VoiceRoomApplyListFragment : Fragment(),
     SwipeRefreshLayout.OnRefreshListener, VoiceApplyAdapter.ApplyEventListener {
@@ -124,10 +123,12 @@ class VoiceRoomApplyListFragment : Fragment(),
     }
 
     fun refreshData(userList:MutableList<AUIUserInfo?>){
-        userList.let {
-            total = it.size
-            checkEmpty()
-            applyAdapter?.refresh(it)
+        mRoomViewBinding.root.post {
+            userList.let {
+                total = it.size
+                checkEmpty()
+                applyAdapter?.refresh(it)
+            }
         }
     }
 
@@ -176,9 +177,7 @@ class VoiceApplyAdapter constructor(
         }
         holder.action.text = mContext?.getString(R.string.aui_room_apply_accept)
         holder.action.alpha = 1.0f
-        ThreadManager.getInstance().runOnMainThread{
-            mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
-        }
+        mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
         holder.action.setOnClickListener{
             userInfo.let { index->
                 if (index?.micIndex != -1){
@@ -197,12 +196,10 @@ class VoiceApplyAdapter constructor(
     }
 
     fun refresh(data:MutableList<AUIUserInfo?>){
-        ThreadManager.getInstance().runOnMainThread {
-            val list: MutableList<AUIUserInfo?> = data
-            Log.e("apex","apply refresh ${list.size}")
-            dataList = list
-            notifyDataSetChanged()
-        }
+        val list: MutableList<AUIUserInfo?> = data
+        Log.e("apex","apply refresh ${list.size}")
+        dataList = list
+        notifyDataSetChanged()
     }
 
     interface ApplyEventListener{

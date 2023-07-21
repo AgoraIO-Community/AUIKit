@@ -20,7 +20,6 @@ import io.agora.auikit.model.AUIChatEntity
 import io.agora.auikit.ui.chatList.IAUIChatListView
 import io.agora.auikit.ui.chatList.listener.AUIChatListItemClickListener
 import io.agora.auikit.utils.DeviceTools
-import io.agora.auikit.utils.ThreadManager
 
 class AUIChatListView : RelativeLayout,
     IAUIChatListView {
@@ -105,18 +104,20 @@ class AUIChatListView : RelativeLayout,
             if (isScrollBottom) {
                 refreshSelectLast(msgList)
             } else {
-                adapter?.refresh(msgList)
+                post {
+                    adapter?.refresh(msgList)
+                }
             }
         }
     }
 
     override fun refreshSelectLast(msgList: ArrayList<AUIChatEntity>?) {
         if (adapter != null) {
-            Log.e("apex","refreshSelectLast ${msgList?.size}")
-            msgList?.let { adapter?.refresh(it) }
-            val position = adapter?.itemCount
-            if (position != null && position > 0) {
-                ThreadManager.getInstance().runOnMainThread{
+            post {
+                Log.e("apex","refreshSelectLast ${msgList?.size}")
+                msgList?.let { adapter?.refresh(it) }
+                val position = adapter?.itemCount
+                if (position != null && position > 0) {
                     mViewBinding.listview.smoothScrollToPosition( position - 1)
                 }
             }

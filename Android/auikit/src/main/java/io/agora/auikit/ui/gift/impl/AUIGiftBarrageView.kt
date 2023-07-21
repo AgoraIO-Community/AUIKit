@@ -66,11 +66,13 @@ class AUIGiftBarrageView : LinearLayout,
     }
 
     override fun refresh(giftList:ArrayList<AUIGiftEntity>?) {
-        giftList?.let { adapter.refresh(it) }
-        if (adapter.itemCount > 0) {
-            aGiftViewBinding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+        post {
+            giftList?.let { adapter.refresh(it) }
+            if (adapter.itemCount > 0) {
+                aGiftViewBinding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+            }
+            clearTiming()
         }
-        clearTiming()
     }
 
     /**

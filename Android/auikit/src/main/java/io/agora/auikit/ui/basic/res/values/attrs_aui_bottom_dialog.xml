@@ -74,7 +74,7 @@
         <item name="android:backgroundDimAmount">0</item>
 
         <!-- 背景 -->
-        <item name="aui_bottomDialog_backgroundColor">@android:color/white</item>
+        <item name="aui_bottomDialog_backgroundColor">#F9FAFA</item>
         <item name="aui_bottomDialog_backgroundShadowColor">@android:color/darker_gray</item>
         <item name="aui_bottomDialog_backgroundShadowRadius">3dp</item>
         <item name="aui_bottomDialog_backgroundShadowOffsetX">0dp</item>
@@ -86,9 +86,9 @@
         <item name="aui_bottomDialog_backgroundOffsetTop">@null</item>
 
         <item name="aui_bottomDialog_backgroundIndicatorTop">12dp</item>
-        <item name="aui_bottomDialog_backgroundIndicatorColor">#59C3C5FE</item>
-        <item name="aui_bottomDialog_backgroundIndicatorWidth">48dp</item>
-        <item name="aui_bottomDialog_backgroundIndicatorHeight">2dp</item>
+        <item name="aui_bottomDialog_backgroundIndicatorColor">#C8CDD0</item>
+        <item name="aui_bottomDialog_backgroundIndicatorWidth">36dp</item>
+        <item name="aui_bottomDialog_backgroundIndicatorHeight">3dp</item>
 
         <!-- 间距/大小 -->
         <item name="aui_bottomDialog_contentPadding">@null</item>
@@ -120,7 +120,7 @@
         <!-- 列表 -->
         <item name="aui_bottomDialog_listOrientation">vertical</item>
         <item name="aui_bottomDialog_listDivider">@drawable/aui_bottom_dialog_list_divider</item>
-        <item name="aui_bottomDialog_listDividerColor">#C3C5FE</item>
+        <item name="aui_bottomDialog_listDividerColor">#CFCFCF</item>
         <item name="aui_bottomDialog_listSpan">1</item>
 
         <item name="aui_bottomDialog_menu_appearance">@style/AUIBottomDialogMenu</item>

@@ -52,9 +52,13 @@
 
         <!-- 按钮 -->
         <item name="aui_roomButton_normalColor">#33FFFFFF</item>
-
     </style>
 
+    <style name="AUIRoomMemberListView">
+        <item name="aui_memberInfoList_title_textColor">#171A1C</item>
+        <item name="aui_memberInfoList_userName_textColor">#171A1C</item>
+        <item name="aui_memberInfoList_userNameInfo_textColor">#919BA1</item>
+    </style>
 
     <style name="aui_member_seat_roundStyle">
         <item name="cornerFamily">rounded</item>

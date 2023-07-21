@@ -17,7 +17,6 @@ import com.google.android.material.textview.MaterialTextView
 import io.agora.auikit.R
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.ui.basic.AUIImageView
-import io.agora.auikit.utils.ThreadManager
 
 class AUIGiftRowAdapter constructor(
     private val context: Context,
@@ -72,26 +71,22 @@ class AUIGiftRowAdapter constructor(
                 .append(":").append("\n").append(context.getString(R.string.voice_gift_sent))
                 .append(" ").append(auiGiftEntity.giftName)
 
-            ThreadManager.getInstance().runOnMainThread{
-                Glide.with(context)
-                    .load(sendUser?.userAvatar)
-                    .error(R.drawable.aui_gift_user_default_icon)
-                    .into(avatar)
+            Glide.with(context)
+                .load(sendUser?.userAvatar)
+                .error(R.drawable.aui_gift_user_default_icon)
+                .into(avatar)
 
-                Glide.with(context)
-                    .load(auiGiftEntity.giftIcon)
-                    .into(icon)
-            }
+            Glide.with(context)
+                .load(auiGiftEntity.giftIcon)
+                .into(icon)
         }
         val span = SpannableString(builder.toString())
         name.text = span
     }
 
     fun removeAll() {
-        ThreadManager.getInstance().runOnMainThread {
-            notifyItemRangeRemoved(0, dataList.size)
-            dataList.clear()
-        }
+        notifyItemRangeRemoved(0, dataList.size)
+        dataList.clear()
     }
 
     fun refresh(giftList:ArrayList<AUIGiftEntity>) {
@@ -101,12 +96,10 @@ class AUIGiftRowAdapter constructor(
         giftList.let { dataList.addAll(it) }
         // 只更新新插入的礼物item
         if ( dataList.size > 0 && positionStart < dataList.size) {
-            ThreadManager.getInstance().runOnMainThread{
-                notifyItemRangeInserted(
-                    positionStart,
-                    dataList.size
-                )
-            }
+            notifyItemRangeInserted(
+                positionStart,
+                dataList.size
+            )
         }
     }
 

@@ -63,7 +63,14 @@ public class ThreadManager {
      * @param runnable
      */
     public void runOnMainThread(Runnable runnable) {
-        mMainThreadHandler.post(runnable);
+        if(runnable == null){
+            return;
+        }
+        if (isMainThread()) {
+            runnable.run();
+        } else {
+            mMainThreadHandler.post(runnable);
+        }
     }
 
     public void runOnMainThreadDelay(Runnable runnable, int delay) {

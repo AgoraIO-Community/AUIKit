@@ -17,7 +17,7 @@
         <!-- 麦位组件 -->
         <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
         <item name="aui_micSeatItem_appearance">@style/AUIMicSeatItem.Appearance</item>
-        <item name="aui_micSeatDialog_appearance">@style/AUIMicSeatDialog.Appearance</item>
+        <item name="aui_micSeatDialog_appearance">@style/AUIMicSeatDialog.Appearance.Dark</item>
 
         <!-- 点歌器组件 -->
         <item name="aui_jukebox_appearance">@style/AUIJukebox.Appearance</item>
@@ -32,7 +32,8 @@
         <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance</item>
 
         <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance.Dark</item>
-        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance</item>
+        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance.Dark</item>
+        <item name="aui_memberInfoList_appearance">@style/AUIRoomMemberListView.Dark</item>
         <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance.Dark</item>
         <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance.Dark</item>
         <item name="aui_chatListView_appearance">@style/AUIChatListView.Appearance.Dark</item>
@@ -41,5 +42,24 @@
         <item name="aui_action_appearance">@style/AUIAction.Appearance.Dark</item>
 
     </style>
+
+    <style name="AUIRoomMemberListView.Dark">
+        <item name="aui_memberInfoList_title_textColor">#F9FAFA</item>
+        <item name="aui_memberInfoList_userName_textColor">#F9FAFA</item>
+        <item name="aui_memberInfoList_userNameInfo_textColor">#919BA1</item>
+    </style>
+
+    <style name="AUIMemberInfo.Appearance.Dark" parent="AUIMemberInfo.Appearance">
+        <item name="aui_upperRight_default_member_bg">@drawable/aui_member_item_dark_bg</item>
+        <item name="aui_upperRight_count_background">@drawable/aui_member_count_dark_bg</item>
+        <item name="aui_roomButton_normalColor">#33000000</item>
+    </style>
+
+    <style name="AUIMicSeatDialog.Appearance.Dark">
+        <item name="aui_micSeatDialog_titleTextColor">#F9FAFA</item>
+        <item name="aui_micSeatDialog_buttonNormalTextColor">#F9FAFA</item>
+        <item name="aui_micSeatDialog_buttonsDividerColor">#2F3437</item>
+    </style>
+
 
 </resources>
