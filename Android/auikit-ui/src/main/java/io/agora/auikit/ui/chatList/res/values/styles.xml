@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AUIBarrageView">
+        <item name="aui_barrage_appearance">@style/AUIBarrageView.Appearance</item>
+    </style>
+
+    <!-- 弹幕默认样式 -->
+    <style name="AUIBarrageView.Appearance">
+
+        <item name="aui_barrage_normal_title_tag_icon">@drawable/aui_icon_owner</item>
+        <item name="aui_barrage_normal_title_TextColor">@color/voice_color_8bb3ff</item>
+        <item name="aui_barrage_normal_content_TextColor">@color/voice_white</item>
+
+        <item name="aui_barrage_system_title_TextColor">@color/voice_color_8bb3ff</item>
+        <item name="aui_barrage_system_content_TextColor">@color/voice_color_fcf0b3</item>
+
+        <item name="aui_barrage_system_endIcon_resource">@drawable/aui_icon_shaking_hand</item>
+    </style>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- praise effect 自定义属性 -->
+    <declare-styleable name="voice_LikeLayout">
+        <attr name="voice_initX" format="dimension" />
+        <attr name="voice_initY" format="dimension" />
+        <attr name="voice_xRand" format="dimension" />
+        <attr name="voice_animLengthRand" format="dimension" />
+        <attr name="voice_xPointFactor" format="dimension" />
+        <attr name="voice_animLength" format="dimension" />
+        <attr name="voice_heart_width" format="dimension" />
+        <attr name="voice_heart_height" format="dimension" />
+        <attr name="voice_bezierFactor" format="integer" />
+        <attr name="voice_anim_duration" format="integer" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="?attr/aui_upperLeft_appearance"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <io.agora.auikit.ui.basic.AUIImageView
+            android:id="@+id/back_icon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:visibility="?attr/aui_upperLeft_backVisibility"
+            app:contentPadding="7dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/aui_room_info_icon_back"
+            android:layout_centerVertical="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/back_icon"
+            android:layout_width="?attr/aui_upperLeft_layout_width"
+            android:layout_height="?attr/aui_upperLeft_layout_height"
+            android:background="?attr/aui_upperLeft_Layout_background"
+            android:paddingHorizontal="?attr/aui_upperLeft_layout_paddingHorizontal"
+            android:paddingVertical="?attr/aui_upperLeft_layout_paddingVertical"
+            >
+
+                <io.agora.auikit.ui.basic.AUIImageView
+                    android:id="@+id/ivRoomCover"
+                    style="@style/ShapeAppearance.MaterialComponents.RoundComponent"
+                    android:layout_width="?attr/aui_upperLeft_avatar_width"
+                    android:layout_height="?attr/aui_upperLeft_avatar_height"
+                    android:src="@drawable/aui_room_info_avatar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/tvRoomTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxWidth="?attr/aui_upperLeft_title_max_width"
+                    android:minWidth="?attr/aui_upperLeft_title_min_width"
+                    android:text="?attr/aui_upperLeft_titleText"
+                    android:textStyle="?attr/aui_upperLeft_titleTextStyle"
+                    android:layout_marginStart="?attr/aui_upperLeft_title_spacing"
+                    android:visibility="?attr/aui_upperLeft_titleVisibility"
+                    android:textColor="?attr/aui_upperLeft_titleTextColor"
+                    android:textSize="?attr/aui_upperLeft_titleTextSize"
+                    android:gravity="left"
+                    android:layout_marginEnd="3dp"
+                    app:layout_constraintStart_toEndOf="@id/ivRoomCover"
+                    app:layout_constraintEnd_toStartOf="@+id/ivRoomRightIconBg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/tvRoomSubtitle"
+                    />
+
+                <TextView
+                    android:id="@+id/tvRoomSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxWidth="?attr/aui_upperLeft_subtitle_max_width"
+                    android:minWidth="?attr/aui_upperLeft_subtitle_min_width"
+                    android:textStyle="?attr/aui_upperLeft_subtitleTextStyle"
+                    android:text="?attr/aui_upperLeft_subtitleText"
+                    android:layout_marginStart="?attr/aui_upperLeft_subtitle_spacing"
+                    android:visibility="?attr/aui_upperLeft_subtitleVisibility"
+                    android:textColor="?attr/aui_upperLeft_subtitleTextColor"
+                    android:textSize="?attr/aui_upperLeft_subtitleTextSize"
+                    android:gravity="left"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivRoomCover"
+                    app:layout_constraintEnd_toStartOf="@+id/ivRoomRightIconBg"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRoomTitle"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ivRoomRightIconBg"
+                    android:layout_width="?attr/aui_upperLeft_icon_bg_width"
+                    android:layout_height="?attr/aui_upperLeft_icon_bg_height"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="?attr/aui_upperLeft_rightIcon_bg_Visibility"
+                    android:background="?attr/aui_upperLeft_right_icon_background"
+                    android:layout_marginEnd="?attr/aui_upperLeft_rightIcon_bg_marginRight"
+                    android:layout_marginStart="?attr/aui_upperLeft_right_icon_spacing"
+                    >
+
+                        <io.agora.auikit.ui.basic.AUIImageView
+                            android:id="@+id/ivRoomRightIcon"
+                            android:layout_width="?attr/aui_upperLeft_icon_width"
+                            android:layout_height="?attr/aui_upperLeft_icon_height"
+                            android:src="?attr/aui_upperLeft_right_icon_idle"
+                            android:visibility="?attr/aui_upperLeft_rightIcon_Visibility"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:scaleType="centerCrop"
+                            />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

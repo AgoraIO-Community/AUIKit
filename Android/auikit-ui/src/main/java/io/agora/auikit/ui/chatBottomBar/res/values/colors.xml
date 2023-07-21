@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="voice_transparent">#00000000</color>
+    <color name="voice_white_10">#1AFFFFFF</color>
+    <color name="voice_white_70">#B3FFFFFF</color>
+    <color name="voice_white_80">#CCFFFFFF</color>
+    <color name="voice_color_333333">#333333</color>
+</resources>

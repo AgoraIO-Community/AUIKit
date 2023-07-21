@@ -8,6 +8,7 @@ import io.agora.rtm.RtmConstants
 import io.agora.rtm.RtmEventListener
 import io.agora.rtm.StorageEvent
 import io.agora.rtm.TopicEvent
+import org.json.JSONObject
 
 interface AUIRtmErrorProxyDelegate {
 
@@ -17,7 +18,7 @@ interface AUIRtmErrorProxyDelegate {
 
     /** 网络状态变化
      */
-    fun onConnectionStateChanged(channelName: String, state: Int, reason: Int) {}
+    fun onConnectionStateChanged(channelName: String?, state: Int, reason: Int) {}
 
     /** 收到的KV为空
      */
@@ -56,7 +57,7 @@ class AUIRtmMsgProxy : RtmEventListener {
     }
 
     fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
-        val key = "${channelName}_${itemKey}"
+        val key = "${channelName}__${itemKey}"
         val delegates = msgDelegates[key] ?: return
         delegates.remove(delegate)
     }
@@ -163,7 +164,15 @@ class AUIRtmMsgProxy : RtmEventListener {
 
 
     override fun onMessageEvent(event: MessageEvent?) {
+        event ?: return
+        val str = event.message?.let { String(it) }
+        val json = str?.let { JSONObject(it) }
+        val messageType = json?.get("messageType").toString()
         originEventListeners?.onMessageEvent(event)
+        val delegateKey = "${event.channelName}__$messageType"
+        msgDelegates[delegateKey]?.forEach { delegate ->
+            str?.let { delegate.onMsgDidChanged(event.channelName, messageType, it) }
+        }
     }
 
 
@@ -178,6 +187,10 @@ class AUIRtmMsgProxy : RtmEventListener {
 
     override fun onConnectionStateChange(channelName: String?, state: Int, reason: Int) {
         Log.d("rtm_event", "rtm -- connect state change: $state, reason: $reason")
+
+        errorDelegates.forEach {
+            it.onConnectionStateChanged(channelName,state, reason)
+        }
     }
 
     override fun onTokenPrivilegeWillExpire(channelName: String?) {
