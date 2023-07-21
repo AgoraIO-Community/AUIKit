@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AgoraUIKit_Test'
-  s.version          = '0.2.0.1-beta-ios'
+  s.version          = '0.2.0-beta-ios'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -31,8 +31,22 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '13.0'
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
   
-  s.subspec 'Widgets' do |ss|
-        ss.source_files = [
+#s.subspec 'Widgets' do |ss|
+#      ss.source_files = [
+#       'AgoraUIKit_Test/Classes/Widgets/**/*',
+#      'AgoraUIKit_Test/Classes/Core/Utils/Extension/*',
+#     'AgoraUIKit_Test/Classes/Core/Utils/Theme/*',
+#    'AgoraUIKit_Test/Classes/Core/Utils/Log/*',
+#   'AgoraUIKit_Test/Classes/Core/Utils/Localized/*',
+#    'AgoraUIKit_Test/Classes/Core/UIConstans/*',
+#    'AgoraUIKit_Test/Classes/Core/FoundationExtension/*'
+#   ]
+#  ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
+# end
+  
+  #s.source_files = 'AgoraUIKit_Test/Classes/**/*.swift'
+  
+    s.source_files = [
         'AgoraUIKit_Test/Classes/Widgets/**/*',
         'AgoraUIKit_Test/Classes/Core/Utils/Extension/*',
         'AgoraUIKit_Test/Classes/Core/Utils/Theme/*',
@@ -40,12 +54,9 @@ TODO: Add long description of the pod here.
         'AgoraUIKit_Test/Classes/Core/Utils/Localized/*',
         'AgoraUIKit_Test/Classes/Core/UIConstans/*',
         'AgoraUIKit_Test/Classes/Core/FoundationExtension/*'
-        ]
-        ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
+    ]
+    s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 
-  end
-  
-  s.source_files = 'AgoraUIKit_Test/Classes/**/*.swift'
   s.static_framework = true
   
   s.swift_version = '5.0'
