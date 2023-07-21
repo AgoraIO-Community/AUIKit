@@ -30,6 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '13.0'
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
+
   
 #s.subspec 'Widgets' do |ss|
 #      ss.source_files = [
@@ -44,18 +45,18 @@ TODO: Add long description of the pod here.
 #  ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 # end
   
-  #s.source_files = 'AgoraUIKit_Test/Classes/**/*.swift'
+  s.source_files = 'AgoraUIKit_Test/Sources/**/*.swift'
   
-    s.source_files = [
-        'iOS/AgoraUIKit_Test/Sources/Widgets/**/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Widgets/**/**/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
-        'iOS/AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
-    ]
+#    s.source_files = [
+#        'iOS/AgoraUIKit_Test/Sources/Widgets/**/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Widgets/**/**/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Extension/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Theme/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Log/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Core/Utils/Localized/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Core/UIConstans/*.swift',
+#        'iOS/AgoraUIKit_Test/Sources/Core/FoundationExtension/*.swift'
+#    ]
     #s.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 
   s.static_framework = true

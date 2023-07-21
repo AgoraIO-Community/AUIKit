@@ -6,7 +6,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '13.0'
 
 target 'AUIKit_Example' do
-  pod 'AgoraUIKit_Test',:path => '../'
+#  pod 'AgoraUIKit_Test','0.2.0-beta'
+pod 'AgoraUIKit_Test', :path => '../'
 #  pod 'AgoraUIKit_Test/widgets', :path => '../'
   pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'
