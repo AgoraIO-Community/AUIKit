@@ -38,6 +38,7 @@
 		70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		82FDF13323844138E2902901 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = AUIKitCore.podspec; path = ../../AUIKitCore.podspec; sourceTree = "<group>"; };
 		A87C9B692A285A4D002D9BD5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A87C9B6B2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A87C9B6D2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -130,6 +131,7 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
+				A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */,
 				82FDF13323844138E2902901 /* README.md */,
 				212D08FE84EE860B8652E908 /* LICENSE */,
 			);
@@ -161,7 +163,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */,
-				C73EC80B983A777919F81E97 /* [CP] Copy Pods Resources */,
+				852E530FAE6E9A73D9ACCCBC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -297,29 +299,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BE8B5F127B4E3BBDC0675725 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AUIKit_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C73EC80B983A777919F81E97 /* [CP] Copy Pods Resources */ = {
+		852E530FAE6E9A73D9ACCCBC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -343,6 +323,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE8B5F127B4E3BBDC0675725 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AUIKit_Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */ = {

@@ -3,7 +3,7 @@ PODS:
   - AgoraLyricsScore (1.1.1-beta-3)
   - AgoraRtcEngine_iOS (1.0)
   - Alamofire (5.7.1)
-  - AUIKitCore (0.2.0-ui):
+  - AUIKitCore (0.2.0-ui-2):
     - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_iOS
@@ -22,9 +22,9 @@ PODS:
     - FBSnapshotTestCase/Core
   - MJRefresh (3.7.5)
   - ScoreEffectUI (1.0.1)
-  - SDWebImage (5.16.0):
-    - SDWebImage/Core (= 5.16.0)
-  - SDWebImage/Core (5.16.0)
+  - SDWebImage (5.17.0):
+    - SDWebImage/Core (= 5.17.0)
+  - SDWebImage/Core (5.17.0)
   - SwiftTheme (0.6.4)
   - SwiftyBeaver (1.9.5)
   - YYModel (1.0.4)
@@ -33,13 +33,15 @@ PODS:
 DEPENDENCIES:
   - AgoraLyricsScore (= 1.1.1-beta-3)
   - AgoraRtcEngine_iOS (from `./libs`)
-  - AUIKitCore (from `../`)
+  - AUIKitCore (from `../../`)
   - FBSnapshotTestCase (~> 2.1.4)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Agora_Chat_iOS
+    - AgoraLyricsScore
     - Alamofire
+    - FBSnapshotTestCase
     - MJRefresh
     - ScoreEffectUI
     - SDWebImage
@@ -47,31 +49,28 @@ SPEC REPOS:
     - SwiftyBeaver
     - YYModel
     - Zip
-  trunk:
-    - AgoraLyricsScore
-    - FBSnapshotTestCase
 
 EXTERNAL SOURCES:
   AgoraRtcEngine_iOS:
     :path: "./libs"
   AUIKitCore:
-    :path: "../"
+    :path: "../../"
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
   AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  AUIKitCore: d3f00642cfe6642ca0ed1ae29aa459b2cdfd7721
+  AUIKitCore: fcc7f29663062004d82aad71dad2f816ee5aecca
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
-  SDWebImage: 2aea163b50bfcb569a2726b6a754c54a4506fcf6
+  SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: f828b1a5739cd78563a39fa4162bea56d5e64eb3
+PODFILE CHECKSUM: fbe1bc071ed5e7e09376cc376d297dbd866b46ad
 
 COCOAPODS: 1.12.0
