@@ -68,9 +68,9 @@
     <style name="AUIEditText.Dark">
         <item name="aui_edittext_title_textColor">@color/aui_white</item>
         <item name="aui_edittext_input_textColor">@color/aui_white</item>
-        <item name="aui_edittext_input_hintTextColor">#59FFFFFF</item>
-        <item name="aui_edittext_input_backgroundColor">#594230C8</item>
-        <item name="aui_edittext_input_backgroundHighlightColor">#7800FF</item>
+        <item name="aui_edittext_input_hintTextColor">@color/aui_grey_light</item>
+        <item name="aui_edittext_input_backgroundColor">@color/aui_grey_dark</item>
+        <item name="aui_edittext_input_backgroundHighlightColor">#009EFF</item>
         <item name="aui_edittext_input_backgroundErrorColor">#26FA5151</item>
         <item name="aui_edittext_input_backgroundErrorHighlightColor">#FA5151</item>
         <item name="aui_edittext_input_phoneAreaTextColor">@color/aui_white</item>
@@ -90,8 +90,8 @@
     </style>
 
     <style name="AUIAlertDialog.Dark">
-        <item name="aui_alertDialog_shadowColor">#1B1067</item>
-        <item name="aui_alertDialog_contentBackgroundColor">#1B1067</item>
+        <item name="aui_alertDialog_shadowColor">@color/aui_black_dark</item>
+        <item name="aui_alertDialog_contentBackgroundColor">@color/aui_black</item>
         <item name="aui_alertDialog_titleTextColor">@android:color/white</item>
         <item name="aui_alertDialog_messageTextColor">@color/aui_white</item>
     </style>
@@ -101,11 +101,11 @@
     </style>
 
     <style name="AUIBottomDialog.Dark">
-        <item name="aui_bottomDialog_backgroundColor">#171A1C</item>
-        <item name="aui_bottomDialog_backgroundShadowColor">#1B1067</item>
-        <item name="aui_bottomDialog_backgroundIndicatorColor">#464E53</item>
+        <item name="aui_bottomDialog_backgroundColor">@color/aui_black</item>
+        <item name="aui_bottomDialog_backgroundShadowColor">@color/aui_black_dark</item>
+        <item name="aui_bottomDialog_backgroundIndicatorColor">@color/aui_grey</item>
         <item name="aui_bottomDialog_titleTextColor">@android:color/white</item>
-        <item name="aui_bottomDialog_listDividerColor">#2F3437</item>
+        <item name="aui_bottomDialog_listDividerColor">@color/aui_grey_dark</item>
         <item name="aui_bottomDialog_menu_appearance">@style/AUIBottomDialogMenu.Dark</item>
     </style>
 
