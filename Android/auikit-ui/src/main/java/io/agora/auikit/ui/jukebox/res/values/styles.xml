@@ -24,7 +24,7 @@
         <item name="aui_jukebox_background">@drawable/aui_bg_bottom_dialog</item>
         <!-- 最小高度 -->
         <item name="aui_jukebox_minHeight">600dp</item>
-        <item name="aui_jukebox_paddingTop">34dp</item>
+        <item name="aui_jukebox_paddingTop">18dp</item>
 
         <!-- 标题tab -->
         <item name="aui_jukebox_tab_layout_background">@drawable/aui_jukebox_tab_layout_bg</item>
@@ -55,7 +55,7 @@
         <item name="aui_jukeboxChoose_searchPaddingHorizontal">16dp</item>
         <item name="aui_jukeboxChoose_searchPaddingVertical">8dp</item>
         <item name="aui_jukeboxChoose_searchMarginHorizontal">16dp</item>
-        <item name="aui_jukeboxChoose_searchMarginVertical">24dp</item>
+        <item name="aui_jukeboxChoose_searchMarginVertical">12dp</item>
         <item name="aui_jukeboxChoose_searchIcon">@drawable/aui_jukebox_choose_icon_search</item>
         <item name="aui_jukeboxChoose_searchCloseIcon">@drawable/aui_jukebox_choose_icon_close</item>
         <item name="aui_jukeboxChoose_searchHintText">@string/aui_jukebox_search_hint</item>
@@ -91,12 +91,12 @@
         <item name="aui_jukeboxChooseItem_coverDefaultImg">@drawable/aui_jukebox_song_cover_default</item>
 
         <!-- 歌词名 -->
-        <item name="aui_jukeboxChooseItem_songNameTextColor">#FFFFFF</item>
+        <item name="aui_jukeboxChooseItem_songNameTextColor">@color/aui_black</item>
         <item name="aui_jukeboxChooseItem_songNameTextSize">17sp</item>
         <item name="aui_jukeboxChooseItem_songNameMarginStart">12dp</item>
 
         <!-- 歌手名 -->
-        <item name="aui_jukeboxChooseItem_singerNameTextColor">#80FFFFFF</item>
+        <item name="aui_jukeboxChooseItem_singerNameTextColor">@color/aui_black_light</item>
         <item name="aui_jukeboxChooseItem_singerNameTextSize">12sp</item>
         <item name="aui_jukeboxChooseItem_singerNameMarginStart">12dp</item>
 
@@ -136,12 +136,12 @@
         <item name="aui_jukeboxChosenItem_coverDefaultImg">@drawable/aui_jukebox_song_cover_default</item>
 
         <!-- 歌词名 -->
-        <item name="aui_jukeboxChosenItem_songNameTextColor">#FFFFFF</item>
+        <item name="aui_jukeboxChosenItem_songNameTextColor">@color/aui_black</item>
         <item name="aui_jukeboxChosenItem_songNameTextSize">16sp</item>
         <item name="aui_jukeboxChosenItem_songNameMarginStart">12dp</item>
 
         <!-- 点唱/合唱者 -->
-        <item name="aui_jukeboxChosenItem_singerTextColor">#80FFFFFF</item>
+        <item name="aui_jukeboxChosenItem_singerTextColor">@color/aui_black_light</item>
         <item name="aui_jukeboxChosenItem_singerTextSize">12sp</item>
         <item name="aui_jukeboxChosenItem_singerMarginStart">12dp</item>
         <item name="aui_jukeboxChosenItem_singerSoloText">@string/aui_jukebox_sing_solo</item>

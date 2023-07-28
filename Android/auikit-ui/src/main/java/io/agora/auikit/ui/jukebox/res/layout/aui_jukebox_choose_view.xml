@@ -7,49 +7,15 @@
     android:orientation="vertical"
     android:theme="?attr/aui_jukeboxChoose_appearance">
 
-
-    <LinearLayout
+    <io.agora.auikit.ui.basic.AUIEditText
+        android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:aui_edittext_icon_left="?attr/aui_jukeboxChoose_searchIcon"
+        app:aui_edittext_icon_right="?attr/aui_jukeboxChoose_searchCloseIcon"
+        app:aui_edittext_input_hintText="?attr/aui_jukeboxChoose_searchHintText"
         android:layout_marginHorizontal="?attr/aui_jukeboxChoose_searchMarginHorizontal"
-        android:layout_marginVertical="?attr/aui_jukeboxChoose_searchMarginVertical"
-        android:background="?attr/aui_jukeboxChoose_searchBackground"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingHorizontal="?attr/aui_jukeboxChoose_searchPaddingHorizontal"
-        android:paddingVertical="?attr/aui_jukeboxChoose_searchPaddingVertical">
-
-        <ImageView
-            android:id="@+id/iv_search_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/aui_jukeboxChoose_searchIcon" />
-
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="?attr/aui_jukeboxChoose_searchInputMarginHorizontal"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:hint="?attr/aui_jukeboxChoose_searchHintText"
-            android:imeOptions="actionDone"
-            android:minHeight="30dp"
-            android:singleLine="true"
-            android:textColor="?attr/aui_jukeboxChoose_searchTextColor"
-            android:textColorHint="?attr/aui_jukeboxChoose_searchHintTextColor"
-            android:textSize="?attr/aui_jukeboxChoose_searchTextSize" />
-
-        <ImageView
-            android:id="@+id/iv_search_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/aui_jukeboxChoose_searchCloseIcon"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-    </LinearLayout>
+        android:layout_marginVertical="?attr/aui_jukeboxChoose_searchMarginVertical" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -61,26 +27,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
+            <io.agora.auikit.ui.basic.AUITabLayout
                 android:id="@+id/tl_category"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/aui_jukeboxChoose_categoryTabHeight"
-                android:background="@android:color/transparent"
-                android:visibility="gone"
-                app:tabGravity="?attr/aui_jukeboxChoose_categoryTabGravity"
-                app:tabIndicator="?attr/aui_jukeboxChoose_categoryTabIndicator"
-                app:tabIndicatorFullWidth="false"
-                app:tabMode="?attr/aui_jukeboxChoose_categoryTabMode"
-                app:tabSelectedTextColor="?attr/aui_jukeboxChoose_categoryTabSelectedTextColor"
-                app:tabTextAppearance="@style/TextAppearance.Design.Tab.AUIJukeboxChooseCategory"
-                app:tabTextColor="?attr/aui_jukeboxChoose_categoryTabTextColor" />
-
-            <View
-                android:id="@+id/v_divider_category"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="?attr/aui_jukeboxChoose_categoryTabDivider"
-                android:visibility="gone" />
+                android:layout_height="wrap_content"
+                app:aui_tabLayout_tabMode="scrollable"
+                app:aui_tabLayout_menu="@menu/aui_jukebox_category"/>
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/srl_list"

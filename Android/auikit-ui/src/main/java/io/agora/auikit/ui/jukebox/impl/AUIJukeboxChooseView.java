@@ -8,9 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,15 +22,15 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 import io.agora.auikit.ui.R;
+import io.agora.auikit.ui.basic.AUIEditText;
+import io.agora.auikit.ui.basic.AUITabLayout;
 
 public class AUIJukeboxChooseView extends FrameLayout {
 
-    private TabLayout tlCategory;
-    private View vCategoryDivider;
+    private AUITabLayout tlCategory;
     private RecyclerView rvDataList;
     private RecyclerView rvSearchList;
-    private EditText etSearch;
-    private ImageView ivSearchClose;
+    private AUIEditText etSearch;
     private OnSearchListener onSearchListener;
     private SwipeRefreshLayout srlDataList;
     private SwipeRefreshLayout srlSearchList;
@@ -58,20 +56,18 @@ public class AUIJukeboxChooseView extends FrameLayout {
         rvDataList = findViewById(R.id.recyclerView);
         rvSearchList = findViewById(R.id.recyclerView_search);
         tlCategory = findViewById(R.id.tl_category);
-        vCategoryDivider = findViewById(R.id.v_divider_category);
         etSearch = findViewById(R.id.et_search);
-        ivSearchClose = findViewById(R.id.iv_search_close);
         srlDataList = findViewById(R.id.srl_list);
         srlSearchList = findViewById(R.id.srl_search_list);
 
-        ivSearchClose.setOnClickListener(v -> {
+        etSearch.setRightIconVisibility(View.GONE);
+        etSearch.setRightIconClickListener(v -> {
             etSearch.setText("");
             if (onSearchListener != null) {
                 srlSearchList.setVisibility(View.GONE);
                 srlDataList.setVisibility(View.VISIBLE);
                 if (categoryVisible) {
                     tlCategory.setVisibility(View.VISIBLE);
-                    vCategoryDivider.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -83,7 +79,7 @@ public class AUIJukeboxChooseView extends FrameLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ivSearchClose.setVisibility(TextUtils.isEmpty(etSearch.getText().toString()) ? View.GONE : View.VISIBLE);
+                etSearch.setRightIconVisibility(TextUtils.isEmpty(etSearch.getText().toString()) ? View.GONE : View.VISIBLE);
             }
 
             @Override
@@ -99,7 +95,6 @@ public class AUIJukeboxChooseView extends FrameLayout {
                     srlDataList.setVisibility(View.GONE);
                     if (categoryVisible) {
                         tlCategory.setVisibility(View.GONE);
-                        vCategoryDivider.setVisibility(View.GONE);
                     }
                     onSearchListener.onSearchingStart(content);
                 }
@@ -143,7 +138,6 @@ public class AUIJukeboxChooseView extends FrameLayout {
     public void setCategoryVisible(boolean visible) {
         categoryVisible = visible;
         tlCategory.setVisibility(visible ? View.VISIBLE : View.GONE);
-        vCategoryDivider.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public int getCategorySelectedPosition() {

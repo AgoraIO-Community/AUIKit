@@ -158,6 +158,10 @@
         <!-- 输入配置 -->
         <item name="aui_edittext_input_lineNum">1</item>
 
+        <!-- 左右图标 -->
+        <item name="aui_edittext_icon_left_tint">@color/aui_black</item>
+        <item name="aui_edittext_icon_right_tint">@color/aui_black</item>
+
     </style>
 
     <style name="AUIEditText.OutLine">

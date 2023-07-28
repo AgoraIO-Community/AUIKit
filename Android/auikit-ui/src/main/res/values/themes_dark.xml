@@ -28,8 +28,9 @@
 
         <!--  播放器组件      -->
         <item name="aui_musicPlayer_appearance">@style/AUIMusicPlayer.Appearance</item>
-        <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance</item>
-        <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance</item>
+        <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance.Dark</item>
+        <item name="aui_musicPlayerPresetDialog_appearance">@style/AUIMusicPlayerPresetDialog.Dark</item>
+        <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance.Dark</item>
 
         <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance.Dark</item>
         <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance.Dark</item>
@@ -41,6 +42,21 @@
         <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Appearance.Dark</item>
         <item name="aui_action_appearance">@style/AUIAction.Appearance.Dark</item>
 
+    </style>
+
+    <style name="AUIMusicPlayerControllerDialog.Appearance.Dark">
+        <item name="aui_musicPlayerControllerDialog_titleTextColor">@color/aui_white</item>
+        <item name="aui_musicPlayerControllerDialog_subTitleTextColor">@color/aui_white_light</item>
+        <item name="aui_musicPlayerControllerDialog_dividerColor">@color/aui_grey_dark</item>
+    </style>
+
+    <style name="AUIMusicPlayerPresetDialog.Dark">
+        <item name="aui_musicPlayerPresetDialog_titleTextColor">@color/aui_white</item>
+    </style>
+
+    <style name="AUIMusicPlayerEffectPresetItem.Appearance.Dark">
+        <item name="aui_musicPlayerEffectPresetItem_backgroundColor">@color/aui_black_light</item>
+        <item name="aui_musicPlayerEffectPresetItem_textColor">@color/aui_white</item>
     </style>
 
     <style name="AUIRoomMemberListView.Dark">

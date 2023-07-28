@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="?attr/aui_musicPlayerControllerDialog_background"
+    tools:background="?attr/aui_musicPlayerControllerDialog_background"
     android:paddingVertical="16sp"
     android:theme="?attr/aui_musicPlayerControllerDialog_appearance">
 
@@ -44,13 +44,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_in_ear" />
 
-    <androidx.appcompat.widget.AppCompatCheckBox
+    <Switch
         android:id="@+id/switch_inear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:button="?attr/aui_musicPlayerControllerDialog_checkbox"
         android:checked="true"
+        android:thumb="?attr/aui_musicPlayerControllerDialog_switch_thumb"
+        android:track="?attr/aui_musicPlayerControllerDialog_switch_track"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_in_ear" />
 
