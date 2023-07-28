@@ -3,13 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:theme="?attr/aui_micSeatItem_appearance">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="?attr/aui_micSeatItem_background"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintDimensionRatio="?attr/aui_micSeatItem_dimensionRatio"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -101,13 +104,14 @@
                 android:id="@+id/iv_audio_mute"
                 android:layout_width="?attr/aui_micSeatItem_audioMuteIconWidth"
                 android:layout_height="?attr/aui_micSeatItem_audioMuteIconHeight"
-                android:src="?attr/aui_micSeatItem_audioMuteIcon" />
+                android:src="?attr/aui_micSeatItem_audioMuteIcon"/>
 
             <ImageView
                 android:id="@+id/iv_video_mute"
                 android:layout_width="?attr/aui_micSeatItem_audioMuteIconWidth"
                 android:layout_height="?attr/aui_micSeatItem_audioMuteIconHeight"
-                android:src="?attr/aui_micSeatItem_videoMuteIcon" />
+                android:src="?attr/aui_micSeatItem_videoMuteIcon"
+                tools:visibility="gone"/>
 
         </FrameLayout>
 
