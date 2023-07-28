@@ -26,7 +26,7 @@ public func aui_error(_ text: String, tag: String = "AUIKit") {
     var logFileMaxSize: Int = (2 * 1024 * 1024)
 }
 
-@objc class AUILog: NSObject {
+@objc public class AUILog: NSObject {
     static let formatter = DateFormatter()
     fileprivate static func _dateFormat() ->String {
         formatter.dateFormat = "yyyy-MM-dd"
@@ -62,7 +62,7 @@ public func aui_error(_ text: String, tag: String = "AUIKit") {
         return log
     }
     
-    @objc static func cacheDir() ->String {
+    @objc public static func cacheDir() ->String {
         let dir = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory,
                                                       FileManager.SearchPathDomainMask.userDomainMask, true).first
         return dir ?? ""

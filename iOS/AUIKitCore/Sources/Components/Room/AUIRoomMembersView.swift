@@ -8,7 +8,7 @@
 import UIKit
 import SwiftTheme
 
-private let headImageWidth: CGFloat = 32
+private let headImageWidth: CGFloat = 26
 
 @objc public protocol IAUIRoomMembersView: NSObjectProtocol {
     func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String)
@@ -104,7 +104,7 @@ public class AUIRoomMembersView: UIView {
  
         let views = [leftImgView,rightImgView,moreButton]
         for (i, view) in views.enumerated() {
-            view.frame = CGRect(x: CGFloat(i) * (headImageWidth + 8) , y: 0, width: headImageWidth, height: headImageWidth)
+            view.frame = CGRect(x: CGFloat(i) * (headImageWidth + 6) , y: 0, width: headImageWidth, height: headImageWidth)
         }
         self.bounds = CGRect(x: 0, y: 0, width: CGFloat(views.count) * headImageWidth + CGFloat(views.count - 1) * 8, height: headImageWidth)
         

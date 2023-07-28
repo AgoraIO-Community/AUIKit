@@ -45,6 +45,7 @@
       "pinIcon": "aui_jukebox_pin",
       "deleteIcon": "aui_jukebox_delete",
       "nextSongIcon": "aui_jukebox_next_song",
+      "coverGradientColors": ["#009EFF","#7C5BFF"],
       
       "selectedButtonTitleColor": "#464E53",
       "normalButtonTitleColor": "#FFFFFF",

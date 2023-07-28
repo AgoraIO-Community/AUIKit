@@ -23,7 +23,7 @@
       "backgroundColor": "#00000014",
       "backgroundImage": "aui_transparent_icon",
       "defaultImage": "aui_micseat_item_icon_idle",
-      "labelFont": "PingFangSC-Regular,14",
+      "labelFont": "PingFangSC-Regular,12",
       "labelTextColor": "#ffffff",
       "lockImage": "aui_micseat_item_icon_lock",
       "muteVideoImage": "aui_micseat_item_icon_video_mute",

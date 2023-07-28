@@ -168,7 +168,7 @@ open class AUIActionSheetCell: UICollectionViewCell {
 open class AUIActionSheetThemeItem: AUIActionSheetItem {
     public var icon: ThemeImagePicker?
     public var backgroundIcon: ThemeImagePicker?
-    public var titleColor: ThemeColorPicker = "CommonColor.normalTextColor"
+    public var titleColor: ThemeColorPicker = "ActionSheetCell.titleColor"
     public var imageWidth: ThemeCGFloatPicker = "ActionSheetCell.horizontalImageWidth"
     public var imageHeight: ThemeCGFloatPicker = "ActionSheetCell.horizontalImageHeight"
     public var backgroundImageWidth: ThemeCGFloatPicker = "ActionSheetCell.horizontalBackgroundImageWidth"

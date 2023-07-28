@@ -1,10 +1,10 @@
 {
   "Player": {
       "cornerRadius": 32,
-      "backgroundColor": "#171A1CCC",
+      "backgroundColor": "#00000000",
       "musicTitleIcon": "aui_player_audio_icon_title",
       "musicTitleFont": "PingFangSC-Semibold,14",
-      "musicTitleColor": "#ACB4B9",
+      "musicTitleColor": "#F9FAFA",
       "musicControlTitleColor":"#464E53BF",
       "ownerTitleFont": "PingFangSC-Semibold,12",
       "ownerTitleColor": "#ffffffc0",

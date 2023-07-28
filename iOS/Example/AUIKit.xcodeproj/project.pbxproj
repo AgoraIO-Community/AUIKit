@@ -38,7 +38,7 @@
 		70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		82FDF13323844138E2902901 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = AUIKitCore.podspec; path = ../../AUIKitCore.podspec; sourceTree = "<group>"; };
+		A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = AUIKitCore.podspec; path = ../../AUIKitCore.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A87C9B692A285A4D002D9BD5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A87C9B6B2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A87C9B6D2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };

@@ -99,6 +99,7 @@ open class AUIJukeBoxCell: UITableViewCell {
         button.setTitle(aui_localized("selectSong"), for: .normal)
         button.setTitle(aui_localized("selectedSong"), for: .selected)
         button.titleLabel?.theme_font = "JukeBoxCell.buttonTitleFont"
+//        button.createThemeGradient("JukeBoxCell.coverGradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
         button.theme_setTitleColor(AUIColor("JukeBoxCell.normalButtonTitleColor"), forState: .normal)
         button.theme_setTitleColor(AUIColor("JukeBoxCell.selectedButtonTitleColor"), forState: .selected)
         button.addTarget(self, action: #selector(onSelectSongAction(_:)), for: .touchUpInside)

@@ -30,6 +30,7 @@
       "selectedBorderRadius": 28,
       
       "normalIcon": "addUser",
-      "warnIcon": "addUser_red"
+      "warnIcon": "addUser_red",
+      "titleColor": "#ffffff"
   }
 }
