@@ -88,6 +88,11 @@
         <attr name="aui_primary_tag_bg" format="color|reference"/>
         <attr name="aui_primary_more_status" format="color|reference"/>
 
+        <!-- menu -->
+        <attr name="aui_primary_menuWidth" format="dimension"/>
+        <attr name="aui_primary_menuHeight" format="dimension"/>
+        <attr name="aui_primary_menuMicOn" format="reference"/>
+        <attr name="aui_primary_menuMicOff" format="reference"/>
 
 
     </declare-styleable>
