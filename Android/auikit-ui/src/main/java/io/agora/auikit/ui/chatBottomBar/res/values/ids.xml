@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- extend menu ids -->
+    <!-- gift -->
+    <item name="voice_extend_item_gift" type="id"/>
+    <!-- mic -->
+    <item name="voice_extend_item_mic" type="id"/>
+    <!-- more -->
+    <item name="voice_extend_item_more" type="id"/>
+    <!-- like -->
+    <item name="voice_extend_item_like" type="id"/>
+    <!-- more_status -->
+    <item name="voice_extend_item_more_status" type="id"/>
+</resources>

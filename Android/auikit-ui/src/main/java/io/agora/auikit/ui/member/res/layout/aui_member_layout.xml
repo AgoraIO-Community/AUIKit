@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:theme="?attr/aui_memberInfo_appearance"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:id="@+id/llMemberRank"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginEnd="2dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:visibility="?attr/aui_upperRight_memberRankVisibility"
+        android:orientation="horizontal">
+
+        <io.agora.auikit.ui.basic.AUIImageView
+            android:id="@+id/ivMember1"
+            android:layout_width="?attr/aui_upperRight_member_item_width"
+            android:layout_height="?attr/aui_upperRight_member_item_height"
+            android:layout_marginEnd="?attr/aui_upperRight_member_spacing"
+            android:scaleType="centerCrop"
+            android:src="?attr/aui_upperRight_default_member_bg"
+            android:visibility="?attr/aui_upperRight_member1_Visibility"
+            app:layout_constraintDimensionRatio="1:1"
+            app:shapeAppearance="@style/aui_member_seat_roundStyle" />
+
+        <io.agora.auikit.ui.basic.AUIImageView
+            android:id="@+id/ivMember2"
+            android:layout_width="?attr/aui_upperRight_member_item_width"
+            android:layout_height="?attr/aui_upperRight_member_item_height"
+            android:layout_marginEnd="?attr/aui_upperRight_member_spacing"
+            android:scaleType="centerCrop"
+            android:src="?attr/aui_upperRight_default_member_bg"
+            android:visibility="?attr/aui_upperRight_member2_Visibility"
+            app:layout_constraintDimensionRatio="1:1"
+            app:shapeAppearance="@style/aui_member_seat_roundStyle" />
+
+        <io.agora.auikit.ui.basic.AUIImageView
+            android:id="@+id/ivMember3"
+            android:layout_width="?attr/aui_upperRight_member_item_width"
+            android:layout_height="?attr/aui_upperRight_member_item_height"
+            android:layout_marginEnd="?attr/aui_upperRight_member_spacing"
+            android:scaleType="centerCrop"
+            android:src="?attr/aui_upperRight_default_member_bg"
+            android:visibility="?attr/aui_upperRight_member3_Visibility"
+            app:layout_constraintDimensionRatio="1:1"
+            app:shapeAppearance="@style/aui_member_seat_roundStyle" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ivRoomCount"
+        android:layout_marginStart="?attr/aui_upperRight_count_spacing"
+        app:layout_constraintLeft_toRightOf="@+id/llMemberRank"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="?attr/aui_upperRight_member_count_width"
+        android:layout_height="?attr/aui_upperRight_member_count_height"
+        android:textColor="?attr/aui_upperRight_count_color"
+        android:textSize="?attr/aui_upperRight_count_size"
+        android:textStyle="?attr/aui_upperRight_count_style"
+        android:paddingHorizontal="?attr/aui_upperRight_count_paddingHorizontal"
+        android:paddingVertical="?attr/aui_upperRight_count_paddingVertical"
+        android:text="?attr/aui_upperRight_count_text"
+        android:visibility="?attr/aui_upperRight_count_Visibility"
+        android:maxLines="1"
+        android:maxWidth="?attr/aui_upperRight_count_max_width"
+        android:minWidth="?attr/aui_upperRight_count_min_width"
+        android:gravity="center"
+        android:background="?attr/aui_upperRight_count_background"
+        />
+
+    <io.agora.auikit.ui.basic.AUIButton
+        android:id="@+id/btnUserMore"
+        app:layout_constraintStart_toEndOf="@+id/ivRoomCount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/AUIButton.Circle"
+        android:layout_width="?attr/aui_roomMoreUser_width"
+        android:layout_height="?attr/aui_roomMoreUser_height"
+        android:layout_marginStart="?attr/aui_roomMoreUser_marginStart"
+        android:visibility="?attr/aui_roomMoreUser_Visibility"
+        app:aui_button_background="@drawable/aui_member_btn_bg"
+        app:aui_button_drawableCenter="?attr/aui_roomMoreUser_drawable" />
+
+    <io.agora.auikit.ui.basic.AUIButton
+        android:id="@+id/btnShutDown"
+        app:layout_constraintStart_toEndOf="@+id/btnUserMore"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/AUIButton.Circle"
+        android:layout_width="?attr/aui_roomClose_width"
+        android:layout_height="?attr/aui_roomClose_height"
+        android:layout_marginStart="?attr/aui_roomClose_marginStart"
+        android:visibility="?attr/aui_roomClose_Visibility"
+        app:aui_button_background="@drawable/aui_member_btn_bg"
+        app:aui_button_drawableCenter="?attr/aui_roomClose_drawable" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--================= 主题属性 =================-->
+    <attr name="aui_ripple_appearance" format="reference"/>
+
+    <declare-styleable name="AUIRippleAnimationView">
+        <attr name="aui_ripple_appearance"/>
+
+        <!--    水波纹颜色    -->
+        <attr name="aui_ripple_color" format="color|reference"/>
+        <!--    水波纹边框大小    -->
+        <attr name="aui_ripple_stroke_width" format="dimension"/>
+        <!--    水波纹初始半径    -->
+        <attr name="aui_ripple_initial_radius" format="dimension"/>
+        <!--    水波纹最大半径    -->
+        <attr name="aui_ripple_max_radius" format="dimension"/>
+        <!--    水波纹半径倍率    -->
+        <attr name="aui_ripple_max_radiusRate" format="float"/>
+        <!--    水波纹创建速度    -->
+        <attr name="aui_ripple_speed" format="integer"/>
+
+
+    </declare-styleable>
+
+</resources>

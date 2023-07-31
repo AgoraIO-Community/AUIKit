@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/aui_bg_bottom_dialog"
+    android:theme="?attr/aui_memberInfoList_appearance"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
+        android:text="用户列表"
+        android:textSize="17dp"
+        android:textColor="?attr/aui_memberInfoList_title_textColor"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUserList"
+        android:layout_width="match_parent"
+        android:layout_height="562dp"
+        />
+
+</LinearLayout>

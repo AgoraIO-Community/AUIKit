@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AUIChatBottomView">
+        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance</item>
+    </style>
+
+    <style name="AUIEmojiView">
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance</item>
+    </style>
+
+    <!--输入样式-->
+    <style name="AUIChatBottomView.Appearance" >
+        <item name="aui_primary_contentPadding">7dp</item>
+        <item name="aui_primary_input_width">38dp</item>
+        <item name="aui_primary_input_height">38dp</item>
+        <item name="aui_primary_input_resource">@drawable/voice_icon_input</item>
+        <item name="aui_primary_input_background">@drawable/aui_chat_bottom_bar_item_bg_light</item>
+        <item name="aui_primary_input_marginStart">12dp</item>
+        <item name="aui_primary_input_mic_width">30dp</item>
+        <item name="aui_primary_input_mic_height">30dp</item>
+        <item name="aui_primary_input_mic_resource">@drawable/voice_icon_circle</item>
+        <item name="aui_primary_input_layout_bg">@color/voice_white_100</item>
+
+
+        <item name="aui_primary_micVisibility">gone</item>
+        <item name="aui_primary_mic_marginEnd">8dp</item>
+
+        <item name="aui_primary_edit_layout_background">@drawable/aui_chat_bottom_bar_input_edit_light</item>
+        <item name="aui_primary_edit_layout_marginStart">18dp</item>
+        <item name="aui_primary_edit_layout_marginEnd">5dp</item>
+        <item name="aui_primary_edit_background">@color/voice_white</item>
+        <item name="aui_primary_edit_maxLines">1</item>
+        <item name="aui_primary_edit_singleLine">true</item>
+        <item name="aui_primary_edit_textSize">16sp</item>
+        <item name="aui_primary_edit_textColor">@color/voice_black_171A1C</item>
+        <item name="aui_primary_edit_hint_textColor">@color/voice_grey_919BA1</item>
+
+        <item name="aui_primary_emoji_resource">@drawable/voice_icon_face_light</item>
+        <item name="aui_primary_emoji_width">28dp</item>
+        <item name="aui_primary_emoji_height">28dp</item>
+
+        <item name="aui_primary_key_resource">@drawable/voice_icon_key_light</item>
+
+
+        <item name="aui_primary_send_background">@drawable/aui_chat_bottom_bar_send_bg</item>
+        <item name="aui_primary_send_textColor">@color/voice_white</item>
+        <item name="aui_primary_send_textSize">16sp</item>
+        <item name="aui_primary_send_marginEnd">15dp</item>
+        <item name="aui_primary_send_width">67dp</item>
+        <item name="aui_primary_send_height">36dp</item>
+
+        <item name="aui_primary_expression_background">@color/voice_white_100</item>
+
+        <item name="aui_primary_tag_bg">@drawable/aui_chat_bottom_bar_item_bg_light</item>
+        <item name="aui_primary_more_status">@drawable/aui_chat_bottom_bar_more_status_bg</item>
+
+    </style>
+
+    <style name="AUIEmojiView.Appearance" >
+        <item name="aui_emoji_view_background">@color/voice_white_100</item>
+        <item name="aui_emoji_backspace">@drawable/voice_icon_backspace_light</item>
+    </style>
+
+</resources>

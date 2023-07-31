@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_member_item_kick">踢出</string>
+    <string name="aui_member_item_invited">邀请</string>
+</resources>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--================= 主题属性 =================-->
+    <attr name="aui_roomInfo_appearance" format="reference"/>
+
+    <!--================= 样式属性 =================-->
+
+    <!-- 房间信息样式 -->
+    <declare-styleable name="AUIRoomInfoView">
+        <attr name="aui_roomInfo_appearance"/>
+
+        <!-- ==根布局样式== -->
+        <attr name="aui_upperLeft_rootLayout_style" format="enum">
+            <enum name="RECTANGLE" value="0"/>
+            <enum name="OVAL" value="1" />
+            <enum name="LINE" value="2" />
+            <enum name="RING" value="3" />
+        </attr>
+        <!-- ==根布局内间距== -->
+        <attr name="aui_upperLeft_layout_paddingHorizontal" format="dimension"/>
+        <attr name="aui_upperLeft_layout_paddingVertical" format="dimension"/>
+        <!-- ==根布局圆角== -->
+        <attr name="aui_upperLeft_layout_radius" format="integer"/>
+        <!-- ==根布局宽、高== -->
+        <attr name="aui_upperLeft_layout_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperLeft_layout_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==背景色== -->
+        <attr name="aui_upperLeft_Layout_background" format="reference|color"/>
+        <!-- ==标题 子标题== -->
+        <attr name="aui_upperLeft_title" format="string"/>
+        <attr name="aui_upperLeft_subtitle" format="string"/>
+        <!-- ==标题 子标题 最小最大宽度== -->
+        <attr name="aui_upperLeft_title_max_width" format="dimension"/>
+        <attr name="aui_upperLeft_title_min_width" format="dimension"/>
+        <attr name="aui_upperLeft_subtitle_max_width" format="dimension"/>
+        <attr name="aui_upperLeft_subtitle_min_width" format="dimension"/>
+        <!-- ==主标题文本大小、颜色、样式== -->
+        <attr name="aui_upperLeft_titleText" format="string"/>
+        <attr name="aui_upperLeft_titleTextSize" format="dimension"/>
+        <attr name="aui_upperLeft_titleTextColor" format="color"/>
+        <attr name="aui_upperLeft_titleTextStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+        </attr>
+        <!-- ==子标题文本大小、颜色、样式== -->
+        <attr name="aui_upperLeft_subtitleText" format="string"/>
+        <attr name="aui_upperLeft_subtitleTextSize" format="dimension"/>
+        <attr name="aui_upperLeft_subtitleTextColor" format="color"/>
+        <attr name="aui_upperLeft_subtitleTextStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+        </attr>
+        <!-- ==头像宽高== -->
+        <attr name="aui_upperLeft_avatar_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperLeft_avatar_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==头像和标题的间距== -->
+        <attr name="aui_upperLeft_title_spacing" format="dimension"/>
+        <attr name="aui_upperLeft_subtitle_spacing" format="dimension"/>
+
+        <!-- ==右侧icon资源== -->
+        <attr name="aui_upperLeft_right_icon_idle" format="reference"/>
+        <!-- ==右侧icon背景== -->
+        <attr name="aui_upperLeft_right_icon_background" format="reference|color"/>
+        <!-- ==右侧icon宽、高== -->
+        <attr name="aui_upperLeft_icon_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperLeft_icon_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==右侧icon背景宽、高== -->
+        <attr name="aui_upperLeft_icon_bg_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperLeft_icon_bg_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+
+        <attr name="aui_upperLeft_right_icon_spacing" format="dimension"/>
+        <!-- ==右侧icon、背景icon距离右侧间距== -->
+        <attr name="aui_upperLeft_rightIcon_bg_marginRight" format="dimension"/>
+
+        <attr name="aui_upperLeft_backVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+
+        <attr name="aui_upperLeft_titleVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+
+        <attr name="aui_upperLeft_subtitleVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+
+        <attr name="aui_upperLeft_rightIcon_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+
+        <attr name="aui_upperLeft_rightIcon_bg_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+
+    </declare-styleable>
+
+</resources>

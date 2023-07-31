@@ -38,10 +38,6 @@ AUIKit is a set of scaffolding for scenario-based applications. It provides UI c
 ---
 
 ### 2. Running the Example
-- Obtain Agora SDK
-  Download [the rtc sdk with rtm 2.0](https://download.agora.io/null/Agora_Native_SDK_for_Android_rel.v4.1.1.30_49294_FULL_20230512_1606_264137.zip) and then unzip it to the directions belows:
-  [AUIKitKaraoke/auikit/libs](auikit/libs) : agora-rtc-sdk.jar
-  [AUIKitKaraoke/auikit/src/main/jniLibs](auikit/src/main/jniLibs) : so(arm64-v8a/armeabi-v7a/x86/x86_64)
 
 - Run the project with Android Studio to begin your experience.
 

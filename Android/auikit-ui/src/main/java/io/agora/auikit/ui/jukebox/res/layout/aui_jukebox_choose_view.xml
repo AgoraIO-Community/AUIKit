@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="?attr/aui_jukeboxChoose_appearance">
+
+    <io.agora.auikit.ui.basic.AUIEditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:aui_edittext_icon_left="?attr/aui_jukeboxChoose_searchIcon"
+        app:aui_edittext_icon_right="?attr/aui_jukeboxChoose_searchCloseIcon"
+        app:aui_edittext_input_hintText="?attr/aui_jukeboxChoose_searchHintText"
+        android:layout_marginHorizontal="?attr/aui_jukeboxChoose_searchMarginHorizontal"
+        android:layout_marginVertical="?attr/aui_jukeboxChoose_searchMarginVertical" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <io.agora.auikit.ui.basic.AUITabLayout
+                android:id="@+id/tl_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:aui_tabLayout_tabMode="scrollable"
+                app:aui_tabLayout_menu="@menu/aui_jukebox_category"/>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/srl_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <io.agora.auikit.ui.basic.AUIRecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="?attr/aui_jukeboxChoose_listPaddingHorizontal"
+                    app:aui_listDivider="?attr/aui_jukeboxChoose_listDivider"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="1"
+                    tools:listitem="@layout/aui_jukebox_choose_item" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <io.agora.auikit.ui.basic.AUIRecyclerView
+                android:id="@+id/recyclerView_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="?attr/aui_jukeboxChoose_listPaddingHorizontal"
+                app:aui_listDivider="?attr/aui_jukeboxChoose_listDivider"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="1"
+                tools:listitem="@layout/aui_jukebox_choose_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

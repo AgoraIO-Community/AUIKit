@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="aui_button_appearance" format="reference"/>
+    <attr name="aui_button_appearance_stroke" format="reference"/>
+    <attr name="aui_button_appearance_min" format="reference"/>
+    <attr name="aui_button_appearance_min_stroke" format="reference"/>
+    <attr name="aui_button_appearance_circle" format="reference"/>
+    <attr name="aui_button_appearance_circle_stroke" format="reference"/>
+
+    <declare-styleable name="AUIButton">
+
+        <!-- 背景颜色 -->
+        <attr name="aui_button_background" format="color|reference" />
+
+        <!-- 文字颜色大小 -->
+        <attr name="aui_button_text" format="string" />
+        <attr name="aui_button_textSize" format="dimension" />
+        <attr name="aui_button_textNormalColor" format="color" />
+        <attr name="aui_button_textPressedColor" format="color" />
+        <attr name="aui_button_textDisableColor" format="color" />
+
+        <!-- 图标：相比原生android:drawableXxx更加灵活 -->
+        <!--       java: setDrawables(drawableStart, drawableTop, drawableEnd, drawableBottom) -->
+        <attr name="aui_button_drawableStart" format="reference" />
+        <attr name="aui_button_drawableEnd" format="reference" />
+        <attr name="aui_button_drawableTop" format="reference" />
+        <attr name="aui_button_drawableBottom" format="reference" />
+        <attr name="aui_button_drawableCenter" format="reference" />
+        <!--       java: setDrawableToEdge(boolean) -->
+        <attr name="aui_button_drawableToEdge" format="boolean" />
+        <!--       java: setDrawableLayoutParameters(MarginLayoutParameter) -->
+        <attr name="aui_button_drawablePadding" format="dimension" />
+        <attr name="aui_button_drawablePaddingStart" format="dimension" />
+        <attr name="aui_button_drawablePaddingEnd" format="dimension" />
+        <attr name="aui_button_drawablePaddingTop" format="dimension" />
+        <attr name="aui_button_drawablePaddingBottom" format="dimension" />
+        <attr name="aui_button_drawableMargin" format="dimension" />
+        <attr name="aui_button_drawableMarginStart" format="dimension" />
+        <attr name="aui_button_drawableMarginEnd" format="dimension" />
+        <attr name="aui_button_drawableMarginTop" format="dimension" />
+        <attr name="aui_button_drawableMarginBottom" format="dimension" />
+        <attr name="aui_button_drawableWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_button_drawableHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!--        java: setDrawableRotateAnimEnable -->
+        <attr name="aui_button_drawableRotateAnimEnable" format="boolean" />
+        <!--        java: setDrawableRotateAnimDuration -->
+        <attr name="aui_button_drawableRotateAnimDuration" format="integer" />
+
+        <attr name="aui_button_drawableTint" format="color" />
+        <attr name="aui_button_drawablePressedTint" format="color" />
+        <attr name="aui_button_drawableDisableTint" format="color" />
+
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
+
+    <style name="AUIButton">
+        <item name="android:enabled">true</item>
+        <item name="android:minWidth">120dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">@null</item>
+        <item name="android:paddingEnd">@null</item>
+        <item name="android:paddingTop">@null</item>
+        <item name="android:paddingBottom">@null</item>
+
+        <item name="aui_button_background">@drawable/aui_button_normal</item>
+
+        <item name="aui_button_textSize">16sp</item>
+        <item name="aui_button_textNormalColor">@color/aui_white</item>
+        <item name="aui_button_textPressedColor">@color/aui_white</item>
+        <item name="aui_button_textDisableColor">@color/aui_white</item>
+
+        <item name="aui_button_drawableStart">@null</item>
+        <item name="aui_button_drawableEnd">@null</item>
+        <item name="aui_button_drawableTop">@null</item>
+        <item name="aui_button_drawableBottom">@null</item>
+        <item name="aui_button_drawablePadding">@null</item>
+        <item name="aui_button_drawablePaddingStart">@null</item>
+        <item name="aui_button_drawablePaddingEnd">@null</item>
+        <item name="aui_button_drawablePaddingTop">@null</item>
+        <item name="aui_button_drawablePaddingBottom">@null</item>
+        <item name="aui_button_drawableMargin">5dp</item>
+        <item name="aui_button_drawableMarginStart">@null</item>
+        <item name="aui_button_drawableMarginEnd">@null</item>
+        <item name="aui_button_drawableMarginTop">@null</item>
+        <item name="aui_button_drawableMarginBottom">@null</item>
+
+        <item name="aui_button_drawableWidth">25dp</item>
+        <item name="aui_button_drawableHeight">25dp</item>
+
+        <item name="aui_button_drawableRotateAnimEnable">false</item>
+        <item name="aui_button_drawableRotateAnimDuration">1000</item>
+
+        <item name="aui_button_drawableTint">@null</item>
+        <item name="aui_button_drawablePressedTint">@null</item>
+        <item name="aui_button_drawableDisableTint">@null</item>
+
+    </style>
+
+    <style name="AUIButton.Stroke">
+        <item name="aui_button_background">@drawable/aui_button_stroke</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
+
+        <item name="aui_button_drawableTint">@color/aui_primary</item>
+        <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
+        <item name="aui_button_drawableDisableTint">@color/aui_primary_light</item>
+    </style>
+
+    <style name="AUIButton.Mini">
+        <item name="android:minWidth">80dp</item>
+        <item name="android:minHeight">36dp</item>
+
+        <item name="aui_button_textSize">12sp</item>
+
+        <item name="aui_button_drawableWidth">20dp</item>
+        <item name="aui_button_drawableHeight">20dp</item>
+    </style>
+
+    <style name="AUIButton.Mini.Stroke">
+        <item name="aui_button_background">@drawable/aui_button_stroke</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
+
+        <item name="aui_button_drawableTint">@color/aui_primary</item>
+        <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
+        <item name="aui_button_drawableDisableTint">@color/aui_primary_light</item>
+    </style>
+
+    <style name="AUIButton.Circle">
+        <item name="android:minWidth">48dp</item>
+        <item name="android:maxWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:maxHeight">48dp</item>
+
+        <item name="aui_button_text">@null</item>
+        <item name="aui_button_textSize">12sp</item>
+
+        <item name="aui_button_drawableWidth">28dp</item>
+        <item name="aui_button_drawableHeight">28dp</item>
+    </style>
+
+    <style name="AUIButton.Circle.Stroke">
+        <item name="aui_button_background">@drawable/aui_button_stroke</item>
+        <item name="aui_button_textNormalColor">#464E53</item>
+        <item name="aui_button_textPressedColor">#009EFF</item>
+        <item name="aui_button_textDisableColor">#C8CDD0</item>
+
+        <item name="aui_button_drawableTint">@color/aui_primary</item>
+        <item name="aui_button_drawablePressedTint">@color/aui_primary_overlay</item>
+        <item name="aui_button_drawableDisableTint">@color/aui_primary_light</item>
+    </style>
+
+
+
+
+
+</resources>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--================= 主题属性 =================-->
+    <attr name="aui_musicPlayer_appearance" format="reference" />
+    <attr name="aui_musicPlayerControllerDialog_appearance" format="reference" />
+    <attr name="aui_musicPlayerPresetDialog_appearance" format="reference" />
+    <attr name="aui_musicPlayerEffectPresetItem_appearance" format="reference" />
+
+
+    <!--================= 样式属性 =================-->
+    <declare-styleable name="AUIMusicPlayerView">
+        <attr name="aui_musicPlayer_appearance" />
+        <!--  cardBackgroundColor      -->
+        <attr name="aui_musicPlayer_backgroundColor" format="color" />
+        <attr name="aui_musicPlayer_minHeight" format="dimension" />
+        <attr name="aui_musicPlayer_cornerRadius" format="dimension" />
+        <attr name="aui_musicPlayer_titleIcon" format="dimension" />
+        <attr name="aui_musicPlayer_titleTextColor" format="color" />
+        <attr name="aui_musicPlayer_titleTextSize" format="dimension" />
+        <attr name="aui_musicPlayer_cumulativeScoreTextColor" format="color" />
+        <attr name="aui_musicPlayer_cumulativeScoreTextSize" format="dimension" />
+        <attr name="aui_musicPlayer_lineScoreTextColor" format="color" />
+        <attr name="aui_musicPlayer_lineScoreTextSize" format="dimension" />
+
+        <!--  未点歌      -->
+        <attr name="aui_musicPlayer_idleIcon" format="reference" />
+        <attr name="aui_musicPlayer_idleTextColor" format="color" />
+        <attr name="aui_musicPlayer_idleTextSize" format="dimension" />
+        <attr name="aui_musicPlayer_idleOrderText" format="string" />
+        <attr name="aui_musicPlayer_idleOrderTextColor" format="color" />
+        <attr name="aui_musicPlayer_idleOrderTextSize" format="string" />
+        <attr name="aui_musicPlayer_idleOrderBackground" format="reference|color" />
+
+        <!--  歌曲加载中      -->
+        <attr name="aui_musicPlayer_prepareIcon" format="reference" />
+        <attr name="aui_musicPlayer_prepareTextColor" format="color" />
+        <attr name="aui_musicPlayer_prepareTextSize" format="dimension" />
+
+        <!--      已点歌  -->
+        <attr name="aui_musicPlayer_activeTextSize" format="dimension" />
+        <attr name="aui_musicPlayer_activeTextColor" format="color" />
+        <attr name="aui_musicPlayer_activeStartIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeSwitchIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeChooseIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeLeaveChorusIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeVoiceSettingsIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeMusicPresetIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeSwitchOriginalIcon" format="reference" />
+        <attr name="aui_musicPlayer_activeJoinChorusBackground" format="reference|color" />
+        <attr name="aui_musicPlayer_activeJoinChorusTextColor" format="color" />
+        <attr name="aui_musicPlayer_activeJoinChorusTextSize" format="dimension" />
+
+        <attr name="aui_musicPlayer_gradeBackgroundColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeContentStartColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeContentMiddleColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeContentEndColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeLabelSeparatorColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeLabelTextColor" format="color"/>
+
+    </declare-styleable>
+
+    <!-- 弹框样式 -->
+    <declare-styleable name="AUIMusicPlayerControllerDialogView">
+        <attr name="aui_musicPlayerControllerDialog_appearance" />
+
+        <!--   背景     -->
+        <attr name="aui_musicPlayerControllerDialog_background" format="reference|color" />
+        <!--   标题     -->
+        <attr name="aui_musicPlayerControllerDialog_titleTextSize" format="dimension" />
+        <attr name="aui_musicPlayerControllerDialog_titleTextColor" format="color" />
+        <attr name="aui_musicPlayerControllerDialog_subTitleTextSize" format="dimension" />
+        <attr name="aui_musicPlayerControllerDialog_subTitleTextColor" format="color" />
+        <attr name="aui_musicPlayerControllerDialog_dividerColor" format="color" />
+        <attr name="aui_musicPlayerControllerDialog_dividerHeight" format="dimension" />
+        <attr name="aui_musicPlayerControllerDialog_switch_thumb" format="reference" />
+        <attr name="aui_musicPlayerControllerDialog_switch_track" format="reference" />
+        <attr name="aui_musicPlayerControllerDialog_seekbarProgressDrawable" format="reference" />
+        <attr name="aui_musicPlayerControllerDialog_seekbarThumb" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="AUIMusicPlayerPresetDialogView">
+        <attr name="aui_musicPlayerPresetDialog_titleTextColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="AUIMusicPlayerEffectPresetItem">
+        <attr name="aui_musicPlayerEffectPresetItem_appearance" />
+
+        <attr name="aui_musicPlayerEffectPresetItem_backgroundColor" format="color" />
+        <attr name="aui_musicPlayerEffectPresetItem_outStokeColor" format="color" />
+        <attr name="aui_musicPlayerEffectPresetItem_outIconSize" format="dimension" />
+        <attr name="aui_musicPlayerEffectPresetItem_innerIconSize" format="dimension" />
+        <attr name="aui_musicPlayerEffectPresetItem_textSize" format="dimension" />
+        <attr name="aui_musicPlayerEffectPresetItem_textColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="AUIMusicPlayerGradeView">
+        <attr name="aui_musicPlayerGradeView_backgroundColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_contentStartColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_contentMiddleColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_contentEndColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_labelSeparatorColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_labelTextColor" format="color"/>
+    </declare-styleable>
+
+    <style name="ShapeAppearance.MaterialComponents.AUIMusicPlayerEffectItem" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>

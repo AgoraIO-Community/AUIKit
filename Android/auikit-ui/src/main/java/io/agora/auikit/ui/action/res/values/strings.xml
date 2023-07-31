@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_room_apply_accept">Apply</string>
+    <string name="aui_room_invited_action">Invite</string>
+    <string name="aui_room_invited_list">Audience</string>
+    <string name="aui_room_apply_list">Application List</string>
+    <string name="aui_room_contribution_empty">No Data</string>
+</resources>

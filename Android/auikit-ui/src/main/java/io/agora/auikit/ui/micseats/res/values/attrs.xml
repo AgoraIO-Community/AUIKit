@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--================= 主题属性 =================-->
+    <attr name="aui_micSeats_appearance" format="reference"/>
+    <attr name="aui_micSeatItem_appearance" format="reference"/>
+    <attr name="aui_micSeatDialog_appearance" format="reference"/>
+
+
+    <!--================= 样式属性 =================-->
+
+    <!-- 麦位样式 -->
+    <declare-styleable name="AUIMicSeatsView">
+        <attr name="aui_micSeats_appearance"/>
+
+        <!-- 麦位横向间距 -->
+        <attr name="aui_micSeats_spaceHorizontal" format="dimension"/>
+        <!-- 麦位纵向间距 -->
+        <attr name="aui_micSeats_spaceVertical" format="dimension"/>
+        <!-- 背景颜色 -->
+        <attr name="aui_micSeats_background" format="reference|color"/>
+
+    </declare-styleable>
+
+    <!-- 麦位座位样式 -->
+    <declare-styleable name="AUIMicSeatItemView">
+        <attr name="aui_micSeatItem_appearance"/>
+
+        <!-- 麦位全局(包括座位和标题名称等) -->
+        <!-- ==背景色== -->
+        <attr name="aui_micSeatItem_background" format="reference|color"/>
+        <!-- ==宽高比例== -->
+        <attr name="aui_micSeatItem_dimensionRatio" format="string"/>
+
+        <!-- 麦位座位 -->
+        <!-- ==座位背景== -->
+        <attr name="aui_micSeatItem_seatBackground" format="reference|color"/>
+        <!-- ==座位空闲时图标== -->
+        <attr name="aui_micSeatItem_seatIconIdle" format="reference|color"/>
+        <!-- ==座位被锁时图标== -->
+        <attr name="aui_micSeatItem_seatIconLock" format="reference|color"/>
+        <!-- ==座位图标外间距== -->
+        <attr name="aui_micSeatItem_seatIconMargin" format="dimension"/>
+        <!-- ==座位图标宽高比例== -->
+        <attr name="aui_micSeatItem_seatIconDimensionRatio" format="string"/>
+
+        <!-- 麦位静音图标 -->
+        <!-- ==麦位静音图标资源== -->
+        <attr name="aui_micSeatItem_audioMuteIcon" format="reference|color"/>
+        <!-- ==麦位关闭视频图标资源== -->
+        <attr name="aui_micSeatItem_videoMuteIcon" format="reference|color"/>
+        <!-- ==麦位静音图标宽== -->
+        <attr name="aui_micSeatItem_audioMuteIconWidth" format="dimension|enum">
+            <enum name="match_parent" value="-1" /><!-- 拉伸满父布局大小 -->
+            <enum name="wrap_content" value="-2" /><!-- 以真实大小为准来显示 -->
+        </attr>
+        <!-- ==麦位静音图标高== -->
+        <attr name="aui_micSeatItem_audioMuteIconHeight" format="dimension|enum">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==麦位静音图标位置：居中或右下== -->
+        <attr name="aui_micSeatItem_audioMuteIconGravity" format="enum">
+            <enum name="bottomEnd" value="1"/>
+            <enum name="center" value="2"/>
+        </attr>
+
+        <!-- 麦位房主标志 -->
+        <!-- ==房主名称宽== -->
+        <attr name="aui_micSeatItem_roomOwnerWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==房主名称高== -->
+        <attr name="aui_micSeatItem_roomOwnerHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==房主名称文本== -->
+        <attr name="aui_micSeatItem_roomOwnerText" format="string"/>
+        <!-- ==房主名称文本颜色== -->
+        <attr name="aui_micSeatItem_roomOwnerTextColor" format="color"/>
+        <!-- ==房主名称文本字体大小== -->
+        <attr name="aui_micSeatItem_roomOwnerTextSize" format="dimension"/>
+        <!-- ==房主名称文本背景== -->
+        <attr name="aui_micSeatItem_roomOwnerBackground" format="reference|color"/>
+        <!-- ==房主名称文本横向内间距== -->
+        <attr name="aui_micSeatItem_roomOwnerPaddingHorizontal" format="dimension"/>
+        <!-- ==房主名称文本纵向内间距== -->
+        <attr name="aui_micSeatItem_roomOwnerPaddingVertical" format="dimension"/>
+
+        <!-- 麦位主标题 -->
+        <!-- ==麦位主标题文本== -->
+        <attr name="aui_micSeatItem_titleIdleText" format="string"/>
+        <!-- ==麦位主标题文本大小== -->
+        <attr name="aui_micSeatItem_titleTextSize" format="dimension"/>
+        <!-- ==麦位主标题文本颜色== -->
+        <attr name="aui_micSeatItem_titleTextColor" format="color"/>
+
+        <!-- 麦位合唱 -->
+        <!-- ==麦位合唱图标资源== -->
+        <attr name="aui_micSeatItem_chorusIcon" format="reference|color"/>
+        <!-- ==麦位合唱文本== -->
+        <attr name="aui_micSeatItem_chorusText" format="string"/>
+        <!-- ==麦位合唱文本字体颜色== -->
+        <attr name="aui_micSeatItem_chorusTextColor" format="reference|color"/>
+        <!-- ==麦位合唱文本字体大小== -->
+        <attr name="aui_micSeatItem_chorusTextSize" format="dimension"/>
+
+        <!-- 麦位主唱 -->
+        <!-- ==麦位主唱图标资源== -->
+        <attr name="aui_micSeatItem_leadSingerIcon" format="reference|color"/>
+        <!-- ==麦位主唱文本== -->
+        <attr name="aui_micSeatItem_leadSingerText" format="string"/>
+        <!-- ==麦位主唱文本字体颜色== -->
+        <attr name="aui_micSeatItem_leadSingerTextColor" format="reference|color"/>
+        <!-- ==麦位主唱文本字体大小== -->
+        <attr name="aui_micSeatItem_leadSingerTextSize" format="dimension"/>
+
+    </declare-styleable>
+
+    <!-- 麦位弹窗样式 -->
+    <declare-styleable name="AUIMicSeatDialogView">
+        <attr name="aui_micSeatDialog_appearance"/>
+
+        <!-- 弹窗 -->
+        <attr name="aui_micSeatDialog_background" format="reference|color"/>
+        <attr name="aui_micSeatDialog_marginTop" format="dimension"/>
+        <attr name="aui_micSeatDialog_padding" format="dimension"/>
+
+        <!-- 标题 -->
+        <attr name="aui_micSeatDialog_titleVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_micSeatDialog_titleText" format="string"/>
+        <attr name="aui_micSeatDialog_titleTextSize" format="dimension"/>
+        <attr name="aui_micSeatDialog_titleTextColor" format="color"/>
+
+        <!-- 用户信息显示位置 -->
+        <attr name="aui_micSeatDialog_userGravity">
+            <enum name="start" value="1" />
+            <enum name="center" value="2" />
+        </attr>
+
+        <!-- 用户头像 -->
+        <attr name="aui_micSeatDialog_userAvatarIdle" format="reference"/>
+        <attr name="aui_micSeatDialog_userAvatarWidth" format="dimension"/>
+        <attr name="aui_micSeatDialog_userAvatarHeight" format="dimension"/>
+
+        <!-- 用户名称 -->
+        <attr name="aui_micSeatDialog_userNameTextSize" format="dimension"/>
+        <attr name="aui_micSeatDialog_userNameTextColor" format="color"/>
+        <attr name="aui_micSeatDialog_userNameMarginTop" format="dimension"/>
+
+        <!-- 用户描述 -->
+        <attr name="aui_micSeatDialog_userDesTextSize" format="dimension"/>
+        <attr name="aui_micSeatDialog_userDesTextColor" format="color"/>
+        <attr name="aui_micSeatDialog_userDesText" format="string"/>
+        <attr name="aui_micSeatDialog_userDesVisible">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+
+
+        <!-- 多个操作按钮 -->
+        <attr name="aui_micSeatDialog_buttonsOrientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="aui_micSeatDialog_buttonsDivider" format="reference|color"/>
+        <attr name="aui_micSeatDialog_buttonsDividerColor" format="color"/>
+        <attr name="aui_micSeatDialog_buttonsDividerPadding" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonsMarginTop" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonsMarginBottom" format="dimension"/>
+
+        <!-- 单个操作按钮 -->
+        <attr name="aui_micSeatDialog_buttonBackground" format="reference|color"/>
+        <attr name="aui_micSeatDialog_buttonPaddingHorizontal" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonPaddingVertical" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonMarginHorizontal" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonMarginVertical" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonTextSize" format="dimension"/>
+        <attr name="aui_micSeatDialog_buttonNormalTextColor" format="color"/>
+        <attr name="aui_micSeatDialog_buttonAbandonTextColor" format="color"/>
+
+    </declare-styleable>
+
+
+</resources>

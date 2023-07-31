@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--================= 主题属性 =================-->
+    <attr name="aui_memberInfo_appearance" format="reference"/>
+    <attr name="aui_memberInfoList_appearance" format="reference"/>
+
+    <!--================= 样式属性 =================-->
+
+    <!-- 房间人数和用户展示样式 -->
+    <declare-styleable name="AUIUpperRightInformationView">
+
+        <!-- ==根布局宽、高== -->
+        <attr name="aui_upperRight_root_layout_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperRight_root_layout_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- ==根布局内间距== -->
+        <attr name="aui_upperRight_layout_paddingHorizontal" format="dimension"/>
+        <attr name="aui_upperRight_layout_paddingVertical" format="dimension"/>
+
+        <!-- == 用户item 宽高== -->
+        <attr name="aui_upperRight_member_item_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperRight_member_item_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- == 用户数宽高== -->
+        <attr name="aui_upperRight_member_count_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_upperRight_member_count_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <!-- == 用户item 间距== -->
+        <attr name="aui_upperRight_member_spacing" format="dimension"/>
+        <!-- == 用户item默认背景== -->
+        <attr name="aui_upperRight_default_member_bg" format="reference|color"/>
+        <!-- == 用户模块 展示\隐藏== -->
+        <attr name="aui_upperRight_memberRankVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_upperRight_member1_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_upperRight_member2_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_upperRight_member3_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <!-- == 用户数文本 大小、颜色、样式 == -->
+        <attr name="aui_upperRight_count_text" format="string"/>
+        <attr name="aui_upperRight_count_size" format="dimension"/>
+        <attr name="aui_upperRight_count_color" format="reference|color"/>
+        <attr name="aui_upperRight_count_style" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+        </attr>
+        <attr name="aui_upperRight_count_max_width" format="dimension"/>
+        <attr name="aui_upperRight_count_min_width" format="dimension"/>
+        <!-- == 用户数和用户展示区的间距 == -->
+        <attr name="aui_upperRight_count_spacing" format="dimension"/>
+        <!-- == 用户数文本 内间距 == -->
+        <attr name="aui_upperRight_count_paddingHorizontal" format="dimension"/>
+        <attr name="aui_upperRight_count_paddingVertical" format="dimension"/>
+        <!-- == 用户数背景 == -->
+        <attr name="aui_upperRight_count_background" format="reference|color"/>
+        <attr name="aui_upperRight_count_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <!-- 更多用户 -->
+        <attr name="aui_roomMoreUser_drawable" format="reference"/>
+        <attr name="aui_roomMoreUser_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_roomMoreUser_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_roomMoreUser_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_roomMoreUser_marginStart" format="dimension"/>
+        <!-- 关闭 -->
+        <attr name="aui_roomClose_drawable" format="reference"/>
+        <attr name="aui_roomClose_Visibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="aui_roomClose_width" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_roomClose_height" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="aui_roomClose_marginStart" format="dimension"/>
+        <!-- 按钮 -->
+        <attr name="aui_roomButton_normalColor" format="color"/>
+
+    </declare-styleable>
+
+
+    <declare-styleable name="AUIRoomMemberListView">
+
+        <attr name="aui_memberInfoList_title_textColor" format="color"/>
+
+        <attr name="aui_memberInfoList_userName_textColor" format="color"/>
+        <attr name="aui_memberInfoList_userNameInfo_textColor" format="color"/>
+
+
+
+    </declare-styleable>
+
+</resources>

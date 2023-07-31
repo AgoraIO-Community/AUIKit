@@ -52,7 +52,11 @@ open class AUIPlayerView: UIView {
     
     public lazy var karaokeLrcView: AUIKaraokeLrcView = {
         let karaokeLrcView = AUIKaraokeLrcView(frame: CGRect(x: 0, y: 0, width: aui_width, height: aui_height - 60))
+<<<<<<<< HEAD:iOS/AUIKitCore/Sources/Components/Player/AUIPlayerView.swift
         karaokeLrcView.lrcView.scoringView.standardPitchStickViewColor = UIColor(hex: "#99D8FF")
+========
+        karaokeLrcView.lrcView.scoringView.standardPitchStickViewColor = UIColor(hex: "#099DFD", alpha: 0.5)
+>>>>>>>> origin/dev/karaoke-0.3.0:iOS/AUIKit/Classes/Components/Player/AUIPlayerView.swift
         return karaokeLrcView
     }()
     
@@ -226,8 +230,11 @@ open class AUIPlayerView: UIView {
         let theme = AUIButtonDynamicTheme()
         theme.buttonWidth = "Player.JoinChorusButtonWidth"
         theme.buttonHeight = "Player.JoinChorusButtonHeight"
+<<<<<<<< HEAD:iOS/AUIKitCore/Sources/Components/Player/AUIPlayerView.swift
         theme.iconWidth = "Player.JoinChorusButtonWidth"
         theme.iconHeight = "Player.JoinChorusButtonHeight"
+========
+>>>>>>>> origin/dev/karaoke-0.3.0:iOS/AUIKit/Classes/Components/Player/AUIPlayerView.swift
         theme.icon =  ThemeAnyPicker(keyPath:"Player.playerLrcItemIconJoinChorus")
         theme.cornerRadius = nil
         let button = AUIButton()

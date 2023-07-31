@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="voice_transparent">#00000000</color>
+    <color name="voice_grey_919BA1">#919BA1</color>
+    <color name="voice_white_10">#1AFFFFFF</color>
+    <color name="voice_white_70">#B3FFFFFF</color>
+    <color name="voice_white_80">#CCFFFFFF</color>
+    <color name="voice_white_100">#FFFFFF</color>
+    <color name="voice_white_F9FAFA">#F9FAFA</color>
+    <color name="voice_color_333333">#333333</color>
+    <color name="voice_black_171A1C">#171A1C</color>
+    <color name="voice_black_2F3437">#2F3437</color>
+    <color name="voice_black">#000000</color>
+    <color name="voice_black_5E686E">#5E686E</color>
+
+</resources>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <attr name="aui_bottomDialog_appearance" format="reference"/>
+
+
+    <declare-styleable name="AUIBottomDialog">
+
+        <!-- 背景 -->
+        <attr name="aui_bottomDialog_backgroundColor" format="color" />
+        <attr name="aui_bottomDialog_backgroundCornerRadiusLeftTop" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundCornerRadiusLeftBottom" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundCornerRadiusRightTop" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundCornerRadiusRightBottom" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundShadowColor" format="color" />
+        <attr name="aui_bottomDialog_backgroundShadowRadius" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundShadowOffsetX" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundShadowOffsetY" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundOffsetTop" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundIndicatorColor" format="color" />
+        <attr name="aui_bottomDialog_backgroundIndicatorTop" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundIndicatorWidth" format="dimension" />
+        <attr name="aui_bottomDialog_backgroundIndicatorHeight" format="dimension" />
+
+        <!-- 间距/大小 -->
+        <attr name="aui_bottomDialog_contentPadding" format="dimension" />
+        <attr name="aui_bottomDialog_contentPaddingStart" format="dimension" />
+        <attr name="aui_bottomDialog_contentPaddingTop" format="dimension" />
+        <attr name="aui_bottomDialog_contentPaddingEnd" format="dimension" />
+        <attr name="aui_bottomDialog_contentPaddingBottom" format="dimension" />
+        <attr name="aui_bottomDialog_contentMinHeight" format="dimension" />
+
+        <!-- 标题 -->
+        <attr name="aui_bottomDialog_titleTextSize" format="dimension" />
+        <attr name="aui_bottomDialog_titleTextColor" format="color" />
+        <attr name="aui_bottomDialog_titlePadding" format="dimension" />
+        <attr name="aui_bottomDialog_titlePaddingStart" format="dimension" />
+        <attr name="aui_bottomDialog_titlePaddingTop" format="dimension" />
+        <attr name="aui_bottomDialog_titlePaddingEnd" format="dimension" />
+        <attr name="aui_bottomDialog_titlePaddingBottom" format="dimension" />
+
+        <!-- 分页 -->
+        <attr name="aui_bottomDialog_pageIndicator" format="reference" />
+        <attr name="aui_bottomDialog_pageIndicatorColorSelected" format="color" />
+        <attr name="aui_bottomDialog_pageIndicatorColor" format="color" />
+
+        <!-- 列表 -->
+        <attr name="aui_bottomDialog_listOrientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="aui_bottomDialog_listItem" format="reference" />
+        <attr name="aui_bottomDialog_listDivider" format="reference" />
+        <attr name="aui_bottomDialog_listDividerColor" format="color" />
+        <attr name="aui_bottomDialog_listSpan" format="integer" />
+        <attr name="aui_bottomDialog_listHeight" format="dimension" />
+
+        <!-- 菜单样式 -->
+        <attr name="aui_bottomDialog_menu_appearance" format="reference"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="AUIBottomDialogMenu">
+        <attr name="android:id" />
+        <attr name="android:icon" />
+        <attr name="android:iconTint" />
+        <attr name="android:title" />
+        <attr name="android:titleTextColor" />
+    </declare-styleable>
+
+    <style name="AUIBottomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimAmount">0</item>
+
+        <!-- 背景 -->
+        <item name="aui_bottomDialog_backgroundColor">#F9FAFA</item>
+        <item name="aui_bottomDialog_backgroundShadowColor">@android:color/darker_gray</item>
+        <item name="aui_bottomDialog_backgroundShadowRadius">3dp</item>
+        <item name="aui_bottomDialog_backgroundShadowOffsetX">0dp</item>
+        <item name="aui_bottomDialog_backgroundShadowOffsetY">-1dp</item>
+        <item name="aui_bottomDialog_backgroundCornerRadiusLeftTop">20dp</item>
+        <item name="aui_bottomDialog_backgroundCornerRadiusLeftBottom">@null</item>
+        <item name="aui_bottomDialog_backgroundCornerRadiusRightTop">20dp</item>
+        <item name="aui_bottomDialog_backgroundCornerRadiusRightBottom">@null</item>
+        <item name="aui_bottomDialog_backgroundOffsetTop">@null</item>
+
+        <item name="aui_bottomDialog_backgroundIndicatorTop">12dp</item>
+        <item name="aui_bottomDialog_backgroundIndicatorColor">#C8CDD0</item>
+        <item name="aui_bottomDialog_backgroundIndicatorWidth">36dp</item>
+        <item name="aui_bottomDialog_backgroundIndicatorHeight">3dp</item>
+
+        <!-- 间距/大小 -->
+        <item name="aui_bottomDialog_contentPadding">@null</item>
+        <item name="aui_bottomDialog_contentPaddingStart">@null</item>
+        <item name="aui_bottomDialog_contentPaddingTop">16dp</item>
+        <item name="aui_bottomDialog_contentPaddingEnd">@null</item>
+        <item name="aui_bottomDialog_contentPaddingBottom">@null</item>
+        <item name="aui_bottomDialog_contentMinHeight">0dp</item>
+
+        <!-- 标题 -->
+        <item name="aui_bottomDialog_titleTextSize">20sp</item>
+        <item name="aui_bottomDialog_titleTextColor">@android:color/black</item>
+        <item name="aui_bottomDialog_titlePadding">@null</item>
+        <item name="aui_bottomDialog_titlePaddingStart">12dp</item>
+        <item name="aui_bottomDialog_titlePaddingTop">6dp</item>
+        <item name="aui_bottomDialog_titlePaddingEnd">12dp</item>
+        <item name="aui_bottomDialog_titlePaddingBottom">6dp</item>
+
+
+        <!-- 分页 -->
+        <item name="aui_bottomDialog_pageIndicator">@drawable/aui_bottom_dialog_page_indicator</item>
+        <item name="aui_bottomDialog_pageIndicatorColorSelected">#7800FF</item>
+        <item name="aui_bottomDialog_pageIndicatorColor">#267800FF</item>
+        <item name="tabMaxWidth">20dp</item>
+        <item name="tabMinWidth">20dp</item>
+        <item name="tabPaddingStart">0dp</item>
+        <item name="tabPaddingEnd">0dp</item>
+
+        <!-- 列表 -->
+        <item name="aui_bottomDialog_listOrientation">vertical</item>
+        <item name="aui_bottomDialog_listDivider">@drawable/aui_bottom_dialog_list_divider</item>
+        <item name="aui_bottomDialog_listDividerColor">#CFCFCF</item>
+        <item name="aui_bottomDialog_listSpan">1</item>
+
+        <item name="aui_bottomDialog_menu_appearance">@style/AUIBottomDialogMenu</item>
+
+    </style>
+
+    <style name="AUIBottomDialogMenu">
+        <item name="android:titleTextColor" tools:ignore="NewApi">@color/aui_black</item>
+    </style>
+</resources>
