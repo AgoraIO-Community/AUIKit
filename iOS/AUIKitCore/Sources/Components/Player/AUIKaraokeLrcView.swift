@@ -58,13 +58,8 @@ public class AUIKaraokeLrcView: UIView {
         lrcView = KaraokeView(frame: CGRect(x: 0, y: 30, width: self.width, height: self.bounds.height - 20), loggers: [FileLogger()])
         lrcView.scoringView.viewHeight = 60
         lrcView.scoringView.topSpaces = 5
-<<<<<<<< HEAD:iOS/AUIKitCore/Sources/Components/Player/AUIKaraokeLrcView.swift
         lrcView.lyricsView.textNormalColor = UIColor(hex: "#FFFFFF",alpha: 0.5)
         lrcView.lyricsView.textSelectedColor = UIColor(hex: "#FFFFFF")
-========
-        lrcView.lyricsView.textNormalColor = UIColor(hex: "#919BA1",alpha: 0.5)
-        lrcView.lyricsView.textSelectedColor = UIColor(hex: "#919BA1",alpha: 0.5)
->>>>>>>> origin/main:iOS/AUIKit/Classes/Components/Player/AUIKaraokeLrcView.swift
         lrcView.lyricsView.textHighlightedColor = UIColor(hex: "#FF8AB4")
         lrcView.lyricsView.lyricLineSpacing = 6
         lrcView.lyricsView.draggable = false

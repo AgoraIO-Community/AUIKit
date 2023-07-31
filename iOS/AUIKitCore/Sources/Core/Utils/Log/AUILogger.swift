@@ -26,11 +26,7 @@ public func aui_error(_ text: String, tag: String = "AUIKit") {
     var logFileMaxSize: Int = (2 * 1024 * 1024)
 }
 
-<<<<<<<< HEAD:iOS/AUIKitCore/Sources/Core/Utils/Log/AUILogger.swift
 @objc public class AUILog: NSObject {
-========
-@objc class AUILog: NSObject {
->>>>>>>> origin/main:iOS/AUIKit/Classes/Core/Utils/Log/AUILogger.swift
     static let formatter = DateFormatter()
     fileprivate static func _dateFormat() ->String {
         formatter.dateFormat = "yyyy-MM-dd"
