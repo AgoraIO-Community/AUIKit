@@ -20,14 +20,9 @@
       "micRoleButtonIconHeight": 16,
       "micHostButtonWidth": 50,
       "micHostButtonHeight": 20,
-<<<<<<<< HEAD:iOS/AUIKit/Resource/auiTheme.bundle/Dark/theme/micSeat.json
       "micRoleButtonTitleColor":"#ffffff",
       "backgroundColor": "#00000033",
       "backgroundImage": "aui_transparent_icon",
-========
-      "backgroundColor": "#00000000",
-      "backgroundImage": "aui_transparent_icon_seat",
->>>>>>>> origin/main:iOS/AUIKit/Resource/auiTheme.bundle/KTV/theme/micSeat.json
       "defaultImage": "aui_micseat_item_icon_idle",
       "labelFont": "PingFangSC-Regular,14",
       "labelTextColor": "#ffffff",
