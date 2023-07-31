@@ -50,7 +50,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 return new RecyclerView.ViewHolder(new AUIMicSeatItemView(parent.getContext())) {
                 };
             }
-
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 AUIMicSeatItemView seatItemView = (AUIMicSeatItemView) holder.itemView;
@@ -60,7 +59,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                     showMicSeatDialog(position);
                 });
             }
-
             @Override
             public int getItemCount() {
                 return micSeatCount;
@@ -187,7 +185,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setTitleText(text);
             }
         }
-
         @Override
         public void setRoomOwnerVisibility(int visible) {
             this.roomOwnerVisibility = visible;
@@ -195,7 +192,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setRoomOwnerVisibility(visible);
             }
         }
-
         @Override
         public void setTitleIndex(int index) {
             this.titleIndex = index;
