@@ -99,10 +99,6 @@ open class AUIJukeBoxCell: UITableViewCell {
         button.setTitle(aui_localized("selectSong"), for: .normal)
         button.setTitle(aui_localized("selectedSong"), for: .selected)
         button.titleLabel?.theme_font = "JukeBoxCell.buttonTitleFont"
-<<<<<<<< HEAD:iOS/AUIKitCore/Sources/Components/JukeBox/AUIJukeBoxCell.swift
-//        button.createThemeGradient("JukeBoxCell.coverGradientColors", [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
-========
->>>>>>>> origin/dev/karaoke-0.3.0:iOS/AUIKit/Classes/Components/JukeBox/AUIJukeBoxCell.swift
         button.theme_setTitleColor(AUIColor("JukeBoxCell.normalButtonTitleColor"), forState: .normal)
         button.theme_setTitleColor(AUIColor("JukeBoxCell.selectedButtonTitleColor"), forState: .selected)
         button.addTarget(self, action: #selector(onSelectSongAction(_:)), for: .touchUpInside)
