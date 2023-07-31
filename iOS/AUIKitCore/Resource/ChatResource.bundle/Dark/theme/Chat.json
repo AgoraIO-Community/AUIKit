@@ -1,0 +1,34 @@
+
+{
+    "Barrage": {
+        "containerBackgroundColor": "#00000050",
+        "containerLayerWidth": 1,
+        "containerLayerColor": "#F9FAFA99",
+        "containerLayerCornerRadius": 12
+    },
+    "BottomBar": {
+        "containerBackgroundColor": "#00000050",
+        "moreGradientColors": ["#003F66FF","#1B006651"]
+    },
+    "InputBar": {
+        "backgroundColor": "#171A1C",
+        "textFont":"PingFangSC-Regular,15",
+        "inputContainerLayerColor": "#E4E3ED",
+        "inputContainerLayerWidth": 1,
+        "inputBackgroundColor":"#2F3437",
+        "placeHolder": "Aa",
+        "placeHolderColor":"#B6B8C9",
+        "cursorColor":"#009FFF",
+        "textColor":"#F9FAFA",
+        "textInputCornerRadius":5,
+        "sendGradientColors":["#33B1FF","#7C5BFF"],
+        "sendFont": "PingFangSC-Regular,16",
+        "sendColor": "#FFFFFF",
+        "emojiKeyboard":"face",
+        "textKeyboard":"key",
+        "enLimitCount": 80,
+        "zhLimitCount": 30,
+        "emojiOperationColor":"#2F3437"
+    }
+        
+}
