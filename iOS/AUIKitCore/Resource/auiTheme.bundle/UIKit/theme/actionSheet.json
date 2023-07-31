@@ -32,5 +32,9 @@
       "normalIcon": "addUser",
       "warnIcon": "addUser_red",
       "titleColor": "#000000"
+  },
+  
+  "CommonDialog": {
+      "contentBackgroundColor": "#00000000"
   }
 }
