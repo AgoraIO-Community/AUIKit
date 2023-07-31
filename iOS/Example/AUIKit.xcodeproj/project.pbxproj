@@ -38,6 +38,7 @@
 		70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		82FDF13323844138E2902901 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = AUIKitCore.podspec; path = ../../AUIKitCore.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A87C9B692A285A4D002D9BD5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A87C9B6B2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A87C9B6D2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,7 +47,6 @@
 		A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = exampleTheme.bundle; sourceTree = "<group>"; };
 		B9CD0CD6559B14E3F0A33E06 /* Pods-AUIKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E9CAC8BDC6BC7995118FF6EC /* Pods-AUIKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		FC714ADFC100525CBA50C370 /* AUIKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AUIKit.podspec; path = ../AUIKit.podspec; sourceTree = "<group>"; };
 		FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -131,7 +131,7 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				FC714ADFC100525CBA50C370 /* AUIKit.podspec */,
+				A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */,
 				82FDF13323844138E2902901 /* README.md */,
 				212D08FE84EE860B8652E908 /* LICENSE */,
 			);
@@ -163,7 +163,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */,
-				4E5271E20DB3D274BA41446B /* [CP] Copy Pods Resources */,
+				852E530FAE6E9A73D9ACCCBC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -217,7 +217,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit2" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -281,26 +281,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4E5271E20DB3D274BA41446B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiLocalizable.bundle",
-				"${PODS_ROOT}/../../AUIKit/Resource/auiTheme.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiLocalizable.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		514CFEFA17F1A4B8E9F65055 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -317,6 +297,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		852E530FAE6E9A73D9ACCCBC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/ChatResource.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/Gift.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/Invitation.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiLocalizable.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ChatResource.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gift.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Invitation.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BE8B5F127B4E3BBDC0675725 /* [CP] Check Pods Manifest.lock */ = {
@@ -377,6 +383,7 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/AgoraVideoSegmentationExtension.framework/AgoraVideoSegmentationExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/video_dec.framework/video_dec",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/video_enc.framework/video_enc",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Agora_Chat_iOS/AgoraChat.framework/AgoraChat",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -409,6 +416,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraVideoSegmentationExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_dec.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_enc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraChat.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -643,7 +651,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit2" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "AUIKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,

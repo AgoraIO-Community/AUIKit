@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +31,7 @@ public class AUIMusicPlayerControllerDialogView extends FrameLayout {
 
     private IMusicPlayerEffectActionListener mEffectActionListener;
 
-    private AppCompatCheckBox checkBoxSwitchInEar;
+    private Switch checkBoxSwitchInEar;
     private AppCompatSeekBar seekBarMusicVolume;
     private AppCompatSeekBar seekBarSignalVolume;
     private AppCompatSeekBar seekBarPitch;
@@ -73,7 +73,7 @@ public class AUIMusicPlayerControllerDialogView extends FrameLayout {
 
     private void initView(@NonNull Context context) {
         View.inflate(context, R.layout.aui_musicplayer_controller_dialog_view, this);
-        checkBoxSwitchInEar = ((AppCompatCheckBox) findViewById(R.id.switch_inear));
+        checkBoxSwitchInEar = ((Switch) findViewById(R.id.switch_inear));
         checkBoxSwitchInEar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             this.isInEar = isChecked;
             if (mEffectActionListener != null) {

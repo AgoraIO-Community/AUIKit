@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/choose_song"
+        android:title="@string/aui_jukebox_title_choose_song"
+        app:aui_tabLayoutMenu_selected="true"/>
+
+    <item
+        android:id="@+id/chosen_song"
+        android:title="@string/aui_jukebox_title_chosen_song"/>
+
+</menu>

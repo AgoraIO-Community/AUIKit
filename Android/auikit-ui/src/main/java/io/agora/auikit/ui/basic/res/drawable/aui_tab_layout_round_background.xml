@@ -19,6 +19,6 @@
 
     <corners android:radius="999dp"/>
     <solid android:color="@android:color/transparent"/>
-    <stroke android:color="#C3C5FE" android:width="1dp"/>
+    <stroke android:color="@color/aui_primary" android:width="1dp"/>
 
 </shape>

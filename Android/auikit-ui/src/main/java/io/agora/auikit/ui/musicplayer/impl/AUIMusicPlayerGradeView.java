@@ -1,37 +1,47 @@
 package io.agora.auikit.ui.musicplayer.impl;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import io.agora.auikit.ui.R;
 
 public class AUIMusicPlayerGradeView extends View {
+    private int backgroundColor;
+    private int contentStartColor;
+    private int contentMiddleColor;
+    private int contentEndColor;
+    private int labelTextColor;
+    private int labelSeparatorColor;
+
     public AUIMusicPlayerGradeView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public AUIMusicPlayerGradeView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public AUIMusicPlayerGradeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public AUIMusicPlayerGradeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AUIMusicPlayerGradeView);
+        backgroundColor = typedArray.getColor(R.styleable.AUIMusicPlayerGradeView_aui_musicPlayerGradeView_backgroundColor, Color.parseColor("#4130C7"));
+        contentStartColor = typedArray.getColor(R.styleable.AUIMusicPlayerGradeView_aui_musicPlayerGradeView_contentStartColor, Color.parseColor("#FF99f5FF"));
+        contentMiddleColor = typedArray.getColor(R.styleable.AUIMusicPlayerGradeView_aui_musicPlayerGradeView_contentMiddleColor, Color.parseColor("#FF1B6FFF"));
+        contentEndColor = typedArray.getColor(R.styleable.AUIMusicPlayerGradeView_aui_musicPlayerGradeView_contentEndColor, Color.parseColor("#FFD598FF"));
+        labelSeparatorColor = typedArray.getColor(R.styleable.AUIMusicPlayerGradeView_aui_musicPlayerGradeView_labelSeparatorColor, Color.parseColor("#171A1C"));
+        labelTextColor = typedArray.getColor(R.styleable.AUIMusicPlayerGradeView_aui_musicPlayerGradeView_labelTextColor, Color.parseColor("#4130C7"));
+        typedArray.recycle();
     }
 
     private final RectF mDefaultBackgroundRectF = new RectF();
@@ -102,18 +112,9 @@ public class AUIMusicPlayerGradeView extends View {
         mGradeSeparatorLabelIndicatorPaint.setTextAlign(Paint.Align.CENTER);
 
         mDefaultBackgroundPaint.setShader(null);
-        int colorOfBackground = 0;
-        int colorOfContentGray = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            colorOfBackground = getResources().getColor(R.color.aui_black, null);
-            colorOfContentGray = getResources().getColor(R.color.aui_navy, null);
-        } else {
-            colorOfBackground = getResources().getColor(R.color.aui_black);
-            colorOfContentGray = getResources().getColor(R.color.aui_navy);
-        }
-        mDefaultBackgroundPaint.setColor(colorOfBackground);
-        mGradeSeparatorIndicatorPaint.setColor(colorOfContentGray);
-        mGradeSeparatorLabelIndicatorPaint.setColor(colorOfContentGray);
+        mDefaultBackgroundPaint.setColor(backgroundColor);
+        mGradeSeparatorIndicatorPaint.setColor(labelSeparatorColor);
+        mGradeSeparatorLabelIndicatorPaint.setColor(labelTextColor);
 
         Paint.FontMetrics fontMetrics = mGradeSeparatorLabelIndicatorPaint.getFontMetrics();
         float offsetForLabelX = mGradeSeparatorLabelIndicatorPaint.measureText("S");
@@ -132,7 +133,7 @@ public class AUIMusicPlayerGradeView extends View {
         canvas.drawText("S", (float) ((mWidth * xRadioOfGradeS) + offsetForLabelX), baseLineForLabel, mGradeSeparatorLabelIndicatorPaint);
 
         if (mCumulativeLinearGradient == null) {
-            buildDefaultCumulativeScoreBarStyle(Color.parseColor("#FF99f5FF"), Color.parseColor("#FF1B6FFF"));
+            buildDefaultCumulativeScoreBarStyle(contentStartColor, contentMiddleColor);
         }
         mCumulativeScoreBarPaint.setShader(mCumulativeLinearGradient);
         mCumulativeScoreBarPaint.setAntiAlias(true);
@@ -143,18 +144,15 @@ public class AUIMusicPlayerGradeView extends View {
         mCumulativeScore = cumulativeScore;
         mPerfectScore = perfectScore;
 
-        int startColor = Color.parseColor("#FF99F5FF");
         if (mCumulativeScore <= perfectScore * 0.1) {
-            buildDefaultCumulativeScoreBarStyle(startColor, startColor);
+            buildDefaultCumulativeScoreBarStyle(contentStartColor, contentStartColor);
         } else {
             float currentWidthOfScoreBar = mWidth * cumulativeScore / perfectScore;
-            int middleColor = Color.parseColor("#FF1B6FFF");
 
             if (mCumulativeScore > perfectScore * 0.1 && mCumulativeScore < perfectScore * 0.8) {
-                mCumulativeLinearGradient = new LinearGradient(0, 0, currentWidthOfScoreBar, mHeight, startColor, middleColor, Shader.TileMode.CLAMP);
+                mCumulativeLinearGradient = new LinearGradient(0, 0, currentWidthOfScoreBar, mHeight, contentStartColor, contentMiddleColor, Shader.TileMode.CLAMP);
             } else {
-                int endColor = Color.parseColor("#FFD598FF");
-                mCumulativeLinearGradient = new LinearGradient(0, 0, currentWidthOfScoreBar, mHeight, new int[]{startColor, middleColor, endColor}, null, Shader.TileMode.CLAMP);
+                mCumulativeLinearGradient = new LinearGradient(0, 0, currentWidthOfScoreBar, mHeight, new int[]{contentStartColor, contentMiddleColor, contentEndColor}, null, Shader.TileMode.CLAMP);
             }
 
             mCumulativeScoreBarRectF.top = 0;

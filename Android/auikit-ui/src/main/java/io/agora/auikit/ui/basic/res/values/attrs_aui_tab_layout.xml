@@ -87,6 +87,7 @@
         <attr name="aui_tabLayoutMenu_dotText" format="integer" />
         <attr name="aui_tabLayoutMenu_dotTextSize" format="dimension" />
         <attr name="aui_tabLayoutMenu_dotTextColor" format="color" />
+        <attr name="aui_tabLayoutMenu_dotTextColorSelected" format="color" />
         <attr name="aui_tabLayoutMenu_dotBackgroundColor" format="color" />
         <attr name="aui_tabLayoutMenu_dotPadding" format="dimension" />
         <attr name="aui_tabLayoutMenu_dotPaddingStart" format="dimension" />
@@ -145,11 +146,12 @@
         <!-- 小红点 -->
         <item name="aui_tabLayoutMenu_dotWidth">wrap_content</item>
         <item name="aui_tabLayoutMenu_dotHeight">wrap_content</item>
-        <item name="aui_tabLayoutMenu_dotTextSize">11sp</item>
-        <item name="aui_tabLayoutMenu_dotTextColor">@android:color/white</item>
-        <item name="aui_tabLayoutMenu_dotBackgroundColor">@android:color/holo_red_light</item>
+        <item name="aui_tabLayoutMenu_dotTextSize">16sp</item>
+        <item name="aui_tabLayoutMenu_dotTextColor">@color/aui_primary</item>
+        <item name="aui_tabLayoutMenu_dotTextColorSelected">@color/aui_white</item>
+        <item name="aui_tabLayoutMenu_dotBackgroundColor">@android:color/transparent</item>
         <item name="aui_tabLayoutMenu_dotPadding">@null</item>
-        <item name="aui_tabLayoutMenu_dotPaddingStart">3dp</item>
+        <item name="aui_tabLayoutMenu_dotPaddingStart">6dp</item>
         <item name="aui_tabLayoutMenu_dotPaddingTop">1.5dp</item>
         <item name="aui_tabLayoutMenu_dotPaddingEnd">3dp</item>
         <item name="aui_tabLayoutMenu_dotPaddingBottom">3dp</item>
@@ -166,7 +168,7 @@
     </style>
 
     <style name="AUITabLayoutMenu.Round">
-        <item name="aui_tabLayoutMenu_titleTextColor">@color/aui_black_light</item>
+        <item name="aui_tabLayoutMenu_titleTextColor">@color/aui_primary</item>
         <item name="aui_tabLayoutMenu_titleTextColorSelected">@color/aui_white</item>
         <item name="aui_tabLayoutMenu_iconTintSelected">@color/aui_white</item>
     </style>

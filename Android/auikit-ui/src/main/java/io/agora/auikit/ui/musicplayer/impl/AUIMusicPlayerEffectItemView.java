@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -36,11 +37,15 @@ public class AUIMusicPlayerEffectItemView extends FrameLayout {
 
     public AUIMusicPlayerEffectItemView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         View.inflate(context, R.layout.aui_musicplayer_effect_item_view, this);
-        TypedArray themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIMusicPlayerEffectPresetItem, defStyleAttr, 0);
-        int appearanceId = themeTa.getResourceId(R.styleable.AUIMusicPlayerEffectPresetItem_aui_musicPlayerEffectPresetItem_appearance, 0);
-        themeTa.recycle();
-        TypedArray typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIMusicPlayerEffectPresetItem);
+
+        int apResId = R.style.AUIMusicPlayerEffectPresetItem_Appearance;
+        TypedValue outValue = new TypedValue();
+        if (context.getTheme().resolveAttribute(R.attr.aui_musicPlayerEffectPresetItem_appearance, outValue, true)) {
+            apResId = outValue.resourceId;
+        }
+        TypedArray typedArray = context.obtainStyledAttributes(apResId, R.styleable.AUIMusicPlayerEffectPresetItem);
         outStokeColor = typedArray.getColor(R.styleable.AUIMusicPlayerEffectPresetItem_aui_musicPlayerEffectPresetItem_outStokeColor, Color.BLACK);
         typedArray.recycle();
 

@@ -4,15 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,13 +20,13 @@ import io.agora.auikit.model.AUIMusicModel;
 import io.agora.auikit.model.AUIPlayStatus;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIFrameLayout;
+import io.agora.auikit.ui.basic.AUITabLayout;
 import io.agora.auikit.ui.jukebox.IAUIJukeboxView;
 
 public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
 
     private ViewPager2 viewPager;
-    private TextView tvNumTag;
-    private TabLayout tlCategory;
+    private AUITabLayout tlCategory;
     private ActionDelegate actionDelegate;
     private AUIJukeboxChooseView mChooseView;
     private AUIJukeboxChosenView mChosenView;
@@ -53,10 +50,7 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     private void initView(Context context) {
         View.inflate(context, R.layout.aui_jukebox_view, this);
 
-        tvNumTag = findViewById(R.id.tvNumTag);
-        tvNumTag.setVisibility(View.GONE);
-
-        tlCategory = findViewById(R.id.tabLayout);
+        tlCategory = findViewById(R.id.jbtabLayout);
         viewPager = findViewById(R.id.viewPager);
 
         viewPager.setOffscreenPageLimit(2);
@@ -97,27 +91,16 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
             }
         });
 
-        tlCategory.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
+        tlCategory.setOnTabSelectChangeListener((index, menuId, selected) -> {
+            if(selected){
+                viewPager.setCurrentItem(index);
             }
         });
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tlCategory.selectTab(tlCategory.getTabAt(position));
+                tlCategory.selectTab(position);
             }
         });
     }
@@ -166,12 +149,11 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
             return;
         }
         if (songList == null || songList.isEmpty()) {
-            tvNumTag.setVisibility(GONE);
             mChosenListAdapter.submitList(new ArrayList<>());
+            tlCategory.setTabDotNum(1, 0);
         } else {
-            tvNumTag.setVisibility(View.VISIBLE);
-            tvNumTag.setText(Math.min(99, songList.size()) + "");
             mChosenListAdapter.submitList(new ArrayList<>(songList));
+            tlCategory.setTabDotNum(1, songList.size());
         }
     }
 

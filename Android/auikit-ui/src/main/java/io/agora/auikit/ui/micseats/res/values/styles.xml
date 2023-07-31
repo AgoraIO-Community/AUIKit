@@ -22,13 +22,13 @@
     <style name="AUIMicSeatItem.Appearance">
         <!-- 麦位全局 -->
         <item name="aui_micSeatItem_background">@android:color/transparent</item>
-        <item name="aui_micSeatItem_dimensionRatio">1:1</item>
+        <item name="aui_micSeatItem_dimensionRatio">9:10</item>
 
         <!-- 麦位座位 -->
         <item name="aui_micSeatItem_seatBackground">@drawable/aui_micseat_item_seat_bg</item>
         <item name="aui_micSeatItem_seatIconIdle">@drawable/aui_micseat_item_icon_idle</item>
         <item name="aui_micSeatItem_seatIconLock">@drawable/aui_micseat_item_icon_lock</item>
-        <item name="aui_micSeatItem_seatIconMargin">20dp</item>
+        <item name="aui_micSeatItem_seatIconMargin">0dp</item>
         <item name="aui_micSeatItem_seatIconDimensionRatio">1:1</item>
 
         <!-- 麦位静音图标 -->

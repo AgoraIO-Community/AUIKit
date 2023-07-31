@@ -70,6 +70,7 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
 
         // 指示器
         Drawable indicator = typedArray.getDrawable(R.styleable.AUITabLayout_aui_tabLayout_indicator);
+        indicator.setBounds(0, 0, indicator.getIntrinsicWidth(), indicator.getIntrinsicHeight());
         boolean indicatorFullWidth = typedArray.getBoolean(R.styleable.AUITabLayout_aui_tabLayout_indicatorFullWidth, true);
         int indicatorGravity = typedArray.getInt(R.styleable.AUITabLayout_aui_tabLayout_indicatorGravity, TabLayout.INDICATOR_GRAVITY_BOTTOM);
         tabLayout.setSelectedTabIndicator(indicator);
@@ -85,9 +86,9 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
     }
 
     private void initView() {
-        View.inflate(getContext(), R.layout.aui_tab_layout_layout, this);
-        vDivider = findViewById(R.id.vDivider);
-        tabLayout = findViewById(R.id.tabLayout);
+        View view = View.inflate(getContext(), R.layout.aui_tab_layout_layout, this);
+        vDivider = view.findViewById(R.id.vDivider);
+        tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(this);
     }
 
@@ -95,6 +96,9 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
         onTabSelectChangeListener = listener;
     }
 
+    public void selectTab(int index){
+        tabLayout.selectTab(tabLayout.getTabAt(index));
+    }
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         if(onTabSelectChangeListener != null){
@@ -114,7 +118,42 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
 
     }
 
-    interface OnTabSelectChangeListener{
+    public void addOnTabSelectedListener(TabLayout.OnTabSelectedListener onTabSelectedListener) {
+        tabLayout.addOnTabSelectedListener(onTabSelectedListener);
+    }
+
+    public void removeAllTabs() {
+        tabLayout.removeAllTabs();
+    }
+
+    public TabLayout.Tab newTab() {
+        return createMenuItemTab(null);
+    }
+
+    public void addTab(TabLayout.Tab tab) {
+        tabLayout.addTab(tab);
+    }
+
+    public int getSelectedTabPosition() {
+        return tabLayout.getSelectedTabPosition();
+    }
+
+    public TabLayout.Tab getTabAt(int position) {
+        return tabLayout.getTabAt(position);
+    }
+
+    public void setTabDotNum(int index, int num) {
+        TabLayout.Tab tab = tabLayout.getTabAt(index);
+        if (tab != null && tab.getCustomView() != null) {
+            TextView tvDot = tab.getCustomView().findViewById(R.id.tvDot);
+            if (tvDot != null) {
+                tvDot.setVisibility(num <= 0 ? View.GONE : View.VISIBLE);
+                tvDot.setText(String.format(Locale.US, "%d", Math.min(num, 99)));
+            }
+        }
+    }
+
+    public interface OnTabSelectChangeListener{
         void onTabSelectChanged(int index, int menuId, boolean selected);
     }
 
@@ -154,7 +193,8 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
 
                         tagName = parser.getName();
                         if (tagName.equals("item")) {
-                            createMenuItemView(index, attrs);
+                            TabLayout.Tab tab = createMenuItemTab(attrs);
+                            tabLayout.addTab(tab, index);
                             index++;
                         } else {
                             lookingForEndOfUnknownTag = true;
@@ -184,7 +224,7 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
         }
     }
 
-    private void createMenuItemView(int index, AttributeSet attrs) {
+    private TabLayout.Tab createMenuItemTab(AttributeSet attrs) {
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.AUITabLayoutMenu, 0, menuDefStyle);
         // 布局id
@@ -196,6 +236,9 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
 
         // 是否选中
         boolean isSelect = typedArray.getBoolean(R.styleable.AUITabLayoutMenu_aui_tabLayoutMenu_selected, false);
+        if(isSelect){
+            tab.select();
+        }
 
         // 图标
         ImageView ivIcon = tab.getCustomView().findViewById(android.R.id.icon);
@@ -245,13 +288,14 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
         int dotPaddingEnd = typedArray.getDimensionPixelSize(R.styleable.AUITabLayoutMenu_aui_tabLayoutMenu_dotPaddingEnd, 0);
         int dotPaddingBottom = typedArray.getDimensionPixelSize(R.styleable.AUITabLayoutMenu_aui_tabLayoutMenu_dotPaddingBottom, 0);
         int dotTextColor = typedArray.getColor(R.styleable.AUITabLayoutMenu_aui_tabLayoutMenu_dotTextColor, 0);
+        int dotTextColorSelected = typedArray.getColor(R.styleable.AUITabLayoutMenu_aui_tabLayoutMenu_dotTextColorSelected, 0);
         int dotBackgroundColor = typedArray.getColor(R.styleable.AUITabLayoutMenu_aui_tabLayoutMenu_dotBackgroundColor, 0);
         ViewGroup.LayoutParams dotParams = tvDot.getLayoutParams();
         dotParams.width = dotWidth;
         dotParams.height = dotHeight;
         tvDot.setLayoutParams(dotParams);
         tvDot.setTextSize(TypedValue.COMPLEX_UNIT_PX, dotTextSize);
-        tvDot.setTextColor(dotTextColor);
+        tvDot.setTextColor(new ColorStateList(new int[][]{{android.R.attr.state_selected}, {}}, new int[]{dotTextColorSelected, dotTextColor}));
         tvDot.setVisibility(dotText <= 0 ? View.GONE : View.VISIBLE);
         tvDot.setText(String.format(Locale.US, "%d", Math.min(dotText, 99)));
         GradientDrawable dotBackgroundDrawable = new GradientDrawable();
@@ -267,7 +311,7 @@ public class AUITabLayout extends FrameLayout implements TabLayout.OnTabSelected
 
         typedArray.recycle();
 
-        tabLayout.addTab(tab, index, isSelect);
+        return tab;
     }
 
 }

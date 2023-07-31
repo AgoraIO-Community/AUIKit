@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="@drawable/aui_bg_bottom_dialog"
+    tools:background="@drawable/aui_bg_bottom_dialog"
+    android:theme="?attr/aui_musicPlayerPresetDialog_appearance"
     android:paddingVertical="16sp">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/aui_musicplayer_preset"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/aui_musicPlayerPresetDialog_titleTextColor"
         android:textSize="16sp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"

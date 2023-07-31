@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/hot"
+        android:title="热门新歌"
+        app:aui_tabLayoutMenu_selected="true"/>
+
+    <item
+        android:id="@+id/hige"
+        android:title="嗨歌推荐"/>
+
+    <item
+        android:id="@+id/ticktolk"
+        android:title="抖音热歌"/>
+
+    <item
+        android:id="@+id/ktv"
+        android:title="KTV必唱"/>
+
+</menu>

@@ -8,6 +8,7 @@ Pod::Spec.new do |spec|
    spec.license       = { "type" => "Copyright", "text" => "Copyright 2022 agora.io. All rights reserved.n"} 
    spec.author        = { "Agora Lab" => "developer@agora.io" } 
    spec.platform      = :ios,9.0 
-   spec.source        = { :git => "" } 
+   spec.source        = { :git => "" }
+#   spec.source        = { :http => "https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_hyf_63842_FULL_20230428_1607_263060.zip" }
    spec.vendored_frameworks = "*.xcframework"
 end 
