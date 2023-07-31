@@ -88,8 +88,6 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
     @Nullable
     AUIMicSeatInfo getMicSeatInfo(int seatIndex);
 
-<<<<<<<< HEAD:Android/auikit/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java
-========
     int getMicSeatSize();
 
     /**
@@ -98,7 +96,6 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
      */
     void onClickInvited(int index);
 
->>>>>>>> origin/dev/karaoke-0.3.0:Android/auikit-ui/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java
     interface AUIMicSeatRespDelegate {
 
         /**
