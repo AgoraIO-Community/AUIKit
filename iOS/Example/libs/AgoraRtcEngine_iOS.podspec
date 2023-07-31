@@ -1,6 +1,6 @@
 # AgoraRtcEngine
 Pod::Spec.new do |spec| 
-   spec.name          = "AgoraRtcEngine_iOS_AUIKitCore" 
+   spec.name          = "AgoraRtcEngine_iOS" 
    spec.version       = "1.0" 
    spec.summary       = "Agora iOS SDK" 
    spec.description   = "iOS library for agora A/V communication, broadcasting and data channel service." 
@@ -9,6 +9,6 @@ Pod::Spec.new do |spec|
    spec.author        = { "Agora Lab" => "developer@agora.io" } 
    spec.platform      = :ios,9.0 
 #   spec.source        = { :git => "" }
-   spec.source        = { :http => 'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_hyf_63842_FULL_20230428_1607_263060.zip'}
+   spec.source        = { :http => "https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_hyf_63842_FULL_20230428_1607_263060.zip" }
    spec.vendored_frameworks = "*.xcframework"
 end 
