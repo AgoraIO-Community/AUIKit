@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.RoomInfo.Dark">
+        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance.Dark</item>
+    </style>
+
+    <style name="AUIRoomInfo.Appearance.Dark" parent="AUIRoomInfo.Appearance">
+        <item name="aui_upperLeft_Layout_background">#33000000</item>
+    </style>
+
+</resources>

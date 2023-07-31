@@ -4,7 +4,9 @@
     <!--================= 主题属性 =================-->
     <attr name="aui_musicPlayer_appearance" format="reference" />
     <attr name="aui_musicPlayerControllerDialog_appearance" format="reference" />
+    <attr name="aui_musicPlayerPresetDialog_appearance" format="reference" />
     <attr name="aui_musicPlayerEffectPresetItem_appearance" format="reference" />
+
 
     <!--================= 样式属性 =================-->
     <declare-styleable name="AUIMusicPlayerView">
@@ -49,6 +51,13 @@
         <attr name="aui_musicPlayer_activeJoinChorusTextColor" format="color" />
         <attr name="aui_musicPlayer_activeJoinChorusTextSize" format="dimension" />
 
+        <attr name="aui_musicPlayer_gradeBackgroundColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeContentStartColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeContentMiddleColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeContentEndColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeLabelSeparatorColor" format="color"/>
+        <attr name="aui_musicPlayer_gradeLabelTextColor" format="color"/>
+
     </declare-styleable>
 
     <!-- 弹框样式 -->
@@ -64,13 +73,18 @@
         <attr name="aui_musicPlayerControllerDialog_subTitleTextColor" format="color" />
         <attr name="aui_musicPlayerControllerDialog_dividerColor" format="color" />
         <attr name="aui_musicPlayerControllerDialog_dividerHeight" format="dimension" />
-        <attr name="aui_musicPlayerControllerDialog_checkbox" format="reference" />
+        <attr name="aui_musicPlayerControllerDialog_switch_thumb" format="reference" />
+        <attr name="aui_musicPlayerControllerDialog_switch_track" format="reference" />
         <attr name="aui_musicPlayerControllerDialog_seekbarProgressDrawable" format="reference" />
         <attr name="aui_musicPlayerControllerDialog_seekbarThumb" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="AUIMusicPlayerPresetDialogView">
+        <attr name="aui_musicPlayerPresetDialog_titleTextColor" format="color"/>
+    </declare-styleable>
+
     <declare-styleable name="AUIMusicPlayerEffectPresetItem">
-        <attr name="aui_musicPlayerEffectPresetItem_appearance"/>
+        <attr name="aui_musicPlayerEffectPresetItem_appearance" />
 
         <attr name="aui_musicPlayerEffectPresetItem_backgroundColor" format="color" />
         <attr name="aui_musicPlayerEffectPresetItem_outStokeColor" format="color" />
@@ -78,6 +92,15 @@
         <attr name="aui_musicPlayerEffectPresetItem_innerIconSize" format="dimension" />
         <attr name="aui_musicPlayerEffectPresetItem_textSize" format="dimension" />
         <attr name="aui_musicPlayerEffectPresetItem_textColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="AUIMusicPlayerGradeView">
+        <attr name="aui_musicPlayerGradeView_backgroundColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_contentStartColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_contentMiddleColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_contentEndColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_labelSeparatorColor" format="color"/>
+        <attr name="aui_musicPlayerGradeView_labelTextColor" format="color"/>
     </declare-styleable>
 
     <style name="ShapeAppearance.MaterialComponents.AUIMusicPlayerEffectItem" parent="ShapeAppearance.MaterialComponents">

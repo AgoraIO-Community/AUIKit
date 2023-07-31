@@ -79,7 +79,7 @@ public class BasicUiListActivity extends AppCompatActivity {
     public void showAlertDialog01(View view) {
         AUIAlertDialog dialog = new AUIAlertDialog(this);
         dialog.setTitle("Confirm");
-        dialog.setMessage("2023年2月14日，中国足球协会主席、党委副书记陈戌源涉嫌严重违纪违法，目前正接受中央纪委国家监委驻国家体育总局纪检监察组和湖北省监委审查调查。\n");
+        dialog.setMessage("测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容\n");
         dialog.setMessageGravity(Gravity.START);
         dialog.setMessageTextAlpha(0x80);
         dialog.setTitleCloseButton(v -> dialog.dismiss());
@@ -89,7 +89,7 @@ public class BasicUiListActivity extends AppCompatActivity {
 
     public void showAlertDialog02(View view) {
         AUIAlertDialog dialog = new AUIAlertDialog(this);
-        dialog.setMessage("2023年2月14日，中国足球协会主席、党委副书记陈戌源涉嫌严重违纪违法，目前正接受中央纪委国家监委驻国家体育总局纪检监察组和湖北省监委审查调查。\n");
+        dialog.setMessage("测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容\n");
         dialog.setPositiveButton("确定", v -> dialog.dismiss());
         dialog.show();
     }
@@ -97,7 +97,7 @@ public class BasicUiListActivity extends AppCompatActivity {
     public void showAlertDialog03 (View view) {
         AUIAlertDialog dialog = new AUIAlertDialog(this);
         dialog.setTitle("Confirm");
-        dialog.setMessage("2023年2月14日，中国足球协会主席、党委副书记陈戌源涉嫌严重违纪违法，目前正接受中央纪委国家监委驻国家体育总局纪检监察组和湖北省监委审查调查。\n");
+        dialog.setMessage("测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容\n");
         dialog.setMessageTextAlpha(0x80);
         dialog.setMessageGravity(Gravity.START);
         dialog.setTitleCloseButton(v -> dialog.dismiss());
@@ -110,7 +110,7 @@ public class BasicUiListActivity extends AppCompatActivity {
 
     public void showAlertDialog04(View view) {
         AUIAlertDialog dialog = new AUIAlertDialog(this);
-        dialog.setMessage("2023年2月14日，中国足球协会主席、党委副书记陈戌源涉嫌严重违纪违法，目前正接受中央纪委国家监委驻国家体育总局纪检监察组和湖北省监委审查调查。\n");
+        dialog.setMessage("测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容\n");
         dialog.setNegativeButton("取消", v -> dialog.dismiss());
         dialog.setPositiveButton("确定", v -> dialog.dismiss());
         dialog.show();
@@ -119,7 +119,7 @@ public class BasicUiListActivity extends AppCompatActivity {
     public void showAlertDialog05(View view) {
         AUIAlertDialog dialog = new AUIAlertDialog(this);
         dialog.setTitle("Confirm");
-        dialog.setMessage("2023年2月14日，中国足球协会主席、党委副书记陈戌源涉嫌严重违纪违法，目前正接受中央纪委国家监委驻国家体育总局纪检监察组和湖北省监委审查调查。\n");
+        dialog.setMessage("测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容\n");
         dialog.setMessageTextAlpha(0x80);
         dialog.setMessageGravity(Gravity.START);
         dialog.setInput("请输入内容", "", true);
@@ -134,7 +134,7 @@ public class BasicUiListActivity extends AppCompatActivity {
 
     public void showAlertDialog06(View view) {
         AUIAlertDialog dialog = new AUIAlertDialog(this);
-        dialog.setMessage("2023年2月14日，中国足球协会主席、党委副书记陈戌源涉嫌严重违纪违法，目前正接受中央纪委国家监委驻国家体育总局纪检监察组和湖北省监委审查调查。\n");
+        dialog.setMessage("测试内容\n");
         dialog.setInput("请输入内容", "", true);
         dialog.setNegativeButton("取消", v -> dialog.dismiss());
         dialog.setPositiveButton("确定", v -> {

@@ -2,8 +2,16 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#594230C8" />
+            <size android:width="45dp"
+                android:height="45dp"/>
+            <gradient android:startColor="#D1E1FD"
+                android:endColor="#BEDAFF"
+                android:angle="270"
+                android:useLevel="false"/>
         </shape>
     </item>
-    <item android:drawable="@drawable/aui_jukebox_music_icon" />
+    <item
+        android:gravity="center">
+        <bitmap android:src="@drawable/aui_jukebox_music_icon"/>
+    </item>
 </layer-list>

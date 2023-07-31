@@ -15,7 +15,7 @@
 
     <!-- 播放器  -->
     <style name="AUIMusicPlayer.Appearance">
-        <item name="aui_musicPlayer_backgroundColor">#4130C7</item>
+        <item name="aui_musicPlayer_backgroundColor">@color/aui_white_20_percent</item>
         <item name="aui_musicPlayer_minHeight">282dp</item>
         <item name="aui_musicPlayer_cornerRadius">24dp</item>
         <item name="aui_musicPlayer_titleIcon">@drawable/aui_musicplayer_active_songname_icon</item>
@@ -28,12 +28,12 @@
 
         <!--  未点歌  start    -->
         <item name="aui_musicPlayer_idleIcon">@drawable/aui_musicplayer_bg_icon</item>
-        <item name="aui_musicPlayer_idleTextColor">@android:color/white</item>
+        <item name="aui_musicPlayer_idleTextColor">@color/aui_white</item>
         <item name="aui_musicPlayer_idleTextSize">14sp</item>
         <item name="aui_musicPlayer_idleOrderText">@string/aui_musicplayer_choose_song</item>
         <item name="aui_musicPlayer_idleOrderTextColor">@android:color/white</item>
         <item name="aui_musicPlayer_idleOrderTextSize">14sp</item>
-        <item name="aui_musicPlayer_idleOrderBackground">@drawable/aui_musicplayer_idle_btn_bg</item>
+        <item name="aui_musicPlayer_idleOrderBackground">@drawable/aui_button_normal</item>
         <!--  未点歌  end    -->
 
         <!--  歌曲加载中  start    -->
@@ -52,33 +52,46 @@
         <item name="aui_musicPlayer_activeVoiceSettingsIcon">@drawable/aui_musicplayer_voice_controller</item>
         <item name="aui_musicPlayer_activeMusicPresetIcon">@drawable/aui_musicplayer_voice_preset</item>
         <item name="aui_musicPlayer_activeSwitchOriginalIcon">@drawable/aui_musicplayer_active_original_selector</item>
-        <item name="aui_musicPlayer_activeJoinChorusBackground">@drawable/aui_musicplayer_join_chorus_btn_bg</item>
+        <item name="aui_musicPlayer_activeJoinChorusBackground">@drawable/aui_button_normal</item>
         <item name="aui_musicPlayer_activeJoinChorusTextColor">@android:color/white</item>
         <item name="aui_musicPlayer_activeJoinChorusTextSize">14sp</item>
         <!--  已点歌 end-->
+
+        <item name="aui_musicPlayer_gradeBackgroundColor">@color/aui_white_light</item>
+        <item name="aui_musicPlayer_gradeContentStartColor">#73C4FF</item>
+        <item name="aui_musicPlayer_gradeContentMiddleColor">#73C4FF</item>
+        <item name="aui_musicPlayer_gradeContentEndColor">#C9CBFF</item>
+        <item name="aui_musicPlayer_gradeLabelSeparatorColor">@color/aui_grey_lighter</item>
+        <item name="aui_musicPlayer_gradeLabelTextColor">@color/aui_white</item>
     </style>
 
     <!-- 音效默认样式 -->
     <style name="AUIMusicPlayerControllerDialog.Appearance">
         <item name="aui_musicPlayerControllerDialog_background">@drawable/aui_bg_bottom_dialog</item>
         <item name="aui_musicPlayerControllerDialog_titleTextSize">16sp</item>
-        <item name="aui_musicPlayerControllerDialog_titleTextColor">@android:color/white</item>
-        <item name="aui_musicPlayerControllerDialog_subTitleTextColor">#80FFFFFF</item>
+        <item name="aui_musicPlayerControllerDialog_titleTextColor">@color/aui_black</item>
+        <item name="aui_musicPlayerControllerDialog_subTitleTextColor">@color/aui_black_light</item>
         <item name="aui_musicPlayerControllerDialog_subTitleTextSize">14sp</item>
-        <item name="aui_musicPlayerControllerDialog_dividerColor">#C3C5FE</item>
+        <item name="aui_musicPlayerControllerDialog_dividerColor">@color/aui_grey_lighter</item>
         <item name="aui_musicPlayerControllerDialog_dividerHeight">0.5dp</item>
-        <item name="aui_musicPlayerControllerDialog_checkbox">@drawable/aui_musicplayer_def_selector</item>
+        <item name="aui_musicPlayerControllerDialog_switch_thumb">@drawable/aui_switch_thumb</item>
+        <item name="aui_musicPlayerControllerDialog_switch_track">@drawable/aui_switch_track_selector</item>
         <item name="aui_musicPlayerControllerDialog_seekbarProgressDrawable">@drawable/aui_musicplayer_seekbar_progress</item>
         <item name="aui_musicPlayerControllerDialog_seekbarThumb">@drawable/aui_musicplayer_seekbar_thumb</item>
     </style>
 
     <!-- 音效item样式 -->
     <style name="AUIMusicPlayerEffectPresetItem.Appearance">
-        <item name="aui_musicPlayerEffectPresetItem_backgroundColor">#594230C8</item>
-        <item name="aui_musicPlayerEffectPresetItem_outStokeColor">#7800FF</item>
+        <item name="aui_musicPlayerEffectPresetItem_backgroundColor">@color/aui_primary_light</item>
+        <item name="aui_musicPlayerEffectPresetItem_outStokeColor">@color/aui_primary</item>
         <item name="aui_musicPlayerEffectPresetItem_outIconSize">58dp</item>
         <item name="aui_musicPlayerEffectPresetItem_innerIconSize">32dp</item>
         <item name="aui_musicPlayerEffectPresetItem_textSize">14sp</item>
-        <item name="aui_musicPlayerEffectPresetItem_textColor">@android:color/white</item>
+        <item name="aui_musicPlayerEffectPresetItem_textColor">@color/aui_black</item>
     </style>
+
+    <style name="AUIMusicPlayerPresetDialog">
+        <item name="aui_musicPlayerPresetDialog_titleTextColor">@color/aui_black</item>
+    </style>
+
 </resources>

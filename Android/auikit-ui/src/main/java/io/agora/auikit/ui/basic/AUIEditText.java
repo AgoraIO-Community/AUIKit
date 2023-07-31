@@ -11,6 +11,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
@@ -307,11 +308,11 @@ public class AUIEditText extends FrameLayout {
         });
     }
 
-    public void setRightIconClickListener(View.OnClickListener clickListener){
+    public void setRightIconClickListener(OnClickListener clickListener){
         ivRight.setOnClickListener(clickListener);
     }
 
-    public void setLeftIconClickListener(View.OnClickListener clickListener){
+    public void setLeftIconClickListener(OnClickListener clickListener){
         ivLeft.setOnClickListener(clickListener);
     }
 
@@ -370,4 +371,15 @@ public class AUIEditText extends FrameLayout {
         }
     }
 
+    public void addTextChangedListener(TextWatcher textWatcher) {
+        etInput.addTextChangedListener(textWatcher);
+    }
+
+    public void setRightIconVisibility(int visibility) {
+        ivRight.setVisibility(visibility);
+    }
+
+    public void setOnEditorActionListener(TextView.OnEditorActionListener listener) {
+        etInput.setOnEditorActionListener(listener);
+    }
 }

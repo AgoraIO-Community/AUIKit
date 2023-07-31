@@ -84,7 +84,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView,
         ripple.setStyle(Paint.Style.STROKE);
 
         // 静音图标位置配置
-        FrameLayout.LayoutParams ivAudioMuteParams = (LayoutParams) ivAudioMute.getLayoutParams();
+        LayoutParams ivAudioMuteParams = (LayoutParams) ivAudioMute.getLayoutParams();
         switch (audioMuteIconGravity) {
             case 1: // bottomEnd
                 ivAudioMuteParams.gravity = Gravity.BOTTOM | Gravity.END;
@@ -96,7 +96,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView,
                 break;
         }
         // 关闭视频图标位置配置
-        FrameLayout.LayoutParams ivVideoMuteParams = (LayoutParams) ivVideoMute.getLayoutParams();
+        LayoutParams ivVideoMuteParams = (LayoutParams) ivVideoMute.getLayoutParams();
         switch (audioMuteIconGravity) {
             case 1: // bottomEnd
                 ivVideoMuteParams.gravity = Gravity.BOTTOM | Gravity.END;
@@ -171,7 +171,7 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView,
     @Override
     public void setUserAvatarImageUrl(String url) {
         RequestOptions options = RequestOptions.circleCropTransform();
-        Glide.with(ivUserAvatar).load(url).apply(options).into(ivUserAvatar);
+        Glide.with(getContext()).load(url).apply(options).into(ivUserAvatar);
     }
 
     @Override

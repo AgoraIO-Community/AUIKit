@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AUIKit.Dark" parent="Theme.AUIKit.Basic.Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/aui_primary</item>
+        <item name="colorPrimaryVariant">@color/aui_primary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/aui_grey_light</item>
+        <item name="colorSecondaryVariant">@color/aui_grey_light</item>
+        <item name="colorOnSecondary">@color/aui_black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- 麦位组件 -->
+        <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
+        <item name="aui_micSeatItem_appearance">@style/AUIMicSeatItem.Appearance</item>
+        <item name="aui_micSeatDialog_appearance">@style/AUIMicSeatDialog.Appearance.Dark</item>
+
+        <!-- 点歌器组件 -->
+        <item name="aui_jukebox_appearance">@style/AUIJukebox.Appearance</item>
+        <item name="aui_jukeboxChoose_appearance">@style/AUIJukeboxChoose.Appearance</item>
+        <item name="aui_jukeboxChosen_appearance">@style/AUIJukeboxChosen.Appearance</item>
+        <item name="aui_jukeboxChooseItem_appearance">@style/AUIJukeboxChooseItem.Appearance</item>
+        <item name="aui_jukeboxChosenItem_appearance">@style/AUIJukeboxChosenItem.Appearance</item>
+
+        <!--  播放器组件      -->
+        <item name="aui_musicPlayer_appearance">@style/AUIMusicPlayer.Appearance</item>
+        <item name="aui_musicPlayerControllerDialog_appearance">@style/AUIMusicPlayerControllerDialog.Appearance.Dark</item>
+        <item name="aui_musicPlayerPresetDialog_appearance">@style/AUIMusicPlayerPresetDialog.Dark</item>
+        <item name="aui_musicPlayerEffectPresetItem_appearance">@style/AUIMusicPlayerEffectPresetItem.Appearance.Dark</item>
+
+        <item name="aui_roomInfo_appearance">@style/AUIRoomInfo.Appearance.Dark</item>
+        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance.Dark</item>
+        <item name="aui_memberInfoList_appearance">@style/AUIRoomMemberListView.Dark</item>
+        <item name="aui_chatBottomView_appearance">@style/AUIChatBottomView.Appearance.Dark</item>
+        <item name="aui_emojiView_appearance">@style/AUIEmojiView.Appearance.Dark</item>
+        <item name="aui_chatListView_appearance">@style/AUIChatListView.Appearance.Dark</item>
+        <item name="aui_giftBarrage_appearance">@style/AUIGiftBarrageView.Appearance.Dark</item>
+        <item name="aui_giftBottomDialog_appearance">@style/AUIGiftBottomDialog.Appearance.Dark</item>
+        <item name="aui_action_appearance">@style/AUIAction.Appearance.Dark</item>
+
+    </style>
+
+    <style name="AUIMusicPlayerControllerDialog.Appearance.Dark">
+        <item name="aui_musicPlayerControllerDialog_titleTextColor">@color/aui_white</item>
+        <item name="aui_musicPlayerControllerDialog_subTitleTextColor">@color/aui_white_light</item>
+        <item name="aui_musicPlayerControllerDialog_dividerColor">@color/aui_grey_dark</item>
+    </style>
+
+    <style name="AUIMusicPlayerPresetDialog.Dark">
+        <item name="aui_musicPlayerPresetDialog_titleTextColor">@color/aui_white</item>
+    </style>
+
+    <style name="AUIMusicPlayerEffectPresetItem.Appearance.Dark">
+        <item name="aui_musicPlayerEffectPresetItem_backgroundColor">@color/aui_black_light</item>
+        <item name="aui_musicPlayerEffectPresetItem_textColor">@color/aui_white</item>
+    </style>
+
+    <style name="AUIRoomMemberListView.Dark">
+        <item name="aui_memberInfoList_title_textColor">#F9FAFA</item>
+        <item name="aui_memberInfoList_userName_textColor">#F9FAFA</item>
+        <item name="aui_memberInfoList_userNameInfo_textColor">#919BA1</item>
+    </style>
+
+    <style name="AUIMemberInfo.Appearance.Dark" parent="AUIMemberInfo.Appearance">
+        <item name="aui_upperRight_default_member_bg">@drawable/aui_member_item_dark_bg</item>
+        <item name="aui_upperRight_count_background">@drawable/aui_member_count_dark_bg</item>
+        <item name="aui_roomButton_normalColor">#33000000</item>
+    </style>
+
+    <style name="AUIMicSeatDialog.Appearance.Dark">
+        <item name="aui_micSeatDialog_titleTextColor">#F9FAFA</item>
+        <item name="aui_micSeatDialog_buttonNormalTextColor">#F9FAFA</item>
+        <item name="aui_micSeatDialog_buttonsDividerColor">#2F3437</item>
+    </style>
+
+
+</resources>

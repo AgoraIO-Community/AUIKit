@@ -109,9 +109,9 @@
         <item name="aui_edittext_title_paddingTop">6dp</item>
 
         <!-- 输入框字体 -->
-        <item name="aui_edittext_input_textColor">@color/aui_black</item>
+        <item name="aui_edittext_input_textColor">#171A1C</item>
         <item name="aui_edittext_input_textSize">16sp</item>
-        <item name="aui_edittext_input_hintTextColor">@color/aui_grey</item>
+        <item name="aui_edittext_input_hintTextColor">#ACB4B9</item>
 
         <!-- 输入框内间距 -->
         <item name="aui_edittext_input_padding">@null</item>
@@ -122,10 +122,10 @@
 
         <!-- 输入框背景 -->
         <item name="aui_edittext_input_backgroundType">box</item>
-        <item name="aui_edittext_input_backgroundColor">@color/aui_grey_light</item>
-        <item name="aui_edittext_input_backgroundHighlightColor">@color/aui_blue</item>
+        <item name="aui_edittext_input_backgroundColor">#F1F2F3</item>
+        <item name="aui_edittext_input_backgroundHighlightColor">#009EFF</item>
         <item name="aui_edittext_input_backgroundErrorColor">@color/aui_danger_light</item>
-        <item name="aui_edittext_input_backgroundHighlightWidth">1dp</item>
+        <item name="aui_edittext_input_backgroundHighlightWidth">0dp</item>
         <item name="aui_edittext_input_backgroundErrorHighlightColor">@color/aui_danger</item>
         <item name="aui_edittext_input_backgroundBoxRadius">999dp</item>
 
@@ -157,6 +157,10 @@
 
         <!-- 输入配置 -->
         <item name="aui_edittext_input_lineNum">1</item>
+
+        <!-- 左右图标 -->
+        <item name="aui_edittext_icon_left_tint">@color/aui_black</item>
+        <item name="aui_edittext_icon_right_tint">@color/aui_black</item>
 
     </style>
 

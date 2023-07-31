@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.Group;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
@@ -29,6 +28,7 @@ import io.agora.auikit.model.AUIChooseMusicModel;
 import io.agora.auikit.model.AUIMusicSettingInfo;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIAlertDialog;
+import io.agora.auikit.ui.basic.AUIBottomDialog;
 import io.agora.auikit.ui.musicplayer.IMusicPlayerView;
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerActionListener;
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerEffectActionListener;
@@ -43,7 +43,7 @@ import io.agora.karaoke_view.v11.model.LyricsModel;
 
 public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView {
     private IMusicPlayerActionListener mOnKaraokeActionListener;
-    private IMusicPlayerView.ActionDelegate mActionDelegate;
+    private ActionDelegate mActionDelegate;
 
     private TextView tvMusicName;
     private Button btChooseSong;
@@ -524,15 +524,15 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
 
     // ----------------- 变声 ----------------
     private void showPresetDialog() {
-        BottomSheetDialog presetDialog = new BottomSheetDialog(getContext(), R.style.Theme_AppCompat_Dialog_Transparent);
+        AUIBottomDialog presetDialog = new AUIBottomDialog(getContext());
         AUIMusicPlayerPresetDialogView contentView = new AUIMusicPlayerPresetDialogView(getContext());
-        presetDialog.setContentView(contentView);
+        presetDialog.setCustomView(contentView);
         presetDialog.show();
     }
 
     // ----------------- 音效设置 -------------
     private void showAudioControllerDialog() {
-        BottomSheetDialog controllerDialog = new BottomSheetDialog(getContext(), R.style.Theme_AppCompat_Dialog_Transparent);
+        AUIBottomDialog controllerDialog = new AUIBottomDialog(getContext());
         AUIMusicPlayerControllerDialogView contentView = new AUIMusicPlayerControllerDialogView(getContext());
         contentView.setEarMonitoring(musicSettingInfo.isEar());
         contentView.setMusicVolume(musicSettingInfo.getMusicVolume());
@@ -581,7 +581,7 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
                 }
             }
         });
-        controllerDialog.setContentView(contentView);
+        controllerDialog.setCustomView(contentView);
         controllerDialog.show();
     }
 }

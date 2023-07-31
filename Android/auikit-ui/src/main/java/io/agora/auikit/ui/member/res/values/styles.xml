@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AUIUpperRightInformation">
-        <item name="aui_upperRight_appearance">@style/AUIUpperRightInformation.Appearance</item>
+    <style name="AUIMemberInfo">
+        <item name="aui_memberInfo_appearance">@style/AUIMemberInfo.Appearance</item>
     </style>
 
     <!-- 房间人数和用户展示默认样式 -->
-    <style name="AUIUpperRightInformation.Appearance" >
+    <style name="AUIMemberInfo.Appearance" >
         <item name="aui_upperRight_root_layout_width">wrap_content</item>
         <item name="aui_upperRight_root_layout_height">wrap_content</item>
         <item name="aui_upperRight_layout_paddingHorizontal">8dp</item>
@@ -21,7 +21,7 @@
         <item name="aui_upperRight_member_count_width">wrap_content</item>
         <item name="aui_upperRight_member_count_height">wrap_content</item>
         <item name="aui_upperRight_member_spacing">2dp</item>
-        <item name="aui_upperRight_default_member_bg">@drawable/aui_member_item_bg</item>
+        <item name="aui_upperRight_default_member_bg">@drawable/aui_member_item_light_bg</item>
 
         <item name="aui_upperRight_count_max_width">50dp</item>
         <item name="aui_upperRight_count_min_width">40dp</item>
@@ -34,7 +34,7 @@
         <item name="aui_upperRight_count_paddingHorizontal">4dp</item>
         <item name="aui_upperRight_count_paddingVertical">6dp</item>
 
-        <item name="aui_upperRight_count_background">@drawable/aui_member_count_bg</item>
+        <item name="aui_upperRight_count_background">@drawable/aui_member_count_light_bg</item>
 
         <!-- 更多用户 -->
         <item name="aui_roomMoreUser_drawable">@mipmap/aui_member_icon_arrow</item>
@@ -51,10 +51,14 @@
         <item name="aui_roomClose_marginStart">4dp</item>
 
         <!-- 按钮 -->
-        <item name="aui_roomButton_normalColor">#594230C8</item>
-
+        <item name="aui_roomButton_normalColor">#33FFFFFF</item>
     </style>
 
+    <style name="AUIRoomMemberListView">
+        <item name="aui_memberInfoList_title_textColor">#171A1C</item>
+        <item name="aui_memberInfoList_userName_textColor">#171A1C</item>
+        <item name="aui_memberInfoList_userNameInfo_textColor">#919BA1</item>
+    </style>
 
     <style name="aui_member_seat_roundStyle">
         <item name="cornerFamily">rounded</item>

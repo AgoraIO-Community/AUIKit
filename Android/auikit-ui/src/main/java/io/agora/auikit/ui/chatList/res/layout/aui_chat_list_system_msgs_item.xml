@@ -4,13 +4,14 @@
     android:layout_height="36dp"
     android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/aui_bg_barrage_system_shape"
+    android:theme="?attr/aui_chatListView_appearance"
+    android:background="?attr/aui_barrage_system_layout_bg"
     android:gravity="center_vertical"
     android:layout_marginStart="15dp"
     android:paddingTop="8dp"
     android:paddingBottom="9dp"
     android:paddingStart="14dp"
-    android:theme="?attr/aui_barrage_appearance">
+    >
 
     <TextView
         android:id="@+id/name"

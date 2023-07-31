@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.agora.auikit.model.AUIGiftEntity
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.databinding.AuiGiftBarrageLayoutBinding
 import io.agora.auikit.ui.gift.IAUIGiftBarrageView
 import io.agora.auikit.utils.DeviceTools
@@ -33,16 +34,19 @@ class AUIGiftBarrageView : LinearLayout,
     ) {
         this.mContext = context
         addView(aGiftViewBinding.root)
-        initView()
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIGiftBarrageView, defStyleAttr, 0)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIGiftBarrageView_aui_giftBarrage_appearance, 0)
+        themeTa.recycle()
+        initView(appearanceId)
     }
 
     init {
         mMainHandler = Handler(Looper.getMainLooper())
     }
 
-    fun initView(){
-        // 获取缓存中 指定房间的礼物列表
-        adapter = AUIGiftRowAdapter(mContext)
+    fun initView(appearanceId:Int){
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIGiftBarrageView)
+        adapter = AUIGiftRowAdapter(mContext,typedArray)
         val linearLayoutManager = LinearLayoutManager(mContext)
         aGiftViewBinding.recyclerView.layoutManager = linearLayoutManager
         aGiftViewBinding.recyclerView.adapter = adapter
@@ -62,11 +66,13 @@ class AUIGiftBarrageView : LinearLayout,
     }
 
     override fun refresh(giftList:ArrayList<AUIGiftEntity>?) {
-        giftList?.let { adapter.refresh(it) }
-        if (adapter.itemCount > 0) {
-            aGiftViewBinding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+        post {
+            giftList?.let { adapter.refresh(it) }
+            if (adapter.itemCount > 0) {
+                aGiftViewBinding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+            }
+            clearTiming()
         }
-        clearTiming()
     }
 
     /**

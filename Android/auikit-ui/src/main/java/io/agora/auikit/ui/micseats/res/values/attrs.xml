@@ -170,6 +170,7 @@
             <enum name="vertical" value="1" />
         </attr>
         <attr name="aui_micSeatDialog_buttonsDivider" format="reference|color"/>
+        <attr name="aui_micSeatDialog_buttonsDividerColor" format="color"/>
         <attr name="aui_micSeatDialog_buttonsDividerPadding" format="dimension"/>
         <attr name="aui_micSeatDialog_buttonsMarginTop" format="dimension"/>
         <attr name="aui_micSeatDialog_buttonsMarginBottom" format="dimension"/>

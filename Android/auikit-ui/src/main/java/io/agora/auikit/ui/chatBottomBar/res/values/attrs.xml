@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--================= 主题属性 =================-->
-    <attr name="aui_primary_appearance" format="reference"/>
+    <attr name="aui_chatBottomView_appearance" format="reference"/>
+
+    <attr name="aui_emojiView_appearance" format="reference"/>
 
     <!--================= 样式属性 =================-->
 
     <!-- 房间信息样式 -->
-    <declare-styleable name="AUIPrimaryView">
-        <attr name="aui_primary_appearance"/>
+    <declare-styleable name="AUIChatBottomView">
+        <attr name="aui_chatBottomView_appearance"/>
 
         <!--左下角icon start -->
         <attr name="aui_primary_input_width" format="dimension">
@@ -29,6 +31,7 @@
         <!--左下角icon end -->
 
         <!-- input layout start -->
+        <attr name="aui_primary_input_layout_bg" format="color|reference"/>
         <attr name="aui_primary_input_mic_width" format="dimension">
             <enum name="match_parent" value="-1" />
             <enum name="wrap_content" value="-2" />
@@ -53,8 +56,11 @@
         <attr name="aui_primary_edit_singleLine" format="boolean"/>
         <attr name="aui_primary_edit_textSize" format="dimension"/>
         <attr name="aui_primary_edit_textColor" format="color|reference"/>
+        <attr name="aui_primary_edit_hint_textColor" format="color|reference"/>
 
         <attr name="aui_primary_emoji_resource" format="reference"/>
+        <attr name="aui_primary_key_resource" format="color|reference"/>
+
         <attr name="aui_primary_emoji_width" format="dimension">
             <enum name="match_parent" value="-1" />
             <enum name="wrap_content" value="-2" />
@@ -78,6 +84,24 @@
         </attr>
 
         <attr name="aui_primary_expression_background" format="color|reference"/>
+
+        <attr name="aui_primary_tag_bg" format="color|reference"/>
+        <attr name="aui_primary_more_status" format="color|reference"/>
+
+        <!-- menu -->
+        <attr name="aui_primary_menuWidth" format="dimension"/>
+        <attr name="aui_primary_menuHeight" format="dimension"/>
+        <attr name="aui_primary_menuMicOn" format="reference"/>
+        <attr name="aui_primary_menuMicOff" format="reference"/>
+
+
+    </declare-styleable>
+
+    <declare-styleable name="AUIEmojiView">
+        <attr name="aui_emojiView_appearance"/>
+
+        <attr name="aui_emoji_view_background" format="color|reference"/>
+        <attr name="aui_emoji_backspace" format="color|reference"/>
 
     </declare-styleable>
 

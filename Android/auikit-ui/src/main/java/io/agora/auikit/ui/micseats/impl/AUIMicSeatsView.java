@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import io.agora.auikit.ui.R;
+import io.agora.auikit.ui.basic.AUIBottomDialog;
 import io.agora.auikit.ui.basic.AUIRecyclerView;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
 import io.agora.auikit.ui.micseats.IMicSeatsView;
@@ -69,7 +68,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
     }
 
     private void showMicSeatDialog(int index) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.Theme_AppCompat_Dialog_Transparent);
+        AUIBottomDialog bottomSheetDialog = new AUIBottomDialog(getContext());
         AUIMicSeatDialogView contentView = new AUIMicSeatDialogView(getContext());
         contentView.setEnterSeatClickListener(v -> {
             if (actionDelegate != null) {
@@ -118,7 +117,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 return;
             }
         }
-        bottomSheetDialog.setContentView(contentView);
+        bottomSheetDialog.setCustomView(contentView);
         bottomSheetDialog.show();
     }
 

@@ -1,5 +1,4 @@
 import XCTest
-import AUIKit
 
 class Tests: XCTestCase {
     

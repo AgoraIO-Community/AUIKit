@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.AdapterView
 import androidx.appcompat.widget.LinearLayoutCompat
 import io.agora.auikit.model.AUIExpressionIcon
+import io.agora.auikit.ui.R
 import io.agora.auikit.ui.chatBottomBar.listener.AUIExpressionClickListener
 import io.agora.auikit.ui.databinding.AuiEmojiGridviewLayoutBinding
 import io.agora.auikit.utils.DeviceTools
@@ -16,6 +17,7 @@ class AUIEmojiView : LinearLayoutCompat {
     private val mRoomViewBinding = AuiEmojiGridviewLayoutBinding.inflate(LayoutInflater.from(context))
     private var gridAdapter: AUIEmojiGridAdapter? = null
     private var listener: AUIExpressionClickListener? = null
+    private var baseLayout:Int = 0
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -25,11 +27,23 @@ class AUIEmojiView : LinearLayoutCompat {
     ) {
         this.aContext = context
         addView(mRoomViewBinding.root)
-        initView()
+
+        val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIEmojiView, defStyleAttr, 0)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIEmojiView_aui_emojiView_appearance, 0)
+        themeTa.recycle()
+
+        initView(appearanceId)
         initListener()
     }
 
-    fun initView(){
+    fun initView(appearanceId:Int){
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIEmojiView)
+        baseLayout = typedArray.getResourceId(
+            R.styleable.AUIEmojiView_aui_emoji_view_background,
+            R.color.voice_white_100
+        )
+        mRoomViewBinding.baseLayout.setBackgroundResource(baseLayout)
+
         mRoomViewBinding.gridview.let {
             it.verticalSpacing = DeviceTools.dp2px(context, 20F)
             it.numColumns = mColumns
