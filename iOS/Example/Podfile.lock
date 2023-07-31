@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  AUIKitCore: fcc7f29663062004d82aad71dad2f816ee5aecca
+  AUIKitCore: ea922665e81e40ae4f3d6cbb2dbd1e600d1ff417
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10

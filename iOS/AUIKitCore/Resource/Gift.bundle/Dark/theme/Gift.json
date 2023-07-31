@@ -12,7 +12,8 @@
       "nameTextColor": "#F9FAFA",
       "priceFont": "PingFangSC-Regular,12",
       "priceTextColor": "#919BA1",
-      "priceIcon": "dollagora"
+      "priceIcon": "dollagora",
+      "tabTitleNormalColor": "#ffffff"
   },
   "ReceiveGift": {
       "containerGradientColors": ["#011FAD63","#5701AD85"],
