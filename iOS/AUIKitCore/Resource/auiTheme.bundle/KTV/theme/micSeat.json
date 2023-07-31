@@ -23,11 +23,7 @@
       "backgroundColor": "#00000000",
       "backgroundImage": "aui_transparent_icon_seat",
       "defaultImage": "aui_micseat_item_icon_idle",
-<<<<<<<< HEAD:iOS/AUIKitCore/Resource/auiTheme.bundle/KTV/theme/micSeat.json
       "labelFont": "PingFangSC-Regular,12",
-========
-      "labelFont": "PingFangSC-Regular,14",
->>>>>>>> origin/dev/karaoke-0.3.0:iOS/AUIKit/Resource/auiTheme.bundle/KTV/theme/micSeat.json
       "labelTextColor": "#ffffff",
       "lockImage": "aui_micseat_item_icon_lock",
       "muteVideoImage": "aui_micseat_item_icon_video_mute",
