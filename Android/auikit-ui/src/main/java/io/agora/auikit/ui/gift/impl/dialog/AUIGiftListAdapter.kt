@@ -74,7 +74,7 @@ class AUIGiftListAdapter constructor(
         return convertView!!
     }
 
-    private fun selectedViewChange(giftInfo:AUIGiftEntity?,action:MaterialTextView, name:MaterialTextView,layout:ConstraintLayout,isSelected: Boolean){
+    private fun selectedViewChange(giftInfo: AUIGiftEntity?, action:MaterialTextView, name:MaterialTextView, layout:ConstraintLayout, isSelected: Boolean){
         if (isSelected){
             action.visibility = View.VISIBLE
             action.text = mContext.resources.getString(R.string.voice_gift_dialog_action)

@@ -135,7 +135,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
     }
 
     interface InviteEventListener{
-        fun onInviteItemClick(view:View,invitedIndex:Int,user:AUIUserInfo?){}
+        fun onInviteItemClick(view:View,invitedIndex:Int,user: AUIUserInfo?){}
     }
 
     fun setInviteEventListener(listener: InviteEventListener){
@@ -202,7 +202,7 @@ class VoiceInvitedAdapter constructor(
     }
 
     interface InvitedEventListener{
-        fun onInvitedClickListener(view:View,invitedIndex:Int,user:AUIUserInfo?)
+        fun onInvitedClickListener(view:View,invitedIndex:Int,user: AUIUserInfo?)
     }
 
     fun setInvitedEventListener(listener: InvitedEventListener){

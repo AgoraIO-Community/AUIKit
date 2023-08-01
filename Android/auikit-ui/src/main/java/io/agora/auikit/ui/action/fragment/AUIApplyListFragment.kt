@@ -134,7 +134,7 @@ class VoiceRoomApplyListFragment : Fragment(),
     }
 
     interface ApplyEventListener{
-        fun onApplyItemClick(view:View,applyIndex:Int?,user:AUIUserInfo?,position: Int){}
+        fun onApplyItemClick(view:View, applyIndex:Int?, user: AUIUserInfo?, position: Int){}
     }
 
     fun setApplyEventListener(listener: ApplyEventListener){
@@ -204,7 +204,7 @@ class VoiceApplyAdapter constructor(
     }
 
     interface ApplyEventListener{
-        fun onApplyClickListener(view:View,user:AUIUserInfo?,position:Int)
+        fun onApplyClickListener(view:View, user: AUIUserInfo?, position:Int)
     }
 
     fun setInvitedEventListener(listener: ApplyEventListener){

@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import io.agora.auikit.model.AUIUserInfo
-import io.agora.auikit.service.IAUIMicSeatService
-import io.agora.auikit.service.IAUIUserService
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.databinding.AuiMemberListItemBinding
 import io.agora.auikit.ui.databinding.AuiMemberListViewLayoutBinding
@@ -35,8 +33,7 @@ private class MemberItemModel (
     }
 }
 
-class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
-    IAUIMicSeatService.AUIMicSeatRespDelegate {
+class AUIRoomMemberListView : FrameLayout {
 
     private val mBinding by lazy { AuiMemberListViewLayoutBinding.inflate(
         LayoutInflater.from(

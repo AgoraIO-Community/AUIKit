@@ -70,7 +70,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
     private var mItemHeight = 120
 
 
-    private var mMicSeatMap = mutableMapOf<Int,MicSeatItem>()
+    private var mMicSeatMap = mutableMapOf<Int, MicSeatItem>()
 
     private var actionDelegate: IMicSeatsView.ActionDelegate? = null
 
