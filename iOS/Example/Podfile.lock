@@ -5,7 +5,7 @@ PODS:
   - Alamofire (5.7.1)
   - AUIKitCore (0.3.1-ui):
     - Agora_Chat_iOS
-    - AgoraLyricsScore (~> 1.1.1)
+    - AgoraLyricsScore
     - AgoraRtcEngine_iOS
     - Alamofire
     - MJRefresh
@@ -60,7 +60,7 @@ SPEC CHECKSUMS:
   AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  AUIKitCore: 8181b551649137f78d321cf869ae6ec78fc1eaaf
+  AUIKitCore: 708206ea6d3e1c6302782c1e981f8e6b9e88b545
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
