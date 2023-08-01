@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.2.0-ui-2'
+  s.version          = '0.3.0-ui'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -45,17 +45,22 @@ TODO: Add long description of the pod here.
 #  ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
 # end
   
-  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
+#  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
   
-#  s.source_files = [
-#  'iOS/AUIKitCore/Sources/Widgets/**/*',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift'
-#  ]
+  s.source_files = [
+  'iOS/AUIKitCore/Sources/Widgets/**/*',
+  'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
+  'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
+  'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift',
+  'iOS/AUIKitCore/Sources/Components/**/*',
+  'iOS/AUIKitCore/Sources/Service/Extension/API/KTVAPI/KTVLrcViewDelegate.swift',
+  'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
+  'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
+  'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
+  ]
   
   s.static_framework = true
   
