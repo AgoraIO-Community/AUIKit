@@ -1,4 +1,4 @@
-package io.agora.scene.show.utils
+package io.agora.auikit.utils
 
 import android.Manifest
 import android.content.Context
