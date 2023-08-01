@@ -68,7 +68,7 @@ TODO: Add long description of the pod here.
   
   s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
   
-  s.pod_target_xcconfig = { 'VALID_ARCHS' => 'X86_64 arm64 arm64e'}
+  s.pod_target_xcconfig = { 'VALID_ARCHS' => 'arm64'}
 
   
   # s.resource_bundles = {
