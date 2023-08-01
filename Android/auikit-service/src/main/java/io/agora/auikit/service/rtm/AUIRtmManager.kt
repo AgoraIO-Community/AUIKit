@@ -341,8 +341,8 @@ class AUIRtmManager(
         completion: (AUIRtmException?, Map<String, String>?) -> Unit
     ) {
         val storage = rtmClient.storage
-        storage.getChannelMetadata(channelName, kChannelType, object : ResultCallback<Metadata> {
-            override fun onSuccess(responseInfo: Metadata?) {
+        storage.getChannelMetadata(channelName, kChannelType, object : ResultCallback<io.agora.rtm2.Metadata> {
+            override fun onSuccess(responseInfo: io.agora.rtm2.Metadata?) {
                 responseInfo ?: return
                 val map = mutableMapOf<String, String>()
                 responseInfo.metadataItems.forEach { item ->
@@ -532,8 +532,8 @@ class AUIRtmManager(
 
     fun getUserMetadata(userId: String){
         val storage = rtmClient.storage
-        storage.getUserMetadata(userId, object : ResultCallback<Metadata>{
-            override fun onSuccess(responseInfo: Metadata?) {
+        storage.getUserMetadata(userId, object : ResultCallback<io.agora.rtm2.Metadata>{
+            override fun onSuccess(responseInfo: io.agora.rtm2.Metadata?) {
 
             }
 

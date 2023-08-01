@@ -94,6 +94,7 @@ task downloadRtmLibs {
     println "rtcJar path= $rtcJar.parentFile.absolutePath"
     copy {
         from rtcJar.parentFile
+        exclude "high_level_api/**"
         into 'libs'
     }
 }
