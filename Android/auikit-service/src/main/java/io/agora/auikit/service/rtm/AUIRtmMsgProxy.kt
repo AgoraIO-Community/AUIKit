@@ -1,13 +1,13 @@
 package io.agora.auikit.service.rtm
 
 import android.util.Log
-import io.agora.rtm.LockEvent
-import io.agora.rtm.MessageEvent
-import io.agora.rtm.PresenceEvent
-import io.agora.rtm.RtmConstants
-import io.agora.rtm.RtmEventListener
-import io.agora.rtm.StorageEvent
-import io.agora.rtm.TopicEvent
+import io.agora.rtm2.LockEvent
+import io.agora.rtm2.MessageEvent
+import io.agora.rtm2.PresenceEvent
+import io.agora.rtm2.RtmConstants
+import io.agora.rtm2.RtmEventListener
+import io.agora.rtm2.StorageEvent
+import io.agora.rtm2.TopicEvent
 import org.json.JSONObject
 
 interface AUIRtmErrorProxyDelegate {
@@ -131,7 +131,7 @@ class AUIRtmMsgProxy : RtmEventListener {
                     delegate.onUserDidJoined(event.channelName, event.publisher ?: "", map)
                 }
             RtmConstants.RtmPresenceEventType.REMOTE_LEAVE,
-            RtmConstants.RtmPresenceEventType.REMOTE_CONNECTION_TIMEOUT ->
+            RtmConstants.RtmPresenceEventType.REMOTE_TIMEOUT ->
                 userDelegates.forEach { delegate ->
                     delegate.onUserDidLeaved(event.channelName, event.publisher ?: "", map)
                 }
@@ -170,7 +170,15 @@ class AUIRtmMsgProxy : RtmEventListener {
 
     override fun onMessageEvent(event: MessageEvent?) {
         event ?: return
-        val str = event.message?.let { String(it) }
+        val str = event.message?.data?.let {
+            if (it is ByteArray) {
+                String(it)
+            } else if (it is String) {
+                it
+            } else {
+                ""
+            }
+        }
         val json = str?.let { JSONObject(it) }
         val messageType = json?.get("messageType").toString()
         originEventListeners?.onMessageEvent(event)
@@ -190,11 +198,15 @@ class AUIRtmMsgProxy : RtmEventListener {
     }
 
 
-    override fun onConnectionStateChange(channelName: String?, state: Int, reason: Int) {
+    override fun onConnectionStateChange(
+        channelName: String?,
+        state: RtmConstants.RtmConnectionState?,
+        reason: RtmConstants.RtmConnectionChangeReason?
+    ) {
         Log.d("rtm_event", "rtm -- connect state change: $state, reason: $reason")
 
         errorDelegates.forEach {
-            it.onConnectionStateChanged(channelName,state, reason)
+            it.onConnectionStateChanged(channelName, RtmConstants.RtmConnectionState.getValue(state), RtmConstants.RtmConnectionChangeReason.getValue(reason))
         }
     }
 

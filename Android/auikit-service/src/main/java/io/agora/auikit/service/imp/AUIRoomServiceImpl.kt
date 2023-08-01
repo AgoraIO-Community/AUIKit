@@ -31,8 +31,8 @@ import io.agora.auikit.utils.AgoraEngineCreator
 import io.agora.auikit.utils.DelegateHelper
 import io.agora.auikit.utils.MapperUtils
 import io.agora.auikit.utils.ThreadManager
-import io.agora.rtm.RtmClient
-import io.agora.rtm.RtmConstants
+import io.agora.rtm2.RtmClient
+import io.agora.rtm2.RtmConstants
 import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.atomic.AtomicBoolean

@@ -3,7 +3,6 @@ package io.agora.auikit.utils
 import android.app.Application
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import io.agora.chat.ChatClient
 import io.agora.chat.ChatOptions
@@ -12,14 +11,15 @@ import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngine
 import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.RtcEngineEx
-import io.agora.rtm.LockEvent
-import io.agora.rtm.MessageEvent
-import io.agora.rtm.PresenceEvent
-import io.agora.rtm.RtmClient
-import io.agora.rtm.RtmConfig
-import io.agora.rtm.RtmEventListener
-import io.agora.rtm.StorageEvent
-import io.agora.rtm.TopicEvent
+import io.agora.rtm2.LockEvent
+import io.agora.rtm2.MessageEvent
+import io.agora.rtm2.PresenceEvent
+import io.agora.rtm2.RtmClient
+import io.agora.rtm2.RtmConfig
+import io.agora.rtm2.RtmConstants
+import io.agora.rtm2.RtmEventListener
+import io.agora.rtm2.StorageEvent
+import io.agora.rtm2.TopicEvent
 
 object AgoraEngineCreator {
 
@@ -29,7 +29,6 @@ object AgoraEngineCreator {
         userId: String
     ): RtmClient {
         val rtmConfig = RtmConfig()
-        rtmConfig.context = context
         rtmConfig.userId = userId
         rtmConfig.appId = appId
         rtmConfig.eventListener = object : RtmEventListener {
@@ -53,7 +52,11 @@ object AgoraEngineCreator {
 
             }
 
-            override fun onConnectionStateChange(channelName: String?, state: Int, reason: Int) {
+            override fun onConnectionStateChange(
+                channelName: String?,
+                state: RtmConstants.RtmConnectionState?,
+                reason: RtmConstants.RtmConnectionChangeReason?
+            ) {
 
             }
 

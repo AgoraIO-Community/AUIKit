@@ -6,21 +6,20 @@ import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
-import io.agora.rtm.ErrorInfo
-import io.agora.rtm.JoinChannelOptions
-import io.agora.rtm.Metadata
-import io.agora.rtm.MetadataItem
-import io.agora.rtm.MetadataOptions
-import io.agora.rtm.PresenceOptions
-import io.agora.rtm.ResultCallback
-import io.agora.rtm.RtmClient
-import io.agora.rtm.RtmConstants
-import io.agora.rtm.RtmConstants.RtmChannelType
-import io.agora.rtm.RtmEventListener
-import io.agora.rtm.StateItem
-import io.agora.rtm.StreamChannel
-import io.agora.rtm.SubscribeOptions
-import io.agora.rtm.WhoNowResult
+import io.agora.rtm2.ErrorInfo
+import io.agora.rtm2.JoinChannelOptions
+import io.agora.rtm2.MetadataItem
+import io.agora.rtm2.MetadataOptions
+import io.agora.rtm2.PresenceOptions
+import io.agora.rtm2.ResultCallback
+import io.agora.rtm2.RtmClient
+import io.agora.rtm2.RtmConstants.RtmChannelType
+import io.agora.rtm2.RtmConstants.RtmErrorCode
+import io.agora.rtm2.RtmEventListener
+import io.agora.rtm2.StateItem
+import io.agora.rtm2.StreamChannel
+import io.agora.rtm2.SubscribeOptions
+import io.agora.rtm2.WhoNowResult
 import org.json.JSONObject
 
 class AUIRtmManager(
@@ -51,13 +50,29 @@ class AUIRtmManager(
     private val kChannelType = RtmChannelType.STREAM
 
     fun renew(token:String){
-        rtmClient.renewToken(token)
+        rtmClient.renewToken(token, object : ResultCallback<Void>{
+            override fun onSuccess(responseInfo: Void?) {
+                AUILogger.logger().i("AUIRtmManager", "renew success")
+            }
+
+            override fun onFailure(errorInfo: ErrorInfo?) {
+                AUILogger.logger().e("AUIRtmManager", "renew failed -- $errorInfo")
+            }
+        })
     }
 
     fun renewChannel(channelName: String,token:String){
         if (rtmStreamChannelMap[channelName] != null){
             val streamChannel = rtmStreamChannelMap[channelName]
-            streamChannel?.renewToken(token)
+            streamChannel?.renewToken(token, object : ResultCallback<Void>{
+                override fun onSuccess(responseInfo: Void?) {
+                    AUILogger.logger().i("AUIRtmManager", "renew $channelName channel token success.")
+                }
+
+                override fun onFailure(errorInfo: ErrorInfo?) {
+                    AUILogger.logger().e("AUIRtmManager", "renew $channelName channel token failed -- $errorInfo")
+                }
+            })
         }
     }
 
@@ -74,14 +89,13 @@ class AUIRtmManager(
             }
 
             override fun onFailure(errorInfo: ErrorInfo?) {
-                val rtmConstantsCode = RtmConstants.RTM_ERR_ALREADY_LOGIN * -1
-                if(errorInfo?.errorCode == rtmConstantsCode){
+                if(errorInfo?.errorCode == RtmErrorCode.LOGIN_REJECTED){
                     isLogin = true
                     completion.invoke(null)
                 }else{
                     completion.invoke(
                         AUIRtmException(
-                            errorInfo?.errorCode ?: -1,
+                            RtmErrorCode.getValue(errorInfo?.errorCode),
                             errorInfo?.errorReason ?: "UnKnow",
                             errorInfo?.operation ?: "UnKnow",
                         ))
@@ -138,7 +152,7 @@ class AUIRtmManager(
                         if (errorInfo != null) {
                             logger.d("MessageChannel", "subscribe RtmChannelType.MESSAGE onFailure $errorInfo")
                             completion.invoke(
-                                AUIRtmException(errorInfo.errorCode, errorInfo.errorReason, errorInfo.operation)
+                                AUIRtmException(RtmErrorCode.getValue(errorInfo.errorCode), errorInfo.errorReason, errorInfo.operation)
                             )
                         } else {
                             logger.d("MessageChannel", "subscribe RtmChannelType.MESSAGE onFailure")
@@ -165,7 +179,7 @@ class AUIRtmManager(
                         override fun onFailure(errorInfo: ErrorInfo?) {
                             logger.d("StreamChannel", "create and join the stream channel failed for $errorInfo")
                             if (errorInfo != null) {
-                                completion.invoke(AUIRtmException(errorInfo.errorCode, errorInfo.errorReason, errorInfo.operation))
+                                completion.invoke(AUIRtmException(RtmErrorCode.getValue(errorInfo.errorCode), errorInfo.errorReason, errorInfo.operation))
                             } else {
                                 completion.invoke(AUIRtmException(-1, "error", ""))
                             }
@@ -194,7 +208,15 @@ class AUIRtmManager(
         proxy.cleanCache(channelName)
         when (channelType) {
             RtmChannelType.MESSAGE -> {
-                rtmClient.unsubscribe(channelName)
+                rtmClient.unsubscribe(channelName, object : ResultCallback<Void>{
+                    override fun onSuccess(responseInfo: Void?) {
+                        AUILogger.logger().i("AUIRtmManager", "rtmClient unsubscribe $channelName channel success.")
+                    }
+
+                    override fun onFailure(errorInfo: ErrorInfo?) {
+                        AUILogger.logger().e("AUIRtmManager", "rtmClient unsubscribe $channelName channel failed -- $errorInfo")
+                    }
+                })
             }
             RtmChannelType.STREAM -> {
                 val streamChannel = rtmStreamChannelMap[channelName] ?: return
@@ -228,7 +250,7 @@ class AUIRtmManager(
                     errorInfo ?: return
                     completion.invoke(
                         AUIRtmException(
-                            errorInfo.errorCode,
+                            RtmErrorCode.getValue(errorInfo.errorCode),
                             errorInfo.errorReason,
                             errorInfo.operation
                         )
@@ -267,7 +289,7 @@ class AUIRtmManager(
                     errorInfo ?: return
                     completion.invoke(
                         AUIRtmException(
-                            errorInfo.errorCode,
+                            RtmErrorCode.getValue(errorInfo.errorCode),
                             errorInfo.errorReason,
                             errorInfo.operation
                         )
@@ -305,7 +327,7 @@ class AUIRtmManager(
                     errorInfo ?: return
                     completion.invoke(
                         AUIRtmException(
-                            errorInfo.errorCode,
+                            RtmErrorCode.getValue(errorInfo.errorCode),
                             errorInfo.errorReason,
                             errorInfo.operation
                         )
@@ -333,7 +355,7 @@ class AUIRtmManager(
                 errorInfo ?: return
                 completion.invoke(
                     AUIRtmException(
-                        errorInfo.errorCode,
+                        RtmErrorCode.getValue(errorInfo.errorCode),
                         errorInfo.errorReason,
                         errorInfo.operation
                     ), null
@@ -383,7 +405,7 @@ class AUIRtmManager(
 
             override fun onFailure(errorInfo: ErrorInfo?) {
                 errorInfo ?: return
-                completion.invoke(AUIRtmException(errorInfo.errorCode, errorInfo.errorReason, errorInfo.operation), null)
+                completion.invoke(AUIRtmException(RtmErrorCode.getValue(errorInfo.errorCode), errorInfo.errorReason, errorInfo.operation), null)
             }
         })
     }
@@ -410,7 +432,7 @@ class AUIRtmManager(
 
             override fun onFailure(errorInfo: ErrorInfo?) {
                 logger.d("PresenceState", "Setting failure : $errorInfo")
-                completion.invoke(AUIRtmException(errorInfo?.errorCode ?: -1, errorInfo?.errorReason ?: "UnKnow Error", errorInfo?.operation ?: "UnKnow Error"))
+                completion.invoke(AUIRtmException(RtmErrorCode.getValue(errorInfo?.errorCode), errorInfo?.errorReason ?: "UnKnow Error", errorInfo?.operation ?: "UnKnow Error"))
             }
         })
     }
@@ -431,7 +453,15 @@ class AUIRtmManager(
 
     fun unSubscribeUser(userId: String){
         val storage = rtmClient.storage
-        storage.unsubscribeUserMetadata(userId)
+        storage.unsubscribeUserMetadata(userId, object : ResultCallback<Void>{
+            override fun onSuccess(responseInfo: Void?) {
+                AUILogger.logger().i("AUIRtmManager", "unsubscribeUserMetadata $userId success.")
+            }
+
+            override fun onFailure(errorInfo: ErrorInfo?) {
+                AUILogger.logger().e("AUIRtmManager", "unsubscribeUserMetadata $userId failed -- $errorInfo")
+            }
+        })
     }
 
     fun removeUserMetadata(userId: String){
@@ -525,7 +555,7 @@ class AUIRtmManager(
             }
 
             override fun onFailure(errorInfo: ErrorInfo?) {
-                callback.onResult(errorInfo?.errorCode?.let { AUIException(it,errorInfo.errorReason) })
+                callback.onResult(errorInfo?.errorCode?.let { AUIException(RtmErrorCode.getValue(it),errorInfo.errorReason) })
             }
         })
     }

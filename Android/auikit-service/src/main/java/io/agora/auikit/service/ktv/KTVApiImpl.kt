@@ -1042,7 +1042,14 @@ class KTVApiImpl(
     }
 
     // ------------------------ AgoraMusicContentCenterEventDelegate  ------------------------
-    override fun onPreLoadEvent(songCode: Long, percent: Int, lyricUrl: String?, status: Int, errorCode: Int) {
+    override fun onPreLoadEvent(
+        requestId: String?,
+        songCode: Long,
+        percent: Int,
+        lyricUrl: String?,
+        status: Int,
+        errorCode: Int
+    ) {
         val callback = loadMusicCallbackMap[songCode.toString()] ?: return
         if (status == 0 || status == 1) {
             loadMusicCallbackMap.remove(songCode.toString())
@@ -1071,7 +1078,12 @@ class KTVApiImpl(
         callback.invoke(requestId, errorCode, list)
     }
 
-    override fun onLyricResult(requestId: String?, lyricUrl: String?, errorCode: Int) {
+    override fun onLyricResult(
+        requestId: String?,
+        songCode: Long,
+        lyricUrl: String?,
+        errorCode: Int
+    ) {
         val callback = lyricCallbackMap[requestId] ?: return
         val songCode = lyricSongCodeMap[requestId] ?: return
         lyricCallbackMap.remove(lyricUrl)
@@ -1080,6 +1092,15 @@ class KTVApiImpl(
             return
         }
         callback(songCode, lyricUrl)
+    }
+
+    override fun onSongSimpleInfoResult(
+        requestId: String?,
+        songCode: Long,
+        simpleInfo: String?,
+        errorCode: Int
+    ) {
+
     }
 
     // ------------------------ AgoraRtcMediaPlayerDelegate ------------------------
@@ -1123,7 +1144,7 @@ class KTVApiImpl(
     }
 
     // 同步播放进度
-    override fun onPositionChanged(position_ms: Long) {
+    override fun onPositionChanged(position_ms: Long, timestampMs: Long) {
         localPlayerPosition = position_ms
         localPlayerSystemTime = System.currentTimeMillis()
 
@@ -1245,6 +1266,20 @@ class KTVApiImpl(
         return false
     }
 
+    override fun onPublishAudioFrame(
+        channelId: String?,
+        type: Int,
+        samplesPerChannel: Int,
+        bytesPerSample: Int,
+        channels: Int,
+        samplesPerSec: Int,
+        buffer: ByteBuffer?,
+        renderTimeMs: Long,
+        avsync_type: Int
+    ): Boolean {
+        return false
+    }
+
     override fun getObservedAudioFramePosition(): Int {
         return 0
     }
@@ -1262,6 +1297,10 @@ class KTVApiImpl(
     }
 
     override fun getEarMonitoringAudioParams(): AudioParams? {
+        return null
+    }
+
+    override fun getPublishAudioParams(): AudioParams? {
         return null
     }
 }
