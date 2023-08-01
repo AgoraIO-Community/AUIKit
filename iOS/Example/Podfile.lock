@@ -1,11 +1,11 @@
 PODS:
   - Agora_Chat_iOS (1.1.0)
-  - AgoraLyricsScore (1.1.1-beta-3)
+  - AgoraLyricsScore (1.1.2)
   - AgoraRtcEngine_iOS (1.0)
   - Alamofire (5.7.1)
-  - AUIKitCore (0.2.0-ui):
+  - AUIKitCore (0.3.1-ui):
     - Agora_Chat_iOS
-    - AgoraLyricsScore
+    - AgoraLyricsScore (~> 1.1.1)
     - AgoraRtcEngine_iOS
     - Alamofire
     - MJRefresh
@@ -31,7 +31,6 @@ PODS:
   - Zip (2.1.2)
 
 DEPENDENCIES:
-  - AgoraLyricsScore (= 1.1.1-beta-3)
   - AgoraRtcEngine_iOS (from `./libs`)
   - AUIKitCore (from `../../`)
   - FBSnapshotTestCase (~> 2.1.4)
@@ -58,10 +57,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
-  AgoraLyricsScore: 7e25860ccecd3c6ed73f2b503f1d73d8849079e1
+  AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
   AgoraRtcEngine_iOS: 7af3b344c55059556eeb05dc748ff124c593d4fb
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  AUIKitCore: 21cd92c2bf956aacb7772e4cd1219025880de29a
+  AUIKitCore: 8181b551649137f78d321cf869ae6ec78fc1eaaf
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
@@ -71,6 +70,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: fbe1bc071ed5e7e09376cc376d297dbd866b46ad
+PODFILE CHECKSUM: 812d34790b99014740e20df752220848655515cd
 
 COCOAPODS: 1.12.0
