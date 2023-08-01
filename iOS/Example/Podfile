@@ -8,7 +8,7 @@ pod 'AUIKitCore', :path => '../../'
 #  pod 'AgoraUIKit_Test/widgets', :path => '../'
   pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'
-#  pod 'AgoraLyricsScore', '1.1.1-beta-3'
+  pod 'AgoraLyricsScore', '1.1.2'
 
   target 'AUIKit_Tests' do
     inherit! :search_paths

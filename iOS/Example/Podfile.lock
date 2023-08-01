@@ -31,6 +31,7 @@ PODS:
   - Zip (2.1.2)
 
 DEPENDENCIES:
+  - AgoraLyricsScore (= 1.1.2)
   - AgoraRtcEngine_iOS (from `./libs`)
   - AUIKitCore (from `../../`)
   - FBSnapshotTestCase (~> 2.1.4)
@@ -70,6 +71,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 812d34790b99014740e20df752220848655515cd
+PODFILE CHECKSUM: 95e772576ac2b13a482151522e8a31d3c5b9b3f1
 
 COCOAPODS: 1.12.0
