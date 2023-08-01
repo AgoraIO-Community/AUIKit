@@ -75,7 +75,7 @@ object AgoraEngineCreator {
         config.mEventHandler = object : IRtcEngineEventHandler() {
             override fun onError(err: Int) {
                 super.onError(err)
-                Log.e("RtcEngineEx", "onError:$err")
+                AUILogger.logger().e("createRtcEngine", "mEventHandler onError $err")
             }
         }
         config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
@@ -84,7 +84,7 @@ object AgoraEngineCreator {
             rtcEngine = RtcEngine.create(config) as RtcEngineEx
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("RtcEngineEx", "RtcEngine.create() called error: $e")
+            AUILogger.logger().e("createRtcEngine", "RtcEngine.create() called error: $e")
         }
         rtcEngine?.loadExtensionProvider("agora_drm_loader")
         return rtcEngine ?: throw RuntimeException("RtcEngine create failed!")

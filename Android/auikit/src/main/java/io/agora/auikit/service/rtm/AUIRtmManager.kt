@@ -50,6 +50,17 @@ class AUIRtmManager(
     // Channel Metadata
     private val kChannelType = RtmChannelType.STREAM
 
+    fun renew(token:String){
+        rtmClient.renewToken(token)
+    }
+
+    fun renewChannel(channelName: String,token:String){
+        if (rtmStreamChannelMap[channelName] != null){
+            val streamChannel = rtmStreamChannelMap[channelName]
+            streamChannel?.renewToken(token)
+        }
+    }
+
 
     fun login(token:String, completion: (AUIRtmException?) -> Unit){
         if(isLogin){
@@ -70,10 +81,10 @@ class AUIRtmManager(
                 }else{
                     completion.invoke(
                         AUIRtmException(
-                        errorInfo?.errorCode ?: -1,
-                        errorInfo?.errorReason ?: "UnKnow",
-                        errorInfo?.operation ?: "UnKnow",
-                    ))
+                            errorInfo?.errorCode ?: -1,
+                            errorInfo?.errorReason ?: "UnKnow",
+                            errorInfo?.operation ?: "UnKnow",
+                        ))
                 }
             }
         })
@@ -115,17 +126,22 @@ class AUIRtmManager(
                 val option = SubscribeOptions()
                 option.withMetadata = true
                 option.withPresence = true
+                logger.d("AUIRtmManager", "subscribe join message channel ...")
+                logger.d("MessageChannel", "joining... channelName=$channelName")
                 rtmClient.subscribe(channelName, option, object : ResultCallback<Void> {
                     override fun onSuccess(responseInfo: Void?) {
+                        logger.d("MessageChannel", "subscribe RtmChannelType.MESSAGE  onSuccess")
                         completion.invoke(null)
                     }
 
                     override fun onFailure(errorInfo: ErrorInfo?) {
                         if (errorInfo != null) {
+                            logger.d("MessageChannel", "subscribe RtmChannelType.MESSAGE onFailure $errorInfo")
                             completion.invoke(
                                 AUIRtmException(errorInfo.errorCode, errorInfo.errorReason, errorInfo.operation)
                             )
                         } else {
+                            logger.d("MessageChannel", "subscribe RtmChannelType.MESSAGE onFailure")
                             completion.invoke(AUIRtmException(-1, "error", ""))
                         }
                     }
@@ -137,18 +153,17 @@ class AUIRtmManager(
                 option.withMetadata = true
                 option.withPresence = true
                 if (rtmStreamChannelMap[channelName] == null) {
-                    logger.d("EnterRoom", "create and join stream channel ...")
+                    logger.d("AUIRtmManager", "create and join stream channel ...")
                     val streamChannel = rtmClient.createStreamChannel(channelName)
                     logger.d("StreamChannel", "joining... channelName=$channelName, token=$token")
                     streamChannel.join(option, object : ResultCallback<Void> {
                         override fun onSuccess(responseInfo: Void?) {
-                            logger.d("EnterRoom", "create and join the stream channel successfully")
-                            logger.d("StreamChannel", "join success channelName=$channelName")
+                            logger.d("StreamChannel", "create and join the stream channel successfully channelName=$channelName")
                             completion.invoke(null)
                         }
 
                         override fun onFailure(errorInfo: ErrorInfo?) {
-                            logger.d("EnterRoom", "create and join the stream channel failed for $errorInfo")
+                            logger.d("StreamChannel", "create and join the stream channel failed for $errorInfo")
                             if (errorInfo != null) {
                                 completion.invoke(AUIRtmException(errorInfo.errorCode, errorInfo.errorReason, errorInfo.operation))
                             } else {
@@ -158,7 +173,7 @@ class AUIRtmManager(
                     })
                     rtmStreamChannelMap[channelName] = streamChannel
                 } else {
-                    logger.d("EnterRoom", "create and join the stream channel failed for existing")
+                    logger.d("StreamChannel", "create and join the stream channel failed for existing")
                     completion.invoke(
                         AUIRtmException(
                             -999,
@@ -169,6 +184,7 @@ class AUIRtmManager(
                 }
             }
             else -> {
+                logger.d("AUIRtmManager", "RtmChannelType mismatching")
                 completion.invoke(AUIRtmException(-1, "error", ""))
             }
         }

@@ -327,14 +327,17 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
 
     override fun startRippleAnimation(index: Int) {
         val circleViewWrap = micSeatViewList[index]
-        val auiMicSeatItemView = circleViewWrap?.getView() as AUIMicSeatItemView
-        auiMicSeatItemView.startRippleAnimation()
-
+        circleViewWrap?.getView()?.let {
+            val auiMicSeatItemView = it as AUIMicSeatItemView
+            auiMicSeatItemView.startRippleAnimation()
+        }
     }
 
     override fun stopRippleAnimation(index: Int) {
         val circleViewWrap = micSeatViewList[index]
-        val auiMicSeatItemView = circleViewWrap?.getView() as AUIMicSeatItemView
-        auiMicSeatItemView.stopRippleAnimation()
+        circleViewWrap?.getView()?.let {
+            val auiMicSeatItemView = it as AUIMicSeatItemView
+            auiMicSeatItemView.stopRippleAnimation()
+        }
     }
 }

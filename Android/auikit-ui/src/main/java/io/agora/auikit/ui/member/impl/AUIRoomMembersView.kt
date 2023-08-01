@@ -12,6 +12,7 @@ import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.databinding.AuiMemberLayoutBinding
 import io.agora.auikit.ui.member.IAUIRoomMembersView
 import io.agora.auikit.ui.member.listener.AUIRoomMembersActionListener
+import io.agora.auikit.utils.FastClickTools
 
 class AUIRoomMembersView : ConstraintLayout,
     IAUIRoomMembersView {
@@ -33,15 +34,21 @@ class AUIRoomMembersView : ConstraintLayout,
 
     private fun initListener(){
         mRoomViewBinding.llMemberRank.setOnClickListener{
-            aUpperRightListener?.onMemberRankClickListener(it)
+            if (!FastClickTools.isFastClick(it)){
+                aUpperRightListener?.onMemberRankClickListener(it)
+            }
         }
 
         mRoomViewBinding.btnUserMore.setOnClickListener{
-            aUpperRightListener?.onMemberRightUserMoreClickListener(it)
+            if (!FastClickTools.isFastClick(it)){
+                aUpperRightListener?.onMemberRightUserMoreClickListener(it)
+            }
         }
 
         mRoomViewBinding.btnShutDown.setOnClickListener{
-            aUpperRightListener?.onMemberRightShutDownClickListener(it)
+            if (!FastClickTools.isFastClick(it)){
+                aUpperRightListener?.onMemberRightShutDownClickListener(it)
+            }
         }
     }
 

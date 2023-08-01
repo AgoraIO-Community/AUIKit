@@ -144,15 +144,19 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
     @Override
     public void startRippleAnimation(int index) {
         MicSeatItemViewWrap micSeatItemViewWrap = micSeatViewList[index];
-        AUIMicSeatItemView view = (AUIMicSeatItemView) micSeatItemViewWrap.view;
-        view.startRippleAnimation();
+        if (micSeatItemViewWrap != null && micSeatItemViewWrap.view != null){
+            AUIMicSeatItemView view = (AUIMicSeatItemView) micSeatItemViewWrap.view;
+            view.startRippleAnimation();
+        }
     }
 
     @Override
     public void stopRippleAnimation(int index) {
         MicSeatItemViewWrap micSeatItemViewWrap = micSeatViewList[index];
-        AUIMicSeatItemView view = (AUIMicSeatItemView) micSeatItemViewWrap.view;
-        view.stopRippleAnimation();
+        if (micSeatItemViewWrap != null && micSeatItemViewWrap.view != null){
+            AUIMicSeatItemView view = (AUIMicSeatItemView) micSeatItemViewWrap.view;
+            view.stopRippleAnimation();
+        }
     }
 
     private static class MicSeatItemViewWrap implements IMicSeatItemView {
