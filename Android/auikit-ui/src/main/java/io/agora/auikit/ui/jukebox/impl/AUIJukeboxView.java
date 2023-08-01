@@ -12,15 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import io.agora.auikit.model.AUIChooseMusicModel;
-import io.agora.auikit.model.AUIMusicModel;
-import io.agora.auikit.model.AUIPlayStatus;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIFrameLayout;
 import io.agora.auikit.ui.basic.AUITabLayout;
+import io.agora.auikit.ui.jukebox.AUIMusicInfo;
 import io.agora.auikit.ui.jukebox.IAUIJukeboxView;
 
 public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
@@ -30,9 +27,9 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     private ActionDelegate actionDelegate;
     private AUIJukeboxChooseView mChooseView;
     private AUIJukeboxChosenView mChosenView;
-    private AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicModel> mChooseListAdapter;
-    private AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicModel> mSearchListAdapter;
-    private AUIJukeboxChosenView.AbsDataListAdapter<AUIChooseMusicModel> mChosenListAdapter;
+    private AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicInfo> mChooseListAdapter;
+    private AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicInfo> mSearchListAdapter;
+    private AUIJukeboxChosenView.AbsDataListAdapter<AUIMusicInfo> mChosenListAdapter;
 
     public AUIJukeboxView(@NonNull Context context) {
         this(context, null);
@@ -118,7 +115,7 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     }
 
     @Override
-    public void refreshChooseSongList(String category, List<AUIMusicModel> songList) {
+    public void refreshChooseSongList(String category, List<AUIMusicInfo> songList) {
         if (mChooseView == null || mChooseListAdapter == null) {
             return;
         }
@@ -130,12 +127,12 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     }
 
     @Override
-    public void loadMoreChooseSongList(String category, List<AUIMusicModel> songList) {
+    public void loadMoreChooseSongList(String category, List<AUIMusicInfo> songList) {
         if (mChooseView == null || mChooseListAdapter == null) {
             return;
         }
         if (mChooseView.getCategorySelected().equals(category)) {
-            ArrayList<AUIMusicModel> list = new ArrayList<>(mChooseListAdapter.getCurrentList());
+            ArrayList<AUIMusicInfo> list = new ArrayList<>(mChooseListAdapter.getCurrentList());
             list.addAll(songList);
             mChooseListAdapter.submitList(list, () -> {
                 mChooseListAdapter.setLoadMoreComplete();
@@ -144,7 +141,7 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     }
 
     @Override
-    public void setChosenSongList(List<AUIChooseMusicModel> songList) {
+    public void setChosenSongList(List<AUIMusicInfo> songList) {
         if (mChosenView == null || mChosenListAdapter == null) {
             return;
         }
@@ -158,7 +155,7 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     }
 
     @Override
-    public void refreshSearchSongList(List<AUIMusicModel> songList) {
+    public void refreshSearchSongList(List<AUIMusicInfo> songList) {
         if (mChooseView == null || mSearchListAdapter == null) {
             return;
         }
@@ -168,11 +165,11 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     }
 
     @Override
-    public void loadMoreSearchSongList(List<AUIMusicModel> songList) {
+    public void loadMoreSearchSongList(List<AUIMusicInfo> songList) {
         if (mChooseView == null || mSearchListAdapter == null) {
             return;
         }
-        ArrayList<AUIMusicModel> list = new ArrayList<>(mSearchListAdapter.getCurrentList());
+        ArrayList<AUIMusicInfo> list = new ArrayList<>(mSearchListAdapter.getCurrentList());
         list.addAll(songList);
         mSearchListAdapter.submitList(list, () -> {
             mSearchListAdapter.setLoadMoreComplete();
@@ -182,25 +179,25 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     // 点歌
     private void refreshChooseViewLayout(@NonNull AUIJukeboxChooseView chooseView) {
         mChooseView = chooseView;
-        DiffUtil.ItemCallback<AUIMusicModel> diffItemCallback = new DiffUtil.ItemCallback<AUIMusicModel>() {
+        DiffUtil.ItemCallback<AUIMusicInfo> diffItemCallback = new DiffUtil.ItemCallback<AUIMusicInfo>() {
             @Override
-            public boolean areItemsTheSame(@NonNull AUIMusicModel oldItem, @NonNull AUIMusicModel newItem) {
-                return newItem.songCode.equals(oldItem.songCode);
+            public boolean areItemsTheSame(@NonNull AUIMusicInfo oldItem, @NonNull AUIMusicInfo newItem) {
+                return newItem.getSongCode().equals(oldItem.getSongCode());
             }
 
             @Override
-            public boolean areContentsTheSame(@NonNull AUIMusicModel oldItem, @NonNull AUIMusicModel newItem) {
+            public boolean areContentsTheSame(@NonNull AUIMusicInfo oldItem, @NonNull AUIMusicInfo newItem) {
                 return false;
             }
         };
 
-        mChooseListAdapter = new AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicModel>(diffItemCallback) {
+        mChooseListAdapter = new AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicInfo>(diffItemCallback) {
             @Override
             void onBindItemView(AUIJukeboxChooseItemView itemView, int position) {
-                AUIMusicModel musicModel = getItem(position);
-                itemView.setSongName(musicModel.name);
-                itemView.setSingerName(musicModel.singer);
-                itemView.setSongCover(musicModel.poster);
+                AUIMusicInfo musicModel = getItem(position);
+                itemView.setSongName(musicModel.getName());
+                itemView.setSingerName(musicModel.getSinger());
+                itemView.setSongCover(musicModel.getPost());
                 itemView.setOnChooseChangeListener(null);
                 itemView.setChooseCheck(isSongChosen(musicModel));
                 itemView.setOnChooseChangeListener((buttonView, isChecked) -> {
@@ -226,13 +223,13 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
                 actionDelegate.onChooseSongRefreshing(chooseView.getCategorySelected());
             }
         });
-        mSearchListAdapter = new AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicModel>(diffItemCallback) {
+        mSearchListAdapter = new AUIJukeboxChooseView.AbsDataListAdapter<AUIMusicInfo>(diffItemCallback) {
             @Override
             void onBindItemView(AUIJukeboxChooseItemView itemView, int position) {
-                AUIMusicModel musicModel = getItem(position);
-                itemView.setSongName(musicModel.name);
-                itemView.setSingerName(musicModel.singer);
-                itemView.setSongCover(musicModel.poster);
+                AUIMusicInfo musicModel = getItem(position);
+                itemView.setSongName(musicModel.getName());
+                itemView.setSingerName(musicModel.getSinger());
+                itemView.setSongCover(musicModel.getPost());
                 itemView.setChooseCheck(isSongChosen(musicModel));
                 itemView.setOnChooseChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
@@ -271,13 +268,13 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
         });
     }
 
-    private boolean isSongChosen(AUIMusicModel musicModel) {
+    private boolean isSongChosen(AUIMusicInfo musicModel) {
         if (mChosenListAdapter == null) {
             return false;
         }
-        List<AUIChooseMusicModel> chosenList = mChosenListAdapter.getCurrentList();
-        for (AUIChooseMusicModel item : chosenList) {
-            if (item.songCode.equals(musicModel.songCode)) {
+        List<AUIMusicInfo> chosenList = mChosenListAdapter.getCurrentList();
+        for (AUIMusicInfo item : chosenList) {
+            if (item.getSongCode().equals(musicModel.getSongCode())) {
                 return true;
             }
         }
@@ -288,28 +285,28 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
     private void refreshChosenViewLayout(@NonNull AUIJukeboxChosenView chosenView) {
         mChosenView = chosenView;
 
-        DiffUtil.ItemCallback<AUIChooseMusicModel> diffItemCallback = new DiffUtil.ItemCallback<AUIChooseMusicModel>() {
+        DiffUtil.ItemCallback<AUIMusicInfo> diffItemCallback = new DiffUtil.ItemCallback<AUIMusicInfo>() {
             @Override
-            public boolean areItemsTheSame(@NonNull AUIChooseMusicModel oldItem, @NonNull AUIChooseMusicModel newItem) {
-                return newItem.songCode.equals(oldItem.songCode);
+            public boolean areItemsTheSame(@NonNull AUIMusicInfo oldItem, @NonNull AUIMusicInfo newItem) {
+                return newItem.getSinger().equals(oldItem.getSongCode());
             }
 
             @Override
-            public boolean areContentsTheSame(@NonNull AUIChooseMusicModel oldItem, @NonNull AUIChooseMusicModel newItem) {
+            public boolean areContentsTheSame(@NonNull AUIMusicInfo oldItem, @NonNull AUIMusicInfo newItem) {
                 return false;
             }
         };
-        mChosenListAdapter = new AUIJukeboxChosenView.AbsDataListAdapter<AUIChooseMusicModel>(diffItemCallback) {
+        mChosenListAdapter = new AUIJukeboxChosenView.AbsDataListAdapter<AUIMusicInfo>(diffItemCallback) {
 
             @Override
             void onBindItemView(@NonNull AUIJukeboxChosenItemView itemView, int position) {
-                AUIChooseMusicModel item = getItem(position);
+                AUIMusicInfo item = getItem(position);
                 if (actionDelegate != null) {
                     actionDelegate.onChosenSongItemUpdating(itemView, position, item);
                 }
-                itemView.setSongName(item.name);
-                itemView.setSingerName(item.singer);
-                itemView.setSongCover(item.poster);
+                itemView.setSongName(item.getName());
+                itemView.setSingerName(item.getSinger());
+                itemView.setSongCover(item.getPost());
                 itemView.setOrder((position + 1) + "");
 
                 itemView.setOnDeleteClickListener(v -> {
@@ -332,17 +329,4 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
         chosenView.setDataListAdapter(mChosenListAdapter);
     }
 
-    private void sortChooseSongList(List<AUIChooseMusicModel> songList) {
-        Collections.sort(songList, (model1, model2) -> {
-            if (model1.status == AUIPlayStatus.playing) {
-                return -1;
-            } else if (model2.status == AUIPlayStatus.playing) {
-                return 1;
-            }
-            if (model1.pinAt < 1 && model2.pinAt < 1) {
-                return model1.createAt - model2.createAt < 0 ? -1 : 1;
-            }
-            return model1.pinAt - model2.pinAt > 0 ? 1 : -1;
-        });
-    }
 }

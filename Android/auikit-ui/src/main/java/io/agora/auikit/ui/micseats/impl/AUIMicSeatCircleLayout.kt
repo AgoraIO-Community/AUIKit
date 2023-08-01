@@ -8,12 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import io.agora.auikit.model.MicSeatItem
-import io.agora.auikit.model.MicSeatOption
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.micseats.IMicSeatItemView
 import io.agora.auikit.ui.micseats.IMicSeatItemView.ChorusType
 import io.agora.auikit.ui.micseats.IMicSeatsView
+import io.agora.auikit.ui.micseats.MicSeatItem
+import io.agora.auikit.ui.micseats.MicSeatOption
+import io.agora.auikit.ui.micseats.MicSeatStatus
 import io.agora.auikit.utils.DeviceTools
 import kotlin.math.cos
 import kotlin.math.min
@@ -200,7 +201,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
         private var roomOwnerVisibility = GONE
         private var chorusType = ChorusType.None
         private var userAvatarImageDrawable: Drawable? = null
-        private var seatStatus = 0
+        private var seatStatus = MicSeatStatus.idle
         private var userAvatarImageUrl: String? = null
         private var view: IMicSeatItemView? = null
 
@@ -262,7 +263,7 @@ class AUIMicSeatCircleLayout : FrameLayout, IMicSeatsView {
             }
         }
 
-        override fun setMicSeatState(state: Int) {
+        override fun setMicSeatState(state: MicSeatStatus) {
             seatStatus = state
             if (view != null) {
                 view?.setMicSeatState(state)

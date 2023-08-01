@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.agora.auikit.model.AUIEffectVoiceInfo;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIRecyclerView;
+import io.agora.auikit.ui.musicplayer.ControllerEffectInfo;
 
 public class AUIMusicPlayerPresetDialogView extends FrameLayout {
 
@@ -43,7 +43,7 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
     private void initView(@NonNull Context context) {
         View.inflate(context, R.layout.aui_musicplayer_preset_dialog_view, this);
         AUIRecyclerView rvAudioPreset = findViewById(R.id.rv_audio_preset);
-        List<AUIEffectVoiceInfo> presetList = buildPresetData();
+        List<ControllerEffectInfo> presetList = buildPresetData();
         mMusicPlayerPresetAdapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @NonNull
             @Override
@@ -55,15 +55,15 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 AUIMusicPlayerEffectItemView itemView = (AUIMusicPlayerEffectItemView) holder.itemView;
-                final AUIEffectVoiceInfo effectVoiceInfo = presetList.get(position);
+                final ControllerEffectInfo effectVoiceInfo = presetList.get(position);
                 if (effectVoiceInfo == null) {
                     return;
                 }
-                itemView.setPresetInnerIcon(effectVoiceInfo.getResId());
-                itemView.setItemSelected(currentId == effectVoiceInfo.getId());
+                itemView.setPresetInnerIcon(effectVoiceInfo.getIcon());
+                itemView.setItemSelected(currentId == effectVoiceInfo.getIndex());
                 itemView.setPresetName(itemView.getContext().getString(effectVoiceInfo.getTitle()));
                 itemView.setOnClickListener(v -> {
-                    currentId = effectVoiceInfo.getId();
+                    currentId = effectVoiceInfo.getIndex();
                     mMusicPlayerPresetAdapter.notifyDataSetChanged();
                 });
             }
@@ -76,13 +76,13 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
         rvAudioPreset.setAdapter(mMusicPlayerPresetAdapter);
     }
 
-    private List<AUIEffectVoiceInfo> buildPresetData() {
-        List<AUIEffectVoiceInfo> list = new ArrayList<>();
-        list.add(new AUIEffectVoiceInfo(0, R.drawable.aui_musicplayer_preset_none, R.string.aui_musicplayer_preset_original));
-        list.add(new AUIEffectVoiceInfo(1, R.drawable.aui_musicplayer_preset_child, R.string.aui_musicplayer_preset_child));
-        list.add(new AUIEffectVoiceInfo(2, R.drawable.aui_musicplayer_preset_lolita, R.string.aui_musicplayer_preset_lolita));
-        list.add(new AUIEffectVoiceInfo(3, R.drawable.aui_musicplayer_preset_uncle, R.string.aui_musicplayer_preset_uncle));
-        list.add(new AUIEffectVoiceInfo(4, R.drawable.aui_musicplayer_preset_airy, R.string.aui_musicplayer_preset_airy));
+    private List<ControllerEffectInfo> buildPresetData() {
+        List<ControllerEffectInfo> list = new ArrayList<>();
+        list.add(new ControllerEffectInfo(0, 0, R.drawable.aui_musicplayer_preset_none, R.string.aui_musicplayer_preset_original));
+        list.add(new ControllerEffectInfo(1, 1, R.drawable.aui_musicplayer_preset_child, R.string.aui_musicplayer_preset_child));
+        list.add(new ControllerEffectInfo(2, 2, R.drawable.aui_musicplayer_preset_lolita, R.string.aui_musicplayer_preset_lolita));
+        list.add(new ControllerEffectInfo(3, 3, R.drawable.aui_musicplayer_preset_uncle, R.string.aui_musicplayer_preset_uncle));
+        list.add(new ControllerEffectInfo(4, 4, R.drawable.aui_musicplayer_preset_airy, R.string.aui_musicplayer_preset_airy));
         return list;
     }
 }

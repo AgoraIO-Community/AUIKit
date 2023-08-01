@@ -1,4 +1,4 @@
-package io.agora.auikit.model
+package io.agora.auikit.ui.micseats
 
 import java.io.Serializable
 
@@ -33,4 +33,8 @@ enum class MicSeatType(val value: Int) {
             return null
         }
     }
+}
+
+enum class MicSeatStatus {
+    idle, used, locked
 }

@@ -1,10 +1,6 @@
 package io.agora.auikit.ui.micseats;
 
 
-import androidx.annotation.Nullable;
-
-import io.agora.auikit.model.AUIUserThumbnailInfo;
-
 public interface IMicSeatDialogView {
 
     /**
@@ -49,7 +45,11 @@ public interface IMicSeatDialogView {
      *
      * @param userInfo 用户信息
      */
-    void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo);
+    void setUserInfo(String userInfo);
+
+    void setUserName(String userName);
+
+    void setUserAvatar(String avatarUrl);
 
     /**
      * 添加邀请
