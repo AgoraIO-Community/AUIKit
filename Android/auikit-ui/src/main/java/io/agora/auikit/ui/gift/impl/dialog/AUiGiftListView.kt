@@ -86,7 +86,7 @@ class AUiGiftListView constructor(
             }
 
             override fun createFragment(position: Int): Fragment {
-                val fragment = AUIGiftListFragment(mContext, mGiftList, tapList[position])
+                val fragment = AUIGiftListFragment(mGiftList, tapList[position])
                 fragment.setOnItemSelectClickListener { view, bean -> listener?.onGiftSend(bean) }
                 return fragment
             }

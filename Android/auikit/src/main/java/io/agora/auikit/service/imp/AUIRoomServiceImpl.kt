@@ -143,7 +143,7 @@ class AUIRoomManagerImpl(
         subChannelMsg.set(false)
         val user = MapperUtils.model2Map(roomContext.currentUserInfo) as? Map<String, Any>
         if (user == null) {
-            AUILogger.logger().d("EnterRoom", "user == null")
+            AUILogger.logger().d(TAG, "EnterRoom user == null")
             callback?.onResult(
                 AUIException(
                     -1,
@@ -153,8 +153,10 @@ class AUIRoomManagerImpl(
             return
         }
         val rtmToken = AUIRoomContext.shared().roomConfig.rtmToken007
+        AUILogger.logger().d(TAG, "EnterRoom rtmManager login start ...")
         rtmManager.login(rtmToken) { error ->
             if (error != null) {
+                AUILogger.logger().d(TAG, "EnterRoom rtmManager login fail ${error.code} ${error.message}")
                 callback?.onResult(
                     AUIException(
                         error.code,
@@ -162,11 +164,12 @@ class AUIRoomManagerImpl(
                     )
                 )
             } else {
-                AUILogger.logger().d("EnterRoom", "subscribe room roomId=$roomId token=$token")
-
+                AUILogger.logger().d(TAG, "EnterRoom rtmManager login success")
+                AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.MESSAGE room roomId=$roomId token=$token")
                 rtmManager.subscribeMsg(roomId, "", this)
                 rtmManager.subscribe(RtmConstants.RtmChannelType.MESSAGE,roomId, token) { subscribeError ->
                     if (subscribeError != null) {
+                        AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.MESSAGE fail ${subscribeError.code} ${subscribeError.message}")
                         callback?.onResult(
                             AUIException(
                                 subscribeError.code,
@@ -174,12 +177,16 @@ class AUIRoomManagerImpl(
                             )
                         )
                     }else{
+                        AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.MESSAGE success")
                         subChannelMsg.set(true)
                         checkSubChannel(roomId,callback)
                     }
                 }
+
+                AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.STREAM room roomId=$roomId token=$token")
                 rtmManager.subscribe(RtmConstants.RtmChannelType.STREAM,roomId, token) { subscribeError ->
                     if (subscribeError != null) {
+                        AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.STREAM fail ${subscribeError.code} ${subscribeError.message}")
                         callback?.onResult(
                             AUIException(
                                 subscribeError.code,
@@ -187,6 +194,7 @@ class AUIRoomManagerImpl(
                             )
                         )
                     } else {
+                        AUILogger.logger().d(TAG, "EnterRoom STREAM RtmChannelType.MESSAGE success")
                         subChannelStream.set(true)
                         checkSubChannel(roomId,callback)
                     }
@@ -197,7 +205,9 @@ class AUIRoomManagerImpl(
 
     private fun checkSubChannel(roomId:String,callback: AUICallback?){
         if (subChannelMsg.get()  && subChannelStream.get()){
-            callback?.onResult(null)
+            ThreadManager.getInstance().runOnMainThread {
+                callback?.onResult(null)
+            }
         }
     }
 

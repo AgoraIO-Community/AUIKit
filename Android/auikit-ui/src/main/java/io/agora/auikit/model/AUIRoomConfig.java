@@ -18,7 +18,7 @@ public class AUIRoomConfig {
 
     public int themeId = View.NO_ID;
 
-    public AUIRoomConfig(String roomId) {
+    public AUIRoomConfig(@NonNull String roomId) {
         channelName = roomId;
         rtcChannelName = roomId + "_rtc";
         rtcChorusChannelName = roomId + "_rtc_ex";
