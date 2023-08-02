@@ -68,7 +68,8 @@ TODO: Add long description of the pod here.
   
   s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
   
-  s.pod_target_xcconfig = { 'VALID_ARCHS' => 'arm64'}
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
   
   # s.resource_bundles = {
