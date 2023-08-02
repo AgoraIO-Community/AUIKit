@@ -1,12 +1,22 @@
-package io.agora.auikit.service.ktv
+package io.agora.ktvapi
 
 import io.agora.mediaplayer.Constants
 import io.agora.mediaplayer.IMediaPlayer
 import io.agora.musiccontentcenter.IAgoraMusicContentCenter
 import io.agora.musiccontentcenter.Music
 import io.agora.musiccontentcenter.MusicChartInfo
+import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngine
-import io.agora.rtc2.RtcEngineEx
+
+/**
+ * KTV场景类型
+ * @param Normal 普通独唱或多人合唱
+ * @param SingBattle 嗨歌抢唱
+ */
+enum class KTVType(val value: Int)  {
+    Normal(0),
+    SingBattle(1)
+}
 
 /**
  * 在KTVApi中的身份
@@ -81,7 +91,7 @@ interface ILrcView {
 
     /**
      * ktvApi内部更新音乐播放进度progress时会主动调用此方法将进度值progress传给你的歌词组件，50ms回调一次
-     * @param progress 歌曲播放的真实进度 50ms回调一次
+     * @param progress 歌曲播放的真实进度 20ms回调一次
      */
     fun onUpdateProgress(progress: Long?)
 
@@ -89,6 +99,11 @@ interface ILrcView {
      * ktvApi获取到歌词地址时会主动调用此方法将歌词地址url传给你的歌词组件，您需要在这个回调内完成歌词的下载
      */
     fun onDownloadLrcData(url: String?)
+
+    /**
+     * ktvApi获取到抢唱切片歌曲副歌片段时间时，会调用此方法回调给歌词组件
+     */
+    fun onHighPartTime(highStartTime: Long, highEndTime: Long)
 }
 
 /**
@@ -158,12 +173,18 @@ abstract class IKTVApiEventHandler {
     open fun onSingerRoleChanged(oldRole: KTVSingRole, newRole: KTVSingRole) {}
 
     /**
-     * 合唱频道token将要过期回调，需要renew这个token
-     * @param token 即将过期的token
+     * rtm或合唱频道token将要过期回调，需要renew这个token
      */
-    open fun onChorusChannelTokenPrivilegeWillExpire(token: String?) {}
+    open fun onTokenPrivilegeWillExpire() {}
 
-    open fun onPositionAndPitchChanged(position: Long, pitch: Float) {}
+    /**
+     * 合唱频道人声音量提示
+     * @param speakers 不同用户音量信息
+     * @param totalVolume 总音量
+     */
+    open fun onChorusChannelAudioVolumeIndication(
+        speakers: Array<out IRtcEngineEventHandler.AudioVolumeInfo>?,
+        totalVolume: Int) {}
 }
 
 /**
@@ -172,15 +193,11 @@ abstract class IKTVApiEventHandler {
  * @param rtmToken 创建 Mcc Engine 需要
  * @param engine RTC engine 对象
  * @param channelName 频道号，子频道名以基于主频道名 + "_ex" 固定规则生成频道号
- * Player 状态同步
- * 打分结果同步
- * 歌词同步
- * pitch同步
- * 建议你为KTVApi单独创建一个新的dataStreamId
  * @param localUid 创建 Mcc engine 和 加入子频道需要用到
  * @param chorusChannelName 子频道名 加入子频道需要用到
  * @param chorusChannelToken 子频道token 加入子频道需要用到
  * @param maxCacheSize 最大缓存歌曲数
+ * @param type KTV场景
  */
 data class KTVApiConfig(
     val appId: String,
@@ -190,7 +207,8 @@ data class KTVApiConfig(
     val localUid: Int,
     val chorusChannelName: String,
     val chorusChannelToken: String,
-    val maxCacheSize: Int = 10
+    val maxCacheSize: Int = 10,
+    val type: KTVType = KTVType.Normal
 )
 
 /**
@@ -208,6 +226,16 @@ data class KTVLoadMusicConfiguration(
 )
 
 interface KTVApi {
+    /**
+     * 初始化内部变量/缓存数据，并注册相应的监听，必须在其他KTVApi调用前调用initialize初始化KTVApi
+     * @param config 初始化KTVApi的配置
+     */
+    fun initialize(config: KTVApiConfig)
+
+    /**
+     * 更新ktvapi内部使用的streamId，每次加入频道需要更新内部streamId
+     */
+    fun renewInnerDataStreamId()
 
     /**
      * 订阅KTVApi事件, 支持多注册
@@ -225,6 +253,16 @@ interface KTVApi {
      * 清空内部变量/缓存，取消在initWithRtcEngine时的监听，以及取消网络请求等
      */
     fun release()
+
+    /**
+     * 收到 IKTVApiEventHandler.onTokenPrivilegeWillExpire 回调时需要主动调用方法更新Token
+     * @param rtmToken musicContentCenter模块需要的rtm token
+     * @param chorusChannelRtcToken 合唱需要的频道rtc token
+     */
+    fun renewToken(
+        rtmToken: String,
+        chorusChannelRtcToken: String
+    )
 
     /**
      * 获取歌曲榜单
@@ -299,7 +337,7 @@ interface KTVApi {
     fun loadMusic(
         songCode: Long,
         config: KTVLoadMusicConfiguration,
-        musicLoadStateListener: IMusicLoadStateListener?
+        musicLoadStateListener: IMusicLoadStateListener
     )
 
     /**
@@ -397,8 +435,6 @@ interface KTVApi {
      * 获取mpk实例
      */
     fun getMediaPlayer() : IMediaPlayer
-
-    fun getRtcEngineEx(): RtcEngineEx
 
     /**
      * 获取mcc实例
