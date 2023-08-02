@@ -1,9 +1,16 @@
-package io.agora.auikit.model
+package io.agora.auikit.ui.action
 
 import java.io.Serializable
 
-data class AUIActionModel constructor(
-    var userList: MutableList<AUIUserInfo?> = mutableListOf(),
+data class AUIActionUserInfo constructor(
+    val userId: String,
+    val userName: String,
+    val userAvatar: String,
+    val micIndex: Int,
+): Serializable
+
+data class AUIActionUserInfoList constructor(
+    var userList: MutableList<AUIActionUserInfo?> = mutableListOf(),
     var invitedIndex:Int? = -1
 ): Serializable
 

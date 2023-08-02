@@ -77,9 +77,6 @@ dependencies {
     // Ui Libraries
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.github.AgoraIO-Community:LyricsView:1.1.1-beta.8'
-
-    // TODO Remove when all model and interface being independent.
-    api project(':auikit-service')
 }
 
 // Because the components are created only during the afterEvaluate phase, you must

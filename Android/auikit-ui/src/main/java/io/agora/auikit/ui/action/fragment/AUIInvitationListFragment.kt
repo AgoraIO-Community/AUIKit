@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
-import io.agora.auikit.model.AUIActionModel
-import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.ui.R
+import io.agora.auikit.ui.action.AUIActionUserInfo
+import io.agora.auikit.ui.action.AUIActionUserInfoList
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.databinding.AuiInvitationListLayoutBinding
 import io.agora.auikit.utils.ResourcesTools
@@ -34,7 +34,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
         private const val KEY_ROOM_INFO = "room_info"
         private var activity: FragmentActivity?=null
 
-        fun getInstance(fragmentActivity: FragmentActivity, roomBean: AUIActionModel): VoiceRoomInvitedListFragment {
+        fun getInstance(fragmentActivity: FragmentActivity, roomBean: AUIActionUserInfoList): VoiceRoomInvitedListFragment {
             activity = fragmentActivity
             return VoiceRoomInvitedListFragment().apply {
                 arguments = Bundle().apply {
@@ -44,7 +44,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
         }
     }
 
-    private var roomBean: AUIActionModel? = null
+    private var roomBean: AUIActionUserInfoList? = null
     private var invitedIndex:Int? = -1
     private var listener: InviteEventListener?=null
 
@@ -53,7 +53,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
             field = value
             checkEmpty()
         }
-    private var members = mutableListOf<AUIUserInfo?>()
+    private var members = mutableListOf<AUIActionUserInfo?>()
 
     private var invitedAdapter: VoiceInvitedAdapter?=null
 
@@ -68,7 +68,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        roomBean = arguments?.getSerializable(KEY_ROOM_INFO) as AUIActionModel?
+        roomBean = arguments?.getSerializable(KEY_ROOM_INFO) as AUIActionUserInfoList?
         invitedIndex = roomBean?.invitedIndex
 
         val userList = roomBean?.userList
@@ -120,7 +120,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
         mRoomViewBinding.slInvitedList.isRefreshing = false
     }
 
-    fun refreshData(userList:MutableList<AUIUserInfo?>){
+    fun refreshData(userList:MutableList<AUIActionUserInfo?>){
         mRoomViewBinding.root.post {
             userList.let {
                 total = it.size
@@ -130,12 +130,12 @@ class VoiceRoomInvitedListFragment : Fragment(),
         }
     }
 
-    override fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIUserInfo?) {
+    override fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIActionUserInfo?) {
         this.listener?.onInviteItemClick(view,invitedIndex,user)
     }
 
     interface InviteEventListener{
-        fun onInviteItemClick(view:View,invitedIndex:Int,user: AUIUserInfo?){}
+        fun onInviteItemClick(view:View,invitedIndex:Int,user: AUIActionUserInfo?){}
     }
 
     fun setInviteEventListener(listener: InviteEventListener){
@@ -147,9 +147,9 @@ class VoiceRoomInvitedListFragment : Fragment(),
 class VoiceInvitedAdapter constructor(
     context: Context,
     index: Int?,
-    dataList:MutableList<AUIUserInfo?>
+    dataList:MutableList<AUIActionUserInfo?>
 ): RecyclerView.Adapter<InvitedViewHolder>()   {
-    var dataList:MutableList<AUIUserInfo?> = mutableListOf()
+    var dataList:MutableList<AUIActionUserInfo?> = mutableListOf()
     private var listener: InvitedEventListener?=null
     private var invitedIndex:Int?
 
@@ -193,7 +193,7 @@ class VoiceInvitedAdapter constructor(
     }
 
 
-    fun refresh(data:MutableList<AUIUserInfo?>){
+    fun refresh(data:MutableList<AUIActionUserInfo?>){
         data.let {
             dataList = data
         }
@@ -202,7 +202,7 @@ class VoiceInvitedAdapter constructor(
     }
 
     interface InvitedEventListener{
-        fun onInvitedClickListener(view:View,invitedIndex:Int,user: AUIUserInfo?)
+        fun onInvitedClickListener(view:View,invitedIndex:Int,user: AUIActionUserInfo?)
     }
 
     fun setInvitedEventListener(listener: InvitedEventListener){

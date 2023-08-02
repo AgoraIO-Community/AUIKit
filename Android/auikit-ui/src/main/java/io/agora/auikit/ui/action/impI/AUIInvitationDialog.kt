@@ -14,9 +14,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import io.agora.auikit.model.AUIActionModel
-import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.ui.R
+import io.agora.auikit.ui.action.AUIActionUserInfo
+import io.agora.auikit.ui.action.AUIActionUserInfoList
 import io.agora.auikit.ui.action.IAUIListViewBinderRefresh
 import io.agora.auikit.ui.action.fragment.VoiceRoomInvitedListFragment
 import io.agora.auikit.ui.action.listener.AUIInvitationDialogEventListener
@@ -31,8 +31,8 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
         const val KEY_CURRENT_ITEM = "current_Item"
     }
 
-    private val roomBean: AUIActionModel by lazy {
-        arguments?.getSerializable(KEY_ROOM_INVITED_BEAN) as AUIActionModel
+    private val roomBean: AUIActionUserInfoList by lazy {
+        arguments?.getSerializable(KEY_ROOM_INVITED_BEAN) as AUIActionUserInfoList
     }
 
     private val currentItem: Int by lazy {
@@ -134,7 +134,7 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
         }
     }
 
-    override fun refreshInvitationData(userList:MutableList<AUIUserInfo?>) {
+    override fun refreshInvitationData(userList:MutableList<AUIActionUserInfo?>) {
         adapter?.refreshData(userList)
     }
 
@@ -144,7 +144,7 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
 
     class RoomInvitedFragmentAdapter constructor(
         fragmentActivity: FragmentActivity,
-        roomBean: AUIActionModel,
+        roomBean: AUIActionUserInfoList,
         event:AUIInvitationDialogEventListener?
     ) : FragmentStateAdapter(fragmentActivity), VoiceRoomInvitedListFragment.InviteEventListener {
 
@@ -175,11 +175,11 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
             return fragments.size()
         }
 
-        override fun onInviteItemClick(view: View, invitedIndex: Int, user: AUIUserInfo?) {
+        override fun onInviteItemClick(view: View, invitedIndex: Int, user: AUIActionUserInfo?) {
             listener?.onInvitedItemClick(view,invitedIndex,user)
         }
 
-        fun refreshData(userList:MutableList<AUIUserInfo?>) {
+        fun refreshData(userList:MutableList<AUIActionUserInfo?>) {
             fragments.forEach { key, value ->
                 if (key == PAGE_INDEX0){
                     val fragment = value as VoiceRoomInvitedListFragment

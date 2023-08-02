@@ -12,21 +12,21 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import io.agora.auikit.model.AUIGiftEntity
-import io.agora.auikit.model.AUIGiftTabEntity
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.basic.AUISheetFragmentDialog
 import io.agora.auikit.ui.databinding.AuiGiftListViewLayoutBinding
+import io.agora.auikit.ui.gift.AUIGiftInfo
+import io.agora.auikit.ui.gift.AUIGiftTabInfo
 import io.agora.auikit.ui.gift.IAUIGiftBarrageView
 import io.agora.auikit.utils.ResourcesTools
 
 class AUiGiftListView constructor(
     context: Context,
-    data:List<AUIGiftTabEntity>
+    data:List<AUIGiftTabInfo>
 ) : AUISheetFragmentDialog<AuiGiftListViewLayoutBinding>(), IAUIGiftBarrageView {
 
-    private var mGiftList : List<AUIGiftTabEntity> = mutableListOf()
+    private var mGiftList : List<AUIGiftTabInfo> = mutableListOf()
     private var tapList: MutableList<Int> = mutableListOf()
     private var mContext:Context
     private var listener:ActionListener?=null
@@ -100,7 +100,7 @@ class AUiGiftListView constructor(
                 ) { tab, position ->
                     tab.setCustomView(R.layout.aui_gift_tab_item_layout)
                     val title = tab.customView?.findViewById<TextView>(R.id.tab_item_title)
-                    title?.text = mGiftList[position].displayName
+                    title?.text = mGiftList[position].tabName
                     binding?.tabLayout?.getTabAt(0)?.select() //默认选中某项放在加载viewpager之后
                     if (position == 0){
                         onTabLayoutSelected(tab)
@@ -139,7 +139,7 @@ class AUiGiftListView constructor(
     }
 
     interface ActionListener{
-        fun onGiftSend(bean: AUIGiftEntity?){}
+        fun onGiftSend(bean: AUIGiftInfo?){}
     }
 
     private fun onTabLayoutSelected(tab: TabLayout.Tab?) {
