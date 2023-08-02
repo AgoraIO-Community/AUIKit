@@ -8,7 +8,9 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    api files('libs/agora-rtm-sdk.jar'){
+        builtBy "copyRtmJar2lib"
+    }
 }
 
 task downloadRtmLibs {
@@ -56,5 +58,3 @@ task cleanRtm(type: Delete){
     delete('libs/x86_64/libagora-rtm-sdk.so')
     delete('libs/agora-rtm-sdk.jar')
 }
-
-preBuild.dependsOn copyRtmJar2lib
