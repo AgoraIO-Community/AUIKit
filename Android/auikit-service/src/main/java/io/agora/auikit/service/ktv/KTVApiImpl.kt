@@ -1,4 +1,4 @@
-package io.agora.ktvapi
+package io.agora.auikit.service.ktv
 
 import android.os.Handler
 import android.os.Looper
@@ -39,7 +39,7 @@ class KTVApiImpl : KTVApi, IMusicContentCenterEventHandler, IMediaPlayerObserver
     private val TAG: String = "KTV_API_LOG"
 
     // 外部可修改
-    var songMode:KTVSongMode = KTVSongMode.SONG_CODE
+    var songMode: KTVSongMode = KTVSongMode.SONG_CODE
     var useCustomAudioSource:Boolean = false
 
     // 音频最佳实践
@@ -237,7 +237,8 @@ class KTVApiImpl : KTVApi, IMusicContentCenterEventHandler, IMediaPlayerObserver
         } else if (this.singerRole == KTVSingRole.Audience && newRole == KTVSingRole.LeadSinger) {
             // 2、Audience -》LeadSinger
             becomeSoloSinger()
-            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object : OnJoinChorusStateListener {
+            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object :
+                OnJoinChorusStateListener {
                 override fun onJoinChorusSuccess() {
                     Log.d(TAG, "onJoinChorusSuccess")
                     singerRole = newRole
@@ -261,7 +262,8 @@ class KTVApiImpl : KTVApi, IMusicContentCenterEventHandler, IMediaPlayerObserver
 
         } else if (this.singerRole == KTVSingRole.Audience && newRole == KTVSingRole.CoSinger) {
             // 4、Audience -》CoSinger
-            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object : OnJoinChorusStateListener {
+            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object :
+                OnJoinChorusStateListener {
                 override fun onJoinChorusSuccess() {
                     Log.d(TAG, "onJoinChorusSuccess")
                     singerRole = newRole
@@ -287,7 +289,8 @@ class KTVApiImpl : KTVApi, IMusicContentCenterEventHandler, IMediaPlayerObserver
         } else if (this.singerRole == KTVSingRole.SoloSinger && newRole == KTVSingRole.LeadSinger) {
             // 6、SoloSinger -》LeadSinger
 
-            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object : OnJoinChorusStateListener {
+            joinChorus(newRole, ktvApiConfig.chorusChannelToken, object :
+                OnJoinChorusStateListener {
                 override fun onJoinChorusSuccess() {
                     Log.d(TAG, "onJoinChorusSuccess")
                     singerRole = newRole

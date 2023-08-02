@@ -4,6 +4,7 @@ import io.agora.auikit.model.AUILoadMusicConfiguration
 import io.agora.auikit.service.IAUIMusicPlayerService
 import io.agora.auikit.service.callback.AUIMusicLoadStateCallback
 import io.agora.auikit.service.ktv.IKTVApiEventHandler
+import io.agora.auikit.service.ktv.ILrcView
 import io.agora.auikit.service.ktv.IMusicLoadStateListener
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.ktv.KTVApiImpl
@@ -21,7 +22,7 @@ class AUIMusicPlayerServiceImpl constructor(
     private val rtcEngine: RtcEngine,
     private val channelName: String,
     private val ktvApi: KTVApi
-): IAUIMusicPlayerService, IKTVApiEventHandler() {
+): IAUIMusicPlayerService, IKTVApiEventHandler(), ILrcView {
     private val delegateHelper = DelegateHelper<IAUIMusicPlayerService.AUIPlayerRespDelegate>()
 
     private val rtcEffectProperties :MutableMap<Int,Int> by lazy{
@@ -30,6 +31,7 @@ class AUIMusicPlayerServiceImpl constructor(
 
     init {
         ktvApi.addEventHandler(this)
+        ktvApi.setLrcView(this)
         rtcEffectProperties[0] = io.agora.rtc2.Constants.AUDIO_EFFECT_OFF
         rtcEffectProperties[1] = io.agora.rtc2.Constants.ROOM_ACOUSTICS_KTV
         rtcEffectProperties[2] = io.agora.rtc2.Constants.ROOM_ACOUSTICS_VOCAL_CONCERT
@@ -99,7 +101,25 @@ class AUIMusicPlayerServiceImpl constructor(
 
     override fun stopSing() {
         ktvApi.switchSingerRole(KTVSingRole.Audience, null)
-        ktvApi.loadMusic(0, KTVLoadMusicConfiguration("", false, 0, KTVLoadMusicMode.LOAD_NONE), null)
+        ktvApi.loadMusic(0, KTVLoadMusicConfiguration("", false, 0, KTVLoadMusicMode.LOAD_NONE), object : IMusicLoadStateListener{
+            override fun onMusicLoadSuccess(songCode: Long, lyricUrl: String) {
+
+            }
+
+            override fun onMusicLoadFail(songCode: Long, reason: KTVLoadSongFailReason) {
+
+            }
+
+            override fun onMusicLoadProgress(
+                songCode: Long,
+                percent: Int,
+                status: MusicLoadStatus,
+                msg: String?,
+                lyricUrl: String?
+            ) {
+
+            }
+        })
     }
 
     override fun resumeSing() {
@@ -125,7 +145,7 @@ class AUIMusicPlayerServiceImpl constructor(
     }
 
     override fun adjustRecordingSignal(volume: Int) {
-        ktvApi.getRtcEngineEx().adjustRecordingSignalVolume(volume)
+        rtcEngine.adjustRecordingSignalVolume(volume)
     }
 
     override fun selectMusicPlayerTrackMode(mode: Int) {
@@ -167,12 +187,26 @@ class AUIMusicPlayerServiceImpl constructor(
 
     override fun onSingerRoleChanged(oldRole: KTVSingRole, newRole: KTVSingRole) {}
 
-    override fun onChorusChannelTokenPrivilegeWillExpire(token: String?) {}
+    // ----------------- ILrcView -----------------
 
-    override fun onPositionAndPitchChanged(position: Long, pitch: Float) {
+    override fun onUpdatePitch(pitch: Float?) {
         delegateHelper.notifyDelegate { delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate ->
-            delegate.onPlayerPositionDidChange(position)
             delegate.onPitchDidChange(pitch)
         }
     }
+
+    override fun onUpdateProgress(progress: Long?) {
+        delegateHelper.notifyDelegate { delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate ->
+            delegate.onPlayerPositionDidChange(progress)
+        }
+    }
+
+    override fun onDownloadLrcData(url: String?) {
+
+    }
+
+    override fun onHighPartTime(highStartTime: Long, highEndTime: Long) {
+
+    }
+
 }
