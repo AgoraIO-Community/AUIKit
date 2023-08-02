@@ -41,6 +41,7 @@ task unzipRtmJar(type: Copy, dependsOn: ['downloadRtmLibs']) {
 }
 task jarRtm(type: Jar, dependsOn: ['unzipRtmJar']){
     baseName 'agora-rtm-sdk'
+    version ''
     from("$buildDir/libs/agora-rtm-sdk-new")
 }
 task copyRtmJar2lib(type: Copy, dependsOn:["jarRtm"]){
@@ -57,4 +58,3 @@ task cleanRtm(type: Delete){
 }
 
 preBuild.dependsOn copyRtmJar2lib
-clean.dependsOn cleanRtm
