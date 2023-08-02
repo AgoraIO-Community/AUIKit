@@ -32,7 +32,7 @@ task downloadRtmLibs {
 task unzipRtmJar(type: Copy, dependsOn: ['downloadRtmLibs']) {
     copy {
         from "libs/agora-rtm-sdk.jar"
-        into 'third-party'
+        into 'third-party/'
     }
     delete('libs/agora-rtm-sdk.jar')
     from zipTree('third-party/agora-rtm-sdk.jar')
@@ -45,7 +45,7 @@ task jarRtm(type: Jar, dependsOn: ['unzipRtmJar']){
 }
 task copyRtmJar2lib(type: Copy, dependsOn:["jarRtm"]){
     from "$buildDir/libs/agora-rtm-sdk.jar"
-    into "libs"
+    into "libs/"
 }
 task cleanRtm(type: Delete){
     delete('third-party')
