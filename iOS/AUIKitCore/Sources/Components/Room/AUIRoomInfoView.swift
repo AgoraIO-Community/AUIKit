@@ -60,7 +60,7 @@ public final class AUIRoomInfoView: UIView {
     }
     
     private func _createSubviews(){
-        self.theme_backgroundColor = AUIColor("Room.infoBackgroundColor")
+        self.theme_backgroundColor = AUIColor("Room.roomInfoBackgroundColor")
         layer.masksToBounds = true
         addSubview(headImageView)
         addSubview(roomNameLabel)
@@ -107,7 +107,7 @@ public final class AUIRoomInfoView: UIView {
 extension AUIRoomInfoView {
     
     public func updateRoomInfo(withRoomId roomId:String, roomName: String?, ownerHeadImg:String?){
-        roomNameLabel.text = (roomName ?? "") + aui_localized("roomInfoRoomName")
+        roomNameLabel.text = (roomName ?? "")
         roomIdLabel.text = aui_localized("roomInfoRoomID") + roomId
         headImageView.sd_setImage(with: URL(string: ownerHeadImg ?? ""), placeholderImage: UIImage.aui_Image(named: "mine_avatar_placeHolder"), context: nil)
     }
