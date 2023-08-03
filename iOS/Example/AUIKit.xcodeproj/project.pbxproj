@@ -10,6 +10,7 @@
 		25AA8B34B6C3BAF2498622D8 /* Pods_AUIKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */; };
 		4687DED6C4AE760A2A3C91C1 /* Pods_AUIKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		A827837D2A78E62300A702D5 /* MicSeatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A827837C2A78E62300A702D5 /* MicSeatViewController.swift */; };
 		A87C9B722A285A4D002D9BD5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87C9B692A285A4D002D9BD5 /* ViewController.swift */; };
 		A87C9B732A285A4D002D9BD5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6A2A285A4D002D9BD5 /* LaunchScreen.xib */; };
 		A87C9B742A285A4D002D9BD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6C2A285A4D002D9BD5 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		82FDF13323844138E2902901 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A827837C2A78E62300A702D5 /* MicSeatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicSeatViewController.swift; sourceTree = "<group>"; };
 		A83559C02A6E74D7003588A4 /* AUIKitCore.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = AUIKitCore.podspec; path = ../../AUIKitCore.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A87C9B692A285A4D002D9BD5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A87C9B6B2A285A4D002D9BD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */,
 				A87C9B692A285A4D002D9BD5 /* ViewController.swift */,
+				A827837C2A78E62300A702D5 /* MicSeatViewController.swift */,
 				A87C9B6A2A285A4D002D9BD5 /* LaunchScreen.xib */,
 				A87C9B6C2A285A4D002D9BD5 /* Main.storyboard */,
 				A87C9B6F2A285A4D002D9BD5 /* Images.xcassets */,
@@ -163,7 +166,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */,
-				852E530FAE6E9A73D9ACCCBC /* [CP] Copy Pods Resources */,
+				8508FB95D75E7A41767A86A9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -299,7 +302,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		852E530FAE6E9A73D9ACCCBC /* [CP] Copy Pods Resources */ = {
+		8508FB95D75E7A41767A86A9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -434,6 +437,7 @@
 			files = (
 				A87C9B772A285A4D002D9BD5 /* AppDelegate.swift in Sources */,
 				A87C9B722A285A4D002D9BD5 /* ViewController.swift in Sources */,
+				A827837D2A78E62300A702D5 /* MicSeatViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
