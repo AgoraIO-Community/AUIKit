@@ -216,6 +216,14 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
 }
 
 extension AUIPlayerServiceImpl: KTVApiEventHandlerDelegate {
+    public func onTokenPrivilegeWillExpire() {
+        
+    }
+    
+    public func onChorusChannelAudioVolumeIndication(speakers: [AgoraRtcAudioVolumeInfo], totalVolume: Int) {
+        
+    }
+    
     public func onChorusChannelTokenPrivilegeWillExpire(token: String?) {
         
     }

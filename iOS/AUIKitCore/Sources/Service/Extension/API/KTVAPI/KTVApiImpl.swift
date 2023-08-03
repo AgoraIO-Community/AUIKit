@@ -1271,6 +1271,34 @@ extension KTVApiImpl: AgoraRtcMediaPlayerDelegate {
 
 //主要是MCC的回调
 extension KTVApiImpl: AgoraMusicContentCenterEventDelegate {
+    // TODO: 协议是否确定
+    public func onLyricResult(_ requestId: String, songCode: Int, lyricUrl: String?, errorCode: AgoraMusicContentCenterStatusCode) {
+        guard let lrcUrl = lyricUrl else {return}
+        let callback = self.lyricCallbacks[requestId]
+        guard let lyricCallback = callback else { return }
+        self.lyricCallbacks.removeValue(forKey: requestId)
+        if lrcUrl.isEmpty {
+            lyricCallback(nil)
+            return
+        }
+        lyricCallback(lrcUrl)
+    }
+    
+    public func onSongSimpleInfoResult(_ requestId: String, songCode: Int, simpleInfo: String?, errorCode: AgoraMusicContentCenterStatusCode) {
+        
+    }
+    
+    public func onPreLoadEvent(_ requestId: String, songCode: Int, percent: Int, lyricUrl: String?, status: AgoraMusicContentCenterPreloadStatus, errorCode: AgoraMusicContentCenterStatusCode) {
+        if let listener = self.loadMusicListeners.object(forKey: "\(songCode)" as NSString) as? IMusicLoadStateListener {
+            listener.onMusicLoadProgress(songCode: songCode, percent: percent, status: status, msg: String(errorCode.rawValue), lyricUrl: lyricUrl)
+        }
+        if (status == .preloading) { return }
+        let SongCode = "\(songCode)"
+        guard let block = self.musicCallbacks[SongCode] else { return }
+        self.musicCallbacks.removeValue(forKey: SongCode)
+        block(status, songCode)
+    }
+    
     public func onMusicChartsResult(_ requestId: String, result: [AgoraMusicChartInfo], errorCode: AgoraMusicContentCenterStatusCode) {
         guard let callback = musicChartDict[requestId] else {return}
         callback(requestId, errorCode, result)
@@ -1283,28 +1311,7 @@ extension KTVApiImpl: AgoraMusicContentCenterEventDelegate {
         musicSearchDict.removeValue(forKey: requestId)
     }
     
-    public func onLyricResult(_ requestId: String, lyricUrl: String?, errorCode: AgoraMusicContentCenterStatusCode) {
-        guard let lrcUrl = lyricUrl else {return}
-        let callback = self.lyricCallbacks[requestId]
-        guard let lyricCallback = callback else { return }
-        self.lyricCallbacks.removeValue(forKey: requestId)
-        if lrcUrl.isEmpty {
-            lyricCallback(nil)
-            return
-        }
-        lyricCallback(lrcUrl)
-    }
-    
-    public func onPreLoadEvent(_ songCode: Int, percent: Int, lyricUrl: String?, status: AgoraMusicContentCenterPreloadStatus, errorCode: AgoraMusicContentCenterStatusCode) {
-        if let listener = self.loadMusicListeners.object(forKey: "\(songCode)" as NSString) as? IMusicLoadStateListener {
-            listener.onMusicLoadProgress(songCode: songCode, percent: percent, status: status, msg: String(errorCode.rawValue), lyricUrl: lyricUrl)
-        }
-        if (status == .preloading) { return }
-        let SongCode = "\(songCode)"
-        guard let block = self.musicCallbacks[SongCode] else { return }
-        self.musicCallbacks.removeValue(forKey: SongCode)
-        block(status, songCode)
-    }
+
 //    func onMusicCollectionResult(_ requestId: String, status: AgoraMusicContentCenterStatusCode, result: AgoraMusicCollection) {
 //        guard let callback = musicSearchDict[requestId] else {return}
 //        callback(requestId, status, result)

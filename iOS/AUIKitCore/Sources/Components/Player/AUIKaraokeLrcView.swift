@@ -171,6 +171,10 @@ extension AUIKaraokeLrcView: KaraokeDelegate {
 }
 
 extension AUIKaraokeLrcView: KTVLrcViewDelegate {
+    public func onHighPartTime(highStartTime: Int, highEndTime: Int) {
+        
+    }
+    
     
     public func onUpdatePitch(pitch: Float) {
         //pitch 更新
