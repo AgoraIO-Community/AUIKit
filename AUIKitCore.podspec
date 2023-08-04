@@ -84,7 +84,7 @@ s.subspec 'UI' do |ss|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'Foundation'
-  s.dependency 'AgoraRtcEngine_iOS'
+  s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.142'
   s.dependency 'AgRtmKit2_Test'
   s.dependency 'YYModel'
   s.dependency 'SwiftyBeaver', '1.9.5'

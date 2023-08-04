@@ -7,7 +7,7 @@ target 'AUIKit_Example' do
 pod 'AUIKitCore/Service', :path => '../../'
 #pod 'AUIKitCore/UI', :path => '../../'
 #  pod 'AgoraUIKit_Test/widgets', :path => '../'
-  pod 'AgoraRtcEngine_iOS', :path => './libs'
+#  pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'
   pod 'AgoraLyricsScore', '1.1.2'
 

@@ -33,10 +33,6 @@ class TestServiceViewController: UIViewController, AgoraRtcEngineDelegate {
     
     private var rtcEngine: AgoraRtcEngineKit!
     
-    
-    
-    
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,6 +126,11 @@ extension TestServiceViewController {
     func joinRoom(){
         generateToken { config, appid in
             guard let roomInfo = self.roomList.first else { return }
+            
+            self.chatImplement = AUIIMManagerServiceImplement(channelName: roomInfo.roomId,
+                                                              rtmManager: self.roomManager!.rtmManager)
+            self.chatImplement?.bindRespDelegate(delegate: self)
+            
             self.roomManager?.enterRoom(roomId: roomInfo.roomId, callback: { err in
                 aui_info("enterRoom == \(err)")
                 
@@ -144,9 +145,6 @@ extension TestServiceViewController {
                 self.micSeatImpl?.bindRespDelegate(delegate: self)
                 
                 
-                self.chatImplement = AUIIMManagerServiceImplement(channelName: roomInfo.roomId,
-                                                                  rtmManager: self.roomManager!.rtmManager)
-                self.chatImplement?.bindRespDelegate(delegate: self)
                 
                 let commonConfig = AUICommonConfig()
                 commonConfig.appId = appid
