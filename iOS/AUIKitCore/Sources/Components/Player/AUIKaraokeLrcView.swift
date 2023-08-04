@@ -21,7 +21,9 @@ public class AUIKaraokeLrcView: UIView {
     var lineScoreView: LineScoreView!
     var gradeView: GradeView!
     private var currentLoadLrcPath: String?
-    private var model: LyricModel?
+    private var lyricModel: LyricModel?
+    private var downloadManager: AgoraDownLoadManager = AgoraDownLoadManager()
+
     
     lazy var skipView: AUIKaraokeSkipView = {
         let skipView: AUIKaraokeSkipView = AUIKaraokeSkipView()
@@ -76,8 +78,8 @@ public class AUIKaraokeLrcView: UIView {
         skipView = AUIKaraokeSkipView(frame: CGRect(x: aui_width / 2.0 - 54, y: 155, width: 108, height: 32))
         skipView.completion = {[weak self] type in
             guard let self = self,
-                  let duration = self.model?.duration,
-                  let preludeEndPosition = self.model?.preludeEndPosition else {
+                  let duration = self.lyricModel?.duration,
+                  let preludeEndPosition = self.lyricModel?.preludeEndPosition else {
                 return
             }
             var pos = preludeEndPosition - 2000
@@ -171,6 +173,10 @@ extension AUIKaraokeLrcView: KaraokeDelegate {
 }
 
 extension AUIKaraokeLrcView: KTVLrcViewDelegate {
+    public func onHighPartTime(highStartTime: Int, highEndTime: Int) {
+        
+    }
+    
     
     public func onUpdatePitch(pitch: Float) {
         //pitch 更新
@@ -181,7 +187,7 @@ extension AUIKaraokeLrcView: KTVLrcViewDelegate {
         self.progress = progress
         //进度更新
         lrcView?.setProgress(progress: progress)
-        guard let model = self.model else {
+        guard let model = self.lyricModel else {
             return
         }
         let preludeEndPosition = model.preludeEndPosition
@@ -199,21 +205,55 @@ extension AUIKaraokeLrcView: KTVLrcViewDelegate {
     }
     
     public func onDownloadLrcData(url: String) {
+        //开始歌词下载
+        startDownloadLrc(with: url) {[weak self] url in
+            guard let self = self, let url = url else {return}
+            self.resetLrcData(with: url)
+        }
+    }
+}
+
+
+extension AUIKaraokeLrcView {
+    
+    func startDownloadLrc(with url: String, callBack: @escaping LyricCallback) {
+        var path: String? = nil
+        downloadManager.downloadLrcFile(urlString: url) { lrcurl in
+            defer {
+                callBack(path)
+            }
+            guard let lrcurl = lrcurl else {
+                aui_info("downloadLrcFile fail, lrcurl is nil")
+                return
+            }
+
+            let curSong = URL(string: url)?.lastPathComponent.components(separatedBy: ".").first
+            let loadSong = URL(string: lrcurl)?.lastPathComponent.components(separatedBy: ".").first
+            guard curSong == loadSong else {
+                aui_info("downloadLrcFile fail, missmatch, cur:\(curSong ?? "") load:\(loadSong ?? "")")
+                return
+            }
+            path = lrcurl
+        } failure: {
+            callBack(nil)
+            aui_info("歌词解析失败")
+        }
+    }
+    
+    func resetLrcData(with url: String) {
         guard currentLoadLrcPath != url else {
             return
         }
-        //歌词下载好
         let musicUrl = URL(fileURLWithPath: url)
         guard let data = try? Data(contentsOf: musicUrl),
               let model = KaraokeView.parseLyricData(data: data) else {
             return
         }
         currentLoadLrcPath = url
-        self.model = model
+        lyricModel = model
         totalCount = model.lines.count
         totalLines = 0
         totalScore = 0
-        lrcView.reset()
         lrcView?.setLyricData(data: model)
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
+import AgoraRtmKit2
 
 let kChannelType = AgoraRtmChannelType.stream
 
@@ -39,20 +40,12 @@ open class AUIRtmManager: NSObject {
             completion(nil)
             return
         }
-        let ret =
         self.rtmClient.login(byToken: token) {[weak self] resp, error in
             aui_info("login: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
             self?.isLogin = error.errorCode == .ok ? true : false
             completion(error.toNSError())
         }
-        
-        //已经登陆过
-        if abs(ret) == AgoraRtmErrorAlreadyLogin.rawValue {
-            isLogin = true
-            completion(nil)
-        }
-        
-        aui_info("login ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("login ", tag: "AUIRtmManager")
     }
     
     public func logout() {
@@ -87,17 +80,13 @@ extension AUIRtmManager {
         let options = AgoraRtmPresenceOptions()
         options.includeUserId = false
         options.includeState = false
-        let ret =
         presence.whoNow(channelName, channelType: kChannelType, options: options, completion: { resp, error in
 //            aui_info("presence whoNow '\(channelName)' finished: \(error.errorCode.rawValue) list count: \(resp.userStateList.count) userId: \(AUIRoomContext.shared.commonConfig?.userId ?? "")", tag: "AUIRtmManager")
-            aui_info("getUserCount: \(resp.totalOccupancy)", tag: "AUIRtmManager")
-            let userList = resp.userList()
-            completion(error.toNSError(), userList.count)
+            aui_info("getUserCount: \(resp?.totalOccupancy)", tag: "AUIRtmManager")
+            let userList = resp?.userList()
+            completion(error.toNSError(), userList!.count)
         })
-        aui_info("presence whoNow '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
-        if ret != 0 {
-            completion(AUICommonError.rtmError(ret).toNSError(), 0)
-        }
+        aui_info("presence whoNow '\(channelName)'", tag: "AUIRtmManager")
     }
     
     func whoNow(channelName: String, completion:@escaping (Error?, [[String: String]]?)->()) {
@@ -109,17 +98,13 @@ extension AUIRtmManager {
         let options = AgoraRtmPresenceOptions()
         options.includeUserId = true
         options.includeState = true
-        let ret =
         presence.whoNow(channelName, channelType: kChannelType, options: options, completion: { resp, error in
-            aui_info("presence whoNow '\(channelName)' finished: \(error.errorCode.rawValue) list count: \(resp.userStateList.count) userId: \(AUIRoomContext.shared.commonConfig?.userId ?? "")", tag: "AUIRtmManager")
+            aui_info("presence whoNow '\(channelName)' finished: \(error.errorCode.rawValue) list count: \(resp?.userStateList.count ?? 0) userId: \(AUIRoomContext.shared.commonConfig?.userId ?? "")", tag: "AUIRtmManager")
             
-            let userList = resp.userList()
+            let userList = resp?.userList()
             completion(error.toNSError(), userList)
         })
-        aui_info("presence whoNow '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
-        if ret != 0 {
-            completion(AUICommonError.rtmError(ret).toNSError(), nil)
-        }
+        aui_info("presence whoNow '\(channelName)'", tag: "AUIRtmManager")
     }
     
     public func setPresenceState(channelName: String, attr:[String: Any], completion: @escaping (Error?)->()) {
@@ -145,15 +130,11 @@ extension AUIRtmManager {
             
             items.append(item)
         }
-        let ret =
         presence.setState(channelName, channelType: kChannelType, items: items, completion: { resp, error in
             aui_info("presence setState '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
             completion(error.toNSError())
         })
-        aui_info("presence setState'\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
-        if ret != 0 {
-            completion(AUICommonError.rtmError(ret).toNSError())
-        }
+        aui_info("presence setState'\(channelName)' ", tag: "AUIRtmManager")
     }
 }
 
@@ -214,17 +195,12 @@ extension AUIRtmManager {
         let options = AgoraRtmSubscribeOptions()
         options.withMetadata = true
         options.withPresence = true
-        var ret =
         rtmClient.subscribe(withChannel: channelName, option: options) { resp, error in
             aui_info("subscribe '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
             messageError = error.toNSError()
             group.leave()
         }
-        aui_info("subscribe '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
-        if ret != 0 {
-            messageError = AUICommonError.rtmError(ret).toNSError()
-            group.leave()
-        }
+        aui_info("subscribe '\(channelName)'", tag: "AUIRtmManager")
         
         //2. join channel to use presence
         group.enter()
@@ -243,18 +219,13 @@ extension AUIRtmManager {
             return
         }
         
-        ret = streamChannel.join(with: option) { resp, error in
+        streamChannel.join(with: option) { resp, error in
             aui_info("join '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
 //            completion(error.toNSError())
             streamError = error.toNSError()
             group.leave()
         }
-        aui_info("join '\(channelName)' rtcToken: \(rtcToken) ret: \(ret)", tag: "AUIRtmManager")
-        if ret != 0 {
-//            completion(AUICommonError.rtmError(ret).toNSError())
-            streamError = AUICommonError.rtmError(ret).toNSError()
-            group.leave()
-        }
+        aui_info("join '\(channelName)' rtcToken: \(rtcToken)", tag: "AUIRtmManager")
     }
     
     func unSubscribe(channelName: String) {
@@ -341,9 +312,9 @@ extension AUIRtmManager {
         }
         let ret =
         storage.getChannelMetadata(channelName, channelType: kChannelType, completion: { resp, error in
-            aui_info("getMetadata finished: \(error.errorCode.rawValue) item count: \(resp.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
+            aui_info("getMetadata finished: \(error.errorCode.rawValue) item count: \(resp?.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
             var map: [String: String] = [:]
-            resp.data?.getItems().forEach({ item in
+            resp?.data?.getItems().forEach({ item in
                 map[item.key] = item.value
             })
             completion(nil, map)
@@ -359,11 +330,10 @@ extension AUIRtmManager {
             assert(false, "subscribeUserMetadata fail")
             return
         }
-        let ret =
         storage.subscribeUserMetadata(userId, completion: { resp, error in
             aui_info("subscribeUser finished: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
         })
-        aui_info("subscribeUserMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("subscribeUserMetadata ", tag: "AUIRtmManager")
     }
     
     func unSubscribeUser(userId: String) {
@@ -372,9 +342,8 @@ extension AUIRtmManager {
             assert(false, "subscribeUserMetadata fail")
             return
         }
-        let ret =
         storage.unsubscribeUserMetadata(userId)
-        aui_info("subscribeUserMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("subscribeUserMetadata ", tag: "AUIRtmManager")
     }
     
     func removeUserMetadata(userId: String) {
@@ -388,11 +357,10 @@ extension AUIRtmManager {
         options.recordTs = true
         options.recordUserId = true
         
-        let ret =
         storage.removeUserMetadata(userId, data: data, options: options, completion: { resp, error in
             aui_info("removeUserMetadata finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
         })
-        aui_info("removeUserMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("removeUserMetadata", tag: "AUIRtmManager")
     }
     
     func setUserMetadata(userId: String, metadata: [String: String]) {
@@ -437,11 +405,10 @@ extension AUIRtmManager {
             data.setMetadataItem(item)
         }
         
-        let ret =
         storage.updateUserMetadata(userId, data: data, options: options, completion: { resp, error in
             aui_info("updateUserlMetadata finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
         })
-        aui_info("updateUserlMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("updateUserlMetadata ", tag: "AUIRtmManager")
     }
     
     func getUserMetadata(userId: String) {
@@ -450,27 +417,33 @@ extension AUIRtmManager {
             return
         }
         
-        let ret =
         storage.getUserMetadata(userId) { resp, error in
             aui_info("getUserMetadata: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
         }
-        aui_info("getUserMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("getUserMetadata ", tag: "AUIRtmManager")
     }
 }
 
 //message
 extension AUIRtmManager {
+
     public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
         let options = AgoraRtmPublishOptions()
-        options.type = .string
-        let ret = rtmClient.publish(channelName, message: message, withOption: options) { resp, error in
+        rtmClient.publish(channelName, message: message as NSObject, withOption: options) { resp, error in
             var callbackError: NSError?
-            if error.errorCode != .OK {
+            if error.errorCode != .ok {
                 callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
             }
             completion(callbackError)
             aui_info("publish '\(message)' to '\(channelName)': \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
         }
-        aui_info("publish '\(message)' to '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("publish '\(message)' to '\(channelName)'", tag: "AUIRtmManager")
+    }
+}
+
+extension AgoraRtmErrorInfo {
+    
+    func toNSError()-> NSError? {
+        return self.errorCode == .ok ? nil : NSError(domain: self.reason, code: self.errorCode.rawValue)
     }
 }

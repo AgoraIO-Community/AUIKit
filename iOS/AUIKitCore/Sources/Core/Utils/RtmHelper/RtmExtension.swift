@@ -7,6 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
+import AgoraRtmKit2
 
 extension AgoraRtmPresenceEvent {
     func snapshotList() -> [[String: String]] {
@@ -40,7 +41,7 @@ extension AgoraRtmWhoNowResponse {
         return userList
     }
 }
-
+/*
 extension AgoraRtmChannelErrorInfo {
     func toNSError() -> NSError? {
         if errorCode.rawValue == 0 {
@@ -70,3 +71,4 @@ extension AgoraRtmLoginErrorInfo {
         return AUICommonError.rtmError(Int32(errorCode.rawValue)).toNSError()
     }
 }
+*/

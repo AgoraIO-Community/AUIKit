@@ -7,6 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
+import AgoraRtmKit2
 
 @objc public protocol AUIRtmErrorProxyDelegate: NSObjectProtocol {
     
@@ -229,14 +230,14 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, on event: AgoraRtmMessageEvent) {
         origRtmDelegate?.rtmKit?(rtmKit, on: event)
-        aui_info("[\(event.channelName)] message event type: [\(event.messageType.rawValue)] message: [\(event.message)]]  =======", tag: "AUIRtmMsgProxy")
+        aui_info("[\(event.channelName)] message event type: [\(event.message.getType().rawValue)] message: [\(event.message.getData())]]  =======", tag: "AUIRtmMsgProxy")
         
-        if event.messageType == .string {
+        if let message = event.message.getData() as? NSString {
             for element in messageDelegates.allObjects {
-                (element as? AUIRtmMessageProxyDelegate)?.onMessageReceive(channelName: event.channelName, message: event.message)
+                (element as? AUIRtmMessageProxyDelegate)?.onMessageReceive(channelName: event.channelName, message: message as String)
             }
         } else {
-            aui_warn("recv unknown type message: \(event.messageType.rawValue)", tag: "AUIRtmMsgProxy")
+            aui_warn("recv unknown type message: \(event.message.getType().rawValue)", tag: "AUIRtmMsgProxy")
         }
     }
 }
