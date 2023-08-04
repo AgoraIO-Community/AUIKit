@@ -80,3 +80,10 @@ open class AUIChooseMusicModel: AUIMusicModel {
     }
 }
 
+
+@objc public enum AUIMicSeatViewLayoutType: UInt {
+    case one = 1
+    case six
+    case eight
+    case nine
+}

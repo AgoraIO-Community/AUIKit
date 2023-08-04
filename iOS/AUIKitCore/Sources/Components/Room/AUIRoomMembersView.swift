@@ -18,14 +18,14 @@ private let headImageWidth: CGFloat = 26
     func updateSeatInfo(member: AUIUserCellUserDataProtocol,seatIndex: Int)
 }
 
-@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
-    var userAvatar: String {set get}
-    var userId: String {set get}
-    var userName: String {set get}
-    var seatIndex: Int {set get}
-    var isOwner: Bool {set get}
-
-}
+//@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
+//    var userAvatar: String {set get}
+//    var userId: String {set get}
+//    var userName: String {set get}
+//    var seatIndex: Int {set get}
+//    var isOwner: Bool {set get}
+//
+//}
 
 public typealias AUIRoomMembersViewMoreBtnAction = (_ members: [AUIUserCellUserDataProtocol])->()
 

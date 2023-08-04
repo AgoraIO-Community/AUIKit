@@ -9,6 +9,7 @@
 import UIKit
 import AUIKitCore
 
+/*
 private let kSeatRoomPadding: CGFloat = 16
 
 private let avatarArr = [
@@ -167,3 +168,4 @@ extension MicSeatViewController {
         return items
     }
 }
+*/

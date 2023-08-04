@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.3.1-ui'
+  s.version          = '0.4.0-service'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -32,23 +32,24 @@ TODO: Add long description of the pod here.
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
 
   
-#s.subspec 'Service' do |ss|
-#      ss.source_files = [
-#      'iOS/AUIKitCore/Sources/Service/**/*',
-#      'iOS/AUIKitCore/Sources/Core/Utils/RtmHelper/*',
-#      'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
-#      'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
+s.subspec 'Service' do |ss|
+      ss.source_files = [
+      'iOS/AUIKitCore/Sources/Service/**/*',
+      'iOS/AUIKitCore/Sources/Core/Utils/RtmHelper/*',
+      'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
 #      'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
-#      'iOS/AUIKitCore/Sources/Core/Utils/Error/*.swift',
-#      'iOS/AUIKitCore/Sources/Core/Utils/Context/*.swift',
-#      'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
-#      'iOS/AUIKitCore/Sources/Core/Utils/FoundationExtension/*',
-#   ]
-# end
+      'iOS/AUIKitCore/Sources/Core/Utils/Error/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Context/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
+      'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
+   ]
+ end
   
 #  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
-  
-  s.source_files = [
+
+s.subspec 'UI' do |ss|
+  ss.source_files = [
   'iOS/AUIKitCore/Sources/Widgets/**/*',
   'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
   'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
@@ -62,14 +63,16 @@ TODO: Add long description of the pod here.
   'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
   'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
   'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
-
+  'iOS/AUIKitCore/Sources/Service/Extension/Protocol/AUIUserCellUserDataProtocol.swift',
   ]
+  ss.resource = ['iOS/AUIKitCore/Resource/*.bundle']
+  end
   
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
+#  s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
   
   s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }

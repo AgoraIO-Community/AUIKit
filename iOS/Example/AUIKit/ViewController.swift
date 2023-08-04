@@ -13,6 +13,17 @@ import SDWebImage
 
 class ViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let testVC = sb.instantiateViewController(identifier: "testvc")
+        navigationController?.pushViewController(testVC, animated: true)
+    }
+    
+    /*
     private let scrollView: UIScrollView = UIScrollView()
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -355,4 +366,5 @@ extension ViewController {
         buttonScrollView.bounds = CGRect(x: 0, y: 0, width: view.bounds.width, height: height)
         scrollView.addSubview(buttonScrollView)
     }
+     */
 }

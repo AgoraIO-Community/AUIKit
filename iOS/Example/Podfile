@@ -4,7 +4,8 @@ platform :ios, '13.0'
 
 target 'AUIKit_Example' do
 #  pod 'AUIKitCore','0.2.0-ui'
-pod 'AUIKitCore', :path => '../../'
+pod 'AUIKitCore/Service', :path => '../../'
+#pod 'AUIKitCore/UI', :path => '../../'
 #  pod 'AgoraUIKit_Test/widgets', :path => '../'
   pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'

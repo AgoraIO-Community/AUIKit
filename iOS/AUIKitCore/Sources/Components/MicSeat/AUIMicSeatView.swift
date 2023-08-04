@@ -9,12 +9,12 @@ import Foundation
 
 private let kMicSeatCellId = "kMicSeatCellId"
 
-@objc public enum AUIMicSeatViewLayoutType: UInt {
-    case one = 1
-    case six
-    case eight
-    case nine
-}
+//@objc public enum AUIMicSeatViewLayoutType: UInt {
+//    case one = 1
+//    case six
+//    case eight
+//    case nine
+//}
 
 @objc public protocol IAUIMicSeatView: NSObjectProtocol {
     
