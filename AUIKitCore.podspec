@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.4.0-service'
+  s.version          = '0.4.0'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
