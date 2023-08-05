@@ -12,6 +12,8 @@ import MJRefresh
 import AgoraRtcKit
 
 class TestServiceViewController: UIViewController, AgoraRtcEngineDelegate {
+   
+    
 
    
     
@@ -30,6 +32,8 @@ class TestServiceViewController: UIViewController, AgoraRtcEngineDelegate {
     private var musicImpl: AUIMusicServiceDelegate?
     
     private var chorusImpl: AUIChorusServiceDelegate?
+    
+    private var giftImpl: AUIGiftsManagerServiceDelegate?
     
     private var rtcEngine: AgoraRtcEngineKit!
     
@@ -130,6 +134,9 @@ extension TestServiceViewController {
             self.chatImplement = AUIIMManagerServiceImplement(channelName: roomInfo.roomId,
                                                               rtmManager: self.roomManager!.rtmManager)
             self.chatImplement?.bindRespDelegate(delegate: self)
+            
+            self.giftImpl = AUIGiftServiceImplement(channelName: roomInfo.roomId, rtmManager: self.roomManager!.rtmManager)
+            self.giftImpl?.bindRespDelegate(delegate: self)
             
             self.roomManager?.enterRoom(roomId: roomInfo.roomId, callback: { err in
                 aui_info("enterRoom == \(err)")
@@ -377,4 +384,11 @@ extension TestServiceViewController: AUIChorusRespDelegate {
         aui_info("onChoristerDidLeave chorister = \(chorister.userId)",tag: "TestServiceViewController")
     }
 
+}
+
+extension TestServiceViewController:AUIGiftsManagerRespDelegate {
+    func receiveGift(gift: AUIKitCore.AUIGiftEntity) {
+        aui_info("receiveGift gift = \(gift.giftId)",tag: "TestServiceViewController")
+
+    }
 }
