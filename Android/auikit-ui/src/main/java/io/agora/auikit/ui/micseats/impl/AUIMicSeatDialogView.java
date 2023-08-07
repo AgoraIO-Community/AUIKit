@@ -16,7 +16,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import io.agora.auikit.model.AUIUserThumbnailInfo;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.micseats.IMicSeatDialogView;
 
@@ -141,16 +140,25 @@ public class AUIMicSeatDialogView extends FrameLayout implements IMicSeatDialogV
         }
     }
 
-    public void setUserInfo(@Nullable AUIUserThumbnailInfo userInfo) {
-        if (userInfo == null || userInfo.userId.isEmpty()) {
+    @Override
+    public void setUserInfo(String userInfo) {
+        if (userInfo == null || userInfo.isEmpty()) {
             vMicInfo.setVisibility(View.GONE);
             return;
         }
         vMicInfo.setVisibility(View.VISIBLE);
-        tvUserName.setText(userInfo.userName);
-        tvUserInfo.setText(userInfo.userId);
+        tvUserInfo.setText(userInfo);
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        tvUserName.setText(userName);
+    }
+
+    @Override
+    public void setUserAvatar(String avatarUrl) {
         RequestOptions options = RequestOptions.circleCropTransform();
-        Glide.with(ivAvatar).load(userInfo.userAvatar).apply(options).into(ivAvatar);
+        Glide.with(ivAvatar).load(avatarUrl).apply(options).into(ivAvatar);
     }
 
     public void setEnterSeatClickListener(OnClickListener clickListener){

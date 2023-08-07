@@ -14,15 +14,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
-import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
+import io.agora.auikit.ui.gift.AUIGiftInfo
 
 class AUIGiftRowAdapter constructor(
     private val context: Context,
     typedArray: TypedArray
 ): RecyclerView.Adapter<GiftViewHolder>() {
-    var dataList:ArrayList<AUIGiftEntity> = ArrayList<AUIGiftEntity>()
+    var dataList:ArrayList<AUIGiftInfo> = ArrayList()
     private var mContext:Context?=null
     private var giftBarrageLayoutBg: Int
 
@@ -57,14 +57,13 @@ class AUIGiftRowAdapter constructor(
         holder.iconCount.text = "x" + auiGiftInfo.giftCount
     }
 
-    private fun show(avatar: AUIImageView, icon: AUIImageView, name: MaterialTextView, auiGiftEntity: AUIGiftEntity?) {
+    private fun show(avatar: AUIImageView, icon: AUIImageView, name: MaterialTextView, auiGiftEntity: AUIGiftInfo?) {
         val builder = StringBuilder()
         if (null != auiGiftEntity) {
-            val sendUser = auiGiftEntity.sendUser
-            val sendName = if(TextUtils.isEmpty(sendUser?.userName)){
-                sendUser?.userId.toString()
+            val sendName = if(TextUtils.isEmpty(auiGiftEntity.sendUserName)){
+                auiGiftEntity.sendUserId
             }else{
-                sendUser?.userName.toString()
+                auiGiftEntity.sendUserName
             }
 
             builder.append(sendName)
@@ -72,7 +71,7 @@ class AUIGiftRowAdapter constructor(
                 .append(" ").append(auiGiftEntity.giftName)
 
             Glide.with(context)
-                .load(sendUser?.userAvatar)
+                .load(auiGiftEntity.sendUserAvatar)
                 .error(R.drawable.aui_gift_user_default_icon)
                 .into(avatar)
 
@@ -89,7 +88,7 @@ class AUIGiftRowAdapter constructor(
         dataList.clear()
     }
 
-    fun refresh(giftList:ArrayList<AUIGiftEntity>) {
+    fun refresh(giftList:List<AUIGiftInfo>) {
         // 刷新礼物列表 记录当前礼物列表数量 计算起始 position
         val positionStart: Int = dataList.size
         // 获取增量礼物列表插入原礼物列表

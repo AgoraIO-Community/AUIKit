@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import io.agora.auikit.model.AUIChatEntity
 import io.agora.auikit.ui.R
+import io.agora.auikit.ui.chatList.AUIChatInfo
 import io.agora.auikit.ui.chatList.IAUIChatListView
 import io.agora.auikit.ui.chatList.listener.AUIChatListItemClickListener
 import io.agora.auikit.ui.databinding.AuiChatListLayoutBinding
@@ -68,7 +68,7 @@ class AUIChatListView : RelativeLayout,
         })
 
         adapter?.setMessageViewListener(object :AUIChatListAdapter.MessageViewListener{
-            override fun onItemClickListener(message: AUIChatEntity?) {
+            override fun onItemClickListener(message: AUIChatInfo?) {
                 listener?.onItemClickListener(message)
             }
         })
@@ -99,7 +99,7 @@ class AUIChatListView : RelativeLayout,
         this.listener = listener
     }
 
-    override fun refresh(msgList:ArrayList<AUIChatEntity>) {
+    override fun refresh(msgList:List<AUIChatInfo>) {
         if (adapter != null) {
             if (isScrollBottom) {
                 refreshSelectLast(msgList)
@@ -111,7 +111,7 @@ class AUIChatListView : RelativeLayout,
         }
     }
 
-    override fun refreshSelectLast(msgList: ArrayList<AUIChatEntity>?) {
+    override fun refreshSelectLast(msgList: List<AUIChatInfo>?) {
         if (adapter != null) {
             post {
                 Log.e("apex","refreshSelectLast ${msgList?.size}")

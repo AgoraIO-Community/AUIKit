@@ -14,10 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import io.agora.auikit.model.AUIChatEntity
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.chatBottomBar.impl.AUIEmojiUtils
+import io.agora.auikit.ui.chatList.AUIChatInfo
 
 
 class AUIChatListAdapter(
@@ -26,7 +26,7 @@ class AUIChatListAdapter(
     typedArray: TypedArray
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var messages: ArrayList<AUIChatEntity> = ArrayList()
+    private var messages: ArrayList<AUIChatInfo> = ArrayList()
     private val ITEM_DEFAULT_TYPE = 0
     private val ITEM_SYSTEM_TYPE = 1
     private var normalTagIcon: Int = 0
@@ -87,29 +87,29 @@ class AUIChatListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        val message: AUIChatEntity = messages[position]
+        val message: AUIChatInfo = messages[position]
         return if (message.joined) { ITEM_SYSTEM_TYPE } else ITEM_DEFAULT_TYPE
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var from = ""
-        val message: AUIChatEntity = messages[position]
-        from = message.user?.userName.toString()
+        val message: AUIChatInfo = messages[position]
+        from = message.userName
         val s: String? = message.content
         if (holder is NormalViewHolder) {
             if (TextUtils.isEmpty(from)) {
-                from = message.user?.userId.toString()
+                from = message.userId
             }
             if (s != null) {
                 showNormalText(
-                    ownerId ==  message.user?.userId,
+                    ownerId ==  message.userId,
                     (holder as NormalViewHolder).content,
                     from,
                     s
                 )
             }
         } else if (holder is SystemViewHolder) {
-            from = message.user?.userName.toString()
+            from = message.userName
             showSystemMsg(
                 (holder as SystemViewHolder).name,
                 from,
@@ -124,7 +124,7 @@ class AUIChatListAdapter(
     private var messageViewListener: MessageViewListener? = null
 
     interface MessageViewListener {
-        fun onItemClickListener(message: AUIChatEntity?)
+        fun onItemClickListener(message: AUIChatInfo?)
     }
 
     fun setMessageViewListener(messageViewListener: MessageViewListener?) {
@@ -248,9 +248,9 @@ class AUIChatListAdapter(
         return 0
     }
 
-    fun refresh(msgList:ArrayList<AUIChatEntity>) {
+    fun refresh(msgList:List<AUIChatInfo>) {
         msgList.let {
-            messages = it
+            messages = ArrayList(msgList)
         }
         notifyDataSetChanged()
     }

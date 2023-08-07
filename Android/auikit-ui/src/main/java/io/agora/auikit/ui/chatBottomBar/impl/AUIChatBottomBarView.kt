@@ -19,8 +19,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.GravityInt
 import androidx.annotation.IdRes
 import androidx.appcompat.widget.LinearLayoutCompat
-import io.agora.auikit.model.AUIExpressionIcon
 import io.agora.auikit.ui.R
+import io.agora.auikit.ui.chatBottomBar.AUIChatBottomBarIcon
 import io.agora.auikit.ui.chatBottomBar.IAUIChatBottomBarView
 import io.agora.auikit.ui.chatBottomBar.listener.AUIExpressionClickListener
 import io.agora.auikit.ui.chatBottomBar.listener.AUIMenuItemClickListener
@@ -426,7 +426,7 @@ class AUIChatBottomBarView : RelativeLayout,
         }
     }
 
-    override fun onExpressionClicked(emojiIcon: AUIExpressionIcon?) {
+    override fun onExpressionClicked(emojiIcon: AUIChatBottomBarIcon?) {
         if (emojiIcon != null) {
             mViewBinding.inputEditView.append(AUIEmojiUtils.getSmiledText(context, emojiIcon.labelString))
         }
