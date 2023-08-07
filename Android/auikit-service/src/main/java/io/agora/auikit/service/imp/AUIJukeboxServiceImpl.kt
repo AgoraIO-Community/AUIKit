@@ -73,7 +73,7 @@ class AUIJukeboxServiceImpl constructor(
             pageSize,
             jsonOption,
             onMusicCollectionResultListener = { requestId, status, p, size, total, list ->
-                Log.d(TAG, "getMusicList call return chartId:$chartId,page:$page,pageSize:$pageSize")
+                Log.d(TAG, "getMusicList call return chartId:$chartId,page:$page,pageSize:$pageSize,outListSize=${list?.size}",)
                 if (status != Constants.ERR_OK) {
                     completion?.onResult(null, null)
                     return@searchMusicByMusicChartId

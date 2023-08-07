@@ -262,6 +262,7 @@ public class AUIJukeboxView extends AUIFrameLayout implements IAUIJukeboxView {
 
         chooseView.setCategoryVisible(true);
         chooseView.setOnCategoryTabChangeListener(index -> {
+            mChooseListAdapter.submitList(new ArrayList<>());
             if (actionDelegate != null) {
                 actionDelegate.onChooseSongRefreshing(chooseView.getCategorySelected());
             }
