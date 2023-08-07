@@ -80,6 +80,7 @@ public class KTVApiImpl: NSObject{
     private var songUrl: String = ""
     private var songCode: Int = 0
     private var songIdentifier: String = ""
+    private var roomDestoryed = false
 
     private var singerRole: KTVSingRole = .audience {
         didSet {
@@ -203,6 +204,7 @@ extension KTVApiImpl: KTVApiDelegate {
     }
 
     public func cleanCache() {
+        roomDestoryed = true
         musicPlayer?.stop()
         freeTimer()
         agoraPrint("cleanCache")
@@ -1144,7 +1146,7 @@ extension KTVApiImpl: AgoraRtcMediaPlayerDelegate {
     
     public func AgoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedTo state: AgoraMediaPlayerState, error: AgoraMediaPlayerError) {
         agoraPrint("agoraRtcMediaPlayer didChangedToState: \(state.rawValue) \(self.songCode)")
-
+        if roomDestoryed { return }
         if state == .openCompleted {
             self.localPlayerPosition = Date().milListamp
             print("localPlayerPosition:playerKit:openCompleted \(localPlayerPosition)")
