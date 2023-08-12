@@ -105,6 +105,8 @@ public class AUIJukeboxChooseView extends FrameLayout {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 rvDataList.scrollToPosition(0);
+                srlDataList.setRefreshing(true);
+
                 if(onCategoryTabChangeListener != null){
                     onCategoryTabChangeListener.onCategoryTabChanged(tab.getPosition());
                 }

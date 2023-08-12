@@ -24,12 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.agora.auikit.model.AUIChooseMusicModel;
-import io.agora.auikit.model.AUIMusicSettingInfo;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIAlertDialog;
 import io.agora.auikit.ui.basic.AUIBottomDialog;
 import io.agora.auikit.ui.musicplayer.IMusicPlayerView;
+import io.agora.auikit.ui.musicplayer.MusicSettingInfo;
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerActionListener;
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerEffectActionListener;
 import io.agora.auikit.ui.musicplayer.utils.DownloadUtils;
@@ -80,7 +79,7 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
 
     private final Map<Integer,Integer> effectProperties =  new HashMap<>();
 
-    private AUIMusicSettingInfo musicSettingInfo = new AUIMusicSettingInfo();
+    private MusicSettingInfo musicSettingInfo = new MusicSettingInfo();
 
     public AUIMusicPlayerView(@NonNull Context context) {
         super(context);
@@ -210,7 +209,7 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
         this.effectProperties.putAll(effectProperties);
     }
 
-    public void setMusicSettingInfo(AUIMusicSettingInfo musicSettingInfo){
+    public void setMusicSettingInfo(MusicSettingInfo musicSettingInfo){
         this.musicSettingInfo = musicSettingInfo;
     }
 
@@ -307,7 +306,7 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     }
 
     // 准备播放状态
-    public void onMusicPrepare(AUIChooseMusicModel newSong, boolean isAudience, boolean isRoomOwner) {
+    public void onMusicPrepare(String songName, boolean isAudience, boolean isRoomOwner) {
         mainHandler.post(() -> {
             mLrcView.reset();
             mScoringView.reset();
@@ -317,7 +316,7 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
             mActiveView.setVisibility(View.VISIBLE);
             mMusicPlayerActiveView.setVisibility(View.VISIBLE);
             tvMusicName.bringToFront();
-            tvMusicName.setText(" | " + newSong.name);
+            tvMusicName.setText(" | " + songName);
             mCumulativeScore.setText("得分：0分");
             mCumulativeScore.bringToFront();
             mPreparePrecent.setText("0%");

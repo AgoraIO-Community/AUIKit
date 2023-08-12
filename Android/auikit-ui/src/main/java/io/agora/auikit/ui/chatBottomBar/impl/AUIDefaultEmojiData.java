@@ -1,8 +1,9 @@
 package io.agora.auikit.ui.chatBottomBar.impl;
 
 
-import io.agora.auikit.model.AUIExpressionIcon;
 import io.agora.auikit.ui.R;
+import io.agora.auikit.ui.chatBottomBar.AUIChatBottomBarIcon;
+import io.agora.auikit.ui.chatBottomBar.AUIChatBottomBarIconType;
 
 public class AUIDefaultEmojiData {
     
@@ -118,17 +119,17 @@ public class AUIDefaultEmojiData {
     };
     
     
-    private static final AUIExpressionIcon[] DATA = createData();
+    private static final AUIChatBottomBarIcon[] DATA = createData();
     
-    private static AUIExpressionIcon[] createData(){
-        AUIExpressionIcon[] datas = new AUIExpressionIcon[icons.length];
+    private static AUIChatBottomBarIcon[] createData(){
+        AUIChatBottomBarIcon[] datas = new AUIChatBottomBarIcon[icons.length];
         for(int i = 0; i < icons.length; i++){
-            datas[i] = new AUIExpressionIcon(icons[i], emojis[i], AUIExpressionIcon.Type.NORMAL);
+            datas[i] = new AUIChatBottomBarIcon(icons[i], "", emojis[i], AUIChatBottomBarIconType.NORMAL);
         }
         return datas;
     }
     
-    public static AUIExpressionIcon[] getData(){
+    public static AUIChatBottomBarIcon[] getData(){
         return DATA;
     }
 }

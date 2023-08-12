@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import io.agora.auikit.model.AUIChooseMusicModel;
-import io.agora.auikit.model.AUIMusicModel;
-
 
 public interface IAUIJukeboxView {
 
@@ -30,7 +27,7 @@ public interface IAUIJukeboxView {
      * @param category 选歌列表分类
      * @param songList 选歌列表数据
      */
-    void refreshChooseSongList(String category, List<AUIMusicModel> songList);
+    void refreshChooseSongList(String category, List<AUIMusicInfo> songList);
 
     /**
      * 添加选歌列表数据，在{@link ActionDelegate#onChooseSongLoadMore(String, int)}里获取数据成功后调用
@@ -38,28 +35,28 @@ public interface IAUIJukeboxView {
      * @param category 选歌列表分类
      * @param songList 选歌列表数据
      */
-    void loadMoreChooseSongList(String category, List<AUIMusicModel> songList);
+    void loadMoreChooseSongList(String category, List<AUIMusicInfo> songList);
 
     /**
      * 设置选中歌词列表
      *
      * @param songList 选中歌词列表
      */
-    void setChosenSongList(List<AUIChooseMusicModel> songList);
+    void setChosenSongList(List<AUIMusicInfo> songList);
 
     /**
      * 刷新搜索歌词列表，会删除原先的所有数据，在{@link ActionDelegate#onSearchSongRefreshing(String)} 里获取数据成功后调用
      *
      * @param songList 搜索歌词列表数据
      */
-    void refreshSearchSongList(List<AUIMusicModel> songList);
+    void refreshSearchSongList(List<AUIMusicInfo> songList);
 
     /**
      * 添加搜索歌词列表数据，在{@link ActionDelegate#onSearchSongLoadMore(String, int)} 里获取数据成功后调用
      *
      * @param songList 搜索歌词列表数据
      */
-    void loadMoreSearchSongList(List<AUIMusicModel> songList);
+    void loadMoreSearchSongList(List<AUIMusicInfo> songList);
 
     interface ActionDelegate {
 
@@ -85,7 +82,7 @@ public interface IAUIJukeboxView {
          * @param position item位置
          * @param model 已选歌词信息
          */
-        void onChosenSongItemUpdating(IAUIJukeboxChosenItemView itemView, int position, @NonNull AUIChooseMusicModel model);
+        void onChosenSongItemUpdating(IAUIJukeboxChosenItemView itemView, int position, @NonNull AUIMusicInfo model);
 
         /**
          * 当搜索歌词列表开始搜索或者下拉刷新时调用
@@ -107,28 +104,28 @@ public interface IAUIJukeboxView {
          *
          * @param song 歌曲信息
          */
-        void onSongChosen(AUIMusicModel song);
+        void onSongChosen(AUIMusicInfo song);
 
         /**
          * 歌曲置顶时调用
          *
          * @param song 已选歌曲信息
          */
-        void onSongPinged(AUIChooseMusicModel song);
+        void onSongPinged(AUIMusicInfo song);
 
         /**
          * 歌曲删除时调用
          *
          * @param song 已选歌曲信息
          */
-        void onSongDeleted(AUIChooseMusicModel song);
+        void onSongDeleted(AUIMusicInfo song);
 
         /**
          * 歌曲切歌时调用
          *
          * @param song 已选歌曲信息
          */
-        void onSongSwitched(AUIChooseMusicModel song);
+        void onSongSwitched(AUIMusicInfo song);
 
     }
 }

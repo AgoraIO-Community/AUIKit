@@ -14,9 +14,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import io.agora.auikit.model.AUIActionModel
-import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.ui.R
+import io.agora.auikit.ui.action.AUIActionUserInfo
+import io.agora.auikit.ui.action.AUIActionUserInfoList
 import io.agora.auikit.ui.action.IAUIListViewBinderRefresh
 import io.agora.auikit.ui.action.fragment.VoiceRoomApplyListFragment
 import io.agora.auikit.ui.action.listener.AUIApplyDialogEventListener
@@ -31,8 +31,8 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
         const val KEY_CURRENT_ITEM = "current_Item"
     }
 
-    private val roomBean: AUIActionModel by lazy {
-        arguments?.getSerializable(KEY_ROOM_APPLY_BEAN) as AUIActionModel
+    private val roomBean: AUIActionUserInfoList by lazy {
+        arguments?.getSerializable(KEY_ROOM_APPLY_BEAN) as AUIActionUserInfoList
     }
 
     private val currentItem: Int by lazy {
@@ -117,7 +117,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
         }
     }
 
-    override fun refreshApplyData(userList: MutableList<AUIUserInfo?>){
+    override fun refreshApplyData(userList: MutableList<AUIActionUserInfo?>){
         adapter?.refreshData(userList)
     }
 
@@ -143,7 +143,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
 
     class RoomApplyFragmentAdapter constructor(
         fragmentActivity: FragmentActivity,
-        roomBean: AUIActionModel,
+        roomBean: AUIActionUserInfoList,
         event:AUIApplyDialogEventListener?
     ) : FragmentStateAdapter(fragmentActivity), VoiceRoomApplyListFragment.ApplyEventListener {
 
@@ -174,7 +174,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
             return fragments.size()
         }
 
-        fun refreshData(userList:MutableList<AUIUserInfo?>){
+        fun refreshData(userList:MutableList<AUIActionUserInfo?>){
             fragments.forEach { key, value ->
                 if (key == PAGE_INDEX0){
                     val fragment = value as VoiceRoomApplyListFragment
@@ -183,7 +183,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
             }
         }
 
-        override fun onApplyItemClick(view: View, applyIndex: Int?, user: AUIUserInfo?, position: Int) {
+        override fun onApplyItemClick(view: View, applyIndex: Int?, user: AUIActionUserInfo?, position: Int) {
             this.listener?.onApplyItemClick(view, applyIndex, user,position)
         }
     }

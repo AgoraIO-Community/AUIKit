@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.agora.auikit.model.AUIEffectVoiceInfo;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIRecyclerView;
+import io.agora.auikit.ui.musicplayer.ControllerEffectInfo;
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerEffectActionListener;
 
 /**
@@ -47,7 +47,7 @@ public class AUIMusicPlayerControllerDialogView extends FrameLayout {
     // 音效
     private int currentEffect;
 
-    private final List<AUIEffectVoiceInfo> effectInfoList = new ArrayList<>();
+    private final List<ControllerEffectInfo> effectInfoList = new ArrayList<>();
 
     private final Map<Integer, Pair<Integer, Integer>> effectInfoMap = new HashMap<>();
 
@@ -156,7 +156,7 @@ public class AUIMusicPlayerControllerDialogView extends FrameLayout {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 AUIMusicPlayerEffectItemView itemView = (AUIMusicPlayerEffectItemView) holder.itemView;
-                final AUIEffectVoiceInfo effectVoiceInfo = effectInfoList.get(position);
+                final ControllerEffectInfo effectVoiceInfo = effectInfoList.get(position);
                 if (effectVoiceInfo == null) {
                     return;
                 }
@@ -166,7 +166,7 @@ public class AUIMusicPlayerControllerDialogView extends FrameLayout {
                     itemView.setPresetOutIcon(0);
                 } else {
                     itemView.setPresetInnerVisibility(View.GONE);
-                    itemView.setPresetOutIcon(effectVoiceInfo.getResId());
+                    itemView.setPresetOutIcon(effectVoiceInfo.getIcon());
                 }
                 itemView.setItemSelected(currentEffect == effectVoiceInfo.getEffectId());
                 itemView.setPresetName(itemView.getContext().getString(effectVoiceInfo.getTitle()));
@@ -217,7 +217,7 @@ public class AUIMusicPlayerControllerDialogView extends FrameLayout {
             Pair<Integer, Integer> pair = effectInfoMap.get(i);
             Integer effectId = effectProperties.get(i);
             if (pair != null && effectId != null) {
-                AUIEffectVoiceInfo info = new AUIEffectVoiceInfo(i, effectId, pair.first, pair.second);
+                ControllerEffectInfo info = new ControllerEffectInfo(effectId, i, pair.first, pair.second);
                 effectInfoList.add(info);
             }
         }

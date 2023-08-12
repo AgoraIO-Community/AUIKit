@@ -49,7 +49,7 @@ public interface IMicSeatItemView {
      *
      * @param state 麦位状态
      */
-    void setMicSeatState(int state);
+    void setMicSeatState(MicSeatStatus state);
 
     /**
      * 设置麦位头像

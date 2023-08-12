@@ -25,10 +25,3 @@ public let AStatusBarHeight :CGFloat = UIApplication.shared.statusBarFrame.heigh
 
 public let ANavigationHeight :CGFloat = UIApplication.shared.statusBarFrame.height + 44
 
-//project wrapper
-public struct AUIKitSwiftLib<Base> {
-    public var base: Base
-    init(_ base: Base) {
-        self.base = base
-    }
-}

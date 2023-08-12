@@ -20,9 +20,9 @@ import androidx.annotation.StyleRes;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import io.agora.auikit.model.AUIMicSeatStatus;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
+import io.agora.auikit.ui.micseats.MicSeatStatus;
 
 public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView, ViewTreeObserver.OnGlobalLayoutListener {
     private String titleIdleText;
@@ -158,8 +158,8 @@ public class AUIMicSeatItemView extends FrameLayout implements IMicSeatItemView,
     }
 
     @Override
-    public void setMicSeatState(int state) {
-        if (state == AUIMicSeatStatus.locked) {
+    public void setMicSeatState(MicSeatStatus state) {
+        if (state == MicSeatStatus.locked) {
             ivStateLock.setVisibility(View.VISIBLE);
             ivStateIdle.setVisibility(View.INVISIBLE);
         } else {
