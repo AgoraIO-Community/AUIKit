@@ -45,7 +45,7 @@ s.subspec 'Service' do |ss|
       'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
    ]
  end
-  
+
 #  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
 
 s.subspec 'UI' do |ss|
@@ -73,7 +73,7 @@ s.subspec 'UI' do |ss|
   s.swift_version = '5.0'
   
 #  s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
-  
+
   s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 

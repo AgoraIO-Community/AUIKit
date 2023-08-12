@@ -174,10 +174,10 @@ extension AUIKaraokeLrcView: KaraokeDelegate {
 
 extension AUIKaraokeLrcView: KTVLrcViewDelegate {
     public func onHighPartTime(highStartTime: Int, highEndTime: Int) {
-        
+
     }
-    
-    
+
+
     public func onUpdatePitch(pitch: Float) {
         //pitch 更新
         lrcView?.setPitch(pitch: Double(pitch))
@@ -215,7 +215,7 @@ extension AUIKaraokeLrcView: KTVLrcViewDelegate {
 
 
 extension AUIKaraokeLrcView {
-    
+
     func startDownloadLrc(with url: String, callBack: @escaping LyricCallback) {
         var path: String? = nil
         downloadManager.downloadLrcFile(urlString: url) { lrcurl in
@@ -239,7 +239,7 @@ extension AUIKaraokeLrcView {
             aui_info("歌词解析失败")
         }
     }
-    
+
     func resetLrcData(with url: String) {
         guard currentLoadLrcPath != url else {
             return
