@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import io.agora.auikit.model.AUIExpressionIcon
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
+import io.agora.auikit.ui.chatBottomBar.AUIChatBottomBarIcon
 
 class AUIEmojiGridAdapter(
     context: Context,
     resource: Int,
-    objects: MutableList<AUIExpressionIcon>
-) : ArrayAdapter<AUIExpressionIcon>(context, resource, objects) {
+    objects: MutableList<AUIChatBottomBarIcon>
+) : ArrayAdapter<AUIChatBottomBarIcon>(context, resource, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
@@ -22,12 +22,12 @@ class AUIEmojiGridAdapter(
             convertView = View.inflate(context, R.layout.aui_emoji_item_layout, null)
         }
         val imageView = convertView!!.findViewById<AUIImageView>(R.id.iv_expression)
-        val emojIcon: AUIExpressionIcon? = getItem(position)
+        val emojIcon: AUIChatBottomBarIcon? = getItem(position)
         emojIcon.let {
-            if (emojIcon?.icon != 0) {
-                emojIcon?.icon?.let { imageView.setImageResource(it) }
-            } else if (emojIcon?.iconPath != null) {
-                Glide.with(context).load(emojIcon.iconPath)
+            if (emojIcon?.iconRes != 0) {
+                emojIcon?.iconRes?.let { imageView.setImageResource(it) }
+            } else if (emojIcon?.iconUrl != null) {
+                Glide.with(context).load(emojIcon.iconUrl)
                     .apply(RequestOptions.placeholderOf(R.drawable.voice_icon_default_expression))
                     .into(imageView)
             }

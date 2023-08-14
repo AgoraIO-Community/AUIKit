@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.2.0-ui-2'
+  s.version          = '0.4.0'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -32,36 +32,50 @@ TODO: Add long description of the pod here.
   s.xcconfig = {'ENABLE_BITCODE' => 'NO'}
 
   
-#s.subspec 'Widgets' do |ss|
-#      ss.source_files = [
-#       'AUIKitCore/Classes/Widgets/**/*',
-#      'AUIKitCore/Classes/Core/Utils/Extension/*',
-#     'AUIKitCore/Classes/Core/Utils/Theme/*',
-#    'AUIKitCore/Classes/Core/Utils/Log/*',
-#   'AUIKitCore/Classes/Core/Utils/Localized/*',
-#    'AUIKitCore/Classes/Core/UIConstans/*',
-#    'AUIKitCore/Classes/Core/FoundationExtension/*'
-#   ]
-#  ss.resource = 'AgoraUIKit_Test/Resource/auiTheme.bundle'
-# end
-  
-  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
-  
-#  s.source_files = [
-#  'iOS/AUIKitCore/Sources/Widgets/**/*',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
-#  'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift'
-#  ]
+s.subspec 'Service' do |ss|
+      ss.source_files = [
+      'iOS/AUIKitCore/Sources/Service/**/*',
+      'iOS/AUIKitCore/Sources/Core/Utils/RtmHelper/*',
+      'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
+#      'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Error/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Context/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
+      'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
+   ]
+ end
+
+#  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
+
+s.subspec 'UI' do |ss|
+  ss.source_files = [
+  'iOS/AUIKitCore/Sources/Widgets/**/*',
+  'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
+  'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
+  'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
+  'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift',
+  'iOS/AUIKitCore/Sources/Components/**/*',
+  'iOS/AUIKitCore/Sources/Service/Extension/API/KTVAPI/*.swift',
+  'iOS/AUIKitCore/Sources/Service/Extension/API/FileDownloadCache/*.swift',
+  'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
+  'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
+  'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
+  'iOS/AUIKitCore/Sources/Service/Extension/Protocol/AUIUserCellUserDataProtocol.swift',
+  ]
+  ss.resource = ['iOS/AUIKitCore/Resource/*.bundle']
+  end
   
   s.static_framework = true
   
   s.swift_version = '5.0'
   
-  s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
+#  s.resource = ['iOS/AUIKitCore/Resource/*.bundle']
+
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
   
   # s.resource_bundles = {
@@ -70,7 +84,8 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'Foundation'
-  s.dependency 'AgoraRtcEngine_iOS'
+  s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.142'
+  s.dependency 'AgRtmKit2_Test'
   s.dependency 'YYModel'
   s.dependency 'SwiftyBeaver', '1.9.5'
   s.dependency 'Zip'

@@ -8,9 +8,9 @@
 import UIKit
 
 @objcMembers
-class AUIRoomListNetworkModel: AUINetworkModel {
-    var lastCreateTime: NSNumber?
-    var pageSize: Int = 10
+public class AUIRoomListNetworkModel: AUINetworkModel {
+    public var lastCreateTime: NSNumber?
+    public var pageSize: Int = 10
     public override init() {
         super.init()
         interfaceName = "/v1/room/list"

@@ -18,14 +18,14 @@ private let headImageWidth: CGFloat = 26
     func updateSeatInfo(member: AUIUserCellUserDataProtocol,seatIndex: Int)
 }
 
-@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
-    var userAvatar: String {set get}
-    var userId: String {set get}
-    var userName: String {set get}
-    var seatIndex: Int {set get}
-    var isOwner: Bool {set get}
-
-}
+//@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
+//    var userAvatar: String {set get}
+//    var userId: String {set get}
+//    var userName: String {set get}
+//    var seatIndex: Int {set get}
+//    var isOwner: Bool {set get}
+//
+//}
 
 public typealias AUIRoomMembersViewMoreBtnAction = (_ members: [AUIUserCellUserDataProtocol])->()
 
@@ -153,11 +153,12 @@ public class AUIRoomMembersView: UIView {
 extension AUIRoomMembersView:IAUIRoomMembersView {
     
     public func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String) {
-        members.forEach {
-            if $0.userId == AUIRoomContext.shared.roomInfoMap[channelName]?.owner?.userId ?? "" {
-                $0.isOwner = true
-            }
-        }
+        // TODO:
+//        members.forEach {
+//            if $0.userId == AUIRoomContext.shared.roomInfoMap[channelName]?.owner?.userId ?? "" {
+//                $0.isOwner = true
+//            }
+//        }
         self.members = members
     }
     

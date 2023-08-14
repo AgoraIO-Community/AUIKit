@@ -16,6 +16,7 @@ import io.agora.auikit.ui.basic.AUIBottomDialog;
 import io.agora.auikit.ui.basic.AUIRecyclerView;
 import io.agora.auikit.ui.micseats.IMicSeatItemView;
 import io.agora.auikit.ui.micseats.IMicSeatsView;
+import io.agora.auikit.ui.micseats.MicSeatStatus;
 
 public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
 
@@ -50,7 +51,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 return new RecyclerView.ViewHolder(new AUIMicSeatItemView(parent.getContext())) {
                 };
             }
-
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 AUIMicSeatItemView seatItemView = (AUIMicSeatItemView) holder.itemView;
@@ -60,7 +60,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                     showMicSeatDialog(position);
                 });
             }
-
             @Override
             public int getItemCount() {
                 return micSeatCount;
@@ -168,7 +167,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
         private int roomOwnerVisibility = View.GONE;
         private ChorusType chorusType = ChorusType.None;
         private Drawable userAvatarImageDrawable;
-        private int seatStatus;
+        private MicSeatStatus seatStatus;
         private String userAvatarImageUrl;
         private IMicSeatItemView view;
 
@@ -191,7 +190,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setTitleText(text);
             }
         }
-
         @Override
         public void setRoomOwnerVisibility(int visible) {
             this.roomOwnerVisibility = visible;
@@ -199,7 +197,6 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
                 view.setRoomOwnerVisibility(visible);
             }
         }
-
         @Override
         public void setTitleIndex(int index) {
             this.titleIndex = index;
@@ -232,7 +229,7 @@ public class AUIMicSeatsView extends FrameLayout implements IMicSeatsView {
         }
 
         @Override
-        public void setMicSeatState(int state) {
+        public void setMicSeatState(MicSeatStatus state) {
             this.seatStatus = state;
             if (view != null) {
                 view.setMicSeatState(state);

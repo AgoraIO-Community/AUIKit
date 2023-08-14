@@ -7,7 +7,7 @@
 
 import Foundation
 import YYModel
-
+/*
 @objc public protocol AUIGiftEntityProtocol: NSObjectProtocol {
     var giftId: String {get}
     var giftName: String {get}
@@ -83,7 +83,7 @@ import YYModel
     }
  
 }
- 
+ */
  
  
 public protocol AUIGiftsManagerServiceDelegate: AUICommonServiceDelegate {

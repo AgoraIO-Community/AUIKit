@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.agora.auikit.model.AUIExpressionIcon;
+import io.agora.auikit.ui.chatBottomBar.AUIChatBottomBarIcon;
 
 public class AUIEmojiUtils {
     public static final String DELETE_KEY = "em_delete_delete_expression";
@@ -79,9 +79,9 @@ public class AUIEmojiUtils {
 	
 
 	static {
-	    AUIExpressionIcon[] emojicons = AUIDefaultEmojiData.getData();
-		for (AUIExpressionIcon emojicon : emojicons) {
-			addPattern(emojicon.getLabelString(), emojicon.getIcon());
+		AUIChatBottomBarIcon[] emojicons = AUIDefaultEmojiData.getData();
+		for (AUIChatBottomBarIcon emojicon : emojicons) {
+			addPattern(emojicon.getLabelString(), emojicon.getIconRes());
 		}
 	}
 

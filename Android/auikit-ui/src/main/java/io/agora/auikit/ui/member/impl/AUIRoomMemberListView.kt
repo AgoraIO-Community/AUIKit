@@ -11,32 +11,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import io.agora.auikit.model.AUIUserInfo
-import io.agora.auikit.service.IAUIMicSeatService
-import io.agora.auikit.service.IAUIUserService
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.databinding.AuiMemberListItemBinding
 import io.agora.auikit.ui.databinding.AuiMemberListViewLayoutBinding
+import io.agora.auikit.ui.member.MemberInfo
+import io.agora.auikit.ui.member.MemberItemModel
 import io.agora.auikit.utils.BindingViewHolder
 
-private class MemberItemModel (
-    val user: AUIUserInfo?,
-    val micIndex: Int?){
-
-    fun micString(): String? {
-        if (micIndex == null) {
-            return null
-        }
-        return if (micIndex == 0) {
-            "房主"
-        } else {
-            "${micIndex + 1}号麦"
-        }
-    }
-}
-
-class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
-    IAUIMicSeatService.AUIMicSeatRespDelegate {
+class AUIRoomMemberListView : FrameLayout {
 
     private val mBinding by lazy { AuiMemberListViewLayoutBinding.inflate(
         LayoutInflater.from(
@@ -118,7 +100,7 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
         mBinding.rvUserList.adapter = listAdapter
     }
 
-    fun setMembers(members: List<AUIUserInfo?>, seatMap: Map<Int, String?>) {
+    fun setMembers(members: List<MemberInfo?>, seatMap: Map<Int, String?>) {
         val temp = mutableListOf<MemberItemModel>()
         members.forEach {  user ->
             val micIndex = seatMap.entries.find { it.value == user?.userId }?.key
@@ -134,7 +116,7 @@ class AUIRoomMemberListView : FrameLayout, IAUIUserService.AUIUserRespDelegate,
     }
 
     interface ActionListener{
-        fun onKickClick(view: View, position:Int, user: AUIUserInfo?){}
+        fun onKickClick(view: View, position:Int, user: MemberInfo?){}
     }
 
     fun setMemberActionListener(listener:ActionListener){

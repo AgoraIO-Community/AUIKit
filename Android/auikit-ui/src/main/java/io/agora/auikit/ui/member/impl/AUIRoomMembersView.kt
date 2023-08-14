@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.databinding.AuiMemberLayoutBinding
 import io.agora.auikit.ui.member.IAUIRoomMembersView
+import io.agora.auikit.ui.member.MemberInfo
 import io.agora.auikit.ui.member.listener.AUIRoomMembersActionListener
 import io.agora.auikit.utils.FastClickTools
 
@@ -59,7 +59,7 @@ class AUIRoomMembersView : ConstraintLayout,
     /**
      * 设置排行榜前三
      */
-    override fun setMemberData(memberList: List<AUIUserInfo?>){
+    override fun setMemberData(memberList: List<MemberInfo?>){
         val size = memberList.size
         size.let {
             if (it > 3){
@@ -71,7 +71,7 @@ class AUIRoomMembersView : ConstraintLayout,
 
     }
 
-    private fun setMemberView(size:Int,rankList:List<AUIUserInfo?>){
+    private fun setMemberView(size:Int,rankList:List<MemberInfo?>){
         when(size){
             0 -> {
                 mRoomViewBinding.ivMember1.visibility = GONE

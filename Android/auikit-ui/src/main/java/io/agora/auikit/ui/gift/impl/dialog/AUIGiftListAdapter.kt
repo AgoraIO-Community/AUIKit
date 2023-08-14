@@ -11,17 +11,18 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
-import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.basic.AUIImageView
+import io.agora.auikit.ui.gift.AUIGiftInfo
 import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
+import io.agora.auikit.ui.gift.selected
 
 class AUIGiftListAdapter constructor(
     context: Context,
     resource: Int,
     typedArray:TypedArray,
-    objects: List<AUIGiftEntity>
-): ArrayAdapter<AUIGiftEntity>(context,resource, objects)  {
+    objects: List<AUIGiftInfo>
+): ArrayAdapter<AUIGiftInfo>(context,resource, objects)  {
 
     private var selectedPosition = -1
     private var listener:AUIGiftItemClickListener?=null
@@ -74,7 +75,7 @@ class AUIGiftListAdapter constructor(
         return convertView!!
     }
 
-    private fun selectedViewChange(giftInfo:AUIGiftEntity?,action:MaterialTextView, name:MaterialTextView,layout:ConstraintLayout,isSelected: Boolean){
+    private fun selectedViewChange(giftInfo: AUIGiftInfo?, action:MaterialTextView, name:MaterialTextView, layout:ConstraintLayout, isSelected: Boolean){
         if (isSelected){
             action.visibility = View.VISIBLE
             action.text = mContext.resources.getString(R.string.voice_gift_dialog_action)

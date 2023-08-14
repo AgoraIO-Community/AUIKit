@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.agora.auikit.model.AUIGiftEntity
-import io.agora.auikit.model.AUIGiftTabEntity
 import io.agora.auikit.ui.R
 import io.agora.auikit.ui.databinding.AuiGiftListFragmentLayoutBinding
+import io.agora.auikit.ui.gift.AUIGiftInfo
+import io.agora.auikit.ui.gift.AUIGiftTabInfo
 import io.agora.auikit.ui.gift.listener.AUIConfirmClickListener
 import io.agora.auikit.ui.gift.listener.AUIGiftItemClickListener
+import io.agora.auikit.ui.gift.selected
 import io.agora.auikit.utils.DeviceTools
 
 class AUIGiftListFragment : Fragment,AUIGiftItemClickListener{
     constructor():this(null,null)
     constructor(
-        gift:List<AUIGiftTabEntity>?,
+        gift:List<AUIGiftTabInfo>?,
         tagId:Int?
     ){
         if (gift != null) {
@@ -27,20 +28,20 @@ class AUIGiftListFragment : Fragment,AUIGiftItemClickListener{
 
         if (gift != null) {
             for (auiGiftTabEntity in gift) {
-                map[auiGiftTabEntity.tabId] = auiGiftTabEntity.gifts as List<AUIGiftEntity>
+                map[auiGiftTabEntity.tabId] = auiGiftTabEntity.gifts as List<AUIGiftInfo>
             }
         }
     }
     private var adapter: AUIGiftListAdapter? = null
-    private var giftBean: AUIGiftEntity? = null
+    private var giftBean: AUIGiftInfo? = null
     private var listener: AUIConfirmClickListener? = null
-    private var gift:List<AUIGiftTabEntity> = mutableListOf()
+    private var gift:List<AUIGiftTabInfo> = mutableListOf()
     private val mColumns = 4
     private var currentTag:Int? = 0
 
     private lateinit var aGiftListBinding:AuiGiftListFragmentLayoutBinding
 
-    private var map:MutableMap<Int,List<AUIGiftEntity>> = mutableMapOf()
+    private var map:MutableMap<Int,List<AUIGiftInfo>> = mutableMapOf()
 
 
     override fun onCreateView(
@@ -69,7 +70,7 @@ class AUIGiftListFragment : Fragment,AUIGiftItemClickListener{
             aGiftListBinding.gridview.verticalSpacing = DeviceTools.dp2px(requireContext(), 20F)
             aGiftListBinding.gridview.numColumns = mColumns
             aGiftListBinding.gridview.verticalSpacing = 40
-            adapter = AUIGiftListAdapter(it, 1,typedArray, map[currentTag] as List<AUIGiftEntity>)
+            adapter = AUIGiftListAdapter(it, 1,typedArray, map[currentTag] as List<AUIGiftInfo>)
             aGiftListBinding.gridview.adapter = adapter
             adapter?.setSelectedPosition(0)
             adapter?.setOnItemClickListener(this)
@@ -80,12 +81,14 @@ class AUIGiftListFragment : Fragment,AUIGiftItemClickListener{
         this.listener = listener
     }
 
-    override fun sendGift(view:View,position:Int,gift: AUIGiftEntity) {
+    override fun sendGift(view:View,position:Int,gift: AUIGiftInfo) {
         giftBean = adapter?.getItem(position)
         listener?.sendGift(view,gift)
     }
 
-    override fun selectGift(view: View, position: Int, gift: AUIGiftEntity) {
+
+
+    override fun selectGift(view: View, position: Int, gift: AUIGiftInfo) {
         adapter?.getItem(position)?.let {
             it.selected = !it.selected
             if (it.selected) {

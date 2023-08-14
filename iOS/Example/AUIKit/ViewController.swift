@@ -13,6 +13,17 @@ import SDWebImage
 
 class ViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let testVC = sb.instantiateViewController(identifier: "testvc")
+        navigationController?.pushViewController(testVC, animated: true)
+    }
+
+    /*
     private let scrollView: UIScrollView = UIScrollView()
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -20,10 +31,17 @@ class ViewController: UIViewController {
         label.text = "基础组件"
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.theme_textColor = AUIColor("ExampleMainColor.normalTextColor")
+
         return label
     }()
+
+    private lazy var leftItem: UIBarButtonItem = {
+        let item = UIBarButtonItem(title: "更换主题", style: .plain, target: self, action: #selector(didClickLeftBarButtonItem))
+        return item
+    }()
+
     private lazy var rightItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: "更换主题", style: .plain, target: self, action: #selector(didClickRightBarButtonItem))
+        let item = UIBarButtonItem(title: "麦位", style: .plain, target: self, action: #selector(didClickRightBarButtonItem))
         return item
     }()
     
@@ -38,6 +56,7 @@ class ViewController: UIViewController {
         AUIThemeManager.shared.switchTheme(themeName: "UIKit")
         self.navigationItem.titleView = self.titleLabel
         self.navigationItem.rightBarButtonItem = rightItem
+        self.navigationItem.leftBarButtonItem = leftItem
         view.theme_backgroundColor = AUIColor("ExampleMainColor.background")
         
         addButtons()
@@ -53,10 +72,17 @@ class ViewController: UIViewController {
         layoutScrollView()
     }
     
-    @objc private func didClickRightBarButtonItem(){
+    @objc private func didClickLeftBarButtonItem(){
         AUIThemeManager.shared.switchThemeToNext()
     }
-    
+
+    @objc private func didClickRightBarButtonItem(){
+        let micVC = MicSeatViewController()
+        navigationController?.pushViewController(micVC, animated: true)
+    }
+
+
+
     private func layoutScrollView(){
         scrollView.frame = view.bounds
         view.addSubview(scrollView)
@@ -340,4 +366,5 @@ extension ViewController {
         buttonScrollView.bounds = CGRect(x: 0, y: 0, width: view.bounds.width, height: height)
         scrollView.addSubview(buttonScrollView)
     }
+     */
 }
