@@ -4,16 +4,27 @@ platform :ios, '13.0'
 
 target 'AUIKit_Example' do
 #  pod 'AUIKitCore','0.2.0-ui'
-pod 'AUIKitCore/Service', :path => '../../'
+pod 'AUIKitCore', :path => '../../'
 #pod 'AUIKitCore/UI', :path => '../../'
 #  pod 'AgoraUIKit_Test/widgets', :path => '../'
 #  pod 'AgoraRtcEngine_iOS', :path => './libs'
 #  pod 'LookinServer'
   pod 'AgoraLyricsScore', '1.1.2'
-
-  target 'AUIKit_Tests' do
-    inherit! :search_paths
-
-    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+  pod 'libpag'
+  post_install do |installer|
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "13.0"
+          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+          config.build_settings["DEVELOPMENT_TEAM"] = "3Y5B6D2XFS"
+        end
+      end
+    end
   end
+#  target 'AUIKit_Tests' do
+#    inherit! :search_paths
+#
+#    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+#  end
 end
