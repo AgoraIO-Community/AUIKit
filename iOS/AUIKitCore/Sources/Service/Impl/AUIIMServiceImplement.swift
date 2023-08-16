@@ -49,7 +49,7 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
 //                                AUIToast.show(text: error == nil ? "Create chatroom successful!":"Create chatroom failed!")
                             }
                         }
-//                        AUIToast.show(text: "login IM \(error == nil ? "successful!":"failed!")")
+//                        AUIToast.show(text: "login IM \(error == qnil ? "successful!":"failed!")")
                     }
                     
                 }
