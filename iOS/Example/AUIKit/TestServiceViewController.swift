@@ -131,15 +131,11 @@ extension TestServiceViewController {
         generateToken { config, appid in
             guard let roomInfo = self.roomList.first else { return }
             
-            self.chatImplement = AUIIMManagerServiceImplement(channelName: roomInfo.roomId,
-                                                              rtmManager: self.roomManager!.rtmManager)
-            self.chatImplement?.bindRespDelegate(delegate: self)
-            
             self.giftImpl = AUIGiftServiceImplement(channelName: roomInfo.roomId, rtmManager: self.roomManager!.rtmManager)
             self.giftImpl?.bindRespDelegate(delegate: self)
             
             self.roomManager?.enterRoom(roomId: roomInfo.roomId, callback: { err in
-                aui_info("enterRoom == \(err)")
+                aui_info("enterRoom err == \(err)")
                 
                 
                 self.userManager = AUIUserServiceImpl(channelName: roomInfo.roomId, rtmManager: self.roomManager!.rtmManager, roomManager: self.roomManager!)
@@ -151,6 +147,9 @@ extension TestServiceViewController {
                                                          roomManager: self.roomManager!)
                 self.micSeatImpl?.bindRespDelegate(delegate: self)
                 
+                self.chatImplement = AUIIMManagerServiceImplement(channelName: roomInfo.roomId,
+                                                                  rtmManager: self.roomManager!.rtmManager)
+                self.chatImplement?.bindRespDelegate(delegate: self)
                 
                 
                 let commonConfig = AUICommonConfig()
