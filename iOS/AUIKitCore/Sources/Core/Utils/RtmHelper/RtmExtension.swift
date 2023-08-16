@@ -7,7 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
-import AgoraRtmKit2
+import AgoraRtmKit
 
 extension AgoraRtmPresenceEvent {
     func snapshotList() -> [[String: String]] {

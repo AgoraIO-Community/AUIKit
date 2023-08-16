@@ -7,7 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
-import AgoraRtmKit2
+import AgoraRtmKit
 
 @objc public protocol AUIRtmErrorProxyDelegate: NSObjectProtocol {
     
@@ -131,7 +131,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
                        connectionStateChanged state: AgoraRtmClientConnectionState,
                        result reason: AgoraRtmClientConnectionChangeReason) {
         aui_info("connectionStateChanged: \(state.rawValue) reason：\(reason)", tag: "AUIRtmMsgProxy")
-        origRtmDelegate?.rtmKit?(kit, channel: channelName, connectionStateChanged: state, result: reason)
+        origRtmDelegate?.rtmKit?(kit, channel: channelName, connectionStateChanged: state, reason: reason)
         if errorDelegates.count <= 0 { return }
         for element in errorDelegates.allObjects {
             (element as? AUIRtmErrorProxyDelegate)?.onConnectionStateChanged?(channelName: channelName,

@@ -8,7 +8,7 @@
 import Foundation
 import AgoraRtcKit
 import YYModel
-import AgoraRtmKit2
+import AgoraRtmKit
 
 let kRoomInfoAttrKry = "basic"
 let kSeatAttrKry = "micSeat"
@@ -175,7 +175,7 @@ extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
     @objc public func onConnectionStateChanged(channelName: String,
                                                connectionStateChanged state: AgoraRtmClientConnectionState,
                                                result reason: AgoraRtmClientConnectionChangeReason) {
-        guard state == .failed, reason == .AgoraRtmClientConnectionChangedBannedByServer else {
+        guard state == .failed, reason == .changedBannedByServer else {
             return
         }
         
