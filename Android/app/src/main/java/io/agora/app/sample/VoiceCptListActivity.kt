@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import io.agora.app.sample.databinding.VoiceComponentsLayoutBinding
 import io.agora.app.sample.dialog.VoiceMoreItemBean
 import io.agora.app.sample.dialog.VoiceRoomMoreDialog
+import io.agora.auikit.model.AUICommonConfig
 import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.ui.action.AUIActionUserInfo
 import io.agora.auikit.ui.action.AUIActionUserInfoList
@@ -139,6 +140,13 @@ class VoiceCptListActivity : AppCompatActivity() {
     }
 
     private fun loadLocalData(){
+        val config = AUICommonConfig()
+        config.context = applicationContext
+        config.userId = randomId()
+        config.userName = randomUserName()
+        config.userAvatar = randomAvatar()
+        AUIRoomContext.shared().commonConfig = config
+
         val jsonFileName = "gift.json" // 指定要读取的文件名
         val json: String
         try {

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,6 @@ class GuidanceActivity: AppCompatActivity() {
     }
 
     private fun onItemClick(item: CptItem,position:Int) {
-        Toast.makeText(this, "${item.title} $position clicked", Toast.LENGTH_SHORT).show()
         when(position){
             0 -> { startActivity(Intent(this, BasicUiListActivity::class.java)) }
             1 -> { startActivity(Intent(this, VoiceCptListActivity::class.java)) }
