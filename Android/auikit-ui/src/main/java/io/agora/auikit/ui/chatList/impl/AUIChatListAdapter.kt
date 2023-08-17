@@ -22,7 +22,6 @@ import io.agora.auikit.ui.chatList.AUIChatInfo
 
 class AUIChatListAdapter(
     private val context: Context,
-    private val ownerId:String?,
     typedArray: TypedArray
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -34,6 +33,7 @@ class AUIChatListAdapter(
     private var normalContentColor:Int = 0
     private var systemTitleColor:Int = 0
     private var systemContentColor:Int = 0
+    private lateinit var ownerId:String
 
     init {
         normalTagIcon = typedArray.getResourceId(
@@ -63,6 +63,10 @@ class AUIChatListAdapter(
 
         typedArray.recycle()
 
+    }
+
+    fun setOwner(ownerId:String){
+        this.ownerId = ownerId
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

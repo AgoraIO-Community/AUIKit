@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--================= 主题属性 =================-->
+    <attr name="sample_appearance" format="reference"/>
+
+    <!--================= 样式属性 =================-->
+    <declare-styleable name="SampleStyle">
+        <attr name="sample_appearance"/>
+        <!-- 背景 -->
+        <attr name="sample_voice_background" format="color|reference"/>
+        <attr name="sample_dialog_more_background" format="color|reference"/>
+        <attr name="voice_room_textColor" format="color|reference"/>
+    </declare-styleable>
+
+</resources>

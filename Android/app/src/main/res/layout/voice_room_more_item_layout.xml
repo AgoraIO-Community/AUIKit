@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="?attr/sample_appearance"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <io.agora.auikit.ui.basic.AUIImageView
+        android:id="@+id/ivItemIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:shapeAppearance="@style/voice_seat_roundStyle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        app:layout_constraintTop_toBottomOf="@+id/ivItemIcon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/mtItemTitle"
+        android:layout_marginTop="4dp"
+        android:maxWidth="66dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:textColor="?attr/voice_room_textColor"
+        android:textSize="12sp"
+        tools:text="Application  List" />
+
+    <io.agora.auikit.ui.basic.AUIImageView
+        android:id="@+id/ivItemIconStatus"
+        app:layout_constraintTop_toTopOf="@+id/ivItemIcon"
+        app:layout_constraintRight_toRightOf="@+id/ivItemIcon"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:background="@drawable/voice_bg_more_status"
+        app:layout_constraintDimensionRatio="1:1"
+        app:shapeAppearance="@style/voice_seat_roundStyle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
