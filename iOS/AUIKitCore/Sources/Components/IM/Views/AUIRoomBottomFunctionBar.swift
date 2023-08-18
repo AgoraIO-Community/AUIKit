@@ -98,7 +98,7 @@ extension AUIRoomBottomFunctionBar:UICollectionViewDelegate, UICollectionViewDat
         }
         entity.selected = !entity.selected
         if self.actionClosure != nil {
-            self.actionClosure!(entity)
+            self.actionClosure?(entity)
         }
         self.toolBar.reloadItems(at: [indexPath])
     }

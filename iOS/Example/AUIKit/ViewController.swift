@@ -11,17 +11,47 @@ import AUIKitCore
 import SwiftTheme
 import SDWebImage
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    private var datas = ["Chat&Gift","MicSeat","Service"]
+    
+    private var controllers: [UIViewController] = [ChatListEffectViewController(),MicSeatViewController(),TestServiceViewController()]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(self.functionList)
     }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.datas.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "function", for: indexPath)
+        cell.textLabel?.text = self.datas[safe:indexPath.row] ?? ""
+        cell.selectionStyle = .none
+        cell.accessoryType = .disclosureIndicator
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let vc = self.controllers[safe: indexPath.row] {
+            vc.title = self.datas[safe: indexPath.row] ?? ""
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    lazy var functionList: UITableView = {
+        UITableView(frame: CGRect(x: 0, y: 0, width: AScreenWidth, height: AScreenHeight), style: .plain).delegate(self).dataSource(self).rowHeight(50).registerCell(UITableViewCell.self, forCellReuseIdentifier: "function").tableFooterView(UIView())
+    }()
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let testVC = sb.instantiateViewController(identifier: "testvc")
-        navigationController?.pushViewController(testVC, animated: true)
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let sb = UIStoryboard(name: "Main", bundle: nil)
+//        let testVC = sb.instantiateViewController(identifier: "testvc")
+//        navigationController?.pushViewController(testVC, animated: true)
+//    }
 
     /*
     private let scrollView: UIScrollView = UIScrollView()
