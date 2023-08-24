@@ -1,0 +1,44 @@
+PODS:
+  - AgoraRtcEngine_iOS (3.7.2):
+    - AgoraRtcEngine_iOS/AINS (= 3.7.2)
+    - AgoraRtcEngine_iOS/AV1Dec (= 3.7.2)
+    - AgoraRtcEngine_iOS/ContentInspect (= 3.7.2)
+    - AgoraRtcEngine_iOS/FullAudioFormat (= 3.7.2)
+    - AgoraRtcEngine_iOS/ReplayKit (= 3.7.2)
+    - AgoraRtcEngine_iOS/ROIEnc (= 3.7.2)
+    - AgoraRtcEngine_iOS/RtcBasic (= 3.7.2)
+    - AgoraRtcEngine_iOS/SpatialAudio (= 3.7.2)
+    - AgoraRtcEngine_iOS/SuperResolution (= 3.7.2)
+    - AgoraRtcEngine_iOS/VideoPreprocess (= 3.7.2)
+    - AgoraRtcEngine_iOS/VirtualBackground (= 3.7.2)
+  - AgoraRtcEngine_iOS/AINS (3.7.2)
+  - AgoraRtcEngine_iOS/AV1Dec (3.7.2)
+  - AgoraRtcEngine_iOS/ContentInspect (3.7.2)
+  - AgoraRtcEngine_iOS/FullAudioFormat (3.7.2)
+  - AgoraRtcEngine_iOS/ReplayKit (3.7.2)
+  - AgoraRtcEngine_iOS/ROIEnc (3.7.2)
+  - AgoraRtcEngine_iOS/RtcBasic (3.7.2)
+  - AgoraRtcEngine_iOS/SpatialAudio (3.7.2)
+  - AgoraRtcEngine_iOS/SuperResolution (3.7.2)
+  - AgoraRtcEngine_iOS/VideoPreprocess (3.7.2)
+  - AgoraRtcEngine_iOS/VirtualBackground (3.7.2)
+  - SDWebImage (3.7.0):
+    - SDWebImage/Core (= 3.7.0)
+  - SDWebImage/Core (3.7.0)
+
+DEPENDENCIES:
+  - AgoraRtcEngine_iOS (= 3.7.2)
+  - SDWebImage (= 3.7)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AgoraRtcEngine_iOS
+    - SDWebImage
+
+SPEC CHECKSUMS:
+  AgoraRtcEngine_iOS: 35387cd8e2131e1e3c3ac6c196818072ad0b9b75
+  SDWebImage: b42db92951f9d565c55f1d7f1d5efe47e33a7515
+
+PODFILE CHECKSUM: e6384aa68a3a6760877a994a9212229990fd2f6f
+
+COCOAPODS: 1.12.0

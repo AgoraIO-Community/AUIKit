@@ -1,0 +1,497 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		108F2008DB77F412D86F01CB /* Pods_HTDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927AC845A6E669B88DFF6AF6 /* Pods_HTDemo.framework */; };
+		A81929452A9731F300DAC148 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929442A9731F300DAC148 /* AppDelegate.swift */; };
+		A81929472A9731F300DAC148 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929462A9731F300DAC148 /* SceneDelegate.swift */; };
+		A81929492A9731F300DAC148 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929482A9731F300DAC148 /* ViewController.swift */; };
+		A819294C2A9731F300DAC148 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A819294A2A9731F300DAC148 /* Main.storyboard */; };
+		A819294E2A9731F500DAC148 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A819294D2A9731F500DAC148 /* Assets.xcassets */; };
+		A81929512A9731F500DAC148 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A819294F2A9731F500DAC148 /* LaunchScreen.storyboard */; };
+		A81929592A9737A600DAC148 /* MicSeatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929582A9737A600DAC148 /* MicSeatViewController.swift */; };
+		A819295C2A97381800DAC148 /* AUIMicSeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819295B2A97381800DAC148 /* AUIMicSeatView.swift */; };
+		A819295E2A97384B00DAC148 /* AUIMicSeatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819295D2A97384B00DAC148 /* AUIMicSeatInfo.swift */; };
+		A81929602A9738C300DAC148 /* AUIMicSeatViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819295F2A9738C300DAC148 /* AUIMicSeatViewDelegate.swift */; };
+		A81929622A9738D900DAC148 /* AUIMicSeatItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929612A9738D900DAC148 /* AUIMicSeatItemCell.swift */; };
+		A81929642A97394F00DAC148 /* AUIRippleAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929632A97394E00DAC148 /* AUIRippleAnimationView.swift */; };
+		A81929662A97397300DAC148 /* AUIMicSeatCellDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929652A97397300DAC148 /* AUIMicSeatCellDataProtocol.swift */; };
+		A81929682A973A1C00DAC148 /* UIView+AUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929672A973A1C00DAC148 /* UIView+AUIKit.swift */; };
+		A819296A2A973A6900DAC148 /* UIKitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929692A973A6900DAC148 /* UIKitDSL.swift */; };
+		A819296C2A973A9300DAC148 /* AUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819296B2A973A9300DAC148 /* AUIButton.swift */; };
+		A819296E2A973C6600DAC148 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819296D2A973C6600DAC148 /* UIColorExtension.swift */; };
+		A81929702A97584100DAC148 /* KeyCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A819296F2A97584100DAC148 /* KeyCenter.swift */; };
+		A81929722A97588A00DAC148 /* RTCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81929712A97588A00DAC148 /* RTCManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		927AC845A6E669B88DFF6AF6 /* Pods_HTDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HTDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A81929412A9731F300DAC148 /* HTDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A81929442A9731F300DAC148 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A81929462A9731F300DAC148 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A81929482A9731F300DAC148 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A819294B2A9731F300DAC148 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A819294D2A9731F500DAC148 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A81929502A9731F500DAC148 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A81929522A9731F500DAC148 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A81929582A9737A600DAC148 /* MicSeatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MicSeatViewController.swift; sourceTree = "<group>"; };
+		A819295B2A97381800DAC148 /* AUIMicSeatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUIMicSeatView.swift; sourceTree = "<group>"; };
+		A819295D2A97384B00DAC148 /* AUIMicSeatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUIMicSeatInfo.swift; sourceTree = "<group>"; };
+		A819295F2A9738C300DAC148 /* AUIMicSeatViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUIMicSeatViewDelegate.swift; sourceTree = "<group>"; };
+		A81929612A9738D900DAC148 /* AUIMicSeatItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUIMicSeatItemCell.swift; sourceTree = "<group>"; };
+		A81929632A97394E00DAC148 /* AUIRippleAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUIRippleAnimationView.swift; sourceTree = "<group>"; };
+		A81929652A97397300DAC148 /* AUIMicSeatCellDataProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUIMicSeatCellDataProtocol.swift; sourceTree = "<group>"; };
+		A81929672A973A1C00DAC148 /* UIView+AUIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AUIKit.swift"; sourceTree = "<group>"; };
+		A81929692A973A6900DAC148 /* UIKitDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitDSL.swift; sourceTree = "<group>"; };
+		A819296B2A973A9300DAC148 /* AUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUIButton.swift; sourceTree = "<group>"; };
+		A819296D2A973C6600DAC148 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		A819296F2A97584100DAC148 /* KeyCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCenter.swift; sourceTree = "<group>"; };
+		A81929712A97588A00DAC148 /* RTCManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTCManager.swift; sourceTree = "<group>"; };
+		B37C2F9B3D6333FD53C750E8 /* Pods-HTDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTDemo.release.xcconfig"; path = "Target Support Files/Pods-HTDemo/Pods-HTDemo.release.xcconfig"; sourceTree = "<group>"; };
+		F001B5020FCDF2669254BB4E /* Pods-HTDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HTDemo.debug.xcconfig"; path = "Target Support Files/Pods-HTDemo/Pods-HTDemo.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A819293E2A9731F300DAC148 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				108F2008DB77F412D86F01CB /* Pods_HTDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		84270A3CFF404E01FFB1F9E9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F001B5020FCDF2669254BB4E /* Pods-HTDemo.debug.xcconfig */,
+				B37C2F9B3D6333FD53C750E8 /* Pods-HTDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A4D2CC3857A9DA3EC52FC763 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				927AC845A6E669B88DFF6AF6 /* Pods_HTDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A81929382A9731F300DAC148 = {
+			isa = PBXGroup;
+			children = (
+				A81929432A9731F300DAC148 /* HTDemo */,
+				A81929422A9731F300DAC148 /* Products */,
+				84270A3CFF404E01FFB1F9E9 /* Pods */,
+				A4D2CC3857A9DA3EC52FC763 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A81929422A9731F300DAC148 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A81929412A9731F300DAC148 /* HTDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A81929432A9731F300DAC148 /* HTDemo */ = {
+			isa = PBXGroup;
+			children = (
+				A819296F2A97584100DAC148 /* KeyCenter.swift */,
+				A81929712A97588A00DAC148 /* RTCManager.swift */,
+				A819295A2A97380D00DAC148 /* MicSeat */,
+				A81929442A9731F300DAC148 /* AppDelegate.swift */,
+				A81929462A9731F300DAC148 /* SceneDelegate.swift */,
+				A81929482A9731F300DAC148 /* ViewController.swift */,
+				A81929582A9737A600DAC148 /* MicSeatViewController.swift */,
+				A819294A2A9731F300DAC148 /* Main.storyboard */,
+				A819294D2A9731F500DAC148 /* Assets.xcassets */,
+				A819294F2A9731F500DAC148 /* LaunchScreen.storyboard */,
+				A81929522A9731F500DAC148 /* Info.plist */,
+			);
+			path = HTDemo;
+			sourceTree = "<group>";
+		};
+		A819295A2A97380D00DAC148 /* MicSeat */ = {
+			isa = PBXGroup;
+			children = (
+				A819296D2A973C6600DAC148 /* UIColorExtension.swift */,
+				A819296B2A973A9300DAC148 /* AUIButton.swift */,
+				A81929672A973A1C00DAC148 /* UIView+AUIKit.swift */,
+				A81929692A973A6900DAC148 /* UIKitDSL.swift */,
+				A81929652A97397300DAC148 /* AUIMicSeatCellDataProtocol.swift */,
+				A81929632A97394E00DAC148 /* AUIRippleAnimationView.swift */,
+				A81929612A9738D900DAC148 /* AUIMicSeatItemCell.swift */,
+				A819295F2A9738C300DAC148 /* AUIMicSeatViewDelegate.swift */,
+				A819295B2A97381800DAC148 /* AUIMicSeatView.swift */,
+				A819295D2A97384B00DAC148 /* AUIMicSeatInfo.swift */,
+			);
+			path = MicSeat;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A81929402A9731F300DAC148 /* HTDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A81929552A9731F500DAC148 /* Build configuration list for PBXNativeTarget "HTDemo" */;
+			buildPhases = (
+				938D567017B8667DD1047E29 /* [CP] Check Pods Manifest.lock */,
+				A819293D2A9731F300DAC148 /* Sources */,
+				A819293E2A9731F300DAC148 /* Frameworks */,
+				A819293F2A9731F300DAC148 /* Resources */,
+				4A4B87ACE64FA0758864F4E7 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HTDemo;
+			productName = HTDemo;
+			productReference = A81929412A9731F300DAC148 /* HTDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A81929392A9731F300DAC148 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					A81929402A9731F300DAC148 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = A819293C2A9731F300DAC148 /* Build configuration list for PBXProject "HTDemo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A81929382A9731F300DAC148;
+			productRefGroup = A81929422A9731F300DAC148 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A81929402A9731F300DAC148 /* HTDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A819293F2A9731F300DAC148 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A81929512A9731F500DAC148 /* LaunchScreen.storyboard in Resources */,
+				A819294E2A9731F500DAC148 /* Assets.xcassets in Resources */,
+				A819294C2A9731F300DAC148 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4A4B87ACE64FA0758864F4E7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HTDemo/Pods-HTDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HTDemo/Pods-HTDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HTDemo/Pods-HTDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		938D567017B8667DD1047E29 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HTDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A819293D2A9731F300DAC148 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A81929492A9731F300DAC148 /* ViewController.swift in Sources */,
+				A819296E2A973C6600DAC148 /* UIColorExtension.swift in Sources */,
+				A81929602A9738C300DAC148 /* AUIMicSeatViewDelegate.swift in Sources */,
+				A81929452A9731F300DAC148 /* AppDelegate.swift in Sources */,
+				A81929472A9731F300DAC148 /* SceneDelegate.swift in Sources */,
+				A81929592A9737A600DAC148 /* MicSeatViewController.swift in Sources */,
+				A81929642A97394F00DAC148 /* AUIRippleAnimationView.swift in Sources */,
+				A819296A2A973A6900DAC148 /* UIKitDSL.swift in Sources */,
+				A81929682A973A1C00DAC148 /* UIView+AUIKit.swift in Sources */,
+				A819296C2A973A9300DAC148 /* AUIButton.swift in Sources */,
+				A81929702A97584100DAC148 /* KeyCenter.swift in Sources */,
+				A81929662A97397300DAC148 /* AUIMicSeatCellDataProtocol.swift in Sources */,
+				A819295E2A97384B00DAC148 /* AUIMicSeatInfo.swift in Sources */,
+				A819295C2A97381800DAC148 /* AUIMicSeatView.swift in Sources */,
+				A81929622A9738D900DAC148 /* AUIMicSeatItemCell.swift in Sources */,
+				A81929722A97588A00DAC148 /* RTCManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A819294A2A9731F300DAC148 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A819294B2A9731F300DAC148 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A819294F2A9731F500DAC148 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A81929502A9731F500DAC148 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A81929532A9731F500DAC148 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A81929542A9731F500DAC148 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A81929562A9731F500DAC148 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F001B5020FCDF2669254BB4E /* Pods-HTDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HTDemo/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "App needs your permission to access microphone for audio interaction";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.aes.HTDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A81929572A9731F500DAC148 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B37C2F9B3D6333FD53C750E8 /* Pods-HTDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HTDemo/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "App needs your permission to access microphone for audio interaction";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.aes.HTDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A819293C2A9731F300DAC148 /* Build configuration list for PBXProject "HTDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A81929532A9731F500DAC148 /* Debug */,
+				A81929542A9731F500DAC148 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A81929552A9731F500DAC148 /* Build configuration list for PBXNativeTarget "HTDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A81929562A9731F500DAC148 /* Debug */,
+				A81929572A9731F500DAC148 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A81929392A9731F300DAC148 /* Project object */;
+}
