@@ -25,6 +25,7 @@ public interface IMicSeatsView {
      * 上麦
      *
      * @param userId 用户id
+     * @param seatIndex 麦位位置，-1时会分配一个空麦位，>=0时如果该麦位为空则会使用该麦位
      * @return 麦位View
      */
     IMicSeatItemView upMicSeat(int userId, int seatIndex);
@@ -44,6 +45,9 @@ public interface IMicSeatsView {
      */
     void setMicSeatActionDelegate(ActionDelegate actionDelegate);
 
+    /**
+     * 事件回调
+     */
     interface ActionDelegate {
 
         /**
