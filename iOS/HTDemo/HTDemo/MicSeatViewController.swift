@@ -77,10 +77,11 @@ class MicSeatViewController: UIViewController {
         for i in 0...(8 - 1) {
             let seatInfo = AUIMicSeatInfo()
             seatInfo.micSeat = UInt(i)
-            if i < 3 {
+            if i < avatarArr.count {
                 seatInfo.seatName = "user\(i)"
                 seatInfo.avatarUrl = avatarArr[i]
                 seatInfo.onSeat = true
+                seatInfo.role = .onlineAudience
             }
             micSeatArray.append(seatInfo)
         }

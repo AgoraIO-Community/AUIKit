@@ -62,7 +62,7 @@ public class AUIMicSeatView: UIView,IAUIMicSeatView {
     ///   - frame: frame
     ///   - layout: layout
     ///   - hiddenRipple: Whether to display the breathing light animation
-    @objc public convenience init(frame: CGRect, layout: UICollectionViewLayout,hiddenRipple: Bool = true) {
+    @objc public convenience init(frame: CGRect, layout: UICollectionViewLayout,hiddenRipple: Bool = false) {
         self.init(frame: frame)
         self.hiddenRipple = hiddenRipple
         _loadSubViews()
