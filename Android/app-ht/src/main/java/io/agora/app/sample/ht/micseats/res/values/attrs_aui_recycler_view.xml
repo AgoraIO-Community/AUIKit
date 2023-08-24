@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <declare-styleable name="AUIRecyclerView">
+        <attr name="aui_spaceHorizontal" format="dimension"/>
+        <attr name="aui_spaceVertical" format="dimension"/>
+        <attr name="aui_listDivider" format="reference"/>
+        <attr name="android:orientation"/>
+    </declare-styleable>
+
+
+    <style name="AUIRecyclerView">
+        <item name="aui_spaceHorizontal">0dp</item>
+        <item name="aui_spaceVertical">0dp</item>
+        <item name="aui_listDivider">@null</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="50dp">
+
+
+    <EditText
+        android:id="@+id/etChannelName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="ChannelName"
+        android:text="TestAbc"/>
+
+    <Button
+        android:id="@+id/btnJoin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="加入频道" />
+
+</LinearLayout>

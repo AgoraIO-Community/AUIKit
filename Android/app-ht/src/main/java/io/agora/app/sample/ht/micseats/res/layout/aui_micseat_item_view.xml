@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="?attr/aui_micSeatItem_appearance">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/aui_micSeatItem_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="?attr/aui_micSeatItem_dimensionRatio"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/bg_seat"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:background="?attr/aui_micSeatItem_seatBackground"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_state_idle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="?attr/aui_micSeatItem_seatIconMargin"
+            android:src="?attr/aui_micSeatItem_seatIconIdle"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintDimensionRatio="?attr/aui_micSeatItem_seatIconDimensionRatio"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat" />
+
+        <ImageView
+            android:id="@+id/iv_state_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="?attr/aui_micSeatItem_seatIconMargin"
+            android:src="?attr/aui_micSeatItem_seatIconLock"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintDimensionRatio="?attr/aui_micSeatItem_seatIconDimensionRatio"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat" />
+
+        <ImageView
+            android:id="@+id/iv_user_avatar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat" />
+
+        <io.agora.auikit.ui.micseats.impl.AUIRippleAnimationView
+            android:id="@+id/iv_ripple"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:aui_ripple_color="@color/aui_ripple_stroke_color"
+            />
+
+        <TextView
+            android:id="@+id/tv_room_owner"
+            android:layout_width="?attr/aui_micSeatItem_roomOwnerWidth"
+            android:layout_height="?attr/aui_micSeatItem_roomOwnerHeight"
+            android:background="?attr/aui_micSeatItem_roomOwnerBackground"
+            android:gravity="center"
+            android:paddingHorizontal="?attr/aui_micSeatItem_roomOwnerPaddingHorizontal"
+            android:paddingVertical="?attr/aui_micSeatItem_roomOwnerPaddingVertical"
+            android:text="?attr/aui_micSeatItem_roomOwnerText"
+            android:textColor="?attr/aui_micSeatItem_roomOwnerTextColor"
+            android:textSize="?attr/aui_micSeatItem_roomOwnerTextSize"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat" />
+
+        <FrameLayout
+            android:id="@+id/ll_audio_mute"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/bg_seat"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/bg_seat"
+            app:layout_constraintStart_toStartOf="@id/bg_seat"
+            app:layout_constraintTop_toTopOf="@id/bg_seat">
+
+            <ImageView
+                android:id="@+id/iv_audio_mute"
+                android:layout_width="?attr/aui_micSeatItem_audioMuteIconWidth"
+                android:layout_height="?attr/aui_micSeatItem_audioMuteIconHeight"
+                android:src="?attr/aui_micSeatItem_audioMuteIcon"/>
+
+            <ImageView
+                android:id="@+id/iv_video_mute"
+                android:layout_width="?attr/aui_micSeatItem_audioMuteIconWidth"
+                android:layout_height="?attr/aui_micSeatItem_audioMuteIconHeight"
+                android:src="?attr/aui_micSeatItem_videoMuteIcon"
+                tools:visibility="gone"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="3dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bg_seat">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="?attr/aui_micSeatItem_titleTextColor"
+                android:textSize="?attr/aui_micSeatItem_titleTextSize" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tv_lead_singer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:drawableStart="?attr/aui_micSeatItem_leadSingerIcon"
+                    android:drawablePadding="2dp"
+                    android:gravity="center"
+                    android:text="?attr/aui_micSeatItem_leadSingerText"
+                    android:textColor="?attr/aui_micSeatItem_leadSingerTextColor"
+                    android:textSize="?attr/aui_micSeatItem_leadSingerTextSize"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tv_chorus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="1dp"
+                    android:drawableStart="?attr/aui_micSeatItem_leadSingerIcon"
+                    android:drawablePadding="2dp"
+                    android:gravity="center"
+                    android:text="?attr/aui_micSeatItem_leadSingerText"
+                    android:textColor="?attr/aui_micSeatItem_chorusTextColor"
+                    android:textSize="?attr/aui_micSeatItem_chorusTextSize"
+                    android:visibility="invisible"
+                    />
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

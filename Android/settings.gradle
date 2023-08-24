@@ -3,5 +3,6 @@ include ':auikit'
 include ':auikit-ui'
 include ':auikit-service'
 include ':app'
+include ':app-ht'
 
 

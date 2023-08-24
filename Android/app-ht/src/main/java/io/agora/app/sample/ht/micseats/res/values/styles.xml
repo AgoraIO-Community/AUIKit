@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AUIMicSeats">
+        <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
+    </style>
+    <style name="AUIMicSeatItem">
+        <item name="aui_micSeatItem_appearance">@style/AUIMicSeatItem.Appearance</item>
+    </style>
+
+    <!-- 麦位默认样式 -->
+    <style name="AUIMicSeats.Appearance">
+        <item name="aui_micSeats_spaceHorizontal">2dp</item>
+        <item name="aui_micSeats_spaceVertical">2dp</item>
+        <item name="aui_micSeats_background">@android:color/transparent</item>
+    </style>
+
+    <!-- 麦位座位默认样式 -->
+    <style name="AUIMicSeatItem.Appearance">
+        <!-- 麦位全局 -->
+        <item name="aui_micSeatItem_background">@android:color/transparent</item>
+        <item name="aui_micSeatItem_dimensionRatio">9:10</item>
+
+        <!-- 麦位座位 -->
+        <item name="aui_micSeatItem_seatBackground">@drawable/aui_micseat_item_seat_bg</item>
+        <item name="aui_micSeatItem_seatIconIdle">@drawable/aui_micseat_item_icon_idle</item>
+        <item name="aui_micSeatItem_seatIconLock">@drawable/aui_micseat_item_icon_lock</item>
+        <item name="aui_micSeatItem_seatIconMargin">0dp</item>
+        <item name="aui_micSeatItem_seatIconDimensionRatio">1:1</item>
+
+        <!-- 麦位静音图标 -->
+        <item name="aui_micSeatItem_audioMuteIcon">@drawable/aui_micseat_item_icon_auido_mute</item>
+        <item name="aui_micSeatItem_videoMuteIcon">@drawable/aui_micseat_item_icon_video_mute</item>
+        <item name="aui_micSeatItem_audioMuteIconWidth">wrap_content</item>
+        <item name="aui_micSeatItem_audioMuteIconHeight">wrap_content</item>
+        <item name="aui_micSeatItem_audioMuteIconGravity">bottomEnd</item>
+
+        <!-- 麦位房主 -->
+        <item name="aui_micSeatItem_roomOwnerWidth">44dp</item>
+        <item name="aui_micSeatItem_roomOwnerHeight">wrap_content</item>
+        <item name="aui_micSeatItem_roomOwnerText">@string/aui_micseat_roomowner</item>
+        <item name="aui_micSeatItem_roomOwnerTextSize">11sp</item>
+        <item name="aui_micSeatItem_roomOwnerTextColor">@android:color/white</item>
+        <item name="aui_micSeatItem_roomOwnerBackground">@drawable/aui_micseat_item_roomowner_bg</item>
+        <item name="aui_micSeatItem_roomOwnerPaddingHorizontal">4dp</item>
+        <item name="aui_micSeatItem_roomOwnerPaddingVertical">2dp</item>
+
+        <!-- 麦位主标题 -->
+        <item name="aui_micSeatItem_titleTextSize">12sp</item>
+        <item name="aui_micSeatItem_titleTextColor">@android:color/white</item>
+
+        <!-- 麦位合唱 -->
+        <item name="aui_micSeatItem_chorusIcon">@drawable/aui_micseat_item_icon_chorus</item>
+        <item name="aui_micSeatItem_chorusText">@string/aui_micseat_chorus</item>
+        <item name="aui_micSeatItem_chorusTextColor">@android:color/white</item>
+        <item name="aui_micSeatItem_chorusTextSize">11sp</item>
+
+        <!-- 麦位主唱 -->
+        <item name="aui_micSeatItem_leadSingerIcon">@drawable/aui_micseat_item_icon_leadsinger</item>
+        <item name="aui_micSeatItem_leadSingerText">@string/aui_micseat_leadsinger</item>
+        <item name="aui_micSeatItem_leadSingerTextColor">@android:color/white</item>
+        <item name="aui_micSeatItem_leadSingerTextSize">11sp</item>
+    </style>
+
+</resources>

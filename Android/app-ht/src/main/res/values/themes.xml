@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HT" parent="Theme.MaterialComponents.Light">
+
+        <!-- 麦位组件 -->
+        <item name="aui_micSeats_appearance">@style/AUIMicSeats.Appearance</item>
+        <item name="aui_micSeatItem_appearance">@style/AUIMicSeatItem.Appearance</item>
+
+    </style>
+</resources>
