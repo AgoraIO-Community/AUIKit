@@ -27,7 +27,6 @@ class AUIChatListView : RelativeLayout,
     private var listener:AUIChatListItemClickListener?=null
     private var isScrollBottom = false
     private var adapter:AUIChatListAdapter?=null
-    private var appearanceId:Int=0
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -37,18 +36,16 @@ class AUIChatListView : RelativeLayout,
     ) {
         addView(mViewBinding.root)
         val themeTa = context.obtainStyledAttributes(attrs, R.styleable.AUIChatListView, defStyleAttr, 0)
-        appearanceId = themeTa.getResourceId(R.styleable.AUIChatListView_aui_chatListView_appearance, 0)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIChatListView_aui_chatListView_appearance, 0)
         themeTa.recycle()
         initListener()
+        initView(appearanceId)
     }
 
-    override fun initView(ownerId: String?){
+    fun initView(appearanceId:Int){
         val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIChatListView)
-        adapter = AUIChatListAdapter(context,ownerId,typedArray)
+        adapter = AUIChatListAdapter(context,typedArray)
         val linearLayout = LinearLayoutManager(context)
-//        val scrollSpeedLinearLayoutManger = ScrollSpeedLinearLayoutManger(context)
-//        //设置item滑动速度
-//        scrollSpeedLinearLayoutManger.setSpeedSlow()
         mViewBinding.listview.layoutManager = linearLayout
 
         //设置item 间距
@@ -58,6 +55,10 @@ class AUIChatListView : RelativeLayout,
         itemDecoration.setDrawable(drawable)
         mViewBinding.listview.addItemDecoration(itemDecoration)
         mViewBinding.listview.adapter = adapter
+    }
+
+    fun setOwnerId(ownerId:String){
+        adapter?.setOwner(ownerId)
     }
 
     @SuppressLint("ClickableViewAccessibility")

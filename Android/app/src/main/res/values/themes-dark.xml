@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Sample.Voice.Dark" parent="Theme.AUIKit.Dark">
+        <item name="sample_appearance">@style/SampleStyle.Appearance.Dark</item>
+    </style>
+</resources>

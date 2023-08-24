@@ -10,8 +10,6 @@ interface IAUIChatListView {
 
     fun refreshSelectLast(msgList:List<AUIChatInfo>?){}
 
-    fun initView(ownerId:String?){}
-
     // broadcast view
     fun setScrollSpeed(speed: Int){}
 
