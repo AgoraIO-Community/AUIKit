@@ -2,13 +2,28 @@ PODS:
   - Agora_Chat_iOS (1.1.0)
   - AgoraLyricsScore (1.1.2)
   - AgoraRtcEngine_Special_iOS (4.1.1.142)
-  - AgRtmKit2_Test (0.2.0)
+  - AgoraRtm_iOS (2.1.4)
   - Alamofire (5.7.1)
-  - AUIKitCore/Service (0.4.0):
+  - AUIKitCore (0.4.2):
     - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_Special_iOS (= 4.1.1.142)
-    - AgRtmKit2_Test
+    - AgoraRtm_iOS (= 2.1.4)
+    - Alamofire
+    - AUIKitCore/Service (= 0.4.2)
+    - AUIKitCore/UI (= 0.4.2)
+    - MJRefresh
+    - ScoreEffectUI
+    - SDWebImage
+    - SwiftTheme
+    - SwiftyBeaver (= 1.9.5)
+    - YYModel
+    - Zip
+  - AUIKitCore/Service (0.4.2):
+    - Agora_Chat_iOS
+    - AgoraLyricsScore
+    - AgoraRtcEngine_Special_iOS (= 4.1.1.142)
+    - AgoraRtm_iOS (= 2.1.4)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
@@ -17,11 +32,20 @@ PODS:
     - SwiftyBeaver (= 1.9.5)
     - YYModel
     - Zip
-  - FBSnapshotTestCase (2.1.4):
-    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
-  - FBSnapshotTestCase/Core (2.1.4)
-  - FBSnapshotTestCase/SwiftSupport (2.1.4):
-    - FBSnapshotTestCase/Core
+  - AUIKitCore/UI (0.4.2):
+    - Agora_Chat_iOS
+    - AgoraLyricsScore
+    - AgoraRtcEngine_Special_iOS (= 4.1.1.142)
+    - AgoraRtm_iOS (= 2.1.4)
+    - Alamofire
+    - MJRefresh
+    - ScoreEffectUI
+    - SDWebImage
+    - SwiftTheme
+    - SwiftyBeaver (= 1.9.5)
+    - YYModel
+    - Zip
+  - libpag (4.3.8)
   - MJRefresh (3.7.5)
   - ScoreEffectUI (1.0.1)
   - SDWebImage (5.17.0):
@@ -34,17 +58,17 @@ PODS:
 
 DEPENDENCIES:
   - AgoraLyricsScore (= 1.1.2)
-  - AUIKitCore/Service (from `../../`)
-  - FBSnapshotTestCase (~> 2.1.4)
+  - AUIKitCore (from `../../`)
+  - libpag
 
 SPEC REPOS:
   trunk:
     - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_Special_iOS
-    - AgRtmKit2_Test
+    - AgoraRtm_iOS
     - Alamofire
-    - FBSnapshotTestCase
+    - libpag
     - MJRefresh
     - ScoreEffectUI
     - SDWebImage
@@ -61,10 +85,10 @@ SPEC CHECKSUMS:
   Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
   AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
   AgoraRtcEngine_Special_iOS: 6414e3cbb92076e18ca68364d1c9e6ae5174d381
-  AgRtmKit2_Test: 92d6b7a5c9718089dc52686117b7e18b72de48df
+  AgoraRtm_iOS: 11b767ee81a7202dcf09e045cd2d359b5abbc965
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  AUIKitCore: 66f4ed2f19f3a2a443ecfd3cac69f9b2d5cf0527
-  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  AUIKitCore: c8609bb258d3bf07ff4c8f7553a24af7e9e1f2a6
+  libpag: 212f7cb31fd1b9354da2ec28da1402cbec55afa8
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
@@ -73,6 +97,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 9a40f829a92813935804291da41b6a18d8455727
+PODFILE CHECKSUM: 26db9862d36422c60b04d38fc6703816fd93ea99
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
