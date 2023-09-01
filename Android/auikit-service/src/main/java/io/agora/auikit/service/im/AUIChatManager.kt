@@ -397,6 +397,7 @@ class AUIChatManager(
             it?.chatType = ChatMessage.ChatType.ChatRoom
             it?.setMessageStatusCallback(object : CallBack {
                 override fun onSuccess() {
+                    parseMsgChatEntity(it)
                     callBack.onOriginalResult(null,it)
                 }
 
