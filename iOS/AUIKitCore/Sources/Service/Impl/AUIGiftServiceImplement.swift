@@ -24,7 +24,7 @@ fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
     
     deinit {
         requestDelegate = nil
-        aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
+        aui_info("deinit AUIUserServiceImpl", tag: "AUIGiftServiceImplement")
         rtmManager?.unsubscribeMessage(channelName: channelName, delegate: self)
     }
     
@@ -34,7 +34,7 @@ fileprivate let AUIChatRoomGift = "AUIChatRoomGift"
         self.channelName = channelName
         self.requestDelegate = self
         self.rtmManager?.subscribeMessage(channelName: channelName, delegate: self)
-        aui_info("init AUIUserServiceImpl", tag: "AUIUserServiceImpl")
+        aui_info("init AUIUserServiceImpl", tag: "AUIGiftServiceImplement")
     }
 }
 

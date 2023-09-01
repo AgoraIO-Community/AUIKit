@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/voice_bg" />
+    <item >
+        <bitmap android:src="@drawable/voice_bg_room_living"/>
+    </item>
+</layer-list>

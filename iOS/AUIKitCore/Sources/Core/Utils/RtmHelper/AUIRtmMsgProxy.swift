@@ -65,11 +65,17 @@ open class AUIRtmMsgProxy: NSObject {
             if !value.contains(delegate) {
                 value.add(delegate)
             }
+        }else{
+            let weakObjects = NSHashTable<AnyObject>.weakObjects()
+            weakObjects.add(delegate)
+            attributesDelegates[key] = weakObjects
+        }
+        let cache = attributesCacheAttr[channelName]
+        let item = cache?[itemKey]
+        guard let itemData = item?.data(using: .utf8), let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
             return
         }
-        let weakObjects = NSHashTable<AnyObject>.weakObjects()
-        weakObjects.add(delegate)
-        attributesDelegates[key] = weakObjects
+        delegate.onAttributesDidChanged(channelName: channelName, key: itemKey, value: itemValue)
     }
     
     func unsubscribeAttributes(channelName: String, itemKey: String, delegate: AUIRtmAttributesProxyDelegate) {

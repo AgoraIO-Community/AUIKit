@@ -39,17 +39,17 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
         super.init()
         self.configIM(user: AUIRoomContext.shared.currentUserInfo, completion: { [weak self] error in
             guard let `self` = self else { return }
-//            AUIToast.show(text: error != nil ? "IM initialize failed!":"IM initialize successful!")
+            aui_info(error != nil ? "IM initialize failed!":"IM initialize successful!")
             if error == nil {
                 let channelName = self.channelName
                 if AUIRoomContext.shared.isRoomOwner(channelName: channelName) {
                     self.login { error in
                         if error == nil {
                             self.createChatRoom(roomId: channelName) { id, error in
-//                                AUIToast.show(text: error == nil ? "Create chatroom successful!":"Create chatroom failed!")
+                                aui_info(error == nil ? "Create chatroom successful!":"Create chatroom failed!")
                             }
                         }
-//                        AUIToast.show(text: "login IM \(error == qnil ? "successful!":"failed!")")
+                        aui_info("login IM \(error == nil ? "successful!":"failed!")")
                     }
                     
                 }
@@ -137,11 +137,11 @@ extension AUIIMManagerServiceImplement: AUIRtmAttributesProxyDelegate {
                     if error == nil {
                         self.joinedChatRoom(roomId: self.currentRoomId) { message, error in
 //                            AUIToast.show(text: "Join chatroom\(error == nil ? "successful!":"failed!")")
-                            aui_info("IM.onAttributesDidChanged joinedChatRoom:\(error == nil ? "successful!":"failed!")")
+                            aui_info("IM.onAttributesDidChanged joinedChatRoom:\(error == nil ? "successful!":"failed! error = \(error!.localizedDescription)")")
                         }
                     }
 //                    AUIToast.show(text: "login IM \(error == nil ? "successful!":"failed!")")
-                    aui_info("IM.onAttributesDidChanged login:\(error == nil ? "successful!":"failed!")")
+                    aui_info("IM.onAttributesDidChanged login:\(error == nil ? "successful!":"failed! error = \(error!.localizedDescription)")")
                 }
             }
         }

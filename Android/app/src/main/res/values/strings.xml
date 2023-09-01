@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name" translatable="false">AUIKit</string>
+    <string name="voice_room_welcome" translatable="false">欢迎来到声网语聊房！房间内严禁色情、赌博或暴力内容。</string>
 </resources>

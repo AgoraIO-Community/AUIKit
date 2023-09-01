@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Sample.Voice" parent="Theme.AUIKit">
+        <item name="sample_appearance">@style/SampleStyle.Appearance</item>
+    </style>
+</resources>
