@@ -41,6 +41,7 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
             guard let `self` = self else { return }
             aui_info(error != nil ? "IM initialize failed!":"IM initialize successful!")
             if error == nil {
+                self.subscribeChatroomId()
                 let channelName = self.channelName
                 if AUIRoomContext.shared.isRoomOwner(channelName: channelName) {
                     self.login { error in
@@ -55,7 +56,6 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
                 }
             }
         })
-        self.subscribeChatroomId()
         self.requestDelegate = self
         aui_info("init AUIIMManagerServiceImplement", tag: "AUIIMManagerServiceImplement")
     }

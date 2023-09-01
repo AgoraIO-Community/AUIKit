@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25AA8B34B6C3BAF2498622D8 /* Pods_AUIKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */; };
+		057F43BF2A8B519A00454F6D /* gifts.json in Resources */ = {isa = PBXBuildFile; fileRef = 057F43BE2A8B519A00454F6D /* gifts.json */; };
+		057F43C12A8B55F100454F6D /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057F43C02A8B55F100454F6D /* UserInfo.swift */; };
+		05EAEDAC2A8B159800622F1A /* ChatListEffectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05EAEDAB2A8B159800622F1A /* ChatListEffectViewController.swift */; };
 		4687DED6C4AE760A2A3C91C1 /* Pods_AUIKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		A81701492A7C9E850032686B /* TestServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81701482A7C9E850032686B /* TestServiceViewController.swift */; };
@@ -19,6 +21,8 @@
 		A87C9B762A285A4D002D9BD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B6F2A285A4D002D9BD5 /* Images.xcassets */; };
 		A87C9B772A285A4D002D9BD5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87C9B702A285A4D002D9BD5 /* AppDelegate.swift */; };
 		A87C9B822A2899B2002D9BD5 /* exampleTheme.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */; };
+		DD0CECDE2A9C72070033B4D9 /* ComponentsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CECDD2A9C72070033B4D9 /* ComponentsListViewController.swift */; };
+		DD0CECE02A9C721A0033B4D9 /* WidgetsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CECDF2A9C721A0033B4D9 /* WidgetsListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,15 +36,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		057F43BE2A8B519A00454F6D /* gifts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = gifts.json; sourceTree = "<group>"; };
+		057F43C02A8B55F100454F6D /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		05EAEDAB2A8B159800622F1A /* ChatListEffectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListEffectViewController.swift; sourceTree = "<group>"; };
 		212D08FE84EE860B8652E908 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		2EB49B854FE31BFAEFC54B43 /* Pods-AUIKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* AUIKit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AUIKit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACE51AFB9204008FA782 /* AUIKit_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AUIKit_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		82FDF13323844138E2902901 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A81701482A7C9E850032686B /* TestServiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestServiceViewController.swift; sourceTree = "<group>"; };
 		A817014C2A7CA6FF0032686B /* KeyCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCenter.swift; sourceTree = "<group>"; };
 		A827837C2A78E62300A702D5 /* MicSeatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicSeatViewController.swift; sourceTree = "<group>"; };
@@ -52,7 +57,8 @@
 		A87C9B702A285A4D002D9BD5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = exampleTheme.bundle; sourceTree = "<group>"; };
 		B9CD0CD6559B14E3F0A33E06 /* Pods-AUIKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Example.debug.xcconfig"; path = "Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		E9CAC8BDC6BC7995118FF6EC /* Pods-AUIKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AUIKit_Tests.release.xcconfig"; path = "Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		DD0CECDD2A9C72070033B4D9 /* ComponentsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsListViewController.swift; sourceTree = "<group>"; };
+		DD0CECDF2A9C721A0033B4D9 /* WidgetsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetsListViewController.swift; sourceTree = "<group>"; };
 		FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AUIKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -69,7 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25AA8B34B6C3BAF2498622D8 /* Pods_AUIKit_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				FDCC606D1B44D3A224CB3E60 /* Pods_AUIKit_Example.framework */,
-				8395EB1B0F27169313A6292F /* Pods_AUIKit_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -90,8 +94,6 @@
 			children = (
 				B9CD0CD6559B14E3F0A33E06 /* Pods-AUIKit_Example.debug.xcconfig */,
 				70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */,
-				2EB49B854FE31BFAEFC54B43 /* Pods-AUIKit_Tests.debug.xcconfig */,
-				E9CAC8BDC6BC7995118FF6EC /* Pods-AUIKit_Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -149,13 +151,18 @@
 			children = (
 				A87C9B812A2899B2002D9BD5 /* exampleTheme.bundle */,
 				A87C9B692A285A4D002D9BD5 /* ViewController.swift */,
+				DD0CECDF2A9C721A0033B4D9 /* WidgetsListViewController.swift */,
+				DD0CECDD2A9C72070033B4D9 /* ComponentsListViewController.swift */,
 				A827837C2A78E62300A702D5 /* MicSeatViewController.swift */,
 				A81701482A7C9E850032686B /* TestServiceViewController.swift */,
+				05EAEDAB2A8B159800622F1A /* ChatListEffectViewController.swift */,
+				057F43C02A8B55F100454F6D /* UserInfo.swift */,
 				A817014C2A7CA6FF0032686B /* KeyCenter.swift */,
 				A87C9B6A2A285A4D002D9BD5 /* LaunchScreen.xib */,
 				A87C9B6C2A285A4D002D9BD5 /* Main.storyboard */,
 				A87C9B6F2A285A4D002D9BD5 /* Images.xcassets */,
 				A87C9B702A285A4D002D9BD5 /* AppDelegate.swift */,
+				057F43BE2A8B519A00454F6D /* gifts.json */,
 			);
 			path = AUIKit;
 			sourceTree = "<group>";
@@ -172,6 +179,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */,
+				1BB44EF277F8E3C099157FE2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -186,11 +194,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "AUIKit_Tests" */;
 			buildPhases = (
-				BE8B5F127B4E3BBDC0675725 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				39F13B8B6D81AD707F89147F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -219,7 +225,7 @@
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = JDPG69R49Z;
+						DevelopmentTeam = YS397FG5PA;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -250,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				057F43BF2A8B519A00454F6D /* gifts.json in Resources */,
 				A87C9B762A285A4D002D9BD5 /* Images.xcassets in Resources */,
 				A87C9B732A285A4D002D9BD5 /* LaunchScreen.xib in Resources */,
 				A87C9B822A2899B2002D9BD5 /* exampleTheme.bundle in Resources */,
@@ -267,22 +274,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		39F13B8B6D81AD707F89147F /* [CP] Embed Pods Frameworks */ = {
+		1BB44EF277F8E3C099157FE2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FBSnapshotTestCase/FBSnapshotTestCase.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/auiLocalizable.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/auiTheme.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/ChatResource.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/Gift.bundle",
+				"${PODS_ROOT}/../../AUIKitCore/Resource/Invitation.bundle",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSnapshotTestCase.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiLocalizable.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ChatResource.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gift.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Invitation.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Tests/Pods-AUIKit_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AUIKit_Example/Pods-AUIKit_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4855FF3F43F3DD70170A4F97 /* [CP] Check Pods Manifest.lock */ = {
@@ -307,28 +322,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BE8B5F127B4E3BBDC0675725 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AUIKit_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F6451B5683206395C251D5C8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -345,7 +338,6 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework",
 				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgRtmKit2_Test/AgoraRtmKit2.framework/AgoraRtmKit2",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraAiEchoCancellationExtension.framework/AgoraAiEchoCancellationExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraAiNoiseSuppressionExtension.framework/AgoraAiNoiseSuppressionExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraAudioBeautyExtension.framework/AgoraAudioBeautyExtension",
@@ -366,7 +358,9 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/Agoraffmpeg.framework/Agoraffmpeg",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/video_dec.framework/video_dec",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/video_enc.framework/video_enc",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtm_iOS/AgoraRtmKit.framework/AgoraRtmKit",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Agora_Chat_iOS/AgoraChat.framework/AgoraChat",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/libpag/libpag.framework/libpag",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -379,7 +373,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraRtmKit2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraAiEchoCancellationExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraAiNoiseSuppressionExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraAudioBeautyExtension.framework",
@@ -400,7 +393,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Agoraffmpeg.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_dec.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_enc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraRtmKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraChat.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libpag.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -419,6 +414,10 @@
 				A81701492A7C9E850032686B /* TestServiceViewController.swift in Sources */,
 				A817014D2A7CA6FF0032686B /* KeyCenter.swift in Sources */,
 				A827837D2A78E62300A702D5 /* MicSeatViewController.swift in Sources */,
+				DD0CECE02A9C721A0033B4D9 /* WidgetsListViewController.swift in Sources */,
+				057F43C12A8B55F100454F6D /* UserInfo.swift in Sources */,
+				DD0CECDE2A9C72070033B4D9 /* ComponentsListViewController.swift in Sources */,
+				05EAEDAC2A8B159800622F1A /* ChatListEffectViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +565,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = JDPG69R49Z;
 				INFOPLIST_FILE = AUIKit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.uikit.demo;
@@ -580,8 +580,9 @@
 			baseConfigurationReference = 70DAF55726332003A4282BA9 /* Pods-AUIKit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = YS397FG5PA;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				INFOPLIST_FILE = AUIKit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.uikit.demo;
@@ -593,10 +594,9 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EB49B854FE31BFAEFC54B43 /* Pods-AUIKit_Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = JDPG69R49Z;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -606,6 +606,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.uikit.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -617,15 +618,15 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E9CAC8BDC6BC7995118FF6EC /* Pods-AUIKit_Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = JDPG69R49Z;
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.uikit.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
