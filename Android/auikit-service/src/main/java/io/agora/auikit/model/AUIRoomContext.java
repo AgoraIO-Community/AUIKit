@@ -70,4 +70,8 @@ public class AUIRoomContext {
         return roomInfo.roomOwner.userId;
     }
 
+    public @Nullable AUIRoomInfo getRoomInfo(String channelName) {
+        return roomInfoMap.get(channelName);
+    }
+
 }

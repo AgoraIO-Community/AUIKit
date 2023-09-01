@@ -30,6 +30,7 @@ public class BasicUiListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(100, 1001, 0, "改变主题");
+        menu.add(100, 1002, 0, "返回上级");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -43,6 +44,8 @@ public class BasicUiListActivity extends AppCompatActivity {
             }
             setTheme(themeId);
             setContentView(R.layout.basic_ui_list_activity);
+        }else if (item.getItemId() == 1002){
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

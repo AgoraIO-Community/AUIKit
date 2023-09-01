@@ -60,9 +60,7 @@ class AUIRoomManagerImpl(
     private val delegateHelper = DelegateHelper<AUIRoomManagerRespDelegate>()
 
     private var mChannelName: String? = null
-    protected fun finalize() {
-        rtmManager.logout()
-    }
+
     init {
         AUIRoomContext.shared().commonConfig = commonConfig
     }
@@ -116,6 +114,7 @@ class AUIRoomManagerImpl(
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.STREAM,roomId)
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.MESSAGE,roomId)
         rtmManager.unsubscribeMsg(roomId,"",this)
+        rtmManager.logout()
         HttpManager.getService(RoomInterface::class.java)
             .destroyRoom(RoomUserReq(roomId, roomContext.currentUserInfo.userId))
             .enqueue(object : retrofit2.Callback<CommonResp<DestroyRoomResp>> {
@@ -194,7 +193,7 @@ class AUIRoomManagerImpl(
                             )
                         )
                     } else {
-                        AUILogger.logger().d(TAG, "EnterRoom STREAM RtmChannelType.MESSAGE success")
+                        AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.STREAM RtmChannelType.MESSAGE success")
                         subChannelStream.set(true)
                         checkSubChannel(roomId,callback)
                     }
@@ -215,6 +214,7 @@ class AUIRoomManagerImpl(
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.STREAM,roomId)
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.MESSAGE,roomId)
         rtmManager.unsubscribeMsg(roomId,"",this)
+        rtmManager.logout()
         callback?.onResult(null)
         HttpManager.getService(RoomInterface::class.java)
             .leaveRoom(RoomUserReq(roomId, roomContext.currentUserInfo.userId))

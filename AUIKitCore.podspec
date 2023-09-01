@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.4.0'
+  s.version          = '0.5.0'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -85,7 +85,7 @@ s.subspec 'UI' do |ss|
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'Foundation'
   s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.142'
-  s.dependency 'AgRtmKit2_Test'
+  s.dependency 'AgoraRtm_iOS', '2.1.4'
   s.dependency 'YYModel'
   s.dependency 'SwiftyBeaver', '1.9.5'
   s.dependency 'Zip'

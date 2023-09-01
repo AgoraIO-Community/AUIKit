@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SampleStyle.Appearance.Dark" parent="SampleStyle.Appearance">
+        <!-- 背景 -->
+        <item name="sample_voice_background">@drawable/voice_bg_app_def_dark</item>
+        <item name="sample_dialog_more_background">@drawable/voice_bg_radius20_dark</item>
+        <item name="voice_room_textColor">@color/white</item>
+    </style>
+</resources>

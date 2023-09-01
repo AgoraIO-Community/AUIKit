@@ -69,7 +69,7 @@ dependencies {
 
     //agora chat
     api 'io.agora.rtc:chat-sdk:1.1.0'
-    api 'io.agora.rtc:agora-special-full:4.1.1.142'
+    api 'io.agora.rtc:agora-special-full:4.1.1.147'
 
 }
 

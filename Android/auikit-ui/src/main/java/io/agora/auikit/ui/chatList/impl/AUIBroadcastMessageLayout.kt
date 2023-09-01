@@ -20,14 +20,15 @@ class AUIBroadcastMessageLayout : RelativeLayout, AUIStatusChangeListener,IAUICh
     private var mWidth = 0
     //View高度
     private var mHeight = 0
-    private lateinit var mBaseLayout: ConstraintLayout
-    lateinit var mContent: AUIBroadcastMessageView
+    private lateinit var broadcastLayout: ConstraintLayout
+    lateinit var broadcastView: AUIBroadcastMessageView
     private var mainHandler: Handler = Handler(Looper.getMainLooper())
     private var task: Runnable? = null
     private var listener: SubtitleStatusChangeListener? = null
     private var isRunning:Boolean = false
     private val contentList = mutableListOf<String>()
     private var content:String = ""
+    private var delayMillis = 3000L
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -47,7 +48,7 @@ class AUIBroadcastMessageLayout : RelativeLayout, AUIStatusChangeListener,IAUICh
     }
 
     private fun initLayout() {
-        val params: ViewGroup.LayoutParams = mBaseLayout.layoutParams
+        val params: ViewGroup.LayoutParams = broadcastLayout.layoutParams
         params.height = mHeight
         params.width = mWidth
         requestLayout()
@@ -55,20 +56,20 @@ class AUIBroadcastMessageLayout : RelativeLayout, AUIStatusChangeListener,IAUICh
 
     private fun initAttrs(context: Context, attrs: AttributeSet?) {
         val view = LayoutInflater.from(context).inflate(R.layout.aui_broadcast_message_layout, this)
-        mBaseLayout = view.findViewById(R.id.base_layout)
-        mContent = view.findViewById(R.id.content)
+        broadcastLayout = view.findViewById(R.id.base_layout)
+        broadcastView = view.findViewById(R.id.content)
 
-        mContent.setTextColor(resources.getColor(R.color.voice_white))
-        mContent.movementMethod = ScrollingMovementMethod.getInstance()
-        mContent.animation = AnimationUtils.loadAnimation(context,R.anim.aui_subtitle_anim_enter)
-        mContent.setSubtitleStatusChanged(this)
+        broadcastView.setTextColor(resources.getColor(R.color.voice_white))
+        broadcastView.movementMethod = ScrollingMovementMethod.getInstance()
+        broadcastView.animation = AnimationUtils.loadAnimation(context,R.anim.aui_subtitle_anim_enter)
+        broadcastView.setSubtitleStatusChanged(this)
     }
 
     private fun hideSubtitleView(){
-        mBaseLayout.animation = AnimationUtils.loadAnimation(context,R.anim.aui_subtitle_anim_exit)
-        mContent.text = ""
-        mContent.visibility = GONE
-        mBaseLayout.visibility = GONE
+        broadcastLayout.animation = AnimationUtils.loadAnimation(context,R.anim.aui_subtitle_anim_exit)
+        broadcastView.text = ""
+        broadcastView.visibility = GONE
+        broadcastLayout.visibility = GONE
     }
 
     override fun showSubtitleView(content:String){
@@ -81,7 +82,14 @@ class AUIBroadcastMessageLayout : RelativeLayout, AUIStatusChangeListener,IAUICh
         listener?.onShortSubtitleShow(textView)
         Handler(Looper.getMainLooper()).postDelayed({
             stopTask()
-        }, 3000)
+        }, delayMillis)
+    }
+
+    /**
+     * 设置自动清理时间
+     */
+    fun setDelayMillis(delayMillis:Long){
+        this.delayMillis = delayMillis
     }
 
     override fun onLongSubtitleRollEnd(textView: TextView) {
@@ -89,9 +97,13 @@ class AUIBroadcastMessageLayout : RelativeLayout, AUIStatusChangeListener,IAUICh
         stopTask()
     }
 
+    override fun setScrollSpeed(speed: Int){
+        broadcastView.setScrollSpeed(speed)
+    }
+
     interface SubtitleStatusChangeListener{
         /**
-         * 当字幕数未超过当前行数限制时回调
+         * 当字幕数未超过当前行数限制完整展示后回调
          */
         fun onShortSubtitleShow(textView: TextView)
 
@@ -140,11 +152,11 @@ class AUIBroadcastMessageLayout : RelativeLayout, AUIStatusChangeListener,IAUICh
     }
 
     private fun setSubtitle(content:String){
-        mBaseLayout.animation = AnimationUtils.loadAnimation(context,R.anim.aui_subtitle_anim_enter)
-        mBaseLayout.visibility = visibility
-        mContent.text = content
-        mContent.visibility = visibility
-        mBaseLayout.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        broadcastLayout.animation = AnimationUtils.loadAnimation(context,R.anim.aui_subtitle_anim_enter)
+        broadcastLayout.visibility = visibility
+        broadcastView.text = content
+        broadcastView.visibility = visibility
+        broadcastLayout.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
     }
 
     //销毁语聊房页面时调用 移除 task

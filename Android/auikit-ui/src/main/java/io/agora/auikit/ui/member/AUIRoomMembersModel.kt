@@ -1,9 +1,9 @@
 package io.agora.auikit.ui.member
 
 data class MemberInfo(
-    val userId: String,
-    val userName: String,
-    val userAvatar: String
+    var userId: String,
+    var userName: String,
+    var userAvatar: String
 )
 
 class MemberItemModel(

@@ -1,6 +1,5 @@
 package io.agora.auikit.service.im
 
-import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import com.orhanobut.logger.Logger
@@ -39,7 +38,6 @@ class AUIChatManager(
     channelName: String,
     roomContext:AUIRoomContext,
 ): MessageListener, ChatRoomChangeListener {
-    private val context:Context
     private val chatSubscribeDelegates = mutableListOf<AUIChatSubscribeDelegate>()
     private var chatRoomId:String? = ""
     private var channelId:String? = ""
@@ -57,7 +55,6 @@ class AUIChatManager(
     init {
         this.channelId = channelName
         this.roomContext = roomContext
-        this.context = roomContext.commonConfig.context
     }
 
     fun subscribeChatMsg(delegate: AUIChatSubscribeDelegate) {
@@ -397,6 +394,7 @@ class AUIChatManager(
             it?.chatType = ChatMessage.ChatType.ChatRoom
             it?.setMessageStatusCallback(object : CallBack {
                 override fun onSuccess() {
+                    parseMsgChatEntity(it)
                     callBack.onOriginalResult(null,it)
                 }
 

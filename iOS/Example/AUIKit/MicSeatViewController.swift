@@ -9,6 +9,8 @@
 import UIKit
 import AUIKitCore
 
+class MicSeatViewController: UIViewController {
+}
 /*
 private let kSeatRoomPadding: CGFloat = 16
 

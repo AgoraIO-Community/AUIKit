@@ -7,7 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
-import AgoraRtmKit2
+import AgoraRtmKit
 
 @objc public protocol AUIRtmErrorProxyDelegate: NSObjectProtocol {
     
@@ -65,11 +65,17 @@ open class AUIRtmMsgProxy: NSObject {
             if !value.contains(delegate) {
                 value.add(delegate)
             }
+        }else{
+            let weakObjects = NSHashTable<AnyObject>.weakObjects()
+            weakObjects.add(delegate)
+            attributesDelegates[key] = weakObjects
+        }
+        let cache = attributesCacheAttr[channelName]
+        let item = cache?[itemKey]
+        guard let itemData = item?.data(using: .utf8), let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
             return
         }
-        let weakObjects = NSHashTable<AnyObject>.weakObjects()
-        weakObjects.add(delegate)
-        attributesDelegates[key] = weakObjects
+        delegate.onAttributesDidChanged(channelName: channelName, key: itemKey, value: itemValue)
     }
     
     func unsubscribeAttributes(channelName: String, itemKey: String, delegate: AUIRtmAttributesProxyDelegate) {
@@ -131,7 +137,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
                        connectionStateChanged state: AgoraRtmClientConnectionState,
                        result reason: AgoraRtmClientConnectionChangeReason) {
         aui_info("connectionStateChanged: \(state.rawValue) reason：\(reason)", tag: "AUIRtmMsgProxy")
-        origRtmDelegate?.rtmKit?(kit, channel: channelName, connectionStateChanged: state, result: reason)
+        origRtmDelegate?.rtmKit?(kit, channel: channelName, connectionStateChanged: state, reason: reason)
         if errorDelegates.count <= 0 { return }
         for element in errorDelegates.allObjects {
             (element as? AUIRtmErrorProxyDelegate)?.onConnectionStateChanged?(channelName: channelName,

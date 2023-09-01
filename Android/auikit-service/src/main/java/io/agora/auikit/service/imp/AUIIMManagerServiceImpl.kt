@@ -93,6 +93,13 @@ class AUIIMManagerServiceImpl constructor(
                                             .e(message = "IM join chat room failed! -- $error")
                                         return
                                     }
+                                    delegateHelper.notifyDelegate {
+                                        it.onUserDidJoinRoom(
+                                            chatRoomId!!, IAUIIMManagerService.AgoraChatTextMessage(
+                                                message?.msgId, message?.body?.toString(), null
+                                            )
+                                        )
+                                    }
                                 }
                             })
                         }
@@ -109,6 +116,13 @@ class AUIIMManagerServiceImpl constructor(
                                 AUILogger.logger()
                                     .e(message = "IM join chat room failed! -- $error")
                                 return
+                            }
+                            delegateHelper.notifyDelegate {
+                                it.onUserDidJoinRoom(
+                                    chatRoomId, IAUIIMManagerService.AgoraChatTextMessage(
+                                        message?.msgId, message?.body?.toString(), null
+                                    )
+                                )
                             }
                         }
                     })

@@ -7,7 +7,7 @@
 
 import Foundation
 import AgoraRtcKit
-import AgoraRtmKit2
+import AgoraRtmKit
 
 let kChannelType = AgoraRtmChannelType.stream
 
