@@ -1,56 +1,52 @@
 PODS:
   - Agora_Chat_iOS (1.1.0)
   - AgoraLyricsScore (1.1.2)
-  - AgoraRtcEngine_Special_iOS (4.1.1.142)
+  - AgoraRtcEngine_Special_iOS (4.1.1.247)
   - AgoraRtm_iOS (2.1.4)
-  - Alamofire (5.7.1)
-  - AUIKitCore (0.5.0):
+  - Alamofire (5.8.0)
+  - AUIKitCore (0.5.1):
     - Agora_Chat_iOS
     - AgoraLyricsScore
-    - AgoraRtcEngine_Special_iOS (= 4.1.1.142)
-    - AgoraRtm_iOS (= 2.1.4)
     - Alamofire
-    - AUIKitCore/Service (= 0.5.0)
-    - AUIKitCore/UI (= 0.5.0)
+    - AUIKitCore/Service (= 0.5.1)
+    - AUIKitCore/UI (= 0.5.1)
     - MJRefresh
     - ScoreEffectUI
     - SDWebImage
     - SwiftTheme
-    - SwiftyBeaver (= 1.9.5)
+    - SwiftyBeaver (~> 1.9.5)
     - YYModel
     - Zip
-  - AUIKitCore/Service (0.5.0):
+  - AUIKitCore/Service (0.5.1):
     - Agora_Chat_iOS
     - AgoraLyricsScore
-    - AgoraRtcEngine_Special_iOS (= 4.1.1.142)
-    - AgoraRtm_iOS (= 2.1.4)
+    - AgoraRtcEngine_Special_iOS (~> 4.1.1.142)
+    - AgoraRtm_iOS (~> 2.1.4)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
     - SDWebImage
     - SwiftTheme
-    - SwiftyBeaver (= 1.9.5)
+    - SwiftyBeaver (~> 1.9.5)
     - YYModel
     - Zip
-  - AUIKitCore/UI (0.5.0):
+  - AUIKitCore/UI (0.5.1):
     - Agora_Chat_iOS
     - AgoraLyricsScore
-    - AgoraRtcEngine_Special_iOS (= 4.1.1.142)
-    - AgoraRtm_iOS (= 2.1.4)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
     - SDWebImage
     - SwiftTheme
-    - SwiftyBeaver (= 1.9.5)
+    - SwiftyBeaver (~> 1.9.5)
     - YYModel
     - Zip
-  - libpag (4.3.8)
+  - libpag (4.3.21)
   - MJRefresh (3.7.5)
   - ScoreEffectUI (1.0.1)
-  - SDWebImage (5.17.0):
-    - SDWebImage/Core (= 5.17.0)
-  - SDWebImage/Core (5.17.0)
+  - SDWebImage (4.4.8):
+    - SDWebImage/Core (= 4.4.8)
+  - SDWebImage/Core (4.4.8)
   - SwiftTheme (0.6.4)
   - SwiftyBeaver (1.9.5)
   - YYModel (1.0.4)
@@ -60,6 +56,7 @@ DEPENDENCIES:
   - AgoraLyricsScore (= 1.1.2)
   - AUIKitCore (from `../../`)
   - libpag
+  - SDWebImage (= 4.4.8)
 
 SPEC REPOS:
   trunk:
@@ -84,19 +81,19 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
   AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
-  AgoraRtcEngine_Special_iOS: 6414e3cbb92076e18ca68364d1c9e6ae5174d381
+  AgoraRtcEngine_Special_iOS: 1da915f9ea50947b0c01f3a7f9674df4e3c90820
   AgoraRtm_iOS: 11b767ee81a7202dcf09e045cd2d359b5abbc965
-  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  AUIKitCore: d0a9f3aa2c7b90cb79f739719083ae8b334484ce
-  libpag: 212f7cb31fd1b9354da2ec28da1402cbec55afa8
+  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
+  AUIKitCore: 36be7d2eac6b43d16592496e9da93d5673140895
+  libpag: 8a5c6b406458d85db48b05145d5dba9c406f2097
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
-  SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
+  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 26db9862d36422c60b04d38fc6703816fd93ea99
+PODFILE CHECKSUM: 050e6a717f7f3de6deae5ad8e18251326e3ded65
 
 COCOAPODS: 1.12.0

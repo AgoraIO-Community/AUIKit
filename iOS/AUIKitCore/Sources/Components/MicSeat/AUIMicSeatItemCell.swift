@@ -216,7 +216,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         avatarImageView.sd_setImage(with: URL(string: item?.avatarUrl ?? ""))
         seatLabel.text = item?.seatName
         if let subIcon = item?.subIcon,let subtitle = item?.subTitle {
-            SDWebImageManager.shared.loadImage(with: URL(string: subIcon), context: nil, progress: nil) { [weak self] image, data, error, type, res, url in
+            SDWebImageManager.shared().loadImage(with: URL(string: subIcon), progress: nil) { [weak self] image, data, error, type, res, url in
                 guard let img = image else { return }
                 self?.subTitle.attributedText = NSAttributedString({
                     ImageAttachment(img,size: CGSize(width: 14, height: 14))

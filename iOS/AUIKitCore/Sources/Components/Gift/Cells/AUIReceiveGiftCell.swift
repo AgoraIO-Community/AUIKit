@@ -125,10 +125,10 @@ import SDWebImage
         if self.gift == nil {
             self.gift = item
         }
-        self.avatar.sd_setImage(with: URL(string: item.sendUser.userAvatar), placeholderImage: UIImage.aui_Image(named: "mine_avatar_placeHolder"), context: nil)
+        self.avatar.sd_setImage(with: URL(string: item.sendUser.userAvatar), placeholderImage: UIImage.aui_Image(named: "mine_avatar_placeHolder"))
         self.userName.text = item.sendUser.userName
         self.giftName.text = "Sent ".a.localize(type: .gift) + (item.giftName)
-        self.giftIcon.sd_setImage(with: URL(string: item.giftIcon), placeholderImage: UIImage.aui_Image(named: "\(item.giftId)"), context: nil)
+        self.giftIcon.sd_setImage(with: URL(string: item.giftIcon), placeholderImage: UIImage.aui_Image(named: "\(item.giftId)"))
         self.giftNumbers.text = "X \(item.giftCount)"
     }
 }

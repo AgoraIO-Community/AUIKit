@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftTheme
-import AgoraRtcKit
+//import AgoraRtcKit
 import AgoraLyricsScore
 
 @objc public enum AUIPlayerViewButtonType: Int {

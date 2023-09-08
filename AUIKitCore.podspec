@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.5.0'
+  s.version          = '0.5.1'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -44,6 +44,9 @@ s.subspec 'Service' do |ss|
       'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
       'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
    ]
+   ss.dependency 'AgoraRtm_iOS', '~> 2.1.4'
+   ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.142'
+   
  end
 
 #  s.source_files = 'iOS/AUIKitCore/Sources/**/*.swift'
@@ -58,7 +61,7 @@ s.subspec 'UI' do |ss|
   'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
   'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift',
   'iOS/AUIKitCore/Sources/Components/**/*',
-  'iOS/AUIKitCore/Sources/Service/Extension/API/KTVAPI/*.swift',
+  'iOS/AUIKitCore/Sources/Service/Extension/API/KTVAPI/KTVApiExtension.swift',
   'iOS/AUIKitCore/Sources/Service/Extension/API/FileDownloadCache/*.swift',
   'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
   'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
@@ -84,10 +87,8 @@ s.subspec 'UI' do |ss|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'Foundation'
-  s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.142'
-  s.dependency 'AgoraRtm_iOS', '2.1.4'
   s.dependency 'YYModel'
-  s.dependency 'SwiftyBeaver', '1.9.5'
+  s.dependency 'SwiftyBeaver', '~>1.9.5'
   s.dependency 'Zip'
   s.dependency 'Alamofire'
   s.dependency 'SwiftTheme'
