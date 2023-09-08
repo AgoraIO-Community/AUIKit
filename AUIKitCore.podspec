@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.5.1'
+  s.version          = '0.5.1-beta'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -92,7 +92,7 @@ s.subspec 'UI' do |ss|
   s.dependency 'Zip'
   s.dependency 'Alamofire'
   s.dependency 'SwiftTheme'
-  s.dependency 'SDWebImage'
+  s.dependency 'SDWebImage', '~> 4.4.8'
   s.dependency 'MJRefresh'
   s.dependency 'ScoreEffectUI'
   s.dependency 'AgoraLyricsScore'
