@@ -12,10 +12,8 @@
     func onHighPartTime(highStartTime: Int, highEndTime: Int)
 }
 
-public typealias LyricCallback = ((String?) -> Void)
-
 /// 用户角色
-@objc public enum KTVSingRole: Int {
+@objc public enum AUISingRole: Int {
     case soloSinger = 0     //独唱者
     case coSinger           //伴唱
     case leadSinger         //主唱

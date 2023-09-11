@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.5.1-beta'
+  s.version          = '0.5.2-beta'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -61,8 +61,8 @@ s.subspec 'UI' do |ss|
   'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
   'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift',
   'iOS/AUIKitCore/Sources/Components/**/*',
-  'iOS/AUIKitCore/Sources/Service/Extension/API/KTVAPI/KTVApiExtension.swift',
-  'iOS/AUIKitCore/Sources/Service/Extension/API/FileDownloadCache/*.swift',
+#  'iOS/AUIKitCore/Sources/Service/Extension/API/KTVAPI/KTVApiExtension.swift',
+#  'iOS/AUIKitCore/Sources/Service/Extension/API/FileDownloadCache/*.swift',
   'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
   'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
   'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
