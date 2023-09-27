@@ -35,29 +35,29 @@ TODO: Add long description of the pod here.
   
   s.subspec 'All' do |ss|
     ss.source_files = [
-    'iOS/AUIKitCore/Sources/**/*',
+      'iOS/AUIKitCore/Sources/**/*',
     ]
     ss.resource = ['iOS/AUIKitCore/Resource/*.bundle']
     
     ss.frameworks = 'UIKit', 'Foundation'
     ss.dependency 'YYModel'
-    ss.dependency 'SwiftyBeaver', '~>1.9.5'
+    ss.dependency 'SwiftyBeaver', '~> 1.9.5'
     ss.dependency 'SwiftTheme'
-    ss.dependency 'SDWebImage', '~>4.4.8'
+    ss.dependency 'SDWebImage', '~> 4.4.8'
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore'
-    ss.dependency 'AgoraRtm_iOS', '~>2.1.4'
-    ss.dependency 'AgoraRtcEngine_Special_iOS','~>4.1.1.1'
+    ss.dependency 'AgoraRtm_iOS', '2.1.4'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.1'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
     ss.dependency 'Agora_Chat_iOS'
     
-    end
+  end
 
   
-s.subspec 'Service' do |ss|
-      ss.source_files = [
+  s.subspec 'Service' do |ss|
+    ss.source_files = [
       'iOS/AUIKitCore/Sources/Service/**/*',
       'iOS/AUIKitCore/Sources/Core/Utils/RtmHelper/*',
       'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
@@ -66,42 +66,42 @@ s.subspec 'Service' do |ss|
       'iOS/AUIKitCore/Sources/Core/Utils/Context/*.swift',
       'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
       'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
-   ]
-   ss.dependency 'AgoraRtm_iOS', '~>2.1.4'
-   ss.dependency 'AgoraRtcEngine_Special_iOS','~>4.1.1.1'
-   ss.dependency 'Zip'
-   ss.dependency 'Alamofire'
-   ss.dependency 'Agora_Chat_iOS'
-   ss.dependency 'YYModel'
-   ss.dependency 'SwiftyBeaver', '~>1.9.5'
+    ]
+    ss.dependency 'AgoraRtm_iOS', '2.1.4'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.1'
+    ss.dependency 'Zip'
+    ss.dependency 'Alamofire'
+    ss.dependency 'Agora_Chat_iOS'
+    ss.dependency 'YYModel'
+    ss.dependency 'SwiftyBeaver', '~> 1.9.5'
    
- end
+  end
 
-s.subspec 'UI' do |ss|
-  ss.source_files = [
-  'iOS/AUIKitCore/Sources/Widgets/**/*',
-  'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
-  'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
-  'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
-  'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
-  'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
-  'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift',
-  'iOS/AUIKitCore/Sources/Components/**/*',
-  'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
-  'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
-  'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
-  'iOS/AUIKitCore/Sources/Service/Extension/Protocol/AUIUserCellUserDataProtocol.swift',
-  ]
-  ss.resource = ['iOS/AUIKitCore/Resource/*.bundle']
+  s.subspec 'UI' do |ss|
+    ss.source_files = [
+      'iOS/AUIKitCore/Sources/Widgets/**/*',
+      'iOS/AUIKitCore/Sources/Core/Utils/Extension/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Theme/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Log/*.swift',
+      'iOS/AUIKitCore/Sources/Core/Utils/Localized/*.swift',
+      'iOS/AUIKitCore/Sources/Core/UIConstans/*.swift',
+      'iOS/AUIKitCore/Sources/Core/FoundationExtension/*.swift',
+      'iOS/AUIKitCore/Sources/Components/**/*',
+      'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
+      'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
+      'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
+      'iOS/AUIKitCore/Sources/Service/Extension/Protocol/AUIUserCellUserDataProtocol.swift',
+    ]
+    ss.resource = ['iOS/AUIKitCore/Resource/*.bundle']
   
-  ss.frameworks = 'UIKit', 'Foundation'
-  ss.dependency 'YYModel'
-  ss.dependency 'SwiftyBeaver', '~>1.9.5'
-  ss.dependency 'SwiftTheme'
-  ss.dependency 'SDWebImage', '~>4.4.8'
-  ss.dependency 'MJRefresh'
-  ss.dependency 'ScoreEffectUI'
-  ss.dependency 'AgoraLyricsScore'
+    ss.frameworks = 'UIKit', 'Foundation'
+    ss.dependency 'YYModel'
+    ss.dependency 'SwiftyBeaver', '~> 1.9.5'
+    ss.dependency 'SwiftTheme'
+    ss.dependency 'SDWebImage', '~> 4.4.8'
+    ss.dependency 'MJRefresh'
+    ss.dependency 'ScoreEffectUI'
+    ss.dependency 'AgoraLyricsScore'
   
   end
   

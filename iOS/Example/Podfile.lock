@@ -1,5 +1,5 @@
 PODS:
-  - Agora_Chat_iOS (1.1.0)
+  - Agora_Chat_iOS (1.2.0)
   - AgoraLyricsScore (1.1.2)
   - AgoraRtcEngine_Special_iOS (4.1.1.247)
   - AgoraRtm_iOS (2.1.4)
@@ -10,7 +10,7 @@ PODS:
     - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_Special_iOS (~> 4.1.1.1)
-    - AgoraRtm_iOS (~> 2.1.4)
+    - AgoraRtm_iOS (= 2.1.4)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
@@ -21,7 +21,7 @@ PODS:
     - Zip
   - libpag (4.3.21)
   - MJRefresh (3.7.5)
-  - ScoreEffectUI (1.0.1)
+  - ScoreEffectUI (1.0.2)
   - SDWebImage (4.4.8):
     - SDWebImage/Core (= 4.4.8)
   - SDWebImage/Core (4.4.8)
@@ -57,15 +57,15 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Agora_Chat_iOS: 78b181ded388278e88d40e256a4fc659e62c3115
+  Agora_Chat_iOS: e11aa75b290e5e8a6b90c1c73642ac1172a71b97
   AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
   AgoraRtcEngine_Special_iOS: 1da915f9ea50947b0c01f3a7f9674df4e3c90820
   AgoraRtm_iOS: 11b767ee81a7202dcf09e045cd2d359b5abbc965
   Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
-  AUIKitCore: 92b6756ee30845c8f754267fb8f08f68ea780fd0
+  AUIKitCore: 442f2fdb7eb54df5751592d4c9b37fc2f4773fad
   libpag: 8a5c6b406458d85db48b05145d5dba9c406f2097
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
-  ScoreEffectUI: 1a3bbd83b17cfef1c16a3a4eede2854f89c9eb10
+  ScoreEffectUI: bf1195b4d41a73d43c236450b5d7f958989844aa
   SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
