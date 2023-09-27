@@ -22,7 +22,7 @@ public class AUIKaraokeLrcView: UIView {
     var gradeView: GradeView!
     private var currentLoadLrcPath: String?
     private var lyricModel: LyricModel?
-    private var downloadManager: AgoraDownLoadManager = AgoraDownLoadManager()
+//    private var downloadManager: AgoraDownLoadManager = AgoraDownLoadManager()
 
     
     lazy var skipView: AUIKaraokeSkipView = {
@@ -172,6 +172,7 @@ extension AUIKaraokeLrcView: KaraokeDelegate {
     }
 }
 
+/*
 extension AUIKaraokeLrcView: KTVLrcViewDelegate {
     public func onHighPartTime(highStartTime: Int, highEndTime: Int) {
 
@@ -216,7 +217,7 @@ extension AUIKaraokeLrcView: KTVLrcViewDelegate {
 
 extension AUIKaraokeLrcView {
 
-    func startDownloadLrc(with url: String, callBack: @escaping LyricCallback) {
+    func startDownloadLrc(with url: String, callBack: @escaping ((String?) -> Void)) {
         var path: String? = nil
         downloadManager.downloadLrcFile(urlString: url) { lrcurl in
             defer {
@@ -257,3 +258,4 @@ extension AUIKaraokeLrcView {
         lrcView?.setLyricData(data: model)
     }
 }
+*/

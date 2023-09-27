@@ -109,7 +109,7 @@ extension AUIRoomInfoView {
     public func updateRoomInfo(withRoomId roomId:String, roomName: String?, ownerHeadImg:String?){
         roomNameLabel.text = (roomName ?? "")
         roomIdLabel.text = aui_localized("roomInfoRoomID") + roomId
-        headImageView.sd_setImage(with: URL(string: ownerHeadImg ?? ""), placeholderImage: UIImage.aui_Image(named: "mine_avatar_placeHolder"), context: nil)
+        headImageView.sd_setImage(with: URL(string: ownerHeadImg ?? ""), placeholderImage: UIImage.aui_Image(named: "mine_avatar_placeHolder"))
     }
 }
 

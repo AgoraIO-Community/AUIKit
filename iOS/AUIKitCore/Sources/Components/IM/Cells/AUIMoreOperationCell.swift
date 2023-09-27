@@ -109,7 +109,7 @@ final public class AUIMoreOperationCell: UICollectionViewCell {
      */
     public func refresh(info: AUIMoreOperationCellDataProtocol) {
         self.title.text = info.operationName
-        self.icon.sd_setImage(with: URL(string: info.iconUrl), placeholderImage: info.placeHolder, context: nil)
+        self.icon.sd_setImage(with: URL(string: info.iconUrl), placeholderImage: info.placeHolder)
         self.redDot.isHidden = !info.showRedDot
     }
 }

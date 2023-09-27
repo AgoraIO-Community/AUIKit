@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftTheme
-import AgoraRtcKit
+//import AgoraRtcKit
 import AgoraLyricsScore
 
 @objc public enum AUIPlayerViewButtonType: Int {
@@ -26,6 +26,15 @@ public enum JoinChorusState {
     case before //观众加入合唱前
     case loding //加入合唱过程中
     case after //合唱
+}
+
+/// 用户角色
+@objc public enum AUISingRole: Int {
+    case soloSinger = 0     //独唱者
+    case coSinger           //伴唱
+    case leadSinger         //主唱
+    case audience           //观众
+//    case followSinger       //跟唱
 }
 
 public protocol AUIKaraokeLrcViewDelegate: NSObjectProtocol {
@@ -491,7 +500,7 @@ extension AUIPlayerView {
         AUICommonDialog.show(contentView: dialogView, theme: AUICommonDialogTheme())
     }
     
-    public func updateBtns(with role: KTVSingRole, isMainSinger: Bool, isOnSeat: Bool) {
+    public func updateBtns(with role: AUISingRole, isMainSinger: Bool, isOnSeat: Bool) {
         switch role {
             case .soloSinger, .leadSinger:
                 playOrPauseButton.isHidden = false

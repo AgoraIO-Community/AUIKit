@@ -285,7 +285,6 @@
 				"${PODS_ROOT}/../../AUIKitCore/Resource/auiTheme.bundle",
 				"${PODS_ROOT}/../../AUIKitCore/Resource/ChatResource.bundle",
 				"${PODS_ROOT}/../../AUIKitCore/Resource/Gift.bundle",
-				"${PODS_ROOT}/../../AUIKitCore/Resource/Invitation.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -293,7 +292,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/auiTheme.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ChatResource.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gift.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Invitation.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
