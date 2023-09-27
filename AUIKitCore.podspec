@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.5.4-beta'
+  s.version          = '0.5.1'
   s.summary          = 'A short description of AUIKit.'
 
 # This description is used to generate tags and improve search results.
@@ -43,12 +43,12 @@ TODO: Add long description of the pod here.
     ss.dependency 'YYModel'
     ss.dependency 'SwiftyBeaver', '~>1.9.5'
     ss.dependency 'SwiftTheme'
-    ss.dependency 'SDWebImage', '~> 4.4.8'
+    ss.dependency 'SDWebImage', '~>4.4.8'
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore'
-    ss.dependency 'AgoraRtm_iOS', '~> 2.1.4'
-    ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.142'
+    ss.dependency 'AgoraRtm_iOS', '~>2.1.4'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','~>4.1.1.1'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
     ss.dependency 'Agora_Chat_iOS'
@@ -67,8 +67,8 @@ s.subspec 'Service' do |ss|
       'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
       'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
    ]
-   ss.dependency 'AgoraRtm_iOS', '~> 2.1.4'
-   ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.142'
+   ss.dependency 'AgoraRtm_iOS', '~>2.1.4'
+   ss.dependency 'AgoraRtcEngine_Special_iOS','~>4.1.1.1'
    ss.dependency 'Zip'
    ss.dependency 'Alamofire'
    ss.dependency 'Agora_Chat_iOS'
@@ -98,7 +98,7 @@ s.subspec 'UI' do |ss|
   ss.dependency 'YYModel'
   ss.dependency 'SwiftyBeaver', '~>1.9.5'
   ss.dependency 'SwiftTheme'
-  ss.dependency 'SDWebImage', '~> 4.4.8'
+  ss.dependency 'SDWebImage', '~>4.4.8'
   ss.dependency 'MJRefresh'
   ss.dependency 'ScoreEffectUI'
   ss.dependency 'AgoraLyricsScore'
