@@ -206,7 +206,7 @@ data class KTVApiConfig(
     val channelName: String,
     val localUid: Int,
     val chorusChannelName: String,
-    val chorusChannelToken: String,
+    var chorusChannelToken: String,
     val maxCacheSize: Int = 10,
     val type: KTVType = KTVType.Normal
 )
