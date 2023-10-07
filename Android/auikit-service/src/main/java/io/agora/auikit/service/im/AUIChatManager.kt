@@ -360,6 +360,9 @@ class AUIChatManager(
      * @param callBack
      */
     fun sendTxtMsg(roomId: String?, content: String?, userInfo: AUIUserThumbnailInfo?, callBack: AUIChatMsgCallback) {
+        if (!isLoggedIn()) {
+            return
+        }
         val message = ChatMessage.createTextSendMessage(content, roomId)
         message?.let {
             it.setAttribute("user",GsonTools.beanToString(userInfo))
@@ -383,6 +386,9 @@ class AUIChatManager(
     }
 
     fun sendJoinMsg(roomId: String?,userInfo: AUIUserThumbnailInfo?,callBack: AUIChatMsgCallback){
+        if (!isLoggedIn()) {
+            return
+        }
         val messages = ChatMessage.createSendMessage(ChatMessage.Type.CUSTOM)
         messages.to = roomId
         val customBody = CustomMessageBody( AUICustomMsgType.AUIChatRoomJoinedMember.name)
