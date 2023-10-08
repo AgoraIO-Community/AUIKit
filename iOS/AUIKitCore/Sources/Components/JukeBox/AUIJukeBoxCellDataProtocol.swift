@@ -49,7 +49,7 @@ extension AUIChooseMusicModel: AUIJukeBoxItemSelectedDataProtocol {
             if let value = objc_getAssociatedObject(self, AUIChooseMusicModel.SwitchEnableKey) as? Bool {
                 return value
             }
-            return true
+            return false
         }
     }
     
