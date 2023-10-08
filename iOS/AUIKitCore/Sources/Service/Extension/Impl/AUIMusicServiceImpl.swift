@@ -261,7 +261,6 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         let networkModel = AUISongAddNetworkModel.yy_model(with: dic)!
         networkModel.userId = getRoomContext().currentUserInfo.userId
         let chooseModel = AUIChooseMusicModel.yy_model(with: dic)!
-        
         networkModel.roomId = channelName
         let owner = getRoomContext().currentUserInfo
         networkModel.owner = owner
