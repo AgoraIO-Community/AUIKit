@@ -442,7 +442,7 @@ extension AUIJukeBoxView: UITableViewDelegate, UITableViewDataSource {
                 cell.rangeLabel.text = "\(indexPath.row + 1)"
             }
             
-            cell.nextButton.isHidden = music.isPlaying ? false : true
+            cell.nextButton.isHidden = music.switchEnable ? false : true
             let removeEnable = uiDelegate?.deleteEnable(view: self, songCode: music.songCode) ?? false
             if removeEnable {
                 cell.removeButton.isHidden = !cell.nextButton.isHidden

@@ -17,6 +17,7 @@ public protocol AUIJukeBoxItemDataProtocol: NSObjectProtocol {
 public protocol AUIJukeBoxItemSelectedDataProtocol: AUIJukeBoxItemDataProtocol {
     var isPlaying: Bool {get} //是否在播放
     var userId: String? {get}  //歌曲拥有者
+    var switchEnable: Bool { get } // 是否可以切歌
 }
 
 
@@ -41,5 +42,9 @@ extension AUIChooseMusicModel: AUIJukeBoxItemSelectedDataProtocol {
     
     public var isPlaying: Bool {
         return self.playStatus == .playing
+    }
+    
+    public var switchEnable: Bool {
+        return isPlaying
     }
 }
