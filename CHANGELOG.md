@@ -1,6 +1,10 @@
 
 English | [中文](CHANGELOG.zh.md)
 
+## [0.5.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.1)
+- [iOS]Fix subspec redundancy dependency issue
+- Fix other remaining bugs
+
 ## [0.5.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.0)
 - Update RTM to stable version
 - Fix other remaining bugs

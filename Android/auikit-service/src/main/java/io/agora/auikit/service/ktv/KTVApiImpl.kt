@@ -9,12 +9,30 @@ import io.agora.mediaplayer.IMediaPlayer
 import io.agora.mediaplayer.IMediaPlayerObserver
 import io.agora.mediaplayer.data.PlayerUpdatedInfo
 import io.agora.mediaplayer.data.SrcInfo
-import io.agora.musiccontentcenter.*
-import io.agora.rtc2.*
-import io.agora.rtc2.Constants.*
+import io.agora.musiccontentcenter.IAgoraMusicContentCenter
+import io.agora.musiccontentcenter.IAgoraMusicPlayer
+import io.agora.musiccontentcenter.IMusicContentCenterEventHandler
+import io.agora.musiccontentcenter.Music
+import io.agora.musiccontentcenter.MusicChartInfo
+import io.agora.musiccontentcenter.MusicContentCenterConfiguration
+import io.agora.rtc2.ChannelMediaOptions
+import io.agora.rtc2.Constants.AUDIO_SCENARIO_CHORUS
+import io.agora.rtc2.Constants.AUDIO_SCENARIO_GAME_STREAMING
+import io.agora.rtc2.Constants.CLIENT_ROLE_BROADCASTER
+import io.agora.rtc2.Constants.ERR_JOIN_CHANNEL_REJECTED
+import io.agora.rtc2.Constants.ERR_LEAVE_CHANNEL_REJECTED
+import io.agora.rtc2.DataStreamConfig
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcConnection
+import io.agora.rtc2.RtcEngine
+import io.agora.rtc2.RtcEngineEx
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.concurrent.*
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 enum class KTVSongMode(val value: Int) {
     SONG_CODE(0),
@@ -206,6 +224,7 @@ class KTVApiImpl : KTVApi, IMusicContentCenterEventHandler, IMediaPlayerObserver
         // 更新RtmToken
         mMusicCenter.renewToken(rtmToken)
         // 更新合唱频道RtcToken
+        ktvApiConfig.chorusChannelToken = chorusChannelRtcToken
         if (subChorusConnection != null) {
             val channelMediaOption = ChannelMediaOptions()
             channelMediaOption.token = chorusChannelRtcToken
