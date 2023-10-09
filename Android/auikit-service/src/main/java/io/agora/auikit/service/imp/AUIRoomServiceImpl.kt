@@ -151,7 +151,7 @@ class AUIRoomManagerImpl(
             )
             return
         }
-        val rtmToken = AUIRoomContext.shared().roomConfig.rtmToken
+        val rtmToken = AUIRoomContext.shared().roomConfigMap[roomId]?.rtmToken ?: ""
         AUILogger.logger().d(TAG, "EnterRoom rtmManager login start ...")
         rtmManager.login(rtmToken) { error ->
             if (error != null) {

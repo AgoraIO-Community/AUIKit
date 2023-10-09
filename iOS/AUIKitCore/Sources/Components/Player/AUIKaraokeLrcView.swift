@@ -22,7 +22,6 @@ public class AUIKaraokeLrcView: UIView {
     var gradeView: GradeView!
     private var currentLoadLrcPath: String?
     private var lyricModel: LyricModel?
-    private var downloadManager: AgoraDownLoadManager = AgoraDownLoadManager()
 
     
     lazy var skipView: AUIKaraokeSkipView = {
@@ -172,18 +171,14 @@ extension AUIKaraokeLrcView: KaraokeDelegate {
     }
 }
 
-extension AUIKaraokeLrcView: KTVLrcViewDelegate {
-    public func onHighPartTime(highStartTime: Int, highEndTime: Int) {
-
-    }
-
-
-    public func onUpdatePitch(pitch: Float) {
+extension AUIKaraokeLrcView {
+    
+    public func updatePitch(pitch: Float) {
         //pitch 更新
         lrcView?.setPitch(pitch: Double(pitch))
     }
     
-    public func onUpdateProgress(progress: Int) {
+    public func updateProgress(progress: Int) {
         self.progress = progress
         //进度更新
         lrcView?.setProgress(progress: progress)
@@ -204,43 +199,7 @@ extension AUIKaraokeLrcView: KTVLrcViewDelegate {
         }
     }
     
-    public func onDownloadLrcData(url: String) {
-        //开始歌词下载
-        startDownloadLrc(with: url) {[weak self] url in
-            guard let self = self, let url = url else {return}
-            self.resetLrcData(with: url)
-        }
-    }
-}
-
-
-extension AUIKaraokeLrcView {
-
-    func startDownloadLrc(with url: String, callBack: @escaping LyricCallback) {
-        var path: String? = nil
-        downloadManager.downloadLrcFile(urlString: url) { lrcurl in
-            defer {
-                callBack(path)
-            }
-            guard let lrcurl = lrcurl else {
-                aui_info("downloadLrcFile fail, lrcurl is nil")
-                return
-            }
-
-            let curSong = URL(string: url)?.lastPathComponent.components(separatedBy: ".").first
-            let loadSong = URL(string: lrcurl)?.lastPathComponent.components(separatedBy: ".").first
-            guard curSong == loadSong else {
-                aui_info("downloadLrcFile fail, missmatch, cur:\(curSong ?? "") load:\(loadSong ?? "")")
-                return
-            }
-            path = lrcurl
-        } failure: {
-            callBack(nil)
-            aui_info("歌词解析失败")
-        }
-    }
-
-    func resetLrcData(with url: String) {
+    public func resetLrcData(with url: String) {
         guard currentLoadLrcPath != url else {
             return
         }
@@ -257,3 +216,4 @@ extension AUIKaraokeLrcView {
         lrcView?.setLyricData(data: model)
     }
 }
+

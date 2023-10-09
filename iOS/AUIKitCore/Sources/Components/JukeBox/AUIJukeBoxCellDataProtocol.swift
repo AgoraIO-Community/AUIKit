@@ -17,6 +17,7 @@ public protocol AUIJukeBoxItemDataProtocol: NSObjectProtocol {
 public protocol AUIJukeBoxItemSelectedDataProtocol: AUIJukeBoxItemDataProtocol {
     var isPlaying: Bool {get} //是否在播放
     var userId: String? {get}  //歌曲拥有者
+    var switchEnable: Bool { get set} // 是否可以切歌
 }
 
 
@@ -34,7 +35,24 @@ extension AUIMusicModel: AUIJukeBoxItemDataProtocol {
     }
 }
 
+
+
 extension AUIChooseMusicModel: AUIJukeBoxItemSelectedDataProtocol {
+    static let SwitchEnableKey = UnsafeRawPointer(UnsafeMutablePointer<Int8>.allocate(capacity: 1))
+    
+    public var switchEnable: Bool {
+        set {
+            objc_setAssociatedObject(self, AUIChooseMusicModel.SwitchEnableKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
+        
+        get {
+            if let value = objc_getAssociatedObject(self, AUIChooseMusicModel.SwitchEnableKey) as? Bool {
+                return value
+            }
+            return false
+        }
+    }
+    
     public var userId: String? {
         return self.owner?.userId
     }
@@ -42,4 +60,5 @@ extension AUIChooseMusicModel: AUIJukeBoxItemSelectedDataProtocol {
     public var isPlaying: Bool {
         return self.playStatus == .playing
     }
+    
 }

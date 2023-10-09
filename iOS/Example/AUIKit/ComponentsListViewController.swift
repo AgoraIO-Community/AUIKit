@@ -14,7 +14,10 @@ import SDWebImage
 class ComponentsListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     private var datas = ["Chat&Gift"/*,"MicSeat","Service"*/]
     
-    private var controllers: [UIViewController] = [ChatListEffectViewController(),MicSeatViewController(),TestServiceViewController()]
+    private var controllers: [UIViewController] = [ChatListEffectViewController(),
+                                                   MicSeatViewController(),
+                                                   TestServiceViewController()
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()

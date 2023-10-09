@@ -223,13 +223,14 @@ extension KTVApiImpl: KTVApiDelegate {
     }
     
     public func renewToken(rtmToken: String, chorusChannelRtcToken: String) {
-               // 更新RtmToken
-       mcc?.renewToken(rtmToken)
-           // 更新合唱频道RtcToken
-           if let subChorusConnection = subChorusConnection {
-               let channelMediaOption = AgoraRtcChannelMediaOptions()
-               channelMediaOption.token = chorusChannelRtcToken
-               apiConfig?.engine?.updateChannelEx(with: channelMediaOption, connection: subChorusConnection)
+        // 更新RtmToken
+        apiConfig?.chorusChannelToken = chorusChannelRtcToken
+        mcc?.renewToken(rtmToken)
+        // 更新合唱频道RtcToken
+        if let subChorusConnection = subChorusConnection {
+            let channelMediaOption = AgoraRtcChannelMediaOptions()
+            channelMediaOption.token = chorusChannelRtcToken
+            apiConfig?.engine?.updateChannelEx(with: channelMediaOption, connection: subChorusConnection)
         }
     }
 

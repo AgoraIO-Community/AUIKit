@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AUIKaraokeLoadingView: UIView {
+public class AUIKaraokeLoadingView: UIView {
     
     public func setProgress(_ progress: Int) {
         percentLabel.text = "\(progress)%"
@@ -18,7 +18,7 @@ class AUIKaraokeLoadingView: UIView {
     private var percentLabel: UILabel = UILabel()
     private var loadingView: UIView = UIView()
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         layoutUI()
     }

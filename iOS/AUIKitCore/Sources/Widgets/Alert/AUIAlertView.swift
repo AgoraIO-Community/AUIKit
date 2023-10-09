@@ -99,8 +99,10 @@ open class AUIAlertView: UIView {
     }()
     private lazy var closeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "xmark")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal),
-                        for: .normal)
+        if #available(iOS 13.0, *) {
+            button.setImage(UIImage(systemName: "xmark")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal),
+                            for: .normal)
+        }
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(clickCloseButton), for: .touchUpInside)
         button.isHidden = true

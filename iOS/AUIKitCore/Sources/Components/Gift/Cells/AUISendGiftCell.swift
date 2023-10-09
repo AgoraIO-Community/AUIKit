@@ -92,7 +92,7 @@ public class AUISendGiftCell: UICollectionViewCell {
         self.contentView.isHidden = (item == nil)
 
         let url = self.icon.ossPictureCrop(url: item?.giftIcon ?? "")
-        self.icon.sd_setImage(with: URL(string: url), placeholderImage: UIImage.aui_Image(named: item?.giftName ?? ""), context: nil)
+        self.icon.sd_setImage(with: URL(string: url), placeholderImage: UIImage.aui_Image(named: item?.giftName ?? ""))
         self.name.text = item?.giftName
         self.displayValue.setImage(self.config.priceIcon, for: .normal)
         self.displayValue.setTitle(item?.giftPrice ?? "100", for: .normal)

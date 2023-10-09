@@ -1,6 +1,10 @@
 
 [English](CHANGELOG.md) | 中文
 
+## [0.5.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.1)
+- [iOS]修复subspec冗余依赖问题
+- 剩余Bug修复
+
 ## [0.5.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.0)
 - 更新RTM至稳定版
 - 其他剩余Bug修复

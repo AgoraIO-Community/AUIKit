@@ -212,6 +212,11 @@ class AUIRtmMsgProxy : RtmEventListener {
 
     override fun onTokenPrivilegeWillExpire(channelName: String?) {
         originEventListeners?.onTokenPrivilegeWillExpire(channelName)
+        if(channelName?.isNotEmpty() == true){
+            errorDelegates.forEach {
+                it.onTokenPrivilegeWillExpire(channelName)
+            }
+        }
     }
 
 

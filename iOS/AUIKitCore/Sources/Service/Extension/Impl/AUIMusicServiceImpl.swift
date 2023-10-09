@@ -69,9 +69,13 @@ extension AUIMusicServiceImpl: AUIRtmAttributesProxyDelegate {
             }
             
             //TODO: optimize
-            let difference =
-            chooseSongList.difference(from: self.chooseSongList) { song1, song2 in
-                return song1 == song2
+            if #available(iOS 13.0, *) {
+                let difference =
+                chooseSongList.difference(from: self.chooseSongList) { song1, song2 in
+                    return song1 == song2
+                }
+            }else{
+                
             }
             var ifDiff = false
 //            if difference.count == 1 {
@@ -257,7 +261,6 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         let networkModel = AUISongAddNetworkModel.yy_model(with: dic)!
         networkModel.userId = getRoomContext().currentUserInfo.userId
         let chooseModel = AUIChooseMusicModel.yy_model(with: dic)!
-        
         networkModel.roomId = channelName
         let owner = getRoomContext().currentUserInfo
         networkModel.owner = owner

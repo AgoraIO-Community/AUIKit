@@ -182,30 +182,32 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         let duration = notification.a.keyboardAnimationDuration
         self.keyboardHeight = frame!.height
         self.frame = CGRect(x: 0, y: self.frame.origin.y, width: AScreenWidth, height: self.keyboardHeight + 5 + 60)
-        let emoji = AUIEmojiView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124).theme_backgroundColor(color: "InputBar.backgroundColor")
-        self.emoji = emoji
-        emoji.emojiClosure = { [weak self] in
+        if self.emoji == nil {
+            let emoji = AUIEmojiView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124).theme_backgroundColor(color: "InputBar.backgroundColor")
+            self.emoji = emoji
+            addSubview(emoji)
+        }
+        self.emoji?.emojiClosure = { [weak self] in
             guard let self = self else { return }
-            emoji.deleteEmoji.isEnabled = true
-            emoji.deleteEmoji.isUserInteractionEnabled = true
+            self.emoji?.deleteEmoji.isEnabled = true
+            self.emoji?.deleteEmoji.isUserInteractionEnabled = true
             if self.inputField.attributedText.length <= self.limitCount {
                 self.inputField.attributedText = self.convertText(text: self.inputField.attributedText, key: $0)
             }
         }
-        emoji.deleteClosure = { [weak self] in
+        self.emoji?.deleteClosure = { [weak self] in
             if self?.inputField.text?.count ?? 0 > 0 {
                 self?.inputField.deleteBackward()
-                emoji.deleteEmoji.isEnabled = true
-                emoji.deleteEmoji.isUserInteractionEnabled = true
+                self?.emoji?.deleteEmoji.isEnabled = true
+                self?.emoji?.deleteEmoji.isUserInteractionEnabled = true
             } else {
-                emoji.deleteEmoji.isEnabled = false
-                emoji.deleteEmoji.isUserInteractionEnabled = false
+                self?.emoji?.deleteEmoji.isEnabled = false
+                self?.emoji?.deleteEmoji.isUserInteractionEnabled = false
             }
         }
-        emoji.isHidden = true
-        addSubview(emoji)
+        self.emoji?.isHidden = true
         UIView.animate(withDuration: duration!) {
-            emoji.isHidden = false
+            self.emoji?.isHidden = false
         }
     }
     

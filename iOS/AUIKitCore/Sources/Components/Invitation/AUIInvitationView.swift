@@ -350,7 +350,7 @@ extension AUIApplyView: UITableViewDelegate, UITableViewDataSource {
     
     public func refreshUser(user: AUIUserCellUserDataProtocol) {
         self.user = user
-        self.userIcon.sd_setImage(with: URL(string: user.userAvatar), placeholderImage: UIImage("mine_avatar_placeHolder", .gift), context: nil)
+        self.userIcon.sd_setImage(with: URL(string: user.userAvatar), placeholderImage: UIImage("mine_avatar_placeHolder", .gift))
         self.userName.text = user.userName
     }
 

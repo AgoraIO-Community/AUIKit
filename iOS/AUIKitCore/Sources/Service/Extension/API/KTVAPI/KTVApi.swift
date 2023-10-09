@@ -8,14 +8,14 @@
 import Foundation
 import AgoraRtcKit
 
-/// 用户角色
-@objc public enum KTVSingRole: Int {
-    case soloSinger = 0     //独唱者
-    case coSinger           //伴唱
-    case leadSinger         //主唱
-    case audience           //观众
-//    case followSinger       //跟唱
-}
+///// 用户角色
+//@objc public enum KTVSingRole: Int {
+//    case soloSinger = 0     //独唱者
+//    case coSinger           //伴唱
+//    case leadSinger         //主唱
+//    case audience           //观众
+////    case followSinger       //跟唱
+//}
 
 
 /// 歌曲状态
@@ -109,12 +109,12 @@ import AgoraRtcKit
 //    func onJoinChorusFail(reason: KTVJoinChorusFailReason)
 //}
 
-@objc public protocol KTVLrcViewDelegate: NSObjectProtocol {
-    func onUpdatePitch(pitch: Float)
-    func onUpdateProgress(progress: Int)
-    func onDownloadLrcData(url: String)
-    func onHighPartTime(highStartTime: Int, highEndTime: Int)
-}
+//@objc public protocol KTVLrcViewDelegate: NSObjectProtocol {
+//    func onUpdatePitch(pitch: Float)
+//    func onUpdateProgress(progress: Int)
+//    func onDownloadLrcData(url: String)
+//    func onHighPartTime(highStartTime: Int, highEndTime: Int)
+//}
 
 @objc public protocol KTVApiEventHandlerDelegate: NSObjectProtocol {
     
@@ -195,7 +195,7 @@ import AgoraRtcKit
 }
 
 
-public typealias LyricCallback = ((String?) -> Void)
+//public typealias LyricCallback = ((String?) -> Void)
 public typealias LoadMusicCallback = ((AgoraMusicContentCenterPreloadStatus, NSInteger) -> Void)
 public typealias ISwitchRoleStateListener = (KTVSwitchRoleState, KTVSwitchRoleFailReason) -> Void
 public typealias MusicChartCallBacks = (String, AgoraMusicContentCenterStatusCode, [AgoraMusicChartInfo]?) -> Void

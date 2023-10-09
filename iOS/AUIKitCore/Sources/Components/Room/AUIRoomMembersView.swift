@@ -122,7 +122,7 @@ public class AUIRoomMembersView: UIView {
         for (i, imgView) in [rightImgView, leftImgView].enumerated() {
             imgView.isHidden = false
             if imgs.count > i {
-                imgView.sd_setImage(with: URL(string: imgs[i]), placeholderImage: UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle"), context: nil)
+                imgView.sd_setImage(with: URL(string: imgs[i]), placeholderImage: UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle"))
             }else{
                 imgView.isHidden = true
             }

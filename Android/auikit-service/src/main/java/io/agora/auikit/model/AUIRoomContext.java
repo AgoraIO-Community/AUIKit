@@ -19,7 +19,7 @@ public class AUIRoomContext {
         return instance;
     }
 
-    public AUIRoomConfig roomConfig = null;
+    public Map<String, AUIRoomConfig> roomConfigMap = new HashMap<>();
 
     public @NonNull AUIUserThumbnailInfo currentUserInfo = new AUIUserThumbnailInfo();
     private AUICommonConfig mCommonConfig = new AUICommonConfig();
