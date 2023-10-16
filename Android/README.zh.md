@@ -6,13 +6,13 @@ AUIKit是一套场景化应用的脚手架，提供Ui组件以及Service组件�
 
 ## 特性
 - [AUIKit](auikit)
-    - [Service](auikit-ui/src/main/java/io/agora/auikit/service)**([使用指南](doc/AUIKit-Service.md))**
-        - [AUIRoomManager](auikit-ui/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
-        - [AUIUserService](auikit-ui/src/main/java/io/agora/auikit/service/IAUIUserService.java)
-        - [AUIMicSeatService](auikit-ui/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
-        - [AUIMusicPlayerService](auikit-ui/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
-        - [AUIChorusService](auikit-ui/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
-        - [AUIJukeboxService](auikit-ui/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+    - [Service](auikit-service/src/main/java/io/agora/auikit/service)**([使用指南](doc/AUIKit-Service.md))**
+        - [AUIRoomManager](auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+        - [AUIUserService](auikit-service/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+        - [AUIMicSeatService](auikit-service/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+        - [AUIMusicPlayerService](auikit-service/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+        - [AUIChorusService](auikit-service/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+        - [AUIJukeboxService](auikit-service/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
     - [UI](auikit-ui/src/main/java/io/agora/auikit/ui)**([使用指南](doc/AUIKit-UI.md))**
         - [Feature UI Widgets](auikit-ui/src/main/java/io/agora/auikit/ui)
             - [AUIMicSeatsView](auikit-ui/src/main/java/io/agora/auikit/ui/micseats/IMicSeatsView.java)
