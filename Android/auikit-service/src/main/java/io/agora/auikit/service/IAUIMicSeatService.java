@@ -12,7 +12,7 @@ import io.agora.auikit.service.callback.AUICallback;
 /**
  * 麦位Service抽象协议，一个房间对应一个MicSeatService
  */
-public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService.AUIMicSeatRespDelegate> {
+public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService.AUIMicSeatRespObserver> {
 
     /**
      * 主动上麦（听众端和房主均可调用）
@@ -96,7 +96,7 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
      */
     void onClickInvited(int index);
 
-    interface AUIMicSeatRespDelegate {
+    interface AUIMicSeatRespObserver {
 
         /**
          * 全量的麦位列表变化

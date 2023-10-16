@@ -5,7 +5,7 @@ import java.util.Map;
 import io.agora.auikit.model.AUILoadMusicConfiguration;
 import io.agora.auikit.service.callback.AUIMusicLoadStateCallback;
 
-public interface IAUIMusicPlayerService extends IAUICommonService<IAUIMusicPlayerService.AUIPlayerRespDelegate> {
+public interface IAUIMusicPlayerService extends IAUICommonService<IAUIMusicPlayerService.AUIPlayerRespObserver> {
     /**
      * 异步加载歌曲，同时只能为一首歌loadSong，loadSong结果会通过回调通知业务层
      * @param songCode 歌曲唯一编码
@@ -109,7 +109,7 @@ public interface IAUIMusicPlayerService extends IAUICommonService<IAUIMusicPlaye
     /**
      * musicPlayer 模块事件
      */
-    interface AUIPlayerRespDelegate {
+    interface AUIPlayerRespObserver {
         /**
          * 前奏开始加载
          */

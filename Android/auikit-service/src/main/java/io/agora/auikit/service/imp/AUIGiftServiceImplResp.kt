@@ -13,21 +13,22 @@ import io.agora.auikit.service.http.Utils
 import io.agora.auikit.service.http.gift.GiftInterface
 import io.agora.auikit.service.im.AUIChatManager
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.GsonTools
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 
 private const val giftKey = "AUIChatRoomGift"
-class AUIGiftServiceImpl constructor(
+class AUIGiftServiceImplResp constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val chatManager:AUIChatManager
-) : IAUIGiftsService, AUIRtmMsgProxyDelegate {
+) : IAUIGiftsService, AUIRtmMsgRespObserver {
 
-    private val delegateHelper = DelegateHelper<IAUIGiftsService.AUIGiftRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<IAUIGiftsService.AUIGiftRespObserver>()
     private var roomContext:AUIRoomContext
 
     init {
@@ -59,12 +60,12 @@ class AUIGiftServiceImpl constructor(
         rtmManager.sendGiftMetadata(channelName,gift,callback)
     }
 
-    override fun bindRespDelegate(delegate: IAUIGiftsService.AUIGiftRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: IAUIGiftsService.AUIGiftRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIGiftsService.AUIGiftRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIGiftsService.AUIGiftRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
     override fun getRoomContext() = roomContext
@@ -76,7 +77,7 @@ class AUIGiftServiceImpl constructor(
             val gift = JSONObject(value.toString())
             GsonTools.toBean(gift["messageInfo"].toString(), AUIGiftEntity::class.java)?.let { it ->
                 chatManager.addGiftList(it)
-                this.delegateHelper.notifyDelegate { it1 ->
+                this.observableHelper.notifyEventHandlers { it1 ->
                     it1.onReceiveGiftMsg(it)
                 }
             }

@@ -2,7 +2,7 @@ package io.agora.auikit.service.im
 
 import io.agora.auikit.model.AgoraChatMessage
 
-interface AUIChatSubscribeDelegate {
+interface AUIChatEventHandler {
 
     /**
      * 接收到普通消息

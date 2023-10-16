@@ -7,32 +7,33 @@ import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIUserListCallback
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmUserProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmUserRespObserver
 import io.agora.auikit.utils.AUILogger
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.GsonTools
 
-class AUIUserServiceImpl constructor(
+class AUIUserServiceImplResp constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIUserService, AUIRtmUserProxyDelegate {
+) : IAUIUserService, AUIRtmUserRespObserver {
 
     private val TAG = "AUiUserServiceImpl"
 
     private var mUserList = mutableListOf<AUIUserInfo>()
 
-    private val delegateHelper = DelegateHelper<IAUIUserService.AUIUserRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<IAUIUserService.AUIUserRespObserver>()
 
     init {
         rtmManager.subscribeUser(this)
     }
 
-    override fun bindRespDelegate(delegate: IAUIUserService.AUIUserRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: IAUIUserService.AUIUserRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIUserService.AUIUserRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIUserService.AUIUserRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun getUserInfoList(
@@ -81,7 +82,7 @@ class AUIUserServiceImpl constructor(
                     )
                 )
             } else {
-                this.delegateHelper.notifyDelegate {
+                this.observableHelper.notifyEventHandlers {
                     it.onUserAudioMute(currentUserId, isMute)
                 }
                 callback?.onResult(null)
@@ -138,7 +139,7 @@ class AUIUserServiceImpl constructor(
             }
         }
         mUserList = users
-        this.delegateHelper.notifyDelegate {
+        this.observableHelper.notifyEventHandlers {
             it.onRoomUserSnapshot(channelName, mUserList)
         }
         setupUserAttr(channelName)
@@ -152,7 +153,7 @@ class AUIUserServiceImpl constructor(
         GsonTools.toBean(GsonTools.beanToString(userInfo), AUIUserInfo::class.java)?.let { info ->
             info.userId = userId
             mUserList.add(info)
-            this.delegateHelper.notifyDelegate {
+            this.observableHelper.notifyEventHandlers {
                 it.onRoomUserEnter(channelName, info)
             }
         }
@@ -165,7 +166,7 @@ class AUIUserServiceImpl constructor(
     ) {
         val index = mUserList.indexOfFirst{ it.userId == userId }
         val info = mUserList.removeAt(index)
-        this.delegateHelper.notifyDelegate {
+        this.observableHelper.notifyEventHandlers {
             it.onRoomUserLeave(channelName, info)
         }
     }
@@ -187,12 +188,12 @@ class AUIUserServiceImpl constructor(
                 mUserList[index] = info
                 // 单独更新语音被禁用回调
                 if (oldInfo.muteAudio != info.muteAudio) {
-                    this.delegateHelper.notifyDelegate {
+                    this.observableHelper.notifyEventHandlers {
                         it.onUserAudioMute(info.userId, (info.muteAudio == 1))
                     }
                 }
             }
-            this.delegateHelper.notifyDelegate {
+            this.observableHelper.notifyEventHandlers {
                 it.onRoomUserUpdate(channelName, info)
             }
         }

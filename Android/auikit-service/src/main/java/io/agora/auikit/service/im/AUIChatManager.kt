@@ -38,7 +38,7 @@ class AUIChatManager(
     channelName: String,
     roomContext:AUIRoomContext,
 ): MessageListener, ChatRoomChangeListener {
-    private val chatSubscribeDelegates = mutableListOf<AUIChatSubscribeDelegate>()
+    private val chatEvnetHandlers = mutableListOf<AUIChatEventHandler>()
     private var chatRoomId:String? = ""
     private var channelId:String? = ""
     private var appKey:String? =""
@@ -57,12 +57,12 @@ class AUIChatManager(
         this.roomContext = roomContext
     }
 
-    fun subscribeChatMsg(delegate: AUIChatSubscribeDelegate) {
-        chatSubscribeDelegates.add(delegate)
+    fun subscribeChatMsg(delegate: AUIChatEventHandler) {
+        chatEvnetHandlers.add(delegate)
     }
 
-    fun unsubscribeChatMsg(delegate: AUIChatSubscribeDelegate?) {
-        chatSubscribeDelegates.remove(delegate)
+    fun unsubscribeChatMsg(delegate: AUIChatEventHandler?) {
+        chatEvnetHandlers.remove(delegate)
     }
 
     fun initManager() {
@@ -218,7 +218,7 @@ class AUIChatManager(
             if (it.type == ChatMessage.Type.TXT) {
                 parseMsgChatEntity(it)
                 try {
-                    for (listener in chatSubscribeDelegates) {
+                    for (listener in chatEvnetHandlers) {
                         listener.onReceiveTextMsg(channelId,parseChatMessage(it))
                     }
                 } catch (e: Exception) {
@@ -240,7 +240,7 @@ class AUIChatManager(
                             AUICustomMsgType.AUIChatRoomJoinedMember -> {
                                 parseMsgChatEntity(it)
                                 try {
-                                    for (listener in chatSubscribeDelegates) {
+                                    for (listener in chatEvnetHandlers) {
                                         listener.onReceiveMemberJoinedMsg(channelId,parseChatMessage(it))
                                     }
                                 } catch (e: Exception) {
@@ -465,7 +465,7 @@ class AUIChatManager(
         participant: String?
     ) {
         try {
-            for (listener in chatSubscribeDelegates) {
+            for (listener in chatEvnetHandlers) {
                 listener.onUserBeKicked(chatRoomId,getKickReason(reason))
             }
         } catch (e: Exception) {
@@ -475,7 +475,7 @@ class AUIChatManager(
 
     override fun onChatRoomDestroyed(chatRoomId: String?, roomName: String?) {
         try {
-            for (listener in chatSubscribeDelegates) {
+            for (listener in chatEvnetHandlers) {
                 listener.onRoomDestroyed(chatRoomId)
             }
         } catch (e: Exception) {
