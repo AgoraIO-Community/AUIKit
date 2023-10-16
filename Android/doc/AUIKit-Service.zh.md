@@ -212,7 +212,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-service/src/main/j
 | 字段 | 注释 |
 | :- | :- |
 | context | Android上下文 |
-| appId | Agora APP ID |
+| host | 业务服务器域名 |
 | userId | 本地用户Id |
 | userName | 本地用户名 |
 | userAvatar | 本地用户头像 |
@@ -231,7 +231,9 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-service/src/main/j
 | 字段 | 注释 |
 | :- | :- |
 | currentUserInfo | 缓存的本地用户信息 |
-| roomConfig | 房间配置信息 |
+| appId | Agora APP ID |
+| mCommonConfig | 所有房间公用配置 |
+| roomConfigMap | 各个房间配置信息 |
 | roomInfoMap | 加入的所有房间列表 |
 
 * **创建房间信息 ->** [AUICreateRoomInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUICreateRoomInfo.java)

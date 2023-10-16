@@ -212,7 +212,7 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespOb
 | field | comment |
 | :- | :- |
 | context | Android context |
-| appId | Agora APP ID |
+| host | Domain name of the business server |
 | userId | local user Id |
 | userName | local username |
 | userAvatar | local user avatar |
@@ -231,7 +231,9 @@ Chorus information callback interface -> [IAUIMusicPlayerService.AUIPlayerRespOb
 | field | comment |
 | :- | :- |
 | currentUserInfo | Cached local user information |
-| roomConfig | room configuration information |
+| appId | Agora APP ID |
+| mCommonConfig | Room common config |
+| roomConfigMap | room configuration information |
 | roomInfoMap | List of all rooms joined |
 
 * **Create room information ->** [AUICreateRoomInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUICreateRoomInfo.java)
