@@ -8,8 +8,6 @@
 import Foundation
 
 open class AUICommonConfig: NSObject {
-    /// appid
-    public var appId: String = ""
     /// 网络请求域名
     public var host: String = "https://uikit-voiceroom-staging.bj2.agoralab.co"
     

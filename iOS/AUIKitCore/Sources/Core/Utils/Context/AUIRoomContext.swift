@@ -9,7 +9,8 @@ import Foundation
 
 open class AUIRoomContext: NSObject {
     public static let shared: AUIRoomContext = AUIRoomContext()
-    
+    /// appid
+    public var appId: String = ""
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {

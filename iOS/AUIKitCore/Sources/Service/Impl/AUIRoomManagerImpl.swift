@@ -44,7 +44,7 @@ let kUserMuteAttrKey = "mute"
     private func createRtmClient() -> AgoraRtmClientKit {
         let rtmConfig = AgoraRtmClientConfig()
         rtmConfig.userId = commonConfig.userId
-        rtmConfig.appId = commonConfig.appId
+        rtmConfig.appId = AUIRoomContext.shared.appId
         let log = AgoraRtmLogConfig()
         log.filePath = NSHomeDirectory() + "/Documents/RTMLog/"
         rtmConfig.logConfig = log
