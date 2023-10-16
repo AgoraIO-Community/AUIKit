@@ -28,8 +28,8 @@ import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.AgoraEngineCreator
-import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.MapperUtils
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.ThreadManager
 import io.agora.rtm2.RtmClient
 import io.agora.rtm2.RtmConstants
@@ -49,7 +49,7 @@ class AUIRoomManagerImplRespResp(
     val rtmManager by lazy {
         val rtm = rtmClient ?: AgoraEngineCreator.createRtmClient(
             commonConfig.context,
-            commonConfig.appId,
+            AUIRoomContext.shared().appId,
             commonConfig.userId
         )
         AUIRtmManager(commonConfig.context, rtm)
@@ -67,12 +67,10 @@ class AUIRoomManagerImplRespResp(
     }
     override fun registerRespObserver(observer: AUIRoomManagerRespObserver?) {
         observableHelper.subscribeEvent(observer)
-        rtmManager.proxy.registerErrorRespObserver("",this)
     }
 
     override fun unRegisterRespObserver(observer: AUIRoomManagerRespObserver?) {
         observableHelper.unSubscribeEvent(observer)
-        rtmManager.proxy.unRegisterErrorRespObserver("",this)
     }
 
     override fun createRoom(
@@ -115,6 +113,7 @@ class AUIRoomManagerImplRespResp(
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.STREAM,roomId)
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.MESSAGE,roomId)
         rtmManager.unsubscribeMsg(roomId,"",this)
+        rtmManager.proxy.unRegisterErrorRespObserver(this)
         rtmManager.logout()
         HttpManager.getService(RoomInterface::class.java)
             .destroyRoom(RoomUserReq(roomId, roomContext.currentUserInfo.userId))
@@ -166,6 +165,7 @@ class AUIRoomManagerImplRespResp(
             } else {
                 AUILogger.logger().d(TAG, "EnterRoom rtmManager login success")
                 AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.MESSAGE room roomId=$roomId token=$token")
+                rtmManager.proxy.registerErrorRespObserver(this)
                 rtmManager.subscribeMsg(roomId, "", this)
                 rtmManager.subscribe(RtmConstants.RtmChannelType.MESSAGE,roomId, token) { subscribeError ->
                     if (subscribeError != null) {

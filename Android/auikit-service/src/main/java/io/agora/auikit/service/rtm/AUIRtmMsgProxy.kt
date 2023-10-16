@@ -74,14 +74,14 @@ class AUIRtmMsgProxy : RtmEventListener {
         userRespObservers.remove(observer)
     }
 
-    fun registerErrorRespObserver(channelName: String, observer: AUIRtmErrorRespObserver) {
+    fun registerErrorRespObserver(observer: AUIRtmErrorRespObserver) {
         if (errorRespObservers.contains(observer)) {
             return
         }
         errorRespObservers.add(observer)
     }
 
-    fun unRegisterErrorRespObserver(channelName: String, observer: AUIRtmErrorRespObserver) {
+    fun unRegisterErrorRespObserver(observer: AUIRtmErrorRespObserver) {
         errorRespObservers.remove(observer)
     }
 
