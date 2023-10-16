@@ -65,7 +65,7 @@ Agora房间管理类 -> [AUIRoomManagerImpl](../auikit-service/src/main/java/io/
 | exitRoom | 退出房间（听众调用） |
 | getRoomInfoList | 获取指定房间id列表的详细信息，如果房间id列表为空，则获取所有房间的信息 |
 
-房间信息回调接口 -> [IAUIRoomManager.AUIRoomRespDelegate](../auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+房间信息回调接口 -> [IAUIRoomManager.AUIRoomRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -84,7 +84,7 @@ Agora用户管理类 -> [AUIUserServiceImpl](../auikit-service/src/main/java/io/
 | muteUserAudio | 对自己静音/解除静音 |
 | muteUserVideo | 对自己禁摄像头/解禁摄像头 |
 
-用户信息回调接口 -> [IAUIUserService.AUIUserRespDelegate](../auikit-service/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+用户信息回调接口 -> [IAUIUserService.AUIUserRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIUserService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -112,7 +112,7 @@ Agora麦位管理类 -> [AUIMicSeatServiceImpl](../auikit-service/src/main/java/
 | closeSeat | 封禁/解禁某个麦位（房主调用） |
 | getMicSeatInfo | 获取指定麦位信息 |
 
-麦位信息回调接口 -> [IAUIMicSeatService.AUIMicSeatRespDelegate](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+麦位信息回调接口 -> [IAUIMicSeatService.AUIMicSeatRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -138,7 +138,7 @@ Agora点唱管理类 -> [AUIJukeboxServiceImpl](../auikit-service/src/main/java/
 | pingSong | 置顶歌曲 |
 | updatePlayStatus | 更新播放状态 |
 
-点唱信息回调接口 -> [IAUIJukeboxService.AUIJukeboxRespDelegate](../auikit-service/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+点唱信息回调接口 -> [IAUIJukeboxService.AUIJukeboxRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -159,7 +159,7 @@ Agora合唱管理类 -> [AUIChorusServiceImpl](../auikit-service/src/main/java/i
 | leaveChorus | 退出合唱 |
 | switchSingerRole | 切换角色 |
 
-合唱信息回调接口 -> [IAUIChorusService.AUIChorusRespDelegate](../auikit-service/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+合唱信息回调接口 -> [IAUIChorusService.AUIChorusRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -192,7 +192,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-service/src/main/j
 | effectProperties | 音效映射key |
 | enableEarMonitoring | 耳返开启关闭 |
 
-合唱信息回调接口 -> [IAUIMusicPlayerService.AUIPlayerRespDelegate](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+合唱信息回调接口 -> [IAUIMusicPlayerService.AUIPlayerRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
 
 | 方法 | 注释 |
 | :- | :- |
