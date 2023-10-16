@@ -9,7 +9,7 @@ import io.agora.auikit.model.AUIChooseMusicModel
 import io.agora.auikit.model.AUIMusicModel
 import io.agora.auikit.model.AUIPlayStatus
 import io.agora.auikit.service.IAUIJukeboxService
-import io.agora.auikit.service.IAUIJukeboxService.AUIJukeboxRespDelegate
+import io.agora.auikit.service.IAUIJukeboxService.AUIJukeboxRespObserver
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIChooseSongListCallback
 import io.agora.auikit.service.callback.AUIException
@@ -25,17 +25,17 @@ import io.agora.auikit.service.http.song.SongRemoveReq
 import io.agora.auikit.service.http.song.SongStopReq
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.rtc2.Constants
 import retrofit2.Call
 import retrofit2.Response
 
-class AUIJukeboxServiceImpl constructor(
+class AUIJukeboxServiceImplResp constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val ktvApi: KTVApi
-) : IAUIJukeboxService, AUIRtmMsgProxyDelegate {
+) : IAUIJukeboxService, AUIRtmMsgRespObserver {
 
     private val TAG: String = "Jukebox_LOG"
     private val kChooseSongKey = "song"
@@ -47,7 +47,8 @@ class AUIJukeboxServiceImpl constructor(
 
     private val songInterface by lazy { HttpManager.getService(SongInterface::class.java) }
 
-    private val delegateHelper = DelegateHelper<AUIJukeboxRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<AUIJukeboxRespObserver>()
 
     // 选歌列表
     private val chooseMusicList = mutableListOf<AUIChooseMusicModel>()
@@ -56,12 +57,12 @@ class AUIJukeboxServiceImpl constructor(
         rtmManager.subscribeMsg(channelName, kChooseSongKey, this)
     }
 
-    override fun bindRespDelegate(delegate: AUIJukeboxRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: AUIJukeboxRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: AUIJukeboxRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: AUIJukeboxRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     // 获取歌曲列表
@@ -400,7 +401,7 @@ class AUIJukeboxServiceImpl constructor(
             gson.fromJson(value as String, object : TypeToken<List<AUIChooseMusicModel>>() {}.type) ?: mutableListOf()
         this.chooseMusicList.clear()
         this.chooseMusicList.addAll(changedSongs)
-        delegateHelper.notifyDelegate { delegate: AUIJukeboxRespDelegate ->
+        observableHelper.notifyEventHandlers { delegate: AUIJukeboxRespObserver ->
             delegate.onUpdateAllChooseSongs(this.chooseMusicList)
         }
     }

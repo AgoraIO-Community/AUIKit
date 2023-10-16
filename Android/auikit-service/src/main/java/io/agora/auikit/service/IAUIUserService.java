@@ -12,7 +12,7 @@ import io.agora.auikit.service.callback.AUIUserListCallback;
 /**
  * 房间Service抽象协议
  */
-public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUserRespDelegate> {
+public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUserRespObserver> {
 
     /**
      * 获取指定 userId 的用户信息，如果为 null，则获取房间内所有人的信息
@@ -45,7 +45,7 @@ public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUs
      */
     void muteUserVideo(boolean isMute, @Nullable AUICallback callback);
 
-    interface AUIUserRespDelegate {
+    interface AUIUserRespObserver {
         /**
          * 用户进入房间后获取到的所有用户信息
          *

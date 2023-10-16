@@ -18,8 +18,8 @@ import io.agora.auikit.service.http.invitation.InvitationInterface
 import io.agora.auikit.service.http.invitation.InvitationPayload
 import io.agora.auikit.service.http.invitation.RejectInvitationAccept
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ThreadManager
 import retrofit2.Call
@@ -28,10 +28,10 @@ import retrofit2.Response
 
 private const val RoomApplyKey = "application"
 private const val RoomInvitationKey = "invitation"
-class AUIInvitationServiceImpl(
+class AUIInvitationServiceImplResp(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIInvitationService, AUIRtmMsgProxyDelegate {
+) : IAUIInvitationService, AUIRtmMsgRespObserver {
     private val roomContext:AUIRoomContext
 
     init {
@@ -40,14 +40,15 @@ class AUIInvitationServiceImpl(
         this.roomContext = AUIRoomContext.shared()
     }
 
-    private val delegateHelper = DelegateHelper<IAUIInvitationService.AUIInvitationRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<IAUIInvitationService.AUIInvitationRespObserver>()
 
-    override fun bindRespDelegate(delegate: IAUIInvitationService.AUIInvitationRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: IAUIInvitationService.AUIInvitationRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIInvitationService.AUIInvitationRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIInvitationService.AUIInvitationRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun sendInvitation(userId: String, seatIndex: Int, callback: AUICallback?) {
@@ -269,14 +270,14 @@ class AUIInvitationServiceImpl(
     override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
         Log.e("apex","AUiServiceImpl key: $key")
         if (key == RoomApplyKey){ //申请
-            delegateHelper.notifyDelegate {
+            observableHelper.notifyEventHandlers {
                 val list = paresData(value)
                 if (list.size > 0){
                     it.onApplyListUpdate(paresData(value))
                 }
             }
         }else if (key == RoomInvitationKey){//邀请
-            delegateHelper.notifyDelegate {
+            observableHelper.notifyEventHandlers {
                 val list = paresData(value)
                 if (list.size > 0 && list[list.lastIndex].userId == roomContext.currentUserInfo.userId){
                     it.onReceiveInvitation(list[list.lastIndex].userId,list[list.lastIndex].micIndex)

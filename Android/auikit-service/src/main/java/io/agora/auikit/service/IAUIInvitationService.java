@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import io.agora.auikit.model.AUIUserInfo;
 import io.agora.auikit.service.callback.AUICallback;
 
-public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationService.AUIInvitationRespDelegate> {
+public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationService.AUIInvitationRespObserver> {
     /**
      * 向用户发送邀请
      * @param userId 邀请用户id
@@ -66,7 +66,7 @@ public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationS
      */
     void rejectApply(@NonNull String userId,@NonNull AUICallback callback);
 
-    interface AUIInvitationRespDelegate {
+    interface AUIInvitationRespObserver {
 
         /**
          * 收到新的邀请请求

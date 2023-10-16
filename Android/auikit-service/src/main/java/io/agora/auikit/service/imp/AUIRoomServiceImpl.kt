@@ -5,7 +5,7 @@ import io.agora.auikit.model.AUICreateRoomInfo
 import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.model.AUIRoomInfo
 import io.agora.auikit.service.IAUIRoomManager
-import io.agora.auikit.service.IAUIRoomManager.AUIRoomManagerRespDelegate
+import io.agora.auikit.service.IAUIRoomManager.AUIRoomManagerRespObserver
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUICreateRoomCallback
 import io.agora.auikit.service.callback.AUIException
@@ -23,13 +23,13 @@ import io.agora.auikit.service.http.room.RoomUserReq
 import io.agora.auikit.service.http.user.KickUserReq
 import io.agora.auikit.service.http.user.KickUserRsp
 import io.agora.auikit.service.http.user.UserInterface
-import io.agora.auikit.service.rtm.AUIRtmErrorProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmErrorRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.AgoraEngineCreator
-import io.agora.auikit.utils.DelegateHelper
 import io.agora.auikit.utils.MapperUtils
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.ThreadManager
 import io.agora.rtm2.RtmClient
 import io.agora.rtm2.RtmConstants
@@ -38,10 +38,10 @@ import retrofit2.Response
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val kRoomAttrKey = "room"
-class AUIRoomManagerImpl(
+class AUIRoomManagerImplRespResp(
     private val commonConfig: AUICommonConfig,
     private val rtmClient: RtmClient? = null,
-) : IAUIRoomManager, AUIRtmMsgProxyDelegate, AUIRtmErrorProxyDelegate {
+) : IAUIRoomManager, AUIRtmMsgRespObserver, AUIRtmErrorRespObserver {
 
     private val subChannelMsg = AtomicBoolean(false)
     private val subChannelStream = AtomicBoolean(false)
@@ -49,7 +49,7 @@ class AUIRoomManagerImpl(
     val rtmManager by lazy {
         val rtm = rtmClient ?: AgoraEngineCreator.createRtmClient(
             commonConfig.context,
-            commonConfig.appId,
+            AUIRoomContext.shared().appId,
             commonConfig.userId
         )
         AUIRtmManager(commonConfig.context, rtm)
@@ -57,21 +57,20 @@ class AUIRoomManagerImpl(
 
     private val TAG = "AUiRoomManagerImpl"
 
-    private val delegateHelper = DelegateHelper<AUIRoomManagerRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<AUIRoomManagerRespObserver>()
 
     private var mChannelName: String? = null
 
     init {
         AUIRoomContext.shared().commonConfig = commonConfig
     }
-    override fun bindRespDelegate(delegate: AUIRoomManagerRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
-        rtmManager.proxy.subscribeError("",this)
+    override fun registerRespObserver(observer: AUIRoomManagerRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: AUIRoomManagerRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
-        rtmManager.proxy.unsubscribeError("",this)
+    override fun unRegisterRespObserver(observer: AUIRoomManagerRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun createRoom(
@@ -114,6 +113,7 @@ class AUIRoomManagerImpl(
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.STREAM,roomId)
         rtmManager.unSubscribe(RtmConstants.RtmChannelType.MESSAGE,roomId)
         rtmManager.unsubscribeMsg(roomId,"",this)
+        rtmManager.proxy.unRegisterErrorRespObserver(this)
         rtmManager.logout()
         HttpManager.getService(RoomInterface::class.java)
             .destroyRoom(RoomUserReq(roomId, roomContext.currentUserInfo.userId))
@@ -165,6 +165,7 @@ class AUIRoomManagerImpl(
             } else {
                 AUILogger.logger().d(TAG, "EnterRoom rtmManager login success")
                 AUILogger.logger().d(TAG, "EnterRoom subscribeMsg RtmChannelType.MESSAGE room roomId=$roomId token=$token")
+                rtmManager.proxy.registerErrorRespObserver(this)
                 rtmManager.subscribeMsg(roomId, "", this)
                 rtmManager.subscribe(RtmConstants.RtmChannelType.MESSAGE,roomId, token) { subscribeError ->
                     if (subscribeError != null) {
@@ -297,15 +298,15 @@ class AUIRoomManagerImpl(
 
     override fun onConnectionStateChanged(channelName: String?, state: Int, reason: Int) {
         if (state == 5 && reason == 3){
-            delegateHelper.notifyDelegate {
+            observableHelper.notifyEventHandlers {
                 it.onRoomUserBeKicked(channelName,AUIRoomContext.shared().currentUserInfo.userId)
             }
         }
     }
 
-    override fun onMsgRecvEmpty(channelName: String) {
+    override fun onMsgReceiveEmpty(channelName: String) {
         if (channelName == getChannelName()) {
-            delegateHelper.notifyDelegate {
+            observableHelper.notifyEventHandlers {
                 it.onRoomDestroy(channelName)
             }
         }

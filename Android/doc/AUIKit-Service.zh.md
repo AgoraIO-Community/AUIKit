@@ -8,7 +8,7 @@ AUIKit Service提供一套通用的服务接口，可用于数据交互。这套
 ## 目录结构
 ```
 service接口：
-auikit-ui/src/main/java/io/agora/auikit/service
+auikit-service/src/main/java/io/agora/auikit/service
 ├── IAUICommonService.java                  基础服务抽象类
 ├── IAUIRoomManager.java                    房间管理
 ├── IAUIUserService.java                    用户管理
@@ -20,7 +20,7 @@ auikit-ui/src/main/java/io/agora/auikit/service
 └── callback                                回调接口
 
 数据结构：
-auikit-ui/src/main/java/io/agora/auikit/model
+auikit-service/src/main/java/io/agora/auikit/model
 ├── AUICommonConfig.java                    公共配置类
 ├── AUIRoomConfig.java                      房间配置
 ├── AUIRoomContext.java                     房间上下文
@@ -43,7 +43,7 @@ auikit-ui/src/main/java/io/agora/auikit/model
 
 ### <span>**`service接口`**</span>
 
-* **基础服务抽象类 ->** [IAUICommonService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUICommonService.java)
+* **基础服务抽象类 ->** [IAUICommonService](../auikit-service/src/main/java/io/agora/auikit/service/IAUICommonService.java)
 | 方法 | 注释 |
 | :- | :- |
 | bindRespDelegate | 绑定响应事件 |
@@ -54,8 +54,8 @@ auikit-ui/src/main/java/io/agora/auikit/model
 
 * **房间管理**
 
-房间管理抽象类 -> [IAUIRoomManager](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
-Agora房间管理类 -> [AUIRoomManagerImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIRoomServiceImpl.kt)
+房间管理抽象类 -> [IAUIRoomManager](../auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+Agora房间管理类 -> [AUIRoomManagerImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIRoomServiceImpl.kt)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -65,7 +65,7 @@ Agora房间管理类 -> [AUIRoomManagerImpl](../auikit-ui/src/main/java/io/agora
 | exitRoom | 退出房间（听众调用） |
 | getRoomInfoList | 获取指定房间id列表的详细信息，如果房间id列表为空，则获取所有房间的信息 |
 
-房间信息回调接口 -> [IAUIRoomManager.AUIRoomRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+房间信息回调接口 -> [IAUIRoomManager.AUIRoomRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -74,8 +74,8 @@ Agora房间管理类 -> [AUIRoomManagerImpl](../auikit-ui/src/main/java/io/agora
 
 * **用户管理**
 
-用户管理抽象类 -> [IAUIUserService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIUserService.java)
-Agora用户管理类 -> [AUIUserServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIUserServiceImpl.kt)
+用户管理抽象类 -> [IAUIUserService](../auikit-service/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+Agora用户管理类 -> [AUIUserServiceImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIUserServiceImpl.kt)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -84,7 +84,7 @@ Agora用户管理类 -> [AUIUserServiceImpl](../auikit-ui/src/main/java/io/agora
 | muteUserAudio | 对自己静音/解除静音 |
 | muteUserVideo | 对自己禁摄像头/解禁摄像头 |
 
-用户信息回调接口 -> [IAUIUserService.AUIUserRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+用户信息回调接口 -> [IAUIUserService.AUIUserRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIUserService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -97,8 +97,8 @@ Agora用户管理类 -> [AUIUserServiceImpl](../auikit-ui/src/main/java/io/agora
 
 * **麦位管理**
 
-麦位管理抽象类 -> [IAUIMicSeatService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
-Agora麦位管理类 -> [AUIMicSeatServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIMicSeatServiceImpl.kt)
+麦位管理抽象类 -> [IAUIMicSeatService](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+Agora麦位管理类 -> [AUIMicSeatServiceImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIMicSeatServiceImpl.kt)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -112,7 +112,7 @@ Agora麦位管理类 -> [AUIMicSeatServiceImpl](../auikit-ui/src/main/java/io/ag
 | closeSeat | 封禁/解禁某个麦位（房主调用） |
 | getMicSeatInfo | 获取指定麦位信息 |
 
-麦位信息回调接口 -> [IAUIMicSeatService.AUIMicSeatRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+麦位信息回调接口 -> [IAUIMicSeatService.AUIMicSeatRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -125,8 +125,8 @@ Agora麦位管理类 -> [AUIMicSeatServiceImpl](../auikit-ui/src/main/java/io/ag
 
 * **点唱管理**
 
-点唱管理抽象类 -> [IAUIJukeboxService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
-Agora点唱管理类 -> [AUIJukeboxServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIJukeboxServiceImpl.kt)
+点唱管理抽象类 -> [IAUIJukeboxService](../auikit-service/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+Agora点唱管理类 -> [AUIJukeboxServiceImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIJukeboxServiceImpl.kt)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -138,7 +138,7 @@ Agora点唱管理类 -> [AUIJukeboxServiceImpl](../auikit-ui/src/main/java/io/ag
 | pingSong | 置顶歌曲 |
 | updatePlayStatus | 更新播放状态 |
 
-点唱信息回调接口 -> [IAUIJukeboxService.AUIJukeboxRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+点唱信息回调接口 -> [IAUIJukeboxService.AUIJukeboxRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -149,8 +149,8 @@ Agora点唱管理类 -> [AUIJukeboxServiceImpl](../auikit-ui/src/main/java/io/ag
 
 * **合唱管理**
 
-合唱管理抽象类 -> [IAUIChorusService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
-Agora合唱管理类 -> [AUIChorusServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIChorusServiceImpl.kt)
+合唱管理抽象类 -> [IAUIChorusService](../auikit-service/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+Agora合唱管理类 -> [AUIChorusServiceImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIChorusServiceImpl.kt)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -159,7 +159,7 @@ Agora合唱管理类 -> [AUIChorusServiceImpl](../auikit-ui/src/main/java/io/ago
 | leaveChorus | 退出合唱 |
 | switchSingerRole | 切换角色 |
 
-合唱信息回调接口 -> [IAUIChorusService.AUIChorusRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+合唱信息回调接口 -> [IAUIChorusService.AUIChorusRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -170,8 +170,8 @@ Agora合唱管理类 -> [AUIChorusServiceImpl](../auikit-ui/src/main/java/io/ago
 
 * **播放管理**
 
-播放管理抽象类 -> [IAUIMusicPlayerService](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
-Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/io/agora/auikit/service/imp/AUIMusicPlayerServiceImpl.kt)
+播放管理抽象类 -> [IAUIMusicPlayerService](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIMusicPlayerServiceImpl.kt)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -192,7 +192,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | effectProperties | 音效映射key |
 | enableEarMonitoring | 耳返开启关闭 |
 
-合唱信息回调接口 -> [IAUIMusicPlayerService.AUIPlayerRespDelegate](../auikit-ui/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+合唱信息回调接口 -> [IAUIMusicPlayerService.AUIPlayerRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -207,17 +207,17 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 
 ### <span>**`数据结构`**</span>
 
-* **公共配置类 ->** [AUICommonConfig](../auikit-ui/src/main/java/io/agora/auikit/model/AUICommonConfig.java)
+* **公共配置类 ->** [AUICommonConfig](../auikit-service/src/main/java/io/agora/auikit/model/AUICommonConfig.java)
 
 | 字段 | 注释 |
 | :- | :- |
 | context | Android上下文 |
-| appId | Agora APP ID |
+| host | 业务服务器域名 |
 | userId | 本地用户Id |
 | userName | 本地用户名 |
 | userAvatar | 本地用户头像 |
 
-* **房间配置信息 ->** [AUIRoomConfig](../auikit-ui/src/main/java/io/agora/auikit/model/AUIRoomConfig.java)
+* **房间配置信息 ->** [AUIRoomConfig](../auikit-service/src/main/java/io/agora/auikit/model/AUIRoomConfig.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -226,15 +226,17 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | ktvChorusChannelName | 合唱所使用频道名 |
 | tokenMap | 内部使用到的所有token表 |
 
-* **房间上下文 ->** [AUIRoomContext](../auikit-ui/src/main/java/io/agora/auikit/model/AUIRoomContext.java)
+* **房间上下文 ->** [AUIRoomContext](../auikit-service/src/main/java/io/agora/auikit/model/AUIRoomContext.java)
 
 | 字段 | 注释 |
 | :- | :- |
 | currentUserInfo | 缓存的本地用户信息 |
-| roomConfig | 房间配置信息 |
+| appId | Agora APP ID |
+| mCommonConfig | 所有房间公用配置 |
+| roomConfigMap | 各个房间配置信息 |
 | roomInfoMap | 加入的所有房间列表 |
 
-* **创建房间信息 ->** [AUICreateRoomInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUICreateRoomInfo.java)
+* **创建房间信息 ->** [AUICreateRoomInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUICreateRoomInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -243,7 +245,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | seatCount | 麦位个数 |
 | password | 房间密码 |
 
-* **房间信息 ->** [AUIRoomInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIRoomInfo.java)
+* **房间信息 ->** [AUIRoomInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUIRoomInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -252,7 +254,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | onlineUsers | 房间内人数 |
 | createTime | 房间创建时间 |
 
-* **基础用户信息 ->** [AUIUserThumbnailInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIUserThumbnailInfo.java)
+* **基础用户信息 ->** [AUIUserThumbnailInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUIUserThumbnailInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -260,7 +262,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | userName | 用户名 |
 | userAvatar | 用户头像 |
 
-* **完整用户信息 ->** [AUIUserInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIUserInfo.java)
+* **完整用户信息 ->** [AUIUserInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUIUserInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -270,7 +272,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | muteAudio | 是否静音状态 |
 | muteVideo | 是否关闭视频状态 |
 
-* **麦位信息 ->** [AUIMicSeatInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIMicSeatInfo.java)
+* **麦位信息 ->** [AUIMicSeatInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUIMicSeatInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -280,7 +282,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | muteAudio | 麦位禁用声音，0：否，1：是 |
 | muteVideo | 麦位禁用视频，0：否，1：是 |
 
-* **点唱歌曲信息 ->** [AUIMusicModel](../auikit-ui/src/main/java/io/agora/auikit/model/AUIMusicModel.java)
+* **点唱歌曲信息 ->** [AUIMusicModel](../auikit-service/src/main/java/io/agora/auikit/model/AUIMusicModel.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -293,7 +295,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | musicUrl | 歌曲url，mcc则为空 |
 | lrcUrl | 歌词url，mcc则为空 |
 
-* **已点歌曲信息 ->** [AUIChooseMusicModel](../auikit-ui/src/main/java/io/agora/auikit/model/AUIChooseMusicModel.java)
+* **已点歌曲信息 ->** [AUIChooseMusicModel](../auikit-service/src/main/java/io/agora/auikit/model/AUIChooseMusicModel.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -311,7 +313,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | status | 播放状态，0 待播放，1 播放中 |
 
 
-* **合唱者信息 ->** [AUIChoristerModel](../auikit-ui/src/main/java/io/agora/auikit/model/AUIChoristerModel.java)
+* **合唱者信息 ->** [AUIChoristerModel](../auikit-service/src/main/java/io/agora/auikit/model/AUIChoristerModel.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -319,7 +321,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | chorusSongNo | 合唱者演唱歌曲 |
 | owner | 合唱者信息 |
 
-* **播放音效信息 ->** [AUIEffectVoiceInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIEffectVoiceInfo.java)
+* **播放音效信息 ->** [AUIEffectVoiceInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUIEffectVoiceInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -328,7 +330,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | resId | 图标资源Id |
 | name | 名称资源Id |
 
-* **播放加载音乐配置 ->** [AUILoadMusicConfiguration](../auikit-ui/src/main/java/io/agora/auikit/model/AUILoadMusicConfiguration.java)
+* **播放加载音乐配置 ->** [AUILoadMusicConfiguration](../auikit-service/src/main/java/io/agora/auikit/model/AUILoadMusicConfiguration.java)
 
 | 字段 | 注释 |
 | :- | :- |
@@ -336,7 +338,7 @@ Agora播放管理类 -> [AUIMusicPlayerServiceImpl](../auikit-ui/src/main/java/i
 | mainSingerUid | 主唱用户id |
 | loadMusicMode | 加载音乐模式，0：LOAD Music Only，1：观众，2：主唱 |
 
-* **播放音乐配置信息 ->** [AUIMusicSettingInfo](../auikit-ui/src/main/java/io/agora/auikit/model/AUIMusicSettingInfo.java)
+* **播放音乐配置信息 ->** [AUIMusicSettingInfo](../auikit-service/src/main/java/io/agora/auikit/model/AUIMusicSettingInfo.java)
 
 | 字段 | 注释 |
 | :- | :- |

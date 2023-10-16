@@ -15,12 +15,12 @@ import io.agora.auikit.service.http.room.CreateChatRoomReq
 import io.agora.auikit.service.http.room.CreateChatRoomRsp
 import io.agora.auikit.service.http.room.RoomInterface
 import io.agora.auikit.service.im.AUIChatManager
-import io.agora.auikit.service.im.AUIChatSubscribeDelegate
+import io.agora.auikit.service.im.AUIChatEventHandler
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.AgoraEngineCreator
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.ThreadManager
 import io.agora.chat.ChatMessage
 import org.json.JSONObject
@@ -33,10 +33,11 @@ class AUIIMManagerServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val chatManager: AUIChatManager
-) : IAUIIMManagerService, AUIRtmMsgProxyDelegate, AUIChatSubscribeDelegate {
+) : IAUIIMManagerService, AUIRtmMsgRespObserver, AUIChatEventHandler {
     private val roomContext = AUIRoomContext.shared()
     private val mChatRoomIdMap = mutableMapOf<String, String?>()
-    private val delegateHelper = DelegateHelper<IAUIIMManagerService.AUIIMManagerRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<IAUIIMManagerService.AUIIMManagerRespObserver>()
 
     init {
         rtmManager.subscribeMsg(channelName, chatRoomIdKey, this)
@@ -93,7 +94,7 @@ class AUIIMManagerServiceImpl constructor(
                                             .e(message = "IM join chat room failed! -- $error")
                                         return
                                     }
-                                    delegateHelper.notifyDelegate {
+                                    observableHelper.notifyEventHandlers {
                                         it.onUserDidJoinRoom(
                                             chatRoomId!!, IAUIIMManagerService.AgoraChatTextMessage(
                                                 message?.msgId, message?.body?.toString(), null
@@ -117,7 +118,7 @@ class AUIIMManagerServiceImpl constructor(
                                     .e(message = "IM join chat room failed! -- $error")
                                 return
                             }
-                            delegateHelper.notifyDelegate {
+                            observableHelper.notifyEventHandlers {
                                 it.onUserDidJoinRoom(
                                     chatRoomId, IAUIIMManagerService.AgoraChatTextMessage(
                                         message?.msgId, message?.body?.toString(), null
@@ -133,12 +134,12 @@ class AUIIMManagerServiceImpl constructor(
     }
 
 
-    override fun bindRespDelegate(delegate: IAUIIMManagerService.AUIIMManagerRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: IAUIIMManagerService.AUIIMManagerRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIIMManagerService.AUIIMManagerRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIIMManagerService.AUIIMManagerRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun getRoomContext(): AUIRoomContext = roomContext
@@ -277,7 +278,7 @@ class AUIIMManagerServiceImpl constructor(
         super.onReceiveMemberJoinedMsg(roomId, message)
         message ?: return
         roomId ?: return
-        delegateHelper.notifyDelegate {
+        observableHelper.notifyEventHandlers {
             it.onUserDidJoinRoom(
                 roomId, IAUIIMManagerService.AgoraChatTextMessage(
                     message.messageId,
@@ -292,7 +293,7 @@ class AUIIMManagerServiceImpl constructor(
         super.onReceiveTextMsg(roomId, message)
         message ?: return
         roomId ?: return
-        delegateHelper.notifyDelegate {
+        observableHelper.notifyEventHandlers {
             it.messageDidReceive(
                 roomId,
                 IAUIIMManagerService.AgoraChatTextMessage(

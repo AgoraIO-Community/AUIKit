@@ -12,7 +12,7 @@ import io.agora.auikit.service.callback.AUIRoomListCallback;
 /**
  * 房间Service抽象协议
  */
-public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRoomManagerRespDelegate> {
+public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRoomManagerRespObserver> {
     /**
      * 创建房间（房主调用），若房间不存在，系统将自动创建一个新房间
      *
@@ -70,7 +70,7 @@ public interface IAUIRoomManager extends IAUICommonService<IAUIRoomManager.AUIRo
      */
     void kickUser(String roomId,int userId,AUICallback callback);
 
-    interface AUIRoomManagerRespDelegate {
+    interface AUIRoomManagerRespObserver {
 
         /**
          * 房间被销毁的回调
