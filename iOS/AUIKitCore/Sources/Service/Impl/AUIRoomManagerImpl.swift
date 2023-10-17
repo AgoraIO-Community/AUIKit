@@ -168,7 +168,7 @@ extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
     @objc public func onMsgRecvEmpty(channelName: String) {
         self.respDelegates.allObjects.forEach { obj in
             guard let delegate = obj as? AUIRoomManagerRespDelegate else {return}
-            delegate.onRoomDestroy(roomId: channelName)
+            delegate.onRoomDestroy?(roomId: channelName)
         }
     }
     
@@ -180,7 +180,7 @@ extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
         }
         
         for obj in self.respDelegates.allObjects {
-            (obj as? AUIRoomManagerRespDelegate)?.onRoomUserBeKicked(roomId: channelName, userId: AUIRoomContext.shared.currentUserInfo.userId)
+            (obj as? AUIRoomManagerRespDelegate)?.onRoomUserBeKicked?(roomId: channelName, userId: AUIRoomContext.shared.currentUserInfo.userId)
         }
     }
 }
