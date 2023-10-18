@@ -4,6 +4,7 @@
 ## [0.5.2](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.2)
 - appId从AUICommonConfig移除，作为AUIRoomContext的属性
 - [iOS]AUIRoomManagerRespDelegate里所有方法改为optional
+- [Android]将delegate接口改成observer
 
 ## [0.5.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.1)
 - [iOS]修复subspec冗余依赖问题
