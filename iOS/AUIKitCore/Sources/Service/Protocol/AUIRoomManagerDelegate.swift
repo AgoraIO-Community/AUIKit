@@ -62,28 +62,28 @@ public protocol AUIRoomManagerDelegate: NSObjectProtocol {
 }
 
 /// 房间操作对应的响应
-public protocol AUIRoomManagerRespDelegate: NSObjectProtocol {
+@objc public protocol AUIRoomManagerRespDelegate: NSObjectProtocol {
 
     /// 房间被销毁的回调
     /// - Parameter roomId: 房间id
-    func onRoomDestroy(roomId: String)
+    @objc optional func onRoomDestroy(roomId: String)
     
     /// 房间信息变更回调
     /// - Parameters:
     ///   - roomId: 房间id
     ///   - roomInfo: 房间信息
-    func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo)
+    @objc optional func onRoomInfoChange(roomId: String, roomInfo: AUIRoomInfo)
     
     /// Description 房间公告发生变更
     /// - Parameters:
     ///   - roomId: 房间id
     ///   - announcement: 公告变更内容
-    func onRoomAnnouncementChange(roomId: String, announcement: String)
+    @objc optional func onRoomAnnouncementChange(roomId: String, announcement: String)
     
     /// Description 房间用户被踢出房间
     ///
     /// - Parameters:
     ///   - roomId: 房间id
     ///   - userId: 用户id
-    func onRoomUserBeKicked(roomId: String,userId: String)
+    @objc optional func onRoomUserBeKicked(roomId: String,userId: String)
 }

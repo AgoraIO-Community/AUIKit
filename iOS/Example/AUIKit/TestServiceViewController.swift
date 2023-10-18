@@ -59,7 +59,7 @@ class TestServiceViewController: UIViewController, AgoraRtcEngineDelegate {
     
     @IBAction func didClickJoinRoomButton(_ sender: Any) {
         generateToken { config, appid in
-            AUIRoomContext.shared.commonConfig?.appId = appid
+            AUIRoomContext.shared.appId = appid
             self.joinRoom()
         }
     }
@@ -86,14 +86,14 @@ extension TestServiceViewController {
     
     private func _rtcEngineConfig(commonConfig: AUICommonConfig) -> AgoraRtcEngineConfig {
        let config = AgoraRtcEngineConfig()
-        config.appId = commonConfig.appId
+        config.appId = AUIRoomContext.shared.appId
         config.channelProfile = .liveBroadcasting
         config.audioScenario = .gameStreaming
         config.areaCode = .global
         
         if config.appId?.count ?? 0 == 0 {
-            aui_error("config.appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId'", tag: "AUIKaraokeRoomService")
-            assert(false, "config.appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId'")
+            aui_error("config.appId is empty, please check 'AUIRoomContext.shared.appId'", tag: "AUIKaraokeRoomService")
+            assert(false, "config.appId is empty, please check 'AUIRoomContext.shared.appId'")
         }
         return config
     }
@@ -153,7 +153,7 @@ extension TestServiceViewController {
                 
                 
                 let commonConfig = AUICommonConfig()
-                commonConfig.appId = appid
+                AUIRoomContext.shared.appId = appid
                 
                 let rtcEngine = self._createRtcEngine(commonConfig: commonConfig)
     

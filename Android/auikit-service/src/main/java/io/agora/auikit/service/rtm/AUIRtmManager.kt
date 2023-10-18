@@ -117,20 +117,20 @@ class AUIRtmManager(
         isLogin = false
     }
 
-    fun subscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
-        proxy.subscribeMsg(channelName, itemKey, delegate)
+    fun subscribeMsg(channelName: String, itemKey: String, handler: AUIRtmMsgRespObserver) {
+        proxy.registerMsgRespObserver(channelName, itemKey, handler)
     }
 
-    fun unsubscribeMsg(channelName: String, itemKey: String, delegate: AUIRtmMsgProxyDelegate) {
-        proxy.unsubscribeMsg(channelName, itemKey, delegate)
+    fun unsubscribeMsg(channelName: String, itemKey: String, handler: AUIRtmMsgRespObserver) {
+        proxy.unRegisterMsgRespObserver(channelName, itemKey, handler)
     }
 
-    fun subscribeUser(delegate: AUIRtmUserProxyDelegate) {
-        proxy.subscribeUser(delegate)
+    fun subscribeUser(delegate: AUIRtmUserRespObserver) {
+        proxy.registerUserRespObserver(delegate)
     }
 
-    fun unsubscribeUser(delegate: AUIRtmUserProxyDelegate) {
-        proxy.unsubscribeUser(delegate)
+    fun unsubscribeUser(delegate: AUIRtmUserRespObserver) {
+        proxy.unRegisterUserRespObserver(delegate)
     }
 
     fun subscribe(channelType:RtmChannelType,channelName: String, token: String, completion: (AUIRtmException?) -> Unit) {

@@ -6,25 +6,25 @@ AUIKit is a set of scaffolding for scenario-based applications. It provides UI c
 
 ## Features
 - [AUIKit](auikit)
-  - [Service](auikit/src/main/java/io/agora/auikit/service)**([Document](doc/AUIKit-Service.md))**
-    - [AUIRoomManager](auikit/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
-    - [AUIUserService](auikit/src/main/java/io/agora/auikit/service/IAUIUserService.java)
-    - [AUIMicSeatService](auikit/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
-    - [AUIMusicPlayerService](auikit/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
-    - [AUIChorusService](auikit/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
-    - [AUIJukeboxService](auikit/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
-  - [UI](auikit/src/main/java/io/agora/auikit/ui)**([Document](doc/AUIKit-UI.md))**
-    - [Feature UI Widgets](auikit/src/main/java/io/agora/auikit/ui)
-      - [AUIMicSeatsView](auikit/src/main/java/io/agora/auikit/ui/micseats/IMicSeatsView.java)
-      - [AUIJukeboxView](auikit/src/main/java/io/agora/auikit/ui/jukebox/IAUIJukeboxView.java)
-      - [AUIMusicPlayerView](auikit/src/main/java/io/agora/auikit/ui/musicplayer/IMusicPlayerView.java)
-      - [AUIMemberView](auikit/src/main/java/io/agora/auikit/ui/member/IMemberListView.java)
-    - [Basic UI Widgets](auikit/src/main/java/io/agora/auikit/ui/basic)
-      - [AUIButton](auikit/src/main/java/io/agora/auikit/ui/basic/AUIButton.java)
-      - [AUIBottomDialog](auikit/src/main/java/io/agora/auikit/ui/basic/AUIBottomDialog.java)
-      - [AUIAlertDialog](auikit/src/main/java/io/agora/auikit/ui/basic/AUIAlertDialog.java)
-      - [AUITabLayout](auikit/src/main/java/io/agora/auikit/ui/basic/AUITabLayout.java)
-      - [AUIEditText](auikit/src/main/java/io/agora/auikit/ui/basic/AUIEditText.java)
+  - [Service](auikit-service/src/main/java/io/agora/auikit/service)**([Document](doc/AUIKit-Service.md))**
+    - [AUIRoomManager](auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
+    - [AUIUserService](auikit-service/src/main/java/io/agora/auikit/service/IAUIUserService.java)
+    - [AUIMicSeatService](auikit-service/src/main/java/io/agora/auikit/service/IAUIMicSeatService.java)
+    - [AUIMusicPlayerService](auikit-service/src/main/java/io/agora/auikit/service/IAUIMusicPlayerService.java)
+    - [AUIChorusService](auikit-service/src/main/java/io/agora/auikit/service/IAUIChorusService.java)
+    - [AUIJukeboxService](auikit-service/src/main/java/io/agora/auikit/service/IAUIJukeboxService.java)
+  - [UI](auikit-ui/src/main/java/io/agora/auikit/ui)**([Document](doc/AUIKit-UI.md))**
+    - [Feature UI Widgets](auikit-ui/src/main/java/io/agora/auikit/ui)
+      - [AUIMicSeatsView](auikit-ui/src/main/java/io/agora/auikit/ui/micseats/IMicSeatsView.java)
+      - [AUIJukeboxView](auikit-ui/src/main/java/io/agora/auikit/ui/jukebox/IAUIJukeboxView.java)
+      - [AUIMusicPlayerView](auikit-ui/src/main/java/io/agora/auikit/ui/musicplayer/IMusicPlayerView.java)
+      - [AUIMemberView](auikit-ui/src/main/java/io/agora/auikit/ui/member/IMemberListView.java)
+    - [Basic UI Widgets](auikit-ui/src/main/java/io/agora/auikit/ui/basic)
+      - [AUIButton](auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIButton.java)
+      - [AUIBottomDialog](auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIBottomDialog.java)
+      - [AUIAlertDialog](auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIAlertDialog.java)
+      - [AUITabLayout](auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUITabLayout.java)
+      - [AUIEditText](auikit-ui/src/main/java/io/agora/auikit/ui/basic/AUIEditText.java)
       - ...
 
 ## Quick Start

@@ -13,7 +13,7 @@ import io.agora.auikit.service.ktv.KTVLoadMusicMode
 import io.agora.auikit.service.ktv.KTVLoadSongFailReason
 import io.agora.auikit.service.ktv.KTVSingRole
 import io.agora.auikit.service.ktv.MusicLoadStatus
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.mediaplayer.Constants
 import io.agora.mediaplayer.Constants.MediaPlayerState
 import io.agora.rtc2.RtcEngine
@@ -23,7 +23,8 @@ class AUIMusicPlayerServiceImpl constructor(
     private val channelName: String,
     private val ktvApi: KTVApi
 ): IAUIMusicPlayerService, IKTVApiEventHandler(), ILrcView {
-    private val delegateHelper = DelegateHelper<IAUIMusicPlayerService.AUIPlayerRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<IAUIMusicPlayerService.AUIPlayerRespObserver>()
 
     private val rtcEffectProperties :MutableMap<Int,Int> by lazy{
         mutableMapOf()
@@ -44,12 +45,12 @@ class AUIMusicPlayerServiceImpl constructor(
     }
 
     // ----------------- IAUiMusicPlayerService -----------------
-    override fun bindRespDelegate(delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: IAUIMusicPlayerService.AUIPlayerRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIMusicPlayerService.AUIPlayerRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun getChannelName() = channelName
@@ -180,7 +181,7 @@ class AUIMusicPlayerServiceImpl constructor(
     override fun onMusicPlayerStateChanged(
         state: MediaPlayerState, error: Constants.MediaPlayerError, isLocal: Boolean
     ) {
-        delegateHelper.notifyDelegate { delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate ->
+        observableHelper.notifyEventHandlers { delegate: IAUIMusicPlayerService.AUIPlayerRespObserver ->
             delegate.onPlayerStateChanged(MediaPlayerState.getValue(state), isLocal)
         }
     }
@@ -190,13 +191,13 @@ class AUIMusicPlayerServiceImpl constructor(
     // ----------------- ILrcView -----------------
 
     override fun onUpdatePitch(pitch: Float?) {
-        delegateHelper.notifyDelegate { delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate ->
+        observableHelper.notifyEventHandlers { delegate: IAUIMusicPlayerService.AUIPlayerRespObserver ->
             delegate.onPitchDidChange(pitch)
         }
     }
 
     override fun onUpdateProgress(progress: Long?) {
-        delegateHelper.notifyDelegate { delegate: IAUIMusicPlayerService.AUIPlayerRespDelegate ->
+        observableHelper.notifyEventHandlers { delegate: IAUIMusicPlayerService.AUIPlayerRespObserver ->
             delegate.onPlayerPositionDidChange(progress)
         }
     }

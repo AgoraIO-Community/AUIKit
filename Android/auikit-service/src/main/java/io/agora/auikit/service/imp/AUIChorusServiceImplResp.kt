@@ -20,16 +20,16 @@ import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.ktv.KTVSingRole
 import io.agora.auikit.service.ktv.SwitchRoleFailReason
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
+import io.agora.auikit.utils.ObservableHelper
 import retrofit2.Call
 import retrofit2.Response
 
-class AUIChorusServiceImpl constructor(
+class AUIChorusServiceImplResp constructor(
     private val channelName: String,
     private val ktvApi: KTVApi,
     private val rtmManager: AUIRtmManager
-) : IAUIChorusService, AUIRtmMsgProxyDelegate {
+) : IAUIChorusService, AUIRtmMsgRespObserver {
     private val TAG: String = "Chorus_LOG"
     private val kChorusKey = "chorus"
 
@@ -44,13 +44,14 @@ class AUIChorusServiceImpl constructor(
 
     private var chorusList = mutableListOf<AUIChoristerModel>() // 合唱者列表
 
-    private val delegateHelper = DelegateHelper<IAUIChorusService.AUIChorusRespDelegate>()
-    override fun bindRespDelegate(delegate: IAUIChorusService.AUIChorusRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    private val observableHelper =
+        ObservableHelper<IAUIChorusService.AUIChorusRespObserver>()
+    override fun registerRespObserver(observer: IAUIChorusService.AUIChorusRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIChorusService.AUIChorusRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIChorusService.AUIChorusRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun getChannelName() = channelName
@@ -156,7 +157,7 @@ class AUIChorusServiceImpl constructor(
                 }
             }
             if (!hasChorister) {
-                delegateHelper.notifyDelegate { delegate: IAUIChorusService.AUIChorusRespDelegate ->
+                observableHelper.notifyEventHandlers { delegate: IAUIChorusService.AUIChorusRespObserver ->
                     delegate.onChoristerDidEnter(newChorister)
                 }
             }
@@ -169,7 +170,7 @@ class AUIChorusServiceImpl constructor(
                 }
             }
             if (!hasChorister) {
-                delegateHelper.notifyDelegate { delegate: IAUIChorusService.AUIChorusRespDelegate ->
+                observableHelper.notifyEventHandlers { delegate: IAUIChorusService.AUIChorusRespObserver ->
                     delegate.onChoristerDidLeave(oldChorister)
                 }
             }
@@ -177,7 +178,7 @@ class AUIChorusServiceImpl constructor(
         this.chorusList.clear()
         this.chorusList.addAll(chorusLists)
 
-        delegateHelper.notifyDelegate { delegate: IAUIChorusService.AUIChorusRespDelegate ->
+        observableHelper.notifyEventHandlers { delegate: IAUIChorusService.AUIChorusRespObserver ->
             //delegate
             delegate.onChoristerDidChanged()
         }

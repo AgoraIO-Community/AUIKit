@@ -4,7 +4,7 @@ import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIGiftListCallback
 
-interface IAUIGiftsService : IAUICommonService<IAUIGiftsService.AUIGiftRespDelegate> {
+interface IAUIGiftsService : IAUICommonService<IAUIGiftsService.AUIGiftRespObserver> {
 
     /**
      * - roomId: 房间id
@@ -19,7 +19,7 @@ interface IAUIGiftsService : IAUICommonService<IAUIGiftsService.AUIGiftRespDeleg
      */
     fun sendGift(gift: AUIGiftEntity, callback: AUICallback)
 
-    interface AUIGiftRespDelegate{
+    interface AUIGiftRespObserver{
         fun onReceiveGiftMsg(giftEntity: AUIGiftEntity?){}
     }
 }

@@ -1,6 +1,11 @@
 
 English | [中文](CHANGELOG.zh.md)
 
+## [0.5.2](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.2)
+- appId removed from AUICommonConfig as an attribute of AUIRoomContext
+- [iOS]Change all methods in AUIRoomManagerRespDelegate to optional
+- [Android]Change the delegate interface to observer
+
 ## [0.5.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.1)
 - [iOS]Fix subspec redundancy dependency issue
 - Fix other remaining bugs

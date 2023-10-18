@@ -16,7 +16,7 @@ import io.agora.auikit.service.callback.AUIMusicListCallback;
 /**
  * 点歌器Service抽象协议
  */
-public interface IAUIJukeboxService extends IAUICommonService<IAUIJukeboxService.AUIJukeboxRespDelegate> {
+public interface IAUIJukeboxService extends IAUICommonService<IAUIJukeboxService.AUIJukeboxRespObserver> {
 
     // 0 -> "项目热歌榜单"
     // 1 -> "声网热歌榜"
@@ -88,7 +88,7 @@ public interface IAUIJukeboxService extends IAUICommonService<IAUIJukeboxService
      */
     void updatePlayStatus(@NonNull String songCode, @AUIPlayStatus int playStatus, @Nullable AUICallback completion);
 
-    interface AUIJukeboxRespDelegate {
+    interface AUIJukeboxRespObserver {
 
         /**
          * 新增一首歌曲回调

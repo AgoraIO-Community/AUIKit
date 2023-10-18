@@ -15,19 +15,20 @@ import io.agora.auikit.service.http.seat.SeatInterface
 import io.agora.auikit.service.http.seat.SeatLeaveReq
 import io.agora.auikit.service.http.seat.SeatPickReq
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgProxyDelegate
-import io.agora.auikit.utils.DelegateHelper
+import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.GsonTools
 import retrofit2.Call
 import retrofit2.Response
 
 private const val kSeatAttrKey = "micSeat"
-class AUIMicSeatServiceImpl(
+class AUIMicSeatServiceImplResp(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIMicSeatService, AUIRtmMsgProxyDelegate {
+) : IAUIMicSeatService, AUIRtmMsgRespObserver {
 
-    private val delegateHelper = DelegateHelper<IAUIMicSeatService.AUIMicSeatRespDelegate>()
+    private val observableHelper =
+        ObservableHelper<IAUIMicSeatService.AUIMicSeatRespObserver>()
 
     private var micSeats = mutableMapOf<Int, AUIMicSeatInfo>()
 
@@ -35,12 +36,12 @@ class AUIMicSeatServiceImpl(
         rtmManager.subscribeMsg(channelName, kSeatAttrKey, this)
     }
 
-    override fun bindRespDelegate(delegate: IAUIMicSeatService.AUIMicSeatRespDelegate?) {
-        delegateHelper.bindDelegate(delegate)
+    override fun registerRespObserver(observer: IAUIMicSeatService.AUIMicSeatRespObserver?) {
+        observableHelper.subscribeEvent(observer)
     }
 
-    override fun unbindRespDelegate(delegate: IAUIMicSeatService.AUIMicSeatRespDelegate?) {
-        delegateHelper.unBindDelegate(delegate)
+    override fun unRegisterRespObserver(observer: IAUIMicSeatService.AUIMicSeatRespObserver?) {
+        observableHelper.unSubscribeEvent(observer)
     }
 
     override fun enterSeat(seatIndex: Int, callback: AUICallback?) {
@@ -239,7 +240,7 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun onClickInvited(index: Int) {
-        delegateHelper.notifyDelegate {
+        observableHelper.notifyEventHandlers {
             it.onShowInvited(index)
         }
     }
@@ -273,33 +274,33 @@ class AUIMicSeatServiceImpl(
             if (oldSeatUserId.isEmpty() && newSeatUserId.isNotEmpty()) {
                 Log.d("mic_seat_update", "onAnchorEnterSeat: $it")
                 val newUser = newSeatInfo.user ?: return
-                delegateHelper.notifyDelegate { delegate ->
+                observableHelper.notifyEventHandlers { delegate ->
                     delegate.onAnchorEnterSeat(index, newUser)
                 }
             }
             if (oldSeatUserId.isNotEmpty() && newSeatUserId.isEmpty()) {
                 Log.d("mic_seat_update", "onAnchorLeaveSeat: $it")
                 val originUser = oldSeatInfo?.user ?: return
-                delegateHelper.notifyDelegate { delegate ->
+                observableHelper.notifyEventHandlers { delegate ->
                     delegate.onAnchorLeaveSeat(index, originUser)
                 }
             }
             if ((oldSeatInfo?.seatStatus ?: AUIMicSeatStatus.idle) != newSeatInfo.seatStatus &&
                 (oldSeatInfo?.seatStatus == AUIMicSeatStatus.locked || newSeatInfo.seatStatus == AUIMicSeatStatus.locked)) {
                 Log.d("mic_seat_update", "onSeatClose: $it")
-                delegateHelper.notifyDelegate { delegate ->
+                observableHelper.notifyEventHandlers { delegate ->
                     delegate.onSeatClose(index, (newSeatInfo.seatStatus == AUIMicSeatStatus.locked))
                 }
             }
             if ((oldSeatInfo?.muteAudio ?: 0) != newSeatInfo.muteAudio) {
                 Log.d("mic_seat_update", "onSeatAudioMute: $it")
-                delegateHelper.notifyDelegate { delegate ->
+                observableHelper.notifyEventHandlers { delegate ->
                     delegate.onSeatAudioMute(index, (newSeatInfo.muteAudio != 0))
                 }
             }
             if ((oldSeatInfo?.muteVideo ?: 0) != newSeatInfo.muteVideo) {
                 Log.d("mic_seat_update", "onSeatVideoMute: $it")
-                delegateHelper.notifyDelegate { delegate ->
+                observableHelper.notifyEventHandlers { delegate ->
                     delegate.onSeatVideoMute(index, (newSeatInfo.muteVideo != 0))
                 }
             }

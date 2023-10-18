@@ -7,7 +7,7 @@ import io.agora.auikit.service.callback.AUICallback;
 import io.agora.auikit.service.callback.AUIChoristerListCallback;
 import io.agora.auikit.service.callback.AUISwitchSingerRoleCallback;
 
-public interface IAUIChorusService extends IAUICommonService<IAUIChorusService.AUIChorusRespDelegate> {
+public interface IAUIChorusService extends IAUICommonService<IAUIChorusService.AUIChorusRespObserver> {
 
 
     // 获取合唱者列表
@@ -22,7 +22,7 @@ public interface IAUIChorusService extends IAUICommonService<IAUIChorusService.A
     // 切换角色
     void switchSingerRole(int newRole, @Nullable AUISwitchSingerRoleCallback callback);
 
-    interface AUIChorusRespDelegate {
+    interface AUIChorusRespObserver {
         /// 合唱者加入
         /// - Parameter chorus: <#chorus description#>
         void onChoristerDidEnter(AUIChoristerModel chorister);

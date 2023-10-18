@@ -8,17 +8,22 @@ import java.util.List;
 import java.util.Map;
 
 public class AUIRoomContext {
-    private static AUIRoomContext instance = null;
+    private static volatile AUIRoomContext instance = null;
     private AUIRoomContext() {
         // 私有构造函数
     }
-    public static synchronized AUIRoomContext shared() {
+    public static AUIRoomContext shared() {
         if (instance == null) {
-            instance = new AUIRoomContext();
+            synchronized (AUIRoomContext.class){
+                if(instance == null){
+                    instance = new AUIRoomContext();
+                }
+            }
         }
         return instance;
     }
 
+    public String appId = "";
     public Map<String, AUIRoomConfig> roomConfigMap = new HashMap<>();
 
     public @NonNull AUIUserThumbnailInfo currentUserInfo = new AUIUserThumbnailInfo();
