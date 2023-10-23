@@ -1,6 +1,9 @@
 
 [English](CHANGELOG.md) | 中文
 
+## [0.5.3](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.3)
+- [iOS]适配Objective-C
+
 ## [0.5.2](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.2)
 - appId从AUICommonConfig移除，作为AUIRoomContext的属性
 - [iOS]AUIRoomManagerRespDelegate里所有方法改为optional
