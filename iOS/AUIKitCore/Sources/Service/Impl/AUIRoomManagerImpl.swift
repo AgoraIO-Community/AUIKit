@@ -94,7 +94,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         aui_info("destroyRoom: \(roomId)", tag: "AUIRoomManagerImpl")
         self.rtmManager.unSubscribe(channelName: roomId)
         
-        let model = AUIRoomDestoryNetworkModel()
+        let model = AUIRoomDestroyNetworkModel()
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
         model.roomId = roomId
         model.request { error, _ in
