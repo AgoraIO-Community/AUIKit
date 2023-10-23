@@ -48,10 +48,10 @@ public protocol AUIRoomManagerDelegate: NSObjectProtocol {
     
     /// 获取房间列表
     /// - Parameters:
-    ///   - lastCreateTime: 最后1条数据的创建时间, 返回数据list的createTime字段值，如果为空, 默认会设置为服务器当前时间戳
+    ///   - lastCreateTime: 最后1条数据的创建时间, 返回数据list的createTime字段值，如果为0, 默认会设置为服务器当前时间戳
     ///   - pageSize: 分页大小
     ///   - callback: 操作完成回调
-    func getRoomInfoList(lastCreateTime: Int64?, pageSize: Int, callback: @escaping AUIRoomListCallback)
+    func getRoomInfoList(lastCreateTime: Int64, pageSize: Int, callback: @escaping AUIRoomListCallback)
     
     /// Description 修改房间公告
     /// - Parameters:

@@ -144,9 +144,9 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         callback(nil)
     }
     
-    public func getRoomInfoList(lastCreateTime: Int64?, pageSize: Int, callback: @escaping AUIRoomListCallback) {
+    public func getRoomInfoList(lastCreateTime: Int64, pageSize: Int, callback: @escaping AUIRoomListCallback) {
         let model = AUIRoomListNetworkModel()
-        model.lastCreateTime = lastCreateTime == nil ? nil : NSNumber(value: Int(lastCreateTime!))
+        model.lastCreateTime = lastCreateTime == 0 ? nil : NSNumber(value: Int(lastCreateTime))
         model.pageSize = pageSize
         model.request { error, list in
             callback(error as NSError?, list as? [AUIRoomInfo])
