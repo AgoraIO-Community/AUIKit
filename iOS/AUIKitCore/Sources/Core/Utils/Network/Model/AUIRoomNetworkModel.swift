@@ -41,7 +41,7 @@ open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
     }
 }
 
-open class AUIRoomDestoryNetworkModel: AUICommonNetworkModel {
+open class AUIRoomDestroyNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
         interfaceName = "/v1/room/destroy"

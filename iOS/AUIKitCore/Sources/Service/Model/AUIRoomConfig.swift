@@ -7,6 +7,7 @@
 
 import Foundation
 
+@objcMembers
 open class AUICommonConfig: NSObject {
     /// 网络请求域名
     public var host: String = "https://uikit-voiceroom-staging.bj2.agoralab.co"
@@ -21,6 +22,7 @@ open class AUICommonConfig: NSObject {
     }
 }
 
+@objcMembers
 open class AUIRoomConfig: NSObject {
     public var channelName: String = ""     //正常rtm使用的频道
     public var rtmToken007: String = ""     //rtm login用，只能007
