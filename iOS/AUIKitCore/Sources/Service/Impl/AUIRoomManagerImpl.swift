@@ -23,7 +23,7 @@ let kUserMuteAttrKey = "mute"
     private lazy var rtmClient: AgoraRtmClientKit = createRtmClient()
     public private(set) var commonConfig: AUICommonConfig!
     public private(set) lazy var rtmManager: AUIRtmManager = {
-        return AUIRtmManager(rtmClient: self.rtmClient)
+        return AUIRtmManager(rtmClient: self.rtmClient, rtmChannelType: .stream)
     }()
     
     deinit {
