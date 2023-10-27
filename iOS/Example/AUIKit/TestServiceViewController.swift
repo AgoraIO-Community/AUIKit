@@ -107,7 +107,7 @@ extension TestServiceViewController {
     }
     
     func getRoomList() {
-        self.roomManager?.getRoomInfoList(lastCreateTime: nil, pageSize: 10, callback: { err, lists in
+        self.roomManager?.getRoomInfoList(lastCreateTime: 0, pageSize: 10, callback: { err, lists in
             if let lists = lists {
                 self.roomList.append(contentsOf: lists)
             }

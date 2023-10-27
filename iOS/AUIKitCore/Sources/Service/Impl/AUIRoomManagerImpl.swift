@@ -42,9 +42,7 @@ let kUserMuteAttrKey = "mute"
     }
     
     private func createRtmClient() -> AgoraRtmClientKit {
-        let rtmConfig = AgoraRtmClientConfig()
-        rtmConfig.userId = commonConfig.userId
-        rtmConfig.appId = AUIRoomContext.shared.appId
+        let rtmConfig = AgoraRtmClientConfig(appId: AUIRoomContext.shared.appId, userId: commonConfig.userId)
         let log = AgoraRtmLogConfig()
         log.filePath = NSHomeDirectory() + "/Documents/RTMLog/"
         rtmConfig.logConfig = log
@@ -57,8 +55,8 @@ let kUserMuteAttrKey = "mute"
             assert(false, "appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId' ")
         }
         
-        let rtmClient = AgoraRtmClientKit(config: rtmConfig, delegate: nil)!
-        return rtmClient
+        let rtmClient = try? AgoraRtmClientKit(rtmConfig, delegate: nil)
+        return rtmClient!
     }
     
 }

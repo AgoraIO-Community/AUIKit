@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import AgoraRtcKit
+//import AgoraRtcKit
 import AgoraRtmKit
 
 let kChannelType = AgoraRtmChannelType.stream
@@ -24,14 +24,13 @@ open class AUIRtmManager: NSObject {
     
     deinit {
         aui_info("deinit AUIRtmManager", tag: "AUIRtmManager")
+        self.rtmClient.removeDelegate(proxy)
     }
     
     public init(rtmClient: AgoraRtmClientKit?) {
         self.rtmClient = rtmClient
         super.init()
-        //TODO: 如果后续外部再修改rtmClient的delegate会有问题
-        proxy.origRtmDelegate = self.rtmClient.agoraRtmDelegate
-        self.rtmClient.agoraRtmDelegate = proxy
+        self.rtmClient.addDelegate(proxy)
         aui_info("init AUIRtmManager", tag: "AUIRtmManager")
     }
     
@@ -40,10 +39,10 @@ open class AUIRtmManager: NSObject {
             completion(nil)
             return
         }
-        self.rtmClient.login(byToken: token) {[weak self] resp, error in
-            aui_info("login: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
-            self?.isLogin = error.errorCode == .ok ? true : false
-            completion(error.toNSError())
+        self.rtmClient.login(token) {[weak self] resp, error in
+            aui_info("login: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
+            self?.isLogin = error == nil ? true : false
+            completion(error?.toNSError())
         }
         aui_info("login ", tag: "AUIRtmManager")
     }
@@ -80,11 +79,11 @@ extension AUIRtmManager {
         let options = AgoraRtmPresenceOptions()
         options.includeUserId = false
         options.includeState = false
-        presence.whoNow(channelName, channelType: kChannelType, options: options, completion: { resp, error in
+        presence.whoNow(channelName: channelName, channelType: kChannelType, options: options, completion: { resp, error in
 //            aui_info("presence whoNow '\(channelName)' finished: \(error.errorCode.rawValue) list count: \(resp.userStateList.count) userId: \(AUIRoomContext.shared.commonConfig?.userId ?? "")", tag: "AUIRtmManager")
-            aui_info("getUserCount: \(resp?.totalOccupancy)", tag: "AUIRtmManager")
+            aui_info("getUserCount: \(resp?.totalOccupancy ?? 0)", tag: "AUIRtmManager")
             let userList = resp?.userList()
-            completion(error.toNSError(), userList!.count)
+            completion(error?.toNSError(), userList!.count)
         })
         aui_info("presence whoNow '\(channelName)'", tag: "AUIRtmManager")
     }
@@ -98,11 +97,11 @@ extension AUIRtmManager {
         let options = AgoraRtmPresenceOptions()
         options.includeUserId = true
         options.includeState = true
-        presence.whoNow(channelName, channelType: kChannelType, options: options, completion: { resp, error in
-            aui_info("presence whoNow '\(channelName)' finished: \(error.errorCode.rawValue) list count: \(resp?.userStateList.count ?? 0) userId: \(AUIRoomContext.shared.commonConfig?.userId ?? "")", tag: "AUIRtmManager")
+        presence.whoNow(channelName: channelName, channelType: kChannelType, options: options, completion: { resp, error in
+//            aui_info("presence whoNow '\(channelName)' finished: \(error.errorCode.rawValue) list count: \(resp?.userStateList.count ?? 0) userId: \(AUIRoomContext.shared.commonConfig?.userId ?? "")", tag: "AUIRtmManager")
             
             let userList = resp?.userList()
-            completion(error.toNSError(), userList)
+            completion(error?.toNSError(), userList)
         })
         aui_info("presence whoNow '\(channelName)'", tag: "AUIRtmManager")
     }
@@ -130,9 +129,9 @@ extension AUIRtmManager {
             
             items.append(item)
         }
-        presence.setState(channelName, channelType: kChannelType, items: items, completion: { resp, error in
-            aui_info("presence setState '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
-            completion(error.toNSError())
+        presence.setState(channelName: channelName, channelType: kChannelType, items: items, completion: { resp, error in
+            aui_info("presence setState '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
+            completion(error?.toNSError())
         })
         aui_info("presence setState'\(channelName)' ", tag: "AUIRtmManager")
     }
@@ -172,8 +171,25 @@ extension AUIRtmManager {
         proxy.unsubscribeError(channelName: channelName, delegate: delegate)
     }
     
+    public func subscribeLock(channelName: String, lockName: String, delegate: AUIRtmLockProxyDelegate) {
+        proxy.subscribeLock(channelName: channelName, lockName: lockName, delegate: delegate)
+    }
+    
+    public func unsubscribeLock(channelName: String, lockName: String, delegate: AUIRtmLockProxyDelegate) {
+        proxy.unsubscribeLock(channelName: channelName, lockName: lockName, delegate: delegate)
+    }
+    
+//    func subscribeMessage(channelName: String, completion:@escaping (Error?)->()) {
+//        let options = AgoraRtmSubscribeOptions()
+//        options.features = [.metadata, .presence, .lock]
+//        rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
+//            aui_info("subscribe '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
+//            completion(error?.toNSError())
+//        }
+//        aui_info("subscribe '\(channelName)'", tag: "AUIRtmManager")
+//    }
+    
     func subscribe(channelName: String, rtcToken: String, completion:@escaping (Error?)->()) {
-        
         let group = DispatchGroup()
         
         var messageError: Error? = nil
@@ -193,23 +209,21 @@ extension AUIRtmManager {
         //1.subscribe message
         group.enter()
         let options = AgoraRtmSubscribeOptions()
-        options.withMetadata = true
-        options.withPresence = true
-        rtmClient.subscribe(withChannel: channelName, option: options) { resp, error in
-            aui_info("subscribe '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
-            messageError = error.toNSError()
+        options.features = [.metadata, .presence, .lock]
+        rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
+            aui_info("subscribe '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
+            messageError = error?.toNSError()
             group.leave()
         }
         aui_info("subscribe '\(channelName)'", tag: "AUIRtmManager")
         
         //2. join channel to use presence
         group.enter()
-        let option = AgoraRtmJoinChannelOption()
-        option.token = rtcToken
-        option.withMetadata = true
-        option.withPresence = true
+        let joinOption = AgoraRtmJoinChannelOption()
+        joinOption.features = [.metadata, .presence, .lock]
+        joinOption.token = rtcToken
         if rtmStreamChannelMap[channelName] == nil {
-            let streamChannel = rtmClient.createStreamChannel(channelName)
+            let streamChannel = try? rtmClient.createStreamChannel(channelName)
             rtmStreamChannelMap[channelName] = streamChannel
         }
         guard let streamChannel = rtmStreamChannelMap[channelName] else {
@@ -219,10 +233,10 @@ extension AUIRtmManager {
             return
         }
         
-        streamChannel.join(with: option) { resp, error in
-            aui_info("join '\(channelName)' finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        streamChannel.join(joinOption) { resp, error in
+            aui_info("join '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
 //            completion(error.toNSError())
-            streamError = error.toNSError()
+            streamError = error?.toNSError()
             group.leave()
         }
         aui_info("join '\(channelName)' rtcToken: \(rtcToken)", tag: "AUIRtmManager")
@@ -231,9 +245,7 @@ extension AUIRtmManager {
     func unSubscribe(channelName: String) {
         proxy.cleanCache(channelName: channelName)
         if kChannelType == .message {
-            let ret =
-            rtmClient.unsubscribe(withChannel: channelName)
-            aui_info("unSubscribe '\(channelName)' ret: \(ret)", tag: "AUIRtmManager")
+            rtmClient.unsubscribe(channelName)
         } else if kChannelType == .stream {
             guard let streamChannel = rtmStreamChannelMap[channelName] else {
                 return
@@ -310,16 +322,15 @@ extension AUIRtmManager {
             assert(false, "getMetadata fail")
             return
         }
-        let ret =
-        storage.getChannelMetadata(channelName, channelType: kChannelType, completion: { resp, error in
-            aui_info("getMetadata finished: \(error.errorCode.rawValue) item count: \(resp?.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
+        storage.getChannelMetadata(channelName: channelName, channelType: kChannelType, completion: { resp, error in
+            aui_info("getMetadata finished: \(error?.errorCode.rawValue ?? 0) item count: \(resp?.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
             var map: [String: String] = [:]
             resp?.data?.getItems().forEach({ item in
                 map[item.key] = item.value
             })
             completion(nil, map)
         })
-        aui_info("getMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("getMetadata", tag: "AUIRtmManager")
     }
 }
 
@@ -330,10 +341,10 @@ extension AUIRtmManager {
             assert(false, "subscribeUserMetadata fail")
             return
         }
-        storage.subscribeUserMetadata(userId, completion: { resp, error in
-            aui_info("subscribeUser finished: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        storage.subscribeUserMetadata(userId: userId, completion: { resp, error in
+            aui_info("subscribeUser finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
         })
-        aui_info("subscribeUserMetadata ", tag: "AUIRtmManager")
+        aui_info("subscribeUserMetadata", tag: "AUIRtmManager")
     }
     
     func unSubscribeUser(userId: String) {
@@ -342,8 +353,8 @@ extension AUIRtmManager {
             assert(false, "subscribeUserMetadata fail")
             return
         }
-        storage.unsubscribeUserMetadata(userId)
-        aui_info("subscribeUserMetadata ", tag: "AUIRtmManager")
+        storage.unsubscribeUserMetadata(userId: userId)
+        aui_info("subscribeUserMetadata", tag: "AUIRtmManager")
     }
     
     func removeUserMetadata(userId: String) {
@@ -357,8 +368,8 @@ extension AUIRtmManager {
         options.recordTs = true
         options.recordUserId = true
         
-        storage.removeUserMetadata(userId, data: data, options: options, completion: { resp, error in
-            aui_info("removeUserMetadata finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        storage.removeUserMetadata(userId: userId, data: data, options: options, completion: { resp, error in
+            aui_info("removeUserMetadata finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
         })
         aui_info("removeUserMetadata", tag: "AUIRtmManager")
     }
@@ -380,11 +391,10 @@ extension AUIRtmManager {
             data.setMetadataItem(item)
         }
         
-        let ret =
-        storage.setUserMetadata(userId, data: data, options: options, completion: { resp, error in
-            aui_info("setUserMetadata finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        storage.setUserMetadata(userId: userId, data: data, options: options, completion: { resp, error in
+            aui_info("setUserMetadata finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
         })
-        aui_info("setUserMetadata ret: \(ret)", tag: "AUIRtmManager")
+        aui_info("setUserMetadata", tag: "AUIRtmManager")
     }
     
     func updateUserMetadata(userId: String, metadata: [String: String]) {
@@ -405,8 +415,8 @@ extension AUIRtmManager {
             data.setMetadataItem(item)
         }
         
-        storage.updateUserMetadata(userId, data: data, options: options, completion: { resp, error in
-            aui_info("updateUserlMetadata finished: \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        storage.updateUserMetadata(userId: userId, data: data, options: options, completion: { resp, error in
+            aui_info("updateUserlMetadata finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
         })
         aui_info("updateUserlMetadata ", tag: "AUIRtmManager")
     }
@@ -417,8 +427,8 @@ extension AUIRtmManager {
             return
         }
         
-        storage.getUserMetadata(userId) { resp, error in
-            aui_info("getUserMetadata: \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+        storage.getUserMetadata(userId: userId) { resp, error in
+            aui_info("getUserMetadata: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
         }
         aui_info("getUserMetadata ", tag: "AUIRtmManager")
     }
@@ -426,24 +436,53 @@ extension AUIRtmManager {
 
 //message
 extension AUIRtmManager {
-
     public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
         let options = AgoraRtmPublishOptions()
-        rtmClient.publish(channelName, message: message as NSObject, withOption: options) { resp, error in
+        rtmClient.publish(channelName: channelName, message: message, option: options) { resp, error in
             var callbackError: NSError?
-            if error.errorCode != .ok {
-                callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
+            if let error = error {
+                callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason ?? "").toNSError()
             }
             completion(callbackError)
-            aui_info("publish '\(message)' to '\(channelName)': \(resp) \(error.errorCode.rawValue)", tag: "AUIRtmManager")
+            aui_info("publish '\(message)' to '\(channelName)': \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
         }
         aui_info("publish '\(message)' to '\(channelName)'", tag: "AUIRtmManager")
     }
 }
 
-extension AgoraRtmErrorInfo {
+//lock
+extension AUIRtmManager {
+    public func setLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
+        rtmClient.getLock()?.setLock(channelName: channelName, channelType: .message, lockName: lockName, ttl: 10) { resp, errorInfo in
+            aui_info("setLock: \(errorInfo?.reason ?? "")")
+            completion(errorInfo?.toNSError())
+        }
+    }
+    public func acquireLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
+        rtmClient.getLock()?.acquireLock(channelName: channelName, channelType: .message, lockName: lockName, retry: true) { resp, errorInfo in
+            aui_info("acquireLock: \(errorInfo?.reason ?? "")")
+            completion(errorInfo?.toNSError())
+        }
+    }
     
+    public func releaseLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
+        rtmClient.getLock()?.releaseLock(channelName: channelName, channelType: .message, lockName: lockName, completion: { resp, errorInfo in
+            aui_info("releaseLock: \(errorInfo?.reason ?? "")")
+            completion(errorInfo?.toNSError())
+        })
+    }
+    
+    public func removeLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
+        rtmClient.getLock()?.removeLock(channelName: channelName, channelType: .message, lockName: lockName, completion: { resp, errorInfo in
+            aui_info("removeLock: \(errorInfo?.reason ?? "")")
+            completion(errorInfo?.toNSError())
+        })
+    }
+}
+
+extension AgoraRtmErrorInfo {
     func toNSError()-> NSError? {
         return self.errorCode == .ok ? nil : NSError(domain: self.reason, code: self.errorCode.rawValue)
     }
 }
+

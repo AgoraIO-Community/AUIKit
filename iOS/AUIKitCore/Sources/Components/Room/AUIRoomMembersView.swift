@@ -183,7 +183,7 @@ extension AUIRoomMembersView:IAUIRoomMembersView {
         members.first(where: {
             $0.userId == member.userId
         })?.seatIndex = seatIndex
-        var users = members.map {$0}
+        let users = members.map {$0}
         self.members = users
     }
     
