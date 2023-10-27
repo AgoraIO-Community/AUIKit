@@ -8,6 +8,8 @@
 import Foundation
 import YYModel
 
+let kRTM_Referee_LockName = "rtm_referee_lock"
+
 public typealias AUICallback = (NSError?) -> ()
 
 public typealias AUICreateRoomCallback = (NSError?, AUIRoomInfo?) -> ()
@@ -76,6 +78,11 @@ open class AUIUserThumbnailInfo: NSObject,AUIUserCellUserDataProtocol {
         guard userId.count > 0, userName.count > 0 else {return true}
         
         return false
+    }
+    
+    //TODO: remove seatIndex & isOwner
+    static func modelPropertyBlacklist() -> [Any] {
+        return ["seatIndex", "isOwner"]
     }
 }
 

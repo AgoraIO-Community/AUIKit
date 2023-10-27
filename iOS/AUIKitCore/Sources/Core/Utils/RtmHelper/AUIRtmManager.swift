@@ -36,7 +36,7 @@ open class AUIRtmManager: NSObject {
         aui_info("init AUIRtmManager", tag: "AUIRtmManager")
     }
     
-    public func login(token: String, completion: @escaping (Error?)->()) {
+    public func login(token: String, completion: @escaping (NSError?)->()) {
         if isLogin {
             completion(nil)
             return
@@ -72,7 +72,7 @@ open class AUIRtmManager: NSObject {
 
 //MARK: user
 extension AUIRtmManager {
-    public func getUserCount(channelName: String, completion:@escaping (Error?, Int)->()) {
+    public func getUserCount(channelName: String, completion:@escaping (NSError?, Int)->()) {
         guard let presence = rtmClient.getPresence() else {
             completion(AUICommonError.rtmError(-1).toNSError(), 0)
             return
@@ -183,7 +183,7 @@ extension AUIRtmManager {
     
     func subscribe(channelName: String, completion:@escaping (Error?)->()) {
         let options = AgoraRtmSubscribeOptions()
-        options.features = [.metadata, .presence, .lock]
+        options.features = [.metadata, .presence, .lock, .message]
         rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
             aui_info("subscribe '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
@@ -254,7 +254,7 @@ extension AUIRtmManager {
 
 //MARK: Channel Metadata
 extension AUIRtmManager {
-    func cleanMetadata(channelName: String, lockName: String, completion: @escaping (Error?)->()) {
+    func cleanMetadata(channelName: String, lockName: String, completion: @escaping (NSError?)->()) {
         guard let data = rtmClient.getStorage()?.createMetadata(), let storage = rtmClient.getStorage() else {
             assert(false, "cleanMetadata fail")
             return
@@ -278,7 +278,7 @@ extension AUIRtmManager {
     func setMetadata(channelName: String, 
                      lockName: String,
                      metadata: [String: String], 
-                     completion: @escaping (Error?)->()) {
+                     completion: @escaping (NSError?)->()) {
         guard let storage = rtmClient.getStorage(),
               let data = storage.createMetadata() else {
             assert(false, "setMetadata fail")
@@ -308,7 +308,7 @@ extension AUIRtmManager {
     func updateMetadata(channelName: String, 
                         lockName: String,
                         metadata: [String: String],
-                        completion: @escaping (Error?)->()) {
+                        completion: @escaping (NSError?)->()) {
         guard let storage = rtmClient.getStorage(),
                   let data = storage.createMetadata() else {
             assert(false, "updateMetadata fail")
@@ -335,7 +335,7 @@ extension AUIRtmManager {
         aui_info("updateMetadata \(metadata)", tag: "AUIRtmManager")
     }
     
-    func getMetadata(channelName: String, completion: @escaping (Error?, [String: String]?)->()) {
+    func getMetadata(channelName: String, completion: @escaping (NSError?, [String: String]?)->()) {
         guard let storage = rtmClient.getStorage() else {
             assert(false, "getMetadata fail")
             return
@@ -470,28 +470,28 @@ extension AUIRtmManager {
 
 //MARK: lock
 extension AUIRtmManager {
-    public func setLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
-        rtmClient.getLock()?.setLock(channelName: channelName, channelType: .message, lockName: lockName, ttl: 10) { resp, errorInfo in
-            aui_info("setLock[\(channelName)][\(lockName)]: \(errorInfo?.reason ?? "")")
+    public func setLock(channelName: String, lockName: String, completion:@escaping((NSError?)->())) {
+        rtmClient.getLock()?.setLock(channelName: channelName, channelType: rtmChannelType, lockName: lockName, ttl: 10) { resp, errorInfo in
+            aui_info("setLock[\(channelName)][\(lockName)]: \(errorInfo?.errorCode.rawValue ?? 0)")
             completion(errorInfo?.toNSError())
         }
     }
-    public func acquireLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
-        rtmClient.getLock()?.acquireLock(channelName: channelName, channelType: .message, lockName: lockName, retry: true) { resp, errorInfo in
+    public func acquireLock(channelName: String, lockName: String, completion:@escaping((NSError?)->())) {
+        rtmClient.getLock()?.acquireLock(channelName: channelName, channelType: rtmChannelType, lockName: lockName, retry: true) { resp, errorInfo in
             aui_info("acquireLock[\(channelName)][\(lockName)]: \(errorInfo?.errorCode.rawValue ?? 0)")
             completion(errorInfo?.toNSError())
         }
     }
     
-    public func releaseLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
-        rtmClient.getLock()?.releaseLock(channelName: channelName, channelType: .message, lockName: lockName, completion: { resp, errorInfo in
+    public func releaseLock(channelName: String, lockName: String, completion:@escaping((NSError?)->())) {
+        rtmClient.getLock()?.releaseLock(channelName: channelName, channelType: rtmChannelType, lockName: lockName, completion: { resp, errorInfo in
             aui_info("releaseLock[\(channelName)][\(lockName)]: \(errorInfo?.reason ?? "")")
             completion(errorInfo?.toNSError())
         })
     }
     
-    public func removeLock(channelName: String, lockName: String, completion:@escaping((Error?)->())) {
-        rtmClient.getLock()?.removeLock(channelName: channelName, channelType: .message, lockName: lockName, completion: { resp, errorInfo in
+    public func removeLock(channelName: String, lockName: String, completion:@escaping((NSError?)->())) {
+        rtmClient.getLock()?.removeLock(channelName: channelName, channelType: rtmChannelType, lockName: lockName, completion: { resp, errorInfo in
             aui_info("removeLock[\(channelName)][\(lockName)]: \(errorInfo?.reason ?? "")")
             completion(errorInfo?.toNSError())
         })

@@ -129,6 +129,11 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
             aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUIRoomManagerImpl")
             callback(error as? NSError)
         }
+        rtmManager.setLock(channelName: roomId, lockName: kRTM_Referee_LockName) {[weak self] err in
+            self?.rtmManager.acquireLock(channelName: roomId, lockName: kRTM_Referee_LockName) { err in
+                
+            }
+        }
         
         self.rtmManager.subscribeError(channelName: roomId, delegate: self)
     }

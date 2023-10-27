@@ -8,11 +8,13 @@
 import UIKit
 import YYModel
 
+let kAUISeatEnterNetworkInterface = "/v1/seat/enter"
+
 @objcMembers
 open class AUISeatEnterNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/seat/enter"
+        interfaceName = kAUISeatEnterNetworkInterface
     }
     
     public var roomId: String?

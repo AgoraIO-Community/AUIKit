@@ -31,7 +31,11 @@ open class AUINetworkModel: NSObject {
     public var method: AUINetworkMethod = .post
     
     static func modelPropertyBlacklist() -> [Any] {
-        return ["uniqueId", "host", "interfaceName", "method"]
+        #if DEBUG
+        return ["uniqueId", "host", /*"interfaceName",*/ "method"]
+        #else
+//        return ["uniqueId", "host", "interfaceName", "method"]
+        #endif
     }
     
     public func getHeaders() -> HTTPHeaders {
