@@ -17,6 +17,7 @@ public enum AUICommonError {
     case missmatchRoomConfig  //找不到对应房间token信息
     case micSeatNotIdle   //麦位不空闲
     case micSeatAlreadyEnter   //已经上麦过了
+    case userNoEnterSeat   //观众未上麦
     
     public func toNSError() -> NSError {
         switch self {
@@ -39,6 +40,8 @@ public enum AUICommonError {
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "mic seat not idle"])
         case .micSeatAlreadyEnter:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user already enter seat"])
+        case .userNoEnterSeat:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user not enter seat"])
         default:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "unknown error"])
         }

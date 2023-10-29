@@ -213,7 +213,7 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func kickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-        let model = AUISeatkickNetworkModel()
+        let model = AUISeatKickNetworkModel()
         model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
         model.micSeatNo = seatIndex

@@ -25,17 +25,13 @@ public enum AUINetworkMethod: Int {
 
 @objcMembers
 open class AUINetworkModel: NSObject {
-    public let uniqueId: String = UUID().uuidString
+    public fileprivate(set) var uniqueId: String = UUID().uuidString
     public var host: String = AUIRoomContext.shared.commonConfig?.host ?? ""
     public var interfaceName: String?
     public var method: AUINetworkMethod = .post
     
     static func modelPropertyBlacklist() -> [Any] {
-        #if DEBUG
-        return ["uniqueId", "host", /*"interfaceName",*/ "method"]
-        #else
-//        return ["uniqueId", "host", "interfaceName", "method"]
-        #endif
+        return ["uniqueId", "host", "interfaceName", "method"]
     }
     
     public func getHeaders() -> HTTPHeaders {
@@ -67,6 +63,31 @@ open class AUINetworkModel: NSObject {
         }
         
         return dic
+    }
+    
+    public func rtmMessage() -> String {
+        let modelObj = self.yy_modelToJSONObject()
+        let jsonObj = [
+            "interfaceName": interfaceName,
+            "uniqueId": uniqueId,
+            "data": modelObj
+        ]
+        
+        let data = try! JSONSerialization.data(withJSONObject: jsonObj, options: .prettyPrinted)
+        let str = String(data: data, encoding: .utf8)!
+        return str
+    }
+    
+    public static func model(rtmMessage: String) -> Self? {
+        guard let data = rtmMessage.data(using: .utf8),
+              let map = try? JSONSerialization.jsonObject(with: data) as? [AnyHashable: Any],
+              let dataMap = map["data"] as? [AnyHashable: Any] else {
+            return nil
+        }
+        let model = self.yy_model(with: dataMap)
+        model?.interfaceName = map["interfaceName"] as? String ?? ""
+        model?.uniqueId = map["uniqueId"] as? String ?? ""
+        return model
     }
 }
 
