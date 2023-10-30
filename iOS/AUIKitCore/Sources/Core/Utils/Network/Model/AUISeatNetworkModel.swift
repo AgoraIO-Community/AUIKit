@@ -14,6 +14,7 @@ let kAUISeatKickNetworkInterface = "/v1/seat/kick"
 let kAUISeatMuteAudioNetworkInterface = "/v1/seat/audio/mute"
 let kAUISeatUnmuteAudioNetworkInterface = "/v1/seat/audio/unmute"
 let kAUISeatLockNetworkInterface = "/v1/seat/lock"
+let kAUISeatUnlockNetworkInterface = "/v1/seat/unlock"
 
 @objcMembers
 open class AUISeatEnterNetworkModel: AUICommonNetworkModel {
@@ -102,13 +103,13 @@ open class AUISeatLockNetworkModel: AUICommonNetworkModel {
     
     public var roomId: String?
     public var micSeatNo: Int = 0
-    public var isLock: Int = 0
+//    public var isLock: Int = 0
 }
 
 open class AUISeatUnLockNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/seat/unlock"
+        interfaceName = kAUISeatUnlockNetworkInterface
     }
     
     public var roomId: String?

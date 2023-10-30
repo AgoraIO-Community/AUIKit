@@ -19,6 +19,8 @@ import AgoraRtmKit
     
     private var micSeats:[Int: AUIMicSeatInfo] = [:]
     
+    private var callbackMap: [String: ((NSError?)-> ())] = [:]
+    
     deinit {
         self.rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         aui_info("deinit AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
@@ -123,12 +125,15 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
         model.micSeatNo = seatIndex
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message, completion: callback)
+        rtmManager.publish(channelName: channelName, message: message) { err in
+        }
+        callbackMap[model.uniqueId] = callback
     }
     
     public func leaveSeat(callback: @escaping (NSError?) -> ()) {
         if lockOwnerId == getRoomContext().currentUserInfo.userId {
-            rtmLeaveSeat(userId: getRoomContext().currentUserInfo.userId, callback: callback)
+            rtmLeaveSeat(userId: getRoomContext().currentUserInfo.userId) { err in
+            }
             return
         }
         
@@ -138,7 +143,9 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
         model.userId = getRoomContext().currentUserInfo.userId
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message, completion: callback)
+        rtmManager.publish(channelName: channelName, message: message) { err in
+        }
+        callbackMap[model.uniqueId] = callback
     }
     
     public func pickSeat(seatIndex: Int, userId: String, callback: @escaping (NSError?) -> ()) {
@@ -156,7 +163,9 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
         model.micSeatNo = seatIndex
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message, completion: callback)
+        rtmManager.publish(channelName: channelName, message: message) { err in
+        }
+        callbackMap[model.uniqueId] = callback
     }
     
     public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
@@ -172,7 +181,9 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message, completion: callback)
+            rtmManager.publish(channelName: channelName, message: message) { err in
+            }
+            callbackMap[model.uniqueId] = callback
         }else {
             let model = AUISeatUnMuteAudioNetworkModel()
             model.roomId = channelName
@@ -180,7 +191,9 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
 
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message, completion: callback)
+            rtmManager.publish(channelName: channelName, message: message) { err in
+            }
+            callbackMap[model.uniqueId] = callback
         }
     }
     
@@ -200,7 +213,9 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message, completion: callback)
+            rtmManager.publish(channelName: channelName, message: message) { err in
+            }
+            callbackMap[model.uniqueId] = callback
         }else {
             let model = AUISeatUnLockNetworkModel()
             model.roomId = channelName
@@ -208,13 +223,27 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message, completion: callback)
+            rtmManager.publish(channelName: channelName, message: message) { err in
+            }
+            callbackMap[model.uniqueId] = callback
         }
     }
 }
 
 //MARK: set KV
 extension AUIMicSeatLocalServiceImpl {
+    private func rtmReceipt(uniqueId: String, error: NSError?) {
+        let receiptMap: [String: Any] = [
+            "uniqueId": uniqueId,
+            "code": error?.code ?? 0,
+            "reason": error?.localizedDescription ?? ""
+        ]
+        let data = try! JSONSerialization.data(withJSONObject: receiptMap, options: .prettyPrinted)
+        let message = String(data: data, encoding: .utf8)!
+        rtmManager.publish(channelName: channelName, message: message) { err in
+        }
+    }
+    
     private func rtmEnterSeat(seatIndex: Int, userInfo: AUIUserThumbnailInfo, callback: @escaping (NSError?) -> ()) {
         if self.micSeats.values.contains(where: { $0.user?.userId == userInfo.userId }) {
             callback(AUICommonError.micSeatAlreadyEnter.toNSError())
@@ -287,6 +316,11 @@ extension AUIMicSeatLocalServiceImpl {
         self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
             callback(error)
         }
+        
+        #if DEBUG
+        self.rtmManager.releaseLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+        }
+        #endif
     }
     
     private func rtmMuteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
@@ -332,6 +366,7 @@ extension AUIMicSeatLocalServiceImpl {
     }
 }
 
+//MARK: AUIRtmLockProxyDelegate
 extension AUIMicSeatLocalServiceImpl: AUIRtmLockProxyDelegate {
     public func onReceiveLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail) {
         guard channelName == getChannelName() else {return}
@@ -343,37 +378,58 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmLockProxyDelegate {
     }
 }
 
+//MARK: AUIRtmMessageProxyDelegate
 extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
     public func onMessageReceive(channelName: String, message: String) {
-        guard channelName == getChannelName(), lockOwnerId == getRoomContext().currentUserInfo.userId else {return}
+        guard channelName == getChannelName() else {return}
         
         guard let data = message.data(using: .utf8),
-              let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let interfaceName = map["interfaceName"] as? String else {
+              let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             return
         }
+        let uniqueId = map["uniqueId"] as? String ?? ""
+        guard let interfaceName = map["interfaceName"] as? String else {
+            if let callback = callbackMap[uniqueId] {
+                callbackMap[uniqueId] = nil
+                let code = map["code"] as? Int ?? 0
+                let reason = map["reason"] as? String ?? "success"
+                callback(code == 0 ? nil : NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : reason]))
+            }
+            return
+        }
+        guard lockOwnerId == getRoomContext().currentUserInfo.userId else { return }
         aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
         if interfaceName == kAUISeatEnterNetworkInterface, let model = AUISeatEnterNetworkModel.model(rtmMessage: message) {
             let user = AUIUserThumbnailInfo()
             user.userId = model.userId ?? ""
             user.userAvatar = model.userAvatar ?? ""
             user.userName = model.userName ?? ""
-            rtmEnterSeat(seatIndex: model.micSeatNo, userInfo: user) { err in
+            rtmEnterSeat(seatIndex: model.micSeatNo, userInfo: user) {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatLeaveNetworkInterface, let model = AUISeatLeaveNetworkModel.model(rtmMessage: message) {
-            rtmLeaveSeat(userId: model.userId ?? "") { err in
+            rtmLeaveSeat(userId: model.userId ?? "") {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatKickNetworkInterface, let model = AUISeatKickNetworkModel.model(rtmMessage: message) {
-            rtmKickSeat(seatIndex: model.micSeatNo) { err in
+            rtmKickSeat(seatIndex: model.micSeatNo) {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatMuteAudioNetworkInterface, let model = AUISeatMuteAudioNetworkModel.model(rtmMessage: message) {
-            rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: true) { err in
+            rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: true) {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatUnmuteAudioNetworkInterface, let model = AUISeatUnMuteAudioNetworkModel.model(rtmMessage: message) {
-            rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: false) { err in
+            rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: false) {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatLockNetworkInterface, let model = AUISeatLockNetworkModel.model(rtmMessage: message) {
-            rtmCloseSeat(seatIndex: model.micSeatNo, isClose: model.isLock == 1) { err in
+            rtmCloseSeat(seatIndex: model.micSeatNo, isClose: true) {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+            }
+        } else if interfaceName == kAUISeatUnlockNetworkInterface, let model = AUISeatUnLockNetworkModel.model(rtmMessage: message) {
+            rtmCloseSeat(seatIndex: model.micSeatNo, isClose: false) {[weak self] err in
+                self?.rtmReceipt(uniqueId: uniqueId, error: err)
             }
         }
     }
