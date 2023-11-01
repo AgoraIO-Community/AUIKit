@@ -47,7 +47,7 @@ public func aui_error(_ text: String, tag: String = "AUIKit") {
         file.logFileURL = URL(fileURLWithPath: "\(logDir)/auikit_ios_\(dateString)_log.txt")
         
         // use custom format and set console output to short time, log level & message
-        console.format = "[AUIKit][$L][$X]$Dyyyy-MM-dd HH:mm:ss.SSS$d $M"
+        console.format = "$Dyyyy-MM-dd HH:mm:ss.SSS[AUIKit][$L][$X]$d$M"
         file.format = console.format
         file.logFileMaxSize = config.logFileMaxSize
         file.logFileAmount = 4

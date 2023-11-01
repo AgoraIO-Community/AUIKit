@@ -38,6 +38,7 @@ import AgoraRtmKit
 }
 
 public protocol AUIRtmUserProxyDelegate: NSObjectProtocol {
+    func onCurrentUserJoined(channelName: String)
     func onUserSnapshotRecv(channelName: String, userId:String, userList: [[String: Any]])
     func onUserDidJoined(channelName: String, userId:String, userInfo: [String: Any])
     func onUserDidLeaved(channelName: String, userId:String, userInfo: [String: Any])
@@ -162,16 +163,22 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         }
     }
     
-    public func rtmKit(_ kit: AgoraRtmClientKit,
+    public func rtmKit(_ kit: AgoraRtmClientKit, 
                        channel channelName: String,
                        connectionChangedToState state: AgoraRtmClientConnectionState,
-                       result reason: AgoraRtmClientConnectionChangeReason) {
-        aui_info("connectionStateChanged: \(state.rawValue) reason：\(reason)", tag: "AUIRtmMsgProxy")
+                       reason: AgoraRtmClientConnectionChangeReason) {
+        aui_info("connectionStateChanged state: \(state.rawValue) reason: \(reason.rawValue)", tag: "AUIRtmMsgProxy")
         if errorDelegates.count <= 0 { return }
         for element in errorDelegates.allObjects {
             (element as? AUIRtmErrorProxyDelegate)?.onConnectionStateChanged?(channelName: channelName,
                                                                               connectionStateChanged: state,
                                                                               result: reason)
+        }
+        
+        if reason == .changedRejoinSuccess {
+            for element in userDelegates.allObjects {
+                (element as? AUIRtmUserProxyDelegate)?.onCurrentUserJoined(channelName: channelName)
+            }
         }
     }
     
@@ -180,7 +187,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             return
         }
         
-        aui_info("didReceiveStorageEvent[\(event.target)] channelType: [\(event.channelType.rawValue)] storageType: [\(event.eventType.rawValue)] =======", tag: "AUIRtmMsgProxy")
+        aui_info("didReceiveStorageEvent event: [\(event.target)] channelType: [\(event.channelType.rawValue)] storageType: [\(event.eventType.rawValue)] =======", tag: "AUIRtmMsgProxy")
         //key使用channelType__eventType，保证message channel/stream channel, user storage event/channel storage event共存
         let cacheKey = event.target//"\(event.channelType.rawValue)__\(event.eventType.rawValue)_\(event.target)"
         var cache = self.attributesCacheAttr[cacheKey] ?? [:]
@@ -216,7 +223,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     }
     
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
-        aui_info("[\(event.channelName)] didReceivePresenceEvent: [\(event.type.rawValue)] channel type: [\(event.channelType.rawValue)]] states: \(event.states.count) =======", tag: "AUIRtmMsgProxy")
+        aui_info("[\(event.channelName)] didReceivePresenceEvent event: [\(event.type.rawValue)] channel type: [\(event.channelType.rawValue)]] states: \(event.states.count) =======", tag: "AUIRtmMsgProxy")
         
         guard event.channelType == .stream else {
             return
@@ -254,6 +261,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             let userList = event.snapshotList()
             for element in userDelegates.allObjects {
                 (element as? AUIRtmUserProxyDelegate)?.onUserSnapshotRecv(channelName: event.channelName, userId: userId, userList: userList)
+                (element as? AUIRtmUserProxyDelegate)?.onCurrentUserJoined(channelName: event.channelName)
             }
         }
     }
