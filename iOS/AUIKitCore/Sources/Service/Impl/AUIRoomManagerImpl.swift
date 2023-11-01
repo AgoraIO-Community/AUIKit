@@ -99,6 +99,8 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
             callback(error as? NSError)
         }
         rtmManager.unsubscribeError(channelName: roomId, delegate: self)
+        rtmManager.removeLock(channelName: roomId, lockName: kRTM_Referee_LockName) { err in
+        }
         rtmManager.logout()
     }
     

@@ -316,11 +316,6 @@ extension AUIMicSeatLocalServiceImpl {
         self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
             callback(error)
         }
-        
-        #if DEBUG
-        self.rtmManager.releaseLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
-        }
-        #endif
     }
     
     private func rtmMuteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {

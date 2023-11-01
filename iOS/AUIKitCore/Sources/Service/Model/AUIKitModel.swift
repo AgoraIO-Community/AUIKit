@@ -8,7 +8,7 @@
 import Foundation
 import YYModel
 
-let kRTM_Referee_LockName = "rtm_referee_lock"
+public let kRTM_Referee_LockName = "rtm_referee_lock"
 
 public typealias AUICallback = (NSError?) -> ()
 
