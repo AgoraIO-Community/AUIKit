@@ -86,7 +86,7 @@ import YYModel
  */
  
  
-public protocol AUIGiftsManagerServiceDelegate: AUICommonServiceDelegate {
+@objc public protocol AUIGiftsManagerServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应回调
     /// - Parameter delegate: 需要回调的对象
@@ -114,7 +114,7 @@ public protocol AUIGiftsManagerServiceDelegate: AUICommonServiceDelegate {
  
  
  
-public protocol AUIGiftsManagerRespDelegate: NSObjectProtocol {
+@objc public protocol AUIGiftsManagerRespDelegate: NSObjectProtocol {
  
      
     /// Description 接收到礼物

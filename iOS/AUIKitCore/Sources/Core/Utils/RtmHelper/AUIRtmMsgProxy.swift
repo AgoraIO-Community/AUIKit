@@ -37,7 +37,7 @@ import AgoraRtmKit
     func onMessageReceive(channelName: String, message: String)
 }
 
-public protocol AUIRtmUserProxyDelegate: NSObjectProtocol {
+@objc public protocol AUIRtmUserProxyDelegate: NSObjectProtocol {
     func onCurrentUserJoined(channelName: String)
     func onUserSnapshotRecv(channelName: String, userId:String, userList: [[String: Any]])
     func onUserDidJoined(channelName: String, userId:String, userInfo: [String: Any])
@@ -46,7 +46,7 @@ public protocol AUIRtmUserProxyDelegate: NSObjectProtocol {
 //    func onUserBeKicked(channelName: String, userId:String, userInfo: [String: Any])
 }
 
-public protocol AUIRtmLockProxyDelegate: NSObjectProtocol {
+@objc public protocol AUIRtmLockProxyDelegate: NSObjectProtocol {
     func onReceiveLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail)
     func onReleaseLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail)
 }
@@ -54,13 +54,13 @@ public protocol AUIRtmLockProxyDelegate: NSObjectProtocol {
 
 /// RTM消息转发器
 open class AUIRtmMsgProxy: NSObject {
-    private var attributesDelegates:[String: NSHashTable<AnyObject>] = [:]
+    private var attributesDelegates:[String: NSHashTable<AUIRtmAttributesProxyDelegate>] = [:]
     private var attributesCacheAttr: [String: [String: String]] = [:]
-    private var lockDelegates: [String: NSHashTable<AnyObject>] = [:]
+    private var lockDelegates: [String: NSHashTable<AUIRtmLockProxyDelegate>] = [:]
     private var lockDetailCaches: [String: [AgoraRtmLockDetail]] = [:]
-    private var messageDelegates:NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
-    private var userDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
-    private var errorDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    private var messageDelegates:NSHashTable<AUIRtmMessageProxyDelegate> = NSHashTable<AUIRtmMessageProxyDelegate>.weakObjects()
+    private var userDelegates: NSHashTable<AUIRtmUserProxyDelegate> = NSHashTable<AUIRtmUserProxyDelegate>.weakObjects()
+    private var errorDelegates: NSHashTable<AUIRtmErrorProxyDelegate> = NSHashTable<AUIRtmErrorProxyDelegate>.weakObjects()
     
     func cleanCache(channelName: String) {
         attributesCacheAttr[channelName] = nil
@@ -73,7 +73,7 @@ open class AUIRtmMsgProxy: NSObject {
                 value.add(delegate)
             }
         }else{
-            let weakObjects = NSHashTable<AnyObject>.weakObjects()
+            let weakObjects = NSHashTable<AUIRtmAttributesProxyDelegate>.weakObjects()
             weakObjects.add(delegate)
             attributesDelegates[key] = weakObjects
         }
@@ -133,7 +133,7 @@ open class AUIRtmMsgProxy: NSObject {
                 value.add(delegate)
             }
         }else{
-            let weakObjects = NSHashTable<AnyObject>.weakObjects()
+            let weakObjects = NSHashTable<AUIRtmLockProxyDelegate>.weakObjects()
             weakObjects.add(delegate)
             lockDelegates[key] = weakObjects
         }
@@ -159,7 +159,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         aui_info("onTokenPrivilegeWillExpire: \(channel ?? "")", tag: "AUIRtmMsgProxy")
         
         for element in errorDelegates.allObjects {
-            (element as? AUIRtmErrorProxyDelegate)?.onTokenPrivilegeWillExpire?(channelName: channel)
+            element.onTokenPrivilegeWillExpire?(channelName: channel)
         }
     }
     
@@ -170,14 +170,14 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         aui_info("connectionStateChanged state: \(state.rawValue) reason: \(reason.rawValue)", tag: "AUIRtmMsgProxy")
         if errorDelegates.count <= 0 { return }
         for element in errorDelegates.allObjects {
-            (element as? AUIRtmErrorProxyDelegate)?.onConnectionStateChanged?(channelName: channelName,
+            element.onConnectionStateChanged?(channelName: channelName,
                                                                               connectionStateChanged: state,
                                                                               result: reason)
         }
         
         if reason == .changedRejoinSuccess {
             for element in userDelegates.allObjects {
-                (element as? AUIRtmUserProxyDelegate)?.onCurrentUserJoined(channelName: channelName)
+                element.onCurrentUserJoined(channelName: channelName)
             }
         }
     }
@@ -207,9 +207,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
 //            aui_info("itemValue: \(item.value)")
             guard let value = self.attributesDelegates[delegateKey] else { return }
             for element in value.allObjects {
-                if let delegate = element as? AUIRtmAttributesProxyDelegate {
-                    delegate.onAttributesDidChanged(channelName: event.target, key: item.key, value: itemValue)
-                }
+                element.onAttributesDidChanged(channelName: event.target, key: item.key, value: itemValue)
             }
         }
         self.attributesCacheAttr[cacheKey] = cache
@@ -217,7 +215,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             return
         }
         for element in errorDelegates.allObjects {
-            (element as? AUIRtmErrorProxyDelegate)?.onMsgRecvEmpty?(channelName: event.target)
+            element.onMsgRecvEmpty?(channelName: event.target)
         }
         aui_info("storage event[\(event.target)] ========", tag: "AUIRtmMsgProxy")
     }
@@ -243,11 +241,11 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             }
             
             for element in userDelegates.allObjects {
-                (element as? AUIRtmUserProxyDelegate)?.onUserDidJoined(channelName: event.channelName, userId: userId, userInfo: map)
+                element.onUserDidJoined(channelName: event.channelName, userId: userId, userInfo: map)
             }
         } else if event.type == .remoteLeaveChannel || event.type == .remoteConnectionTimeout {
             for element in userDelegates.allObjects {
-                (element as? AUIRtmUserProxyDelegate)?.onUserDidLeaved(channelName: event.channelName, userId: userId, userInfo: map)
+                element.onUserDidLeaved(channelName: event.channelName, userId: userId, userInfo: map)
             }
         } else if event.type == .remoteStateChanged {
             if map.count == 0 {
@@ -255,13 +253,13 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
                 return
             }
             for element in userDelegates.allObjects {
-                (element as? AUIRtmUserProxyDelegate)?.onUserDidUpdated(channelName: event.channelName, userId: userId, userInfo: map)
+                element.onUserDidUpdated(channelName: event.channelName, userId: userId, userInfo: map)
             }
         } else if event.type == .snapshot {
             let userList = event.snapshotList()
             for element in userDelegates.allObjects {
-                (element as? AUIRtmUserProxyDelegate)?.onUserSnapshotRecv(channelName: event.channelName, userId: userId, userList: userList)
-                (element as? AUIRtmUserProxyDelegate)?.onCurrentUserJoined(channelName: event.channelName)
+                element.onUserSnapshotRecv(channelName: event.channelName, userId: userId, userList: userList)
+                element.onCurrentUserJoined(channelName: event.channelName)
             }
         }
     }
@@ -271,7 +269,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         
         if let message = event.message.stringData {
             for element in messageDelegates.allObjects {
-                (element as? AUIRtmMessageProxyDelegate)?.onMessageReceive(channelName: event.channelName, message: message)
+                element.onMessageReceive(channelName: event.channelName, message: message)
             }
         } else {
             aui_warn("recv unknown type message", tag: "AUIRtmMsgProxy")
@@ -279,7 +277,6 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     }
     
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveLockEvent event: AgoraRtmLockEvent) {
-//        AgoraRtmLockEventType
         aui_info("didReceiveLockEvent[\(event.channelName)]: type: \(event.eventType.rawValue) \(event.lockDetailList.count)")
         
         var addLockDetails: [AgoraRtmLockDetail] = []
@@ -311,9 +308,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             let delegateKey = "\(event.channelName)__\(lockDetail.lockName)"
             guard let value = self.lockDelegates[delegateKey] else { return }
             for element in value.allObjects {
-                if let delegate = element as? AUIRtmLockProxyDelegate {
-                    delegate.onReceiveLockDetail(channelName: event.channelName, lockDetail: lockDetail)
-                }
+                element.onReceiveLockDetail(channelName: event.channelName, lockDetail: lockDetail)
             }
         }
         
@@ -321,9 +316,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             let delegateKey = "\(event.channelName)__\(lockDetail.lockName)"
             guard let value = self.lockDelegates[delegateKey] else { return }
             for element in value.allObjects {
-                if let delegate = element as? AUIRtmLockProxyDelegate {
-                    delegate.onReleaseLockDetail(channelName: event.channelName, lockDetail: lockDetail)
-                }
+                element.onReleaseLockDetail(channelName: event.channelName, lockDetail: lockDetail)
             }
         }
     }

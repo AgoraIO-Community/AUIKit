@@ -10,7 +10,7 @@ import Foundation
 
 
 /// 房间管理抽象协议
-public protocol AUIRoomManagerDelegate: NSObjectProtocol {
+@objc public protocol AUIRoomManagerDelegate: NSObjectProtocol {
     
     /// 绑定响应
     /// - Parameter delegate: 需要回调的对象
