@@ -14,15 +14,15 @@ import AgoraRtmKit
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
     private let roomManager: AUIRoomManagerDelegate!
-    
-    private var lockOwnerId: String?
-    
+        
     private var micSeats:[Int: AUIMicSeatInfo] = [:]
     
     private var callbackMap: [String: ((NSError?)-> ())] = [:]
     
     deinit {
-        self.rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
+        getRoomContext().interactionHandler(channelName: channelName)?.removeDelegate(delegate: self)
+        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
+        rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
         aui_info("deinit AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
     
@@ -31,9 +31,9 @@ import AgoraRtmKit
         self.channelName = channelName
         self.roomManager = roomManager
         super.init()
+        getRoomContext().interactionHandler(channelName: channelName)?.addDelegate(delegate: self)
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
-        rtmManager.subscribeLock(channelName: getChannelName(), lockName: kRTM_Referee_LockName, delegate: self)
         aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
 }
@@ -92,7 +92,6 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmAttributesProxyDelegate {
     }
 }
 
-
 extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     
     public func getRoomContext() -> AUIRoomContext {
@@ -112,7 +111,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func enterSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-        if lockOwnerId == getRoomContext().currentUserInfo.userId {
+        if getRoomContext().interactionHandler(channelName: getChannelName())?.lockOwnerId == getRoomContext().currentUserInfo.userId {
             rtmEnterSeat(seatIndex: seatIndex, userInfo: getRoomContext().currentUserInfo, callback: callback)
             return
         }
@@ -131,12 +130,11 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func leaveSeat(callback: @escaping (NSError?) -> ()) {
-        if lockOwnerId == getRoomContext().currentUserInfo.userId {
+        if getRoomContext().isLockOwner(channelName:channelName) {
             rtmLeaveSeat(userId: getRoomContext().currentUserInfo.userId) { err in
             }
             return
         }
-        
         
         let model = AUISeatLeaveNetworkModel()
         model.roomId = channelName
@@ -152,7 +150,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func kickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-        if lockOwnerId == getRoomContext().currentUserInfo.userId {
+        if getRoomContext().isLockOwner(channelName:channelName) {
             rtmKickSeat(seatIndex: seatIndex, callback: callback)
             return
         }
@@ -169,7 +167,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
-        if lockOwnerId == getRoomContext().currentUserInfo.userId {
+        if getRoomContext().isLockOwner(channelName:channelName) {
             rtmMuteAudioSeat(seatIndex: seatIndex, isMute: isMute, callback: callback)
             return
         }
@@ -201,7 +199,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func closeSeat(seatIndex: Int, isClose: Bool, callback: @escaping (NSError?) -> ()) {
-        if lockOwnerId == getRoomContext().currentUserInfo.userId {
+        if getRoomContext().isLockOwner(channelName:channelName) {
             rtmCloseSeat(seatIndex: seatIndex, isClose: isClose, callback: callback)
             return
         }
@@ -273,10 +271,9 @@ extension AUIMicSeatLocalServiceImpl {
         }
     }
     
-    private func rtmLeaveSeat(userId: String, callback: @escaping (NSError?) -> ()) {
+    private func rtmLeaveSeatMetaData(userId: String) -> NSMutableDictionary {
         guard self.micSeats.values.contains(where: { $0.user?.userId == userId }) else {
-            callback(AUICommonError.userNoEnterSeat.toNSError())
-            return
+            return [:]
         }
         
         var seatMap: [String: [String: Any]] = [:]
@@ -292,8 +289,19 @@ extension AUIMicSeatLocalServiceImpl {
         
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
-        let metaData = [kSeatAttrKry: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        let metaData = NSMutableDictionary()
+        metaData[kSeatAttrKry] = str
+        return metaData
+    }
+    
+    private func rtmLeaveSeat(userId: String, callback: @escaping (NSError?) -> ()) {
+        guard self.micSeats.values.contains(where: { $0.user?.userId == userId }) else {
+            callback(AUICommonError.userNoEnterSeat.toNSError())
+            return
+        }
+        let metaData = rtmLeaveSeatMetaData(userId: userId)
+        _ = getRoomContext().interactionHandler(channelName: channelName)?.onUserInfoClean(channelName: channelName, userId: userId, metaData: metaData)
+        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
             callback(error)
         }
     }
@@ -301,19 +309,25 @@ extension AUIMicSeatLocalServiceImpl {
     private func rtmKickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
         var seatMap: [String: [String: Any]] = [:]
         
+        var userId: String?
         self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
                 map.removeValue(forKey: "owner")
                 map["micSeatStatus"] = AUILockSeatStatus.idle.rawValue
+                userId = value.user?.userId
             }
             seatMap["\(key)"] = map
         }
         
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
-        let metaData = [kSeatAttrKry: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        let metaData = NSMutableDictionary()
+        metaData[kSeatAttrKry] = str
+        if let userId = userId {
+            _ = getRoomContext().interactionHandler(channelName: channelName)?.onUserInfoClean(channelName: channelName, userId: userId, metaData: metaData)
+        }
+        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
             callback(error)
         }
     }
@@ -361,18 +375,6 @@ extension AUIMicSeatLocalServiceImpl {
     }
 }
 
-//MARK: AUIRtmLockProxyDelegate
-extension AUIMicSeatLocalServiceImpl: AUIRtmLockProxyDelegate {
-    public func onReceiveLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail) {
-        guard channelName == getChannelName() else {return}
-        lockOwnerId = lockDetail.owner
-    }
-    
-    public func onReleaseLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail) {
-        
-    }
-}
-
 //MARK: AUIRtmMessageProxyDelegate
 extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
     public func onMessageReceive(channelName: String, message: String) {
@@ -392,7 +394,7 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
             }
             return
         }
-        guard lockOwnerId == getRoomContext().currentUserInfo.userId else { return }
+        guard getRoomContext().isLockOwner(channelName:channelName) else { return }
         aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
         if interfaceName == kAUISeatEnterNetworkInterface, let model = AUISeatEnterNetworkModel.model(rtmMessage: message) {
             let user = AUIUserThumbnailInfo()
@@ -428,4 +430,20 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
             }
         }
     }
+}
+
+
+extension AUIMicSeatLocalServiceImpl: AUIServiceInteractionDelegate {
+    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
+        return nil
+    }
+    
+    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+        let micSeatMetaData = rtmLeaveSeatMetaData(userId: userId)
+        micSeatMetaData.forEach { key, value in
+            metaData[key] = value
+        }
+        return nil
+    }
+    
 }

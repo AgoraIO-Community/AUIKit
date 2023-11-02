@@ -23,6 +23,7 @@ open class AUIRoomContext: NSObject {
     
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
+    public var roomInteractionHandlerMap: [String: AUIServiceInteractionHandler] = [:]
     
     public var seatType: AUIMicSeatViewLayoutType = .eight {
         willSet {
@@ -41,9 +42,23 @@ open class AUIRoomContext: NSObject {
         return roomInfoMap[channelName]?.owner?.userId == currentUserInfo.userId
     }
     
+    public func interactionHandler(channelName: String) -> AUIServiceInteractionHandler? {
+        guard let _ = roomInfoMap[channelName] else {return nil}
+        if let handler = roomInteractionHandlerMap[channelName] {
+            return handler
+        }
+        
+        return nil
+    }
+    
+    public func isLockOwner(channelName: String) -> Bool {
+        return interactionHandler(channelName: channelName)?.lockOwnerId == currentUserInfo.userId
+    }
+    
     public func clean(channelName: String) {
 //        roomConfig = nil
         roomInfoMap[channelName] = nil
+        roomInteractionHandlerMap[channelName] = nil
     }
     
     public private(set) var currentThemeName: String?

@@ -1,8 +1,8 @@
 //
-//  AUIRoomManagerImpl.swift
-//  AUIKit
+//  AUIRoomLocalManagerImpl.swift
+//  AUIKitCore
 //
-//  Created by wushengtao on 2023/2/24.
+//  Created by wushengtao on 2023/11/2.
 //
 
 import Foundation
@@ -10,14 +10,14 @@ import AgoraRtcKit
 import YYModel
 import AgoraRtmKit
 
-let kRoomInfoAttrKry = "basic"
-let kSeatAttrKry = "micSeat"
-
-let kUserInfoAttrKey = "basic"
-let kUserMuteAttrKey = "mute"
+//let kRoomInfoAttrKry = "basic"
+//let kSeatAttrKry = "micSeat"
+//
+//let kUserInfoAttrKey = "basic"
+//let kUserMuteAttrKey = "mute"
 
 //房间Service实现
-@objc open class AUIRoomManagerImpl: NSObject {
+@objc open class AUIRoomLocalManagerImpl: NSObject {
     
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private lazy var rtmClient: AgoraRtmClientKit = createRtmClient()
@@ -54,14 +54,14 @@ let kUserMuteAttrKey = "mute"
             aui_error("appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId' ")
             assert(false, "appId is empty, please check 'AUIRoomContext.shared.commonConfig.appId' ")
         }
-        
+        rtmConfig.presenceTimeout = 200
         let rtmClient = try? AgoraRtmClientKit(rtmConfig, delegate: nil)
         return rtmClient!
     }
     
 }
 
-extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
+extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
     public func bindRespDelegate(delegate: AUIRoomManagerRespDelegate) {
         respDelegates.add(delegate)
     }
@@ -99,6 +99,8 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
             callback(error as? NSError)
         }
         rtmManager.unsubscribeError(channelName: roomId, delegate: self)
+        rtmManager.removeLock(channelName: roomId, lockName: kRTM_Referee_LockName) { err in
+        }
         rtmManager.logout()
     }
     
@@ -128,6 +130,11 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         rtmManager.subscribe(channelName: roomId, rtcToken: roomConfig.rtcToken007) { error in
             aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUIRoomManagerImpl")
             callback(error as? NSError)
+        }
+        rtmManager.setLock(channelName: roomId, lockName: kRTM_Referee_LockName) {[weak self] err in
+            self?.rtmManager.acquireLock(channelName: roomId, lockName: kRTM_Referee_LockName) { err in
+                
+            }
         }
         
         self.rtmManager.subscribeError(channelName: roomId, delegate: self)
@@ -162,7 +169,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
     }
 }
 
-extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
+extension AUIRoomLocalManagerImpl: AUIRtmErrorProxyDelegate {
     @objc public func onMsgRecvEmpty(channelName: String) {
         self.respDelegates.allObjects.forEach { obj in
             guard let delegate = obj as? AUIRoomManagerRespDelegate else {return}
@@ -173,6 +180,10 @@ extension AUIRoomManagerImpl: AUIRtmErrorProxyDelegate {
     @objc public func onConnectionStateChanged(channelName: String,
                                                connectionStateChanged state: AgoraRtmClientConnectionState,
                                                result reason: AgoraRtmClientConnectionChangeReason) {
+        if reason == .changedRejoinSuccess {
+            rtmManager.acquireLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+            }
+        }
         guard state == .failed, reason == .changedBannedByServer else {
             return
         }
