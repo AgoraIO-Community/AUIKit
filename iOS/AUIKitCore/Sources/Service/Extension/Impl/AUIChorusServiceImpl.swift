@@ -9,7 +9,7 @@ import Foundation
 import AgoraRtcKit
 import YYModel
 
-private let kChorusKey = "chorus"
+let kChorusKey = "chorus"
 
 @objc open class AUIChorusServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()

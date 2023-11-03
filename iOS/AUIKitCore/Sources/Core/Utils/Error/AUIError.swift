@@ -20,6 +20,8 @@ public enum AUICommonError {
     case userNoEnterSeat   //观众未上麦
     case chooseSongAlreadyExist   //歌曲已经选择过了
     case chooseSongNotExist   //歌曲已经选择过了
+    case choristerAlreadyExist
+    case choristerNotExist
     case noPermission
     case chooseSongIsFail
     
@@ -47,9 +49,13 @@ public enum AUICommonError {
         case .userNoEnterSeat:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user not enter seat"])
         case .chooseSongAlreadyExist:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "already choost song"])
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "already choose song"])
         case .chooseSongNotExist:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "song not exist"])
+        case .choristerAlreadyExist:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "chorister already exist"])
+        case .choristerNotExist:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "chorister not exist"])
         case .noPermission:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "no permission"])
         case .chooseSongIsFail:

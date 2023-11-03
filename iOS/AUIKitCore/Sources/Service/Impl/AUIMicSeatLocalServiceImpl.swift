@@ -230,18 +230,6 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
 
 //MARK: set metadata
 extension AUIMicSeatLocalServiceImpl {
-    private func rtmReceipt(uniqueId: String, error: NSError?) {
-        let receiptMap: [String: Any] = [
-            "uniqueId": uniqueId,
-            "code": error?.code ?? 0,
-            "reason": error?.localizedDescription ?? ""
-        ]
-        let data = try! JSONSerialization.data(withJSONObject: receiptMap, options: .prettyPrinted)
-        let message = String(data: data, encoding: .utf8)!
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-    }
-    
     private func rtmEnterSeat(seatIndex: Int, userInfo: AUIUserThumbnailInfo, callback: @escaping (NSError?) -> ()) {
         if self.micSeats.values.contains(where: { $0.user?.userId == userInfo.userId }) {
             callback(AUICommonError.micSeatAlreadyEnter.toNSError())
@@ -402,31 +390,31 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
             user.userAvatar = model.userAvatar ?? ""
             user.userName = model.userName ?? ""
             rtmEnterSeat(seatIndex: model.micSeatNo, userInfo: user) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatLeaveNetworkInterface, let model = AUISeatLeaveNetworkModel.model(rtmMessage: message) {
             rtmLeaveSeat(userId: model.userId ?? "") {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatKickNetworkInterface, let model = AUISeatKickNetworkModel.model(rtmMessage: message) {
             rtmKickSeat(seatIndex: model.micSeatNo) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatMuteAudioNetworkInterface, let model = AUISeatMuteAudioNetworkModel.model(rtmMessage: message) {
             rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: true) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatUnmuteAudioNetworkInterface, let model = AUISeatUnMuteAudioNetworkModel.model(rtmMessage: message) {
             rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: false) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatLockNetworkInterface, let model = AUISeatLockNetworkModel.model(rtmMessage: message) {
             rtmCloseSeat(seatIndex: model.micSeatNo, isClose: true) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatUnlockNetworkInterface, let model = AUISeatUnLockNetworkModel.model(rtmMessage: message) {
             rtmCloseSeat(seatIndex: model.micSeatNo, isClose: false) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         }
     }

@@ -7,11 +7,14 @@
 
 import UIKit
 
+let kAUIPlayerJoinInterface = "/v1/chorus/join"
+let kAUIPlayerLeaveInterface = "/v1/chorus/leave"
+
 @objcMembers
 open class AUIPlayerJoinNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/chorus/join"
+        interfaceName = kAUIPlayerJoinInterface
     }
     
     public var roomId: String?
@@ -22,7 +25,7 @@ open class AUIPlayerJoinNetworkModel: AUICommonNetworkModel {
 open class AUIPlayerLeaveNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/chorus/leave"
+        interfaceName = kAUIPlayerLeaveInterface
     }
     
     public var roomId: String?

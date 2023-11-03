@@ -334,23 +334,23 @@ extension AUIMusicLocalServiceImpl: AUIRtmMessageProxyDelegate {
             //TODO: use ntp time
             songModel.createAt = Int64(Date().timeIntervalSince1970 * 1000)
             rtmChooseSong(songModel: songModel) {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongPinNetworkInterface, let model = AUISongPinNetworkModel.model(rtmMessage: message) {
             rtmPinSong(songCode: model.songCode ?? "", updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongRemoveNetworkInterface, let model = AUISongRemoveNetworkModel.model(rtmMessage: message) {
             rtmRemoveSong(songCode: model.songCode ?? "", removeUserId: model.userId ?? ""){[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongPlayNetworkInterface, let model = AUISongPlayNetworkModel.model(rtmMessage: message) {
             rtmUpdatePlayStatus(songCode: model.songCode ?? "", playStatus: .playing, updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongStopNetworkInterface, let model = AUISongStopNetworkModel.model(rtmMessage: message) {
             rtmUpdatePlayStatus(songCode: model.songCode ?? "", playStatus: .idle, updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmReceipt(uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
             }
         }
     }
@@ -378,18 +378,6 @@ extension AUIMusicLocalServiceImpl {
         })
         
         return songList
-    }
-    
-    private func rtmReceipt(uniqueId: String, error: NSError?) {
-        let receiptMap: [String: Any] = [
-            "uniqueId": uniqueId,
-            "code": error?.code ?? 0,
-            "reason": error?.localizedDescription ?? ""
-        ]
-        let data = try! JSONSerialization.data(withJSONObject: receiptMap, options: .prettyPrinted)
-        let message = String(data: data, encoding: .utf8)!
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
     }
     
     private func rtmChooseSong(songModel:AUIChooseMusicModel, callback: @escaping AUICallback) {

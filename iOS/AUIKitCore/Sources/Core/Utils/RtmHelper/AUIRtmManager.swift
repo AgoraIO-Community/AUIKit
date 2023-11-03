@@ -467,6 +467,18 @@ extension AUIRtmManager {
         }
         aui_info("publish '\(message)' to '\(channelName)'", tag: "AUIRtmManager")
     }
+    
+    func sendReceipt(channelName: String, uniqueId: String, error: NSError?) {
+        let receiptMap: [String: Any] = [
+            "uniqueId": uniqueId,
+            "code": error?.code ?? 0,
+            "reason": error?.localizedDescription ?? ""
+        ]
+        let data = try! JSONSerialization.data(withJSONObject: receiptMap, options: .prettyPrinted)
+        let message = String(data: data, encoding: .utf8)!
+        publish(channelName: channelName, message: message) { err in
+        }
+    }
 }
 
 //MARK: lock
