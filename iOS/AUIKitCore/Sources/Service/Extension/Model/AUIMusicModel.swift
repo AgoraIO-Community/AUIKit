@@ -22,7 +22,7 @@ open class AUIMusicModel: NSObject {
     public var name: String = ""         //歌曲名称
     public var singer: String = ""       //演唱者
     public var poster: String = ""       //歌曲封面海报
-    public var releaseTime: String = ""  //发布时间
+//    public var releaseTime: String = ""  //发布时间
     public var duration: Int = 0         //歌曲长度，单位秒
     public var musicUrl: String = ""     //歌曲url，mcc则为空
     public var lrcUrl: String = ""       //歌词url，mcc则为空

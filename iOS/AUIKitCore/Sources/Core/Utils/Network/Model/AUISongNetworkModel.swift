@@ -25,7 +25,7 @@ open class AUISongAddNetworkModel: AUICommonNetworkModel {
     public var singer: String?
     public var name: String?
     public var poster: String?
-    public var releaseTime: String?
+//    public var releaseTime: String?
     public var duration: Int = 0
     public var musicUrl: String?
     public var lrcUrl: String?

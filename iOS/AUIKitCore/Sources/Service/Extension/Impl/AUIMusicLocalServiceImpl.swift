@@ -131,7 +131,7 @@ extension AUIMusicLocalServiceImpl: AUIMusicServiceDelegate {
                 model.name = music.name
                 model.singer = music.singer
                 model.poster = music.poster
-                model.releaseTime = music.releaseTime
+//                model.releaseTime = music.releaseTime
                 model.duration = music.durationS
                 musicList.append(model)
             }
@@ -167,7 +167,7 @@ extension AUIMusicLocalServiceImpl: AUIMusicServiceDelegate {
                 model.name = music.name
                 model.singer = music.singer
                 model.poster = music.poster
-                model.releaseTime = music.releaseTime
+//                model.releaseTime = music.releaseTime
                 model.duration = music.durationS
                 musicList.append(model)
             }
