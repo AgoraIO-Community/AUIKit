@@ -1136,7 +1136,7 @@ extension KTVApiImpl: AgoraRtcMediaPlayerDelegate {
                                         "songIdentifier": songIdentifier
                                        // "songCode": self.songCode
             ]
-            agoraPrint("position_ms:\(position_ms), ntp:\(getNtpTimeInMs()), delta:\(self.getNtpTimeInMs() - position_ms), autoPlayoutDelay:\(self.audioPlayoutDelay)")
+//            agoraPrint("position_ms:\(position_ms), ntp:\(getNtpTimeInMs()), delta:\(self.getNtpTimeInMs() - position_ms), autoPlayoutDelay:\(self.audioPlayoutDelay)")
             sendStreamMessageWithDict(dict, success: nil)
         }
     }
