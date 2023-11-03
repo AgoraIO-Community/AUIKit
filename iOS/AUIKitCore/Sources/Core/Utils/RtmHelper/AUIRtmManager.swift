@@ -284,6 +284,7 @@ extension AUIRtmManager {
             assert(false, "setMetadata fail")
             return
         }
+        
         metadata.forEach { (key: String, value: String) in
             let item = AgoraRtmMetadataItem()
             item.key = key
@@ -302,7 +303,7 @@ extension AUIRtmManager {
             aui_info("setMetadata[\(channelName)][\(lockName)] finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
         }
-        aui_info("setMetadata \(metadata)", tag: "AUIRtmManager")
+        aui_info("setMetadata", tag: "AUIRtmManager")
     }
 
     func updateMetadata(channelName: String, 
@@ -332,7 +333,7 @@ extension AUIRtmManager {
             aui_info("updateMetadata[\(channelName)][\(lockName)] finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
         }
-        aui_info("updateMetadata \(metadata)", tag: "AUIRtmManager")
+        aui_info("updateMetadata", tag: "AUIRtmManager")
     }
     
     func getMetadata(channelName: String, completion: @escaping (NSError?, [String: String]?)->()) {
