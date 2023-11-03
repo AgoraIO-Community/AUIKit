@@ -39,7 +39,11 @@ open class AUIRoomContext: NSObject {
     public var seatCount: UInt = 8
     
     public func isRoomOwner(channelName: String) ->Bool {
-        return roomInfoMap[channelName]?.owner?.userId == currentUserInfo.userId
+        return isRoomOwner(channelName: channelName, userId: currentUserInfo.userId)
+    }
+    
+    public func isRoomOwner(channelName: String, userId: String) ->Bool {
+        return roomInfoMap[channelName]?.owner?.userId == userId
     }
     
     public func interactionHandler(channelName: String) -> AUIServiceInteractionHandler? {

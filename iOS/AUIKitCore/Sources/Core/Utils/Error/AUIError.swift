@@ -18,6 +18,10 @@ public enum AUICommonError {
     case micSeatNotIdle   //麦位不空闲
     case micSeatAlreadyEnter   //已经上麦过了
     case userNoEnterSeat   //观众未上麦
+    case chooseSongAlreadyExist   //歌曲已经选择过了
+    case chooseSongNotExist   //歌曲已经选择过了
+    case noPermission
+    case chooseSongIsFail
     
     public func toNSError() -> NSError {
         switch self {
@@ -42,6 +46,14 @@ public enum AUICommonError {
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user already enter seat"])
         case .userNoEnterSeat:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user not enter seat"])
+        case .chooseSongAlreadyExist:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "already choost song"])
+        case .chooseSongNotExist:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "song not exist"])
+        case .noPermission:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "no permission"])
+        case .chooseSongIsFail:
+            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "choost song model fail"])
         default:
             return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "unknown error"])
         }

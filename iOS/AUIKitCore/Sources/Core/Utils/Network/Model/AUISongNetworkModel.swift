@@ -7,11 +7,17 @@
 
 import UIKit
 
+public let kAUISongAddNetworkInterface = "/v1/song/add"
+public let kAUISongPinNetworkInterface = "/v1/song/pin"
+public let kAUISongRemoveNetworkInterface = "/v1/song/remove"
+public let kAUISongPlayNetworkInterface = "/v1/song/play"
+public let kAUISongStopNetworkInterface = "/v1/song/stop"
+
 @objcMembers
 open class AUISongAddNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/song/add"
+        interfaceName = kAUISongAddNetworkInterface
     }
     
     public var roomId: String?
@@ -36,7 +42,7 @@ open class AUISongAddNetworkModel: AUICommonNetworkModel {
 open class AUISongPinNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/song/pin"
+        interfaceName = kAUISongPinNetworkInterface
     }
     
     public var roomId: String?
@@ -46,7 +52,7 @@ open class AUISongPinNetworkModel: AUICommonNetworkModel {
 open class AUISongRemoveNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/song/remove"
+        interfaceName = kAUISongRemoveNetworkInterface
     }
     
     public var roomId: String?
@@ -56,7 +62,7 @@ open class AUISongRemoveNetworkModel: AUICommonNetworkModel {
 open class AUISongPlayNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/song/play"
+        interfaceName = kAUISongPlayNetworkInterface
     }
     
     public var roomId: String?
@@ -66,7 +72,7 @@ open class AUISongPlayNetworkModel: AUICommonNetworkModel {
 open class AUISongStopNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/song/stop"
+        interfaceName = kAUISongStopNetworkInterface
     }
     
     public var roomId: String?

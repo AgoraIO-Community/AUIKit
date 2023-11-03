@@ -111,7 +111,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func enterSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-        if getRoomContext().interactionHandler(channelName: getChannelName())?.lockOwnerId == getRoomContext().currentUserInfo.userId {
+        if getRoomContext().isLockOwner(channelName: channelName) {
             rtmEnterSeat(seatIndex: seatIndex, userInfo: getRoomContext().currentUserInfo, callback: callback)
             return
         }
@@ -228,7 +228,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
 }
 
-//MARK: set KV
+//MARK: set metadata
 extension AUIMicSeatLocalServiceImpl {
     private func rtmReceipt(uniqueId: String, error: NSError?) {
         let receiptMap: [String: Any] = [
