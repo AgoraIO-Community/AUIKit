@@ -22,13 +22,16 @@ open class AUIRtmManager: NSObject {
     private var rtmStreamChannelMap: [String: AgoraRtmStreamChannel] = [:]
     
     public private(set) var isLogin: Bool = false
+    private var isExternalLogin: Bool!
     
     deinit {
         aui_info("deinit AUIRtmManager", tag: "AUIRtmManager")
         self.rtmClient.removeDelegate(proxy)
     }
     
-    public init(rtmClient: AgoraRtmClientKit?, rtmChannelType: AgoraRtmChannelType) {
+    public init(rtmClient: AgoraRtmClientKit, rtmChannelType: AgoraRtmChannelType, isExternalLogin: Bool) {
+        self.isExternalLogin = isExternalLogin
+        self.isLogin = isExternalLogin
         self.rtmClient = rtmClient
         self.rtmChannelType = rtmChannelType
         super.init()
@@ -51,6 +54,7 @@ open class AUIRtmManager: NSObject {
     
     public func logout() {
         aui_info("logout", tag: "AUIRtmManager")
+        if isExternalLogin {return}
         rtmClient.logout()
         isLogin = false
     }

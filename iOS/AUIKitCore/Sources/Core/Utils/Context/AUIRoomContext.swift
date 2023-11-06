@@ -9,8 +9,6 @@ import Foundation
 
 open class AUIRoomContext: NSObject {
     public static let shared: AUIRoomContext = AUIRoomContext()
-    /// appid
-    public var appId: String = ""
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {
@@ -20,7 +18,7 @@ open class AUIRoomContext: NSObject {
             currentUserInfo.userAvatar = config.userAvatar
         }
     }
-    
+    public var roomRtmToken: String = ""
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
     public var roomInteractionHandlerMap: [String: AUIServiceInteractionHandler] = [:]

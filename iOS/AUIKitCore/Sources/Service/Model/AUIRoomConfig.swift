@@ -9,8 +9,9 @@ import Foundation
 
 @objcMembers
 open class AUICommonConfig: NSObject {
+    public var appId: String = ""
     /// 网络请求域名
-    public var host: String = "https://uikit-voiceroom-staging.bj2.agoralab.co"
+    public var host: String = ""
     
     //用户信息
     public var userId: String = ""
@@ -25,7 +26,7 @@ open class AUICommonConfig: NSObject {
 @objcMembers
 open class AUIRoomConfig: NSObject {
     public var channelName: String = ""     //正常rtm使用的频道
-    public var rtmToken007: String = ""     //rtm login用，只能007
+//    public var rtmToken007: String = ""     //rtm login用，只能007
     public var rtcToken007: String = ""     //rtm join用
     
     public var rtcChannelName: String = ""  //rtc使用的频道

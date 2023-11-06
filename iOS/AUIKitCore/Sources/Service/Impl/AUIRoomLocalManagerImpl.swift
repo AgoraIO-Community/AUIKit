@@ -23,8 +23,9 @@ import AgoraRtmKit
     private lazy var rtmClient: AgoraRtmClientKit = createRtmClient()
     public private(set) var commonConfig: AUICommonConfig!
     public private(set) lazy var rtmManager: AUIRtmManager = {
-        return AUIRtmManager(rtmClient: self.rtmClient, rtmChannelType: .stream)
+        return AUIRtmManager(rtmClient: self.rtmClient, rtmChannelType: .stream, isExternalLogin: isExternalLogin)
     }()
+    private var isExternalLogin: Bool = false
     
     deinit {
         //rtmManager.logout()
@@ -36,13 +37,14 @@ import AgoraRtmKit
         self.commonConfig = commonConfig
         if let rtmClient = rtmClient {
             self.rtmClient = rtmClient
+            isExternalLogin = true
         }
         AUIRoomContext.shared.commonConfig = commonConfig
         aui_info("init AUIRoomManagerImpl", tag: "AUIRoomManagerImpl")
     }
     
     private func createRtmClient() -> AgoraRtmClientKit {
-        let rtmConfig = AgoraRtmClientConfig(appId: AUIRoomContext.shared.appId, userId: commonConfig.userId)
+        let rtmConfig = AgoraRtmClientConfig(appId: commonConfig.appId, userId: commonConfig.userId)
 //        let log = AgoraRtmLogConfig()
 //        log.filePath = NSHomeDirectory() + "/Documents/RTMLog/"
 //        rtmConfig.logConfig = log
@@ -71,6 +73,21 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
     }
     
     public func createRoom(room: AUICreateRoomInfo, callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
+        aui_info("enterRoom: \(room.roomName) ", tag: "AUIRoomManagerImpl")
+        
+        let group = DispatchGroup()
+        
+        let date = Date()
+        let rtmToken = AUIRoomContext.shared.roomRtmToken
+        assert(!rtmToken.isEmpty, "rtm token invalid")
+        var loginError: NSError? = nil
+        group.enter()
+        //login to RTM to set up metadata
+        rtmManager.login(token: rtmToken) { err in
+            loginError = err
+            group.leave()
+        }
+        
         let model = AUIRoomCreateNetworkModel()
         model.roomName = room.roomName
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
@@ -78,13 +95,39 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
         model.userAvatar = AUIRoomContext.shared.currentUserInfo.userAvatar
         model.micSeatCount = room.micSeatCount
         model.micSeatStyle = "\(room.micSeatStyle)"
-        model.request {/*[weak self]*/ error, resp in
-//            guard let self = self else {return}
-//            if let room = resp as? AUIRoomInfo {
-//                self.rtmManager.subscribeError(channelName: room.roomId, delegate: self)
-//            }
-            
-            callback(error as? NSError, resp as? AUIRoomInfo)
+        
+        var createRoomError: NSError? = nil
+        var roomInfo: AUIRoomInfo? = nil
+        group.enter()
+        //create a room from the server
+        model.request { error, resp in
+            createRoomError = error as? NSError
+            roomInfo = resp as? AUIRoomInfo
+            group.leave()
+        }
+        
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let self = self else {return}
+            let err = loginError ?? createRoomError
+            guard err == nil, let roomInfo = roomInfo else {
+                callback(err ?? AUICommonError.unknown.toNSError(), nil)
+                self.destroyRoom(roomId: roomInfo?.roomId ?? "") { err in
+                }
+                self.rtmManager.logout()
+                return
+            }
+            let handler = AUIRoomContext.shared.interactionHandler(channelName: roomInfo.roomId)
+            let metaData = NSMutableDictionary()
+            metaData[kRoomInfoAttrKry] = roomInfo.yy_modelToJSONString()
+            _ = handler?.onRoomWillInit(channelName: roomInfo.roomId, metaData: metaData)
+            //setup rtm metadata
+            self.rtmManager.setMetadata(channelName: roomInfo.roomId,
+                                         lockName: "",
+                                         metadata: metaData as! [String : String],
+                                         completion: { err in
+                aui_info("create_room: cost: \(Int64(-date.timeIntervalSinceNow * 1000)) ms")
+                callback(err, roomInfo)
+            })
         }
     }
     
@@ -107,7 +150,8 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
     public func enterRoom(roomId: String, callback:@escaping (NSError?) -> ()) {
         aui_info("enterRoom: \(roomId) ", tag: "AUIRoomManagerImpl")
         
-        let rtmToken = AUIRoomContext.shared.roomConfigMap[roomId]?.rtmToken007 ?? ""
+        let rtmToken = AUIRoomContext.shared.roomRtmToken
+        assert(!rtmToken.isEmpty, "rtm token invalid")
         guard rtmManager.isLogin else {
             rtmManager.login(token: rtmToken) {[weak self] err in
                 if let err = err {

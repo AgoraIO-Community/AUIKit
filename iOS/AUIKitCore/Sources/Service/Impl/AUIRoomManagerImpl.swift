@@ -11,7 +11,6 @@ import YYModel
 import AgoraRtmKit
 
 let kRoomInfoAttrKry = "basic"
-let kSeatAttrKry = "micSeat"
 
 let kUserInfoAttrKey = "basic"
 let kUserMuteAttrKey = "mute"
@@ -23,8 +22,9 @@ let kUserMuteAttrKey = "mute"
     private lazy var rtmClient: AgoraRtmClientKit = createRtmClient()
     public private(set) var commonConfig: AUICommonConfig!
     public private(set) lazy var rtmManager: AUIRtmManager = {
-        return AUIRtmManager(rtmClient: self.rtmClient, rtmChannelType: .stream)
+        return AUIRtmManager(rtmClient: self.rtmClient, rtmChannelType: .stream, isExternalLogin: isExternalLogin)
     }()
+    private var isExternalLogin: Bool = false
     
     deinit {
         //rtmManager.logout()
@@ -35,6 +35,7 @@ let kUserMuteAttrKey = "mute"
         super.init()
         self.commonConfig = commonConfig
         if let rtmClient = rtmClient {
+            isExternalLogin = true
             self.rtmClient = rtmClient
         }
         AUIRoomContext.shared.commonConfig = commonConfig
@@ -42,7 +43,7 @@ let kUserMuteAttrKey = "mute"
     }
     
     private func createRtmClient() -> AgoraRtmClientKit {
-        let rtmConfig = AgoraRtmClientConfig(appId: AUIRoomContext.shared.appId, userId: commonConfig.userId)
+        let rtmConfig = AgoraRtmClientConfig(appId: commonConfig.appId, userId: commonConfig.userId)
 //        let log = AgoraRtmLogConfig()
 //        log.filePath = NSHomeDirectory() + "/Documents/RTMLog/"
 //        rtmConfig.logConfig = log
@@ -105,7 +106,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
     public func enterRoom(roomId: String, callback:@escaping (NSError?) -> ()) {
         aui_info("enterRoom: \(roomId) ", tag: "AUIRoomManagerImpl")
         
-        let rtmToken = AUIRoomContext.shared.roomConfigMap[roomId]?.rtmToken007 ?? ""
+        let rtmToken = AUIRoomContext.shared.roomRtmToken
         guard rtmManager.isLogin else {
             rtmManager.login(token: rtmToken) {[weak self] err in
                 if let err = err {

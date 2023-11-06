@@ -9,6 +9,7 @@ import Foundation
 import AgoraRtcKit
 import YYModel
 
+let kSeatAttrKry = "micSeat"
 
 //麦位Service实现
 @objc open class AUIMicSeatServiceImpl: NSObject {

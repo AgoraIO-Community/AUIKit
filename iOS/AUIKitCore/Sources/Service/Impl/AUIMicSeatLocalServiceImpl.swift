@@ -423,6 +423,22 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
 
 extension AUIMicSeatLocalServiceImpl: AUIServiceInteractionDelegate {
     public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
+        guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {return nil}
+        var seatMap: [String: [String: Any]] = [:]
+        for i in 0...roomInfo.micSeatCount {
+            let seat = AUIMicSeatInfo()
+            seat.seatIndex = i + 1
+            if i == 0 {
+                seat.user = getRoomContext().currentUserInfo
+                seat.lockSeat = .user
+            }
+            seatMap["\(i)"] = seat.yy_modelToJSONObject() as? [String : Any]
+        }
+        
+        let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
+        let str = String(data: data, encoding: .utf8)!
+        let metaData = NSMutableDictionary()
+        metaData[kSeatAttrKry] = str
         return nil
     }
     

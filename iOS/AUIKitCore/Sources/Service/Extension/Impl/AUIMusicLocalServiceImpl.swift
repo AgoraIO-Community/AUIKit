@@ -415,6 +415,8 @@ extension AUIMusicLocalServiceImpl {
         self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
             callback(error)
         }
+        
+        //TODO: remove chorus list if need
     }
     
     private func rtmUpdatePlayStatus(songCode: String, playStatus: AUIPlayStatus, updateUserId: String, callback: @escaping AUICallback) {
