@@ -19,34 +19,25 @@ public typealias AUIUserListCallback = (NSError?, [AUIUserInfo]?) -> ()
 public typealias AUIRoomListCallback = (NSError?, [AUIRoomInfo]?) -> ()
 
 @objcMembers
-/// 创建房间信息对象，用于创建房间时传递
-open class AUICreateRoomInfo: NSObject {
+/// 房间列表展示数据
+open class AUIRoomInfo: NSObject {
     public var roomName: String = ""    //房间名称
     public var thumbnail: String = ""   //房间列表上的缩略图
     public var micSeatCount: UInt = 8      //麦位个数
     public var micSeatStyle: UInt = 3    //麦位样式 1、6为6麦位环形样式 8麦位为长方形Collection 9为特殊layout的Collection
     public var password: String?        //房间密码
     
-    class func modelCustomPropertyMapper()->NSDictionary {
-        return [
-            "thumbnail": "roomThumbnail",
-            "seatCount": "roomSeatCount",
-            "password": "roomPassword"
-        ]
-    }
-}
-
-@objcMembers
-/// 房间列表展示数据
-open class AUIRoomInfo: AUICreateRoomInfo {
     public var roomId: String = ""            //房间id
     public var owner: AUIUserThumbnailInfo?   //房主信息
     public var memberCount: UInt = 0          //房间人数
     public var createTime: Int64 = 0          //创建时间
     
-    override class func modelCustomPropertyMapper() -> NSDictionary {
-        let superMap = NSMutableDictionary(dictionary: super.modelCustomPropertyMapper())
+    class func modelCustomPropertyMapper() -> NSDictionary {
+        let superMap = NSMutableDictionary()
         let map = [
+            "thumbnail": "roomThumbnail",
+            "seatCount": "roomSeatCount",
+            "password": "roomPassword",
             "seatIndex": "seatNo",
             "muteAudio": "isMuteAudio",
             "muteVideo": "isMuteVideo",

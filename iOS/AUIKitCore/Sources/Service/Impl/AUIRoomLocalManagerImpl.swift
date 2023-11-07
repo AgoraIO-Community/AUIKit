@@ -72,7 +72,7 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
         respDelegates.remove(delegate)
     }
     
-    public func createRoom(room: AUICreateRoomInfo, callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
+    public func createRoom(room: AUIRoomInfo, callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
         aui_info("enterRoom: \(room.roomName) ", tag: "AUIRoomManagerImpl")
         
         let group = DispatchGroup()
@@ -119,6 +119,7 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
             let handler = AUIRoomContext.shared.interactionHandler(channelName: roomInfo.roomId)
             let metaData = NSMutableDictionary()
             metaData[kRoomInfoAttrKry] = roomInfo.yy_modelToJSONString()
+            //TODO: must be register service before create room(create roomid by app side)
             _ = handler?.onRoomWillInit(channelName: roomInfo.roomId, metaData: metaData)
             //setup rtm metadata
             self.rtmManager.setMetadata(channelName: roomInfo.roomId,

@@ -25,7 +25,7 @@ import Foundation
     ///   - roomId: 房间Id
     ///   - room: 房间信息
     ///   - callback: 操作完成回调
-    func createRoom(room: AUICreateRoomInfo, callback: @escaping AUICreateRoomCallback)
+    func createRoom(room: AUIRoomInfo, callback: @escaping AUICreateRoomCallback)
     
     /// 销毁房间（房主调用）
     /// - Parameters:

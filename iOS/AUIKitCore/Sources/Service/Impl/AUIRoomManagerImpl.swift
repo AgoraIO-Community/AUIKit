@@ -71,7 +71,7 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
         respDelegates.remove(delegate)
     }
     
-    public func createRoom(room: AUICreateRoomInfo, callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
+    public func createRoom(room: AUIRoomInfo, callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
         let model = AUIRoomCreateNetworkModel()
         model.roomName = room.roomName
         model.userId = AUIRoomContext.shared.currentUserInfo.userId
