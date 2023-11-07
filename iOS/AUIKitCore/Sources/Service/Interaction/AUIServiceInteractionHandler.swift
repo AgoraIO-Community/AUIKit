@@ -84,11 +84,15 @@ extension AUIServiceInteractionHandler: AUIServiceInteractionDelegate {
 //MARK: AUIRtmLockProxyDelegate
 extension AUIServiceInteractionHandler: AUIRtmLockProxyDelegate {
     public func onReceiveLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail) {
+        aui_info("onReceiveLockDetail[\(channelName)]: \(lockDetail.owner)")
         guard channelName == self.channelName else {return}
         lockOwnerId = lockDetail.owner
     }
     
     public func onReleaseLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail) {
-        
+        aui_info("onReleaseLockDetail[\(channelName)]: \(lockDetail.owner)")
+        guard channelName == self.channelName else {return}
+        rtmManager.acquireLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+        }
     }
 }
