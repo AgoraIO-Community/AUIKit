@@ -16,7 +16,7 @@ import Foundation
     ///   - channelName: channel name
     ///   - metaData: meta data
     /// - Returns: Error, if there is an error, it will interrupt the creation process
-    func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError?
+    @objc optional func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError?
     
     /// Clean up information for specified users
     /// - Parameters:
@@ -24,5 +24,6 @@ import Foundation
     ///   - userId: user id
     ///   - metaData: meta data
     /// - Returns: Error, if there is an error, it will interrupt the creation process
-    func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError?
+    @objc optional func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError?
+    
 }

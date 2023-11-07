@@ -63,7 +63,7 @@ extension AUIServiceInteractionHandler {
 extension AUIServiceInteractionHandler: AUIServiceInteractionDelegate {
     public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
         for delegate in delegateList.allObjects {
-            if let error = delegate.onRoomWillInit(channelName: channelName, metaData: metaData) {
+            if let error = delegate.onRoomWillInit?(channelName: channelName, metaData: metaData) {
                 return error
             }
         }
@@ -72,7 +72,7 @@ extension AUIServiceInteractionHandler: AUIServiceInteractionDelegate {
     
     public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
         for delegate in delegateList.allObjects {
-            if let error = delegate.onUserInfoClean(channelName: channelName, userId: userId, metaData: metaData) {
+            if let error = delegate.onUserInfoClean?(channelName: channelName, userId: userId, metaData: metaData) {
                 return error
             }
         }

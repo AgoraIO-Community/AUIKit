@@ -134,6 +134,7 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
     
     public func destroyRoom(roomId: String, callback: @escaping (NSError?) -> ()) {
         aui_info("destroyRoom: \(roomId)", tag: "AUIRoomManagerImpl")
+        cleanUserInfo(channelName: roomId)
         self.rtmManager.unSubscribe(channelName: roomId)
         
         let model = AUIRoomDestroyNetworkModel()
@@ -187,6 +188,7 @@ extension AUIRoomLocalManagerImpl: AUIRoomManagerDelegate {
     
     public func exitRoom(roomId: String, callback: @escaping (NSError?) -> ()) {
         aui_info("exitRoom: \(roomId)", tag: "AUIRoomManagerImpl")
+        cleanUserInfo(channelName: roomId)
         self.rtmManager.unSubscribe(channelName: roomId)
         
         self.rtmManager.unsubscribeError(channelName: roomId, delegate: self)
@@ -239,4 +241,13 @@ extension AUIRoomLocalManagerImpl: AUIRtmErrorProxyDelegate {
     }
 }
 
-
+//MARK: setup meta data
+extension AUIRoomLocalManagerImpl {
+    private func cleanUserInfo(channelName: String) {
+        guard AUIRoomContext.shared.isLockOwner(channelName: channelName) else {return}
+        let metaData = NSMutableDictionary()
+        _ = AUIRoomContext.shared.interactionHandler(channelName: channelName)?.onUserInfoClean(channelName: channelName, userId: AUIRoomContext.shared.currentUserInfo.userId, metaData: metaData)
+        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
+        }
+    }
+}
