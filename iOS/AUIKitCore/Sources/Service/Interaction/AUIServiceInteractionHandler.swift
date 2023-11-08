@@ -79,6 +79,32 @@ extension AUIServiceInteractionHandler: AUIServiceInteractionDelegate {
         return nil
     }
     
+    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+        for delegate in delegateList.allObjects {
+            if let error = delegate.onSongWillSelect?(channelName: channelName, userId: userId, metaData: metaData) {
+                return error
+            }
+        }
+        return nil
+    }
+    
+    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
+        for delegate in delegateList.allObjects {
+            if let error = delegate.onSongDidRemove?(channelName: channelName, songCode: songCode, metaData: metaData) {
+                return error
+            }
+        }
+        return nil
+    }
+    
+    public func onWillJoinChours(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+        for delegate in delegateList.allObjects {
+            if let error = delegate.onWillJoinChours?(channelName: channelName, userId: userId, metaData: metaData) {
+                return error
+            }
+        }
+        return nil
+    }
 }
 
 //MARK: AUIRtmLockProxyDelegate

@@ -209,10 +209,6 @@ extension AUIChorusLocalServiceImpl {
 
 //MARK: AUIServiceInteractionDelegate
 extension AUIChorusLocalServiceImpl: AUIServiceInteractionDelegate {
-    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
-        return nil
-    }
-    
     public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
         let filterList = chorusUserList.filter({ $0.userId != userId })
         if filterList.count != chorusUserList.count {
@@ -220,6 +216,12 @@ extension AUIChorusLocalServiceImpl: AUIServiceInteractionDelegate {
             let str = metaDataList.yy_modelToJSONString() ?? ""
             metaData[kChorusKey] = str
         }
+        return nil
+    }
+    
+    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
+        guard songCode == self.chorusUserList.first?.chorusSongNo else { return nil }
+        metaData[kChorusKey] = NSArray().yy_modelToJSONString() ?? ""
         return nil
     }
 }

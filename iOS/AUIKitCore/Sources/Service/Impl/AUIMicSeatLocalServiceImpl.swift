@@ -450,4 +450,13 @@ extension AUIMicSeatLocalServiceImpl: AUIServiceInteractionDelegate {
         return nil
     }
     
+    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+        for (_, seat) in micSeats {
+            if seat.user?.userId == userId {
+                return nil
+            }
+        }
+        return AUICommonError.noPermission.toNSError()
+    }
+    
 }

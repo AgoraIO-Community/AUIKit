@@ -387,11 +387,20 @@ extension AUIMusicLocalServiceImpl {
             callback(AUICommonError.chooseSongAlreadyExist.toNSError())
             return
         }
+        
+        
+        let metaData = NSMutableDictionary()
+        let err = getRoomContext().interactionHandler(channelName: channelName)?.onSongWillSelect(channelName: channelName, userId: songModel.userId ?? "", metaData: metaData)
+        if let err = err {
+            callback(err)
+            return
+        }
+        
         let metaDataSongList = NSMutableArray(array: chooseSongList)
         metaDataSongList.add(songModel)
         let str = metaDataSongList.yy_modelToJSONString() ?? ""
-        let metaData = [kChooseSongKey: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        metaData[kChooseSongKey] = str
+        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
             callback(error)
         }
     }
@@ -408,11 +417,18 @@ extension AUIMusicLocalServiceImpl {
             return
         }
         
+        let metaData = NSMutableDictionary()
+        let err = getRoomContext().interactionHandler(channelName: channelName)?.onSongDidRemove(channelName: channelName, songCode: songCode, metaData: metaData)
+        if let err = err {
+            callback(err)
+            return
+        }
+        
         let metaDataSongList = NSMutableArray(array: chooseSongList)
         metaDataSongList.removeObject(at: idx)
         let str = metaDataSongList.yy_modelToJSONString() ?? ""
-        let metaData = [kChooseSongKey: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        metaData[kChooseSongKey] = str
+        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
             callback(error)
         }
         
@@ -468,10 +484,6 @@ extension AUIMusicLocalServiceImpl {
 
 //MARK: AUIServiceInteractionDelegate
 extension AUIMusicLocalServiceImpl: AUIServiceInteractionDelegate {
-    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
-        return nil
-    }
-    
     public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
         let filterSongList = chooseSongList.filter({ $0.userId != userId })
         if filterSongList.count != chooseSongList.count {

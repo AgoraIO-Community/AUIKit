@@ -26,4 +26,10 @@ import Foundation
     /// - Returns: Error, if there is an error, it will interrupt the creation process
     @objc optional func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError?
     
+    
+    @objc optional func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError?
+    
+    @objc optional func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError?
+    
+    @objc optional func onWillJoinChours(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError?
 }

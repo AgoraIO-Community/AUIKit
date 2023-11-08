@@ -251,12 +251,4 @@ extension AUIUserLocalServiceImpl {
 
 //MARK: AUIServiceInteractionDelegate
 extension AUIUserLocalServiceImpl: AUIServiceInteractionDelegate {
-    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
-        return nil
-    }
-    
-    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
-        return nil
-    }
-    
 }
