@@ -8,22 +8,22 @@
 import AgoraRtmKit
 
 @objc public class AUIServiceInteractionHandler: NSObject {
-    private(set) var delegateList:NSHashTable<AUIServiceInteractionDelegate> = NSHashTable<AUIServiceInteractionDelegate>.weakObjects()
+//    private(set) var delegateList:NSHashTable<AUIServiceInteractionDelegate> = NSHashTable<AUIServiceInteractionDelegate>.weakObjects()
     private var channelName: String!
     private var rtmManager: AUIRtmManager!
     private var currentUserInfo: AUIUserThumbnailInfo!
     private(set) var lockOwnerId: String = ""
     
-    public func addDelegate(delegate: AUIServiceInteractionDelegate) {
-        if delegateList.contains(delegate) {
-            return
-        }
-        delegateList.add(delegate)
-    }
-    
-    public func removeDelegate(delegate: AUIServiceInteractionDelegate) {
-        delegateList.remove(delegate)
-    }
+//    public func addDelegate(delegate: AUIServiceInteractionDelegate) {
+//        if delegateList.contains(delegate) {
+//            return
+//        }
+//        delegateList.add(delegate)
+//    }
+//    
+//    public func removeDelegate(delegate: AUIServiceInteractionDelegate) {
+//        delegateList.remove(delegate)
+//    }
     
     
     deinit {
@@ -41,71 +41,71 @@ import AgoraRtmKit
     }
 }
 
-extension AUIServiceInteractionHandler {
-    public func initRoom(channelName: String, userId: String, metaData: NSMutableDictionary? = nil) {
-        guard lockOwnerId == currentUserInfo.userId else { return }
-        let _metaData = metaData ?? NSMutableDictionary()
-        _ = onRoomWillInit(channelName: channelName, metaData: _metaData)
-        rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: _metaData as! [String : String]) { err in
-        }
-    }
-    
-    public func cleanUserInfo(channelName: String, userId: String, metaData: NSMutableDictionary? = nil) {
-        guard lockOwnerId == currentUserInfo.userId else { return }
-        let _metaData = metaData ?? NSMutableDictionary()
-        _ = onUserInfoClean(channelName: channelName, userId: userId, metaData: _metaData)
-        rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: _metaData as! [String : String]) { err in
-        }
-    }
-}
+//extension AUIServiceInteractionHandler {
+//    public func initRoom(channelName: String, userId: String, metaData: NSMutableDictionary? = nil) {
+//        guard lockOwnerId == currentUserInfo.userId else { return }
+//        let _metaData = metaData ?? NSMutableDictionary()
+//        _ = onRoomWillInit(channelName: channelName, metaData: _metaData)
+//        rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: _metaData as! [String : String]) { err in
+//        }
+//    }
+//    
+//    public func cleanUserInfo(channelName: String, userId: String, metaData: NSMutableDictionary? = nil) {
+//        guard lockOwnerId == currentUserInfo.userId else { return }
+//        let _metaData = metaData ?? NSMutableDictionary()
+//        _ = onUserInfoClean(channelName: channelName, userId: userId, metaData: _metaData)
+//        rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: _metaData as! [String : String]) { err in
+//        }
+//    }
+//}
 
 //MARK: AUIServiceInteractionDelegate
-extension AUIServiceInteractionHandler: AUIServiceInteractionDelegate {
-    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
-        for delegate in delegateList.allObjects {
-            if let error = delegate.onRoomWillInit?(channelName: channelName, metaData: metaData) {
-                return error
-            }
-        }
-        return nil
-    }
-    
-    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
-        for delegate in delegateList.allObjects {
-            if let error = delegate.onUserInfoClean?(channelName: channelName, userId: userId, metaData: metaData) {
-                return error
-            }
-        }
-        return nil
-    }
-    
-    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
-        for delegate in delegateList.allObjects {
-            if let error = delegate.onSongWillSelect?(channelName: channelName, userId: userId, metaData: metaData) {
-                return error
-            }
-        }
-        return nil
-    }
-    
-    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
-        for delegate in delegateList.allObjects {
-            if let error = delegate.onSongDidRemove?(channelName: channelName, songCode: songCode, metaData: metaData) {
-                return error
-            }
-        }
-        return nil
-    }
-    
-    public func onWillJoinChours(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
-        for delegate in delegateList.allObjects {
-            if let error = delegate.onWillJoinChours?(channelName: channelName, userId: userId, metaData: metaData) {
-                return error
-            }
-        }
-        return nil
-    }
-}
+//extension AUIServiceInteractionHandler: AUIServiceInteractionDelegate {
+//    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
+//        for delegate in delegateList.allObjects {
+//            if let error = delegate.onRoomWillInit?(channelName: channelName, metaData: metaData) {
+//                return error
+//            }
+//        }
+//        return nil
+//    }
+//    
+//    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+//        for delegate in delegateList.allObjects {
+//            if let error = delegate.onUserInfoClean?(channelName: channelName, userId: userId, metaData: metaData) {
+//                return error
+//            }
+//        }
+//        return nil
+//    }
+//    
+//    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+//        for delegate in delegateList.allObjects {
+//            if let error = delegate.onSongWillSelect?(channelName: channelName, userId: userId, metaData: metaData) {
+//                return error
+//            }
+//        }
+//        return nil
+//    }
+//    
+//    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
+//        for delegate in delegateList.allObjects {
+//            if let error = delegate.onSongDidRemove?(channelName: channelName, songCode: songCode, metaData: metaData) {
+//                return error
+//            }
+//        }
+//        return nil
+//    }
+//    
+//    public func onWillJoinChours(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+//        for delegate in delegateList.allObjects {
+//            if let error = delegate.onWillJoinChours?(channelName: channelName, userId: userId, metaData: metaData) {
+//                return error
+//            }
+//        }
+//        return nil
+//    }
+//}
 
 //MARK: AUIRtmLockProxyDelegate
 extension AUIServiceInteractionHandler: AUIRtmLockProxyDelegate {

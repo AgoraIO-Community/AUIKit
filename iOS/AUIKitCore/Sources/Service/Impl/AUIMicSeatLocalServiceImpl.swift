@@ -10,28 +10,24 @@ import AgoraRtmKit
 
 //麦位Service实现(纯端上修改KV)
 @objc open class AUIMicSeatLocalServiceImpl: NSObject {
-    private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    private var respDelegates: NSHashTable<AUIMicSeatRespDelegate> = NSHashTable<AUIMicSeatRespDelegate>.weakObjects()
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
-    private let roomManager: AUIRoomManagerDelegate!
         
     private var micSeats:[Int: AUIMicSeatInfo] = [:]
     
     private var callbackMap: [String: ((NSError?)-> ())] = [:]
     
     deinit {
-        getRoomContext().interactionHandler(channelName: channelName)?.removeDelegate(delegate: self)
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
         aui_info("deinit AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
     
-    public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {
+    public init(channelName: String, rtmManager: AUIRtmManager) {
         self.rtmManager = rtmManager
         self.channelName = channelName
-        self.roomManager = roomManager
         super.init()
-        getRoomContext().interactionHandler(channelName: channelName)?.addDelegate(delegate: self)
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
         aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
@@ -48,10 +44,7 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmAttributesProxyDelegate {
                 aui_info(" micSeat.islock \(micSeat.lockSeat) micSeat.Index = \(micSeat.seatIndex)", tag: "AUIMicSeatServiceImpl")
                 let index: Int = Int(micSeat.seatIndex)
                 let origMicSeat = self.micSeats[index]
-//                if let origMicSeat = origMicSeat {
-//                    origMicSeat.user = roomManager.getUserInfo(by: origMicSeat.userId)
-//                }
-//                micSeat.user = roomManager.getUserInfo(by: micSeat.userId)
+                
                 self.micSeats[index] = micSeat
                 self.respDelegates.allObjects.forEach { obj in
                     guard let delegate = obj as? AUIMicSeatRespDelegate else {
@@ -226,6 +219,25 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
             callbackMap[model.uniqueId] = callback
         }
     }
+    
+    public func isOnMicSeat(userId: String) -> Bool {
+        for (_, seat) in micSeats {
+            if seat.user?.userId == userId {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    public func getMicSeatIndex(userId: String) -> Int {
+        for (idx, seat) in micSeats {
+            if seat.user?.userId == userId {
+                return idx
+            }
+        }
+        return -1
+    }
 }
 
 //MARK: set metadata
@@ -287,8 +299,15 @@ extension AUIMicSeatLocalServiceImpl {
             callback(AUICommonError.userNoEnterSeat.toNSError())
             return
         }
+        var err: NSError?
         let metaData = rtmLeaveSeatMetaData(userId: userId)
-        _ = getRoomContext().interactionHandler(channelName: channelName)?.onUserInfoClean(channelName: channelName, userId: userId, metaData: metaData)
+        for obj in respDelegates.allObjects {
+            err = obj.onSeatWillLeave?(userId: userId, metaData: metaData)
+            if let err = err {
+                callback(err)
+                break
+            }
+        }
         self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
             callback(error)
         }
@@ -308,13 +327,19 @@ extension AUIMicSeatLocalServiceImpl {
             seatMap["\(key)"] = map
         }
         
+        var err: NSError? = nil
+        let metaData = NSMutableDictionary()
+        for obj in respDelegates.allObjects {
+            err = obj.onSeatWillLeave?(userId: userId!, metaData: metaData)
+            if let _ = err {
+                callback(err)
+                break
+            }
+        }
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
-        let metaData = NSMutableDictionary()
         metaData[kSeatAttrKry] = str
-        if let userId = userId {
-            _ = getRoomContext().interactionHandler(channelName: channelName)?.onUserInfoClean(channelName: channelName, userId: userId, metaData: metaData)
-        }
+        
         self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
             callback(error)
         }
@@ -418,11 +443,8 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
             }
         }
     }
-}
 
-
-extension AUIMicSeatLocalServiceImpl: AUIServiceInteractionDelegate {
-    public func onRoomWillInit(channelName: String, metaData: NSMutableDictionary) -> NSError? {
+    public func onRoomWillInit(metaData: NSMutableDictionary) -> NSError? {
         guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {return nil}
         var seatMap: [String: [String: Any]] = [:]
         for i in 0...roomInfo.micSeatCount {
@@ -442,21 +464,24 @@ extension AUIMicSeatLocalServiceImpl: AUIServiceInteractionDelegate {
         return nil
     }
     
-    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+    public func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError? {
         let micSeatMetaData = rtmLeaveSeatMetaData(userId: userId)
-        micSeatMetaData.forEach { key, value in
-            metaData[key] = value
-        }
+        let str = micSeatMetaData.yy_modelToJSONString() ?? ""
+        metaData[kSeatAttrKry] = str
         return nil
     }
     
-    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
-        for (_, seat) in micSeats {
-            if seat.user?.userId == userId {
-                return nil
-            }
-        }
-        return AUICommonError.noPermission.toNSError()
-    }
+//    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+//        for (_, seat) in micSeats {
+//            if seat.user?.userId == userId {
+//                return nil
+//            }
+//        }
+//        return AUICommonError.noPermission.toNSError()
+//    }
     
+    public func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError? {
+        removeKeys.add(kSeatAttrKry)
+        return nil
+    }
 }

@@ -14,20 +14,16 @@ import AgoraRtmKit
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
-    private let roomManager: AUIRoomManagerDelegate!
     
     deinit {
         aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
-        getRoomContext().interactionHandler(channelName: channelName)?.removeDelegate(delegate: self)
         rtmManager.unsubscribeUser(channelName: channelName, delegate: self)
     }
     
-    public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {
+    public init(channelName: String, rtmManager: AUIRtmManager) {
         self.rtmManager = rtmManager
         self.channelName = channelName
-        self.roomManager = roomManager
         super.init()
-        getRoomContext().interactionHandler(channelName: channelName)?.addDelegate(delegate: self)
         self.rtmManager.subscribeUser(channelName: channelName, delegate: self)
         aui_info("init AUIUserServiceImpl", tag: "AUIUserServiceImpl")
     }
@@ -107,8 +103,6 @@ extension AUIUserLocalServiceImpl: AUIRtmUserProxyDelegate {
             guard let obj = obj as? AUIUserRespDelegate else {return}
             obj.onRoomUserLeave(roomId: channelName, userInfo: user)
         }
-        
-        getRoomContext().interactionHandler(channelName: channelName)?.cleanUserInfo(channelName: channelName, userId: userId)
     }
     
     public func onUserBeKicked(channelName: String, userId: String, userInfo: [String : Any]) {
@@ -119,8 +113,6 @@ extension AUIUserLocalServiceImpl: AUIRtmUserProxyDelegate {
             guard let obj = obj as? AUIUserRespDelegate else {return}
             obj.onUserBeKicked(roomId: channelName, userId: user.userId)
         }
-        
-        getRoomContext().interactionHandler(channelName: channelName)?.cleanUserInfo(channelName: channelName, userId: userId)
     }
 }
 
@@ -249,6 +241,3 @@ extension AUIUserLocalServiceImpl {
     }
 }
 
-//MARK: AUIServiceInteractionDelegate
-extension AUIUserLocalServiceImpl: AUIServiceInteractionDelegate {
-}

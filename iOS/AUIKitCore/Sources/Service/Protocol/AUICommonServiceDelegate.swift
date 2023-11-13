@@ -11,6 +11,26 @@ import Foundation
     
     func getChannelName() -> String
     
+    /// The room is about to be created, and initial metadata needs to be set up
+    /// - Parameters:
+    ///   - metaData: meta data
+    /// - Returns: Error, if there is an error, it will interrupt the creation process
+    @objc optional func onRoomWillInit(metaData: NSMutableDictionary) -> NSError?
+    
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - metaData: <#metaData description#>
+    /// - Returns: <#description#>
+    @objc optional func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError?
+    
+    /// Clean up information for specified users
+    /// - Parameters:
+    ///   - userId: user id
+    ///   - metaData: meta data
+    /// - Returns: Error, if there is an error, it will interrupt the creation process
+    @objc optional func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError?
+    
     /// 获取当前房间上下文
     /// - Returns: <#description#>
     func getRoomContext() -> AUIRoomContext

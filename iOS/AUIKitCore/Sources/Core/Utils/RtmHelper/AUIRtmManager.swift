@@ -195,7 +195,7 @@ extension AUIRtmManager {
         aui_info("subscribe '\(channelName)'", tag: "AUIRtmManager")
     }
     
-    func subscribe(channelName: String, rtcToken: String, completion:@escaping (Error?)->()) {
+    public func subscribe(channelName: String, rtcToken: String, completion:@escaping (Error?)->()) {
         let group = DispatchGroup()
         
         var messageError: Error? = nil
@@ -244,7 +244,7 @@ extension AUIRtmManager {
         aui_info("join '\(channelName)' rtcToken: \(rtcToken)", tag: "AUIRtmManager")
     }
     
-    func unSubscribe(channelName: String) {
+    public func unSubscribe(channelName: String) {
         proxy.cleanCache(channelName: channelName)
         rtmClient.unsubscribe(channelName)
         
@@ -258,16 +258,22 @@ extension AUIRtmManager {
 
 //MARK: Channel Metadata
 extension AUIRtmManager {
-    func cleanMetadata(channelName: String, lockName: String, completion: @escaping (NSError?)->()) {
+    public func cleanMetadata(channelName: String, removeKeys: [String], lockName: String, completion: @escaping (NSError?)->()) {
         guard let data = rtmClient.getStorage()?.createMetadata(), let storage = rtmClient.getStorage() else {
             assert(false, "cleanMetadata fail")
             return
         }
         
+        for key in removeKeys {
+            let item = AgoraRtmMetadataItem()
+            item.key = key
+            data.setMetadataItem(item)
+        }
+        
         let options = AgoraRtmMetadataOptions()
         options.recordTs = true
         options.recordUserId = true
-        storage.removeChannelMetadata(channelName: channelName, 
+        storage.removeChannelMetadata(channelName: channelName,
                                       channelType: rtmChannelType,
                                       data: data,
                                       options: options,
@@ -279,9 +285,9 @@ extension AUIRtmManager {
 
     }
 
-    func setMetadata(channelName: String, 
+    public func setMetadata(channelName: String,
                      lockName: String,
-                     metadata: [String: String], 
+                     metadata: [String: String],
                      completion: @escaping (NSError?)->()) {
         guard let storage = rtmClient.getStorage(),
               let data = storage.createMetadata() else {
@@ -310,7 +316,7 @@ extension AUIRtmManager {
         aui_info("setMetadata", tag: "AUIRtmManager")
     }
 
-    func updateMetadata(channelName: String, 
+    public func updateMetadata(channelName: String,
                         lockName: String,
                         metadata: [String: String],
                         completion: @escaping (NSError?)->()) {
@@ -340,7 +346,7 @@ extension AUIRtmManager {
         aui_info("updateMetadata", tag: "AUIRtmManager")
     }
     
-    func getMetadata(channelName: String, completion: @escaping (NSError?, [String: String]?)->()) {
+    public func getMetadata(channelName: String, completion: @escaping (NSError?, [String: String]?)->()) {
         guard let storage = rtmClient.getStorage() else {
             assert(false, "getMetadata fail")
             return
@@ -359,7 +365,7 @@ extension AUIRtmManager {
 
 //MARK: user metadata
 extension AUIRtmManager {
-    func subscribeUser(userId: String) {
+    public func subscribeUser(userId: String) {
         guard let storage = rtmClient.getStorage() else {
             assert(false, "subscribeUserMetadata fail")
             return
@@ -370,7 +376,7 @@ extension AUIRtmManager {
         aui_info("subscribeUserMetadata", tag: "AUIRtmManager")
     }
     
-    func unSubscribeUser(userId: String) {
+    public func unSubscribeUser(userId: String) {
         guard let storage = rtmClient.getStorage() else {
             aui_error("subscribeUserMetadata fail", tag: "AUIRtmManager")
             assert(false, "subscribeUserMetadata fail")
@@ -380,7 +386,7 @@ extension AUIRtmManager {
         aui_info("subscribeUserMetadata", tag: "AUIRtmManager")
     }
     
-    func removeUserMetadata(userId: String) {
+    public func removeUserMetadata(userId: String) {
         guard let storage = rtmClient.getStorage(),
                   let data = storage.createMetadata() else {
             aui_info("removeUserMetadata fail", tag: "AUIRtmManager")
@@ -397,7 +403,7 @@ extension AUIRtmManager {
         aui_info("removeUserMetadata", tag: "AUIRtmManager")
     }
     
-    func setUserMetadata(userId: String, metadata: [String: String]) {
+    public func setUserMetadata(userId: String, metadata: [String: String]) {
         guard let storage = rtmClient.getStorage(),
                 let data = storage.createMetadata() else {
             assert(false, "setUserMetadata fail")
@@ -420,7 +426,7 @@ extension AUIRtmManager {
         aui_info("setUserMetadata", tag: "AUIRtmManager")
     }
     
-    func updateUserMetadata(userId: String, metadata: [String: String]) {
+    public func updateUserMetadata(userId: String, metadata: [String: String]) {
         guard let storage = rtmClient.getStorage(),
                 let data = storage.createMetadata() else {
             aui_error("updateUserlMetadata fail", tag: "AUIRtmManager")
@@ -444,7 +450,7 @@ extension AUIRtmManager {
         aui_info("updateUserlMetadata ", tag: "AUIRtmManager")
     }
     
-    func getUserMetadata(userId: String) {
+    public func getUserMetadata(userId: String) {
         guard let storage = rtmClient.getStorage() else {
             aui_error("getUserMetadata fail", tag: "AUIRtmManager")
             return
@@ -472,7 +478,7 @@ extension AUIRtmManager {
         aui_info("publish '\(message)' to '\(channelName)'", tag: "AUIRtmManager")
     }
     
-    func sendReceipt(channelName: String, uniqueId: String, error: NSError?) {
+    public func sendReceipt(channelName: String, uniqueId: String, error: NSError?) {
         let receiptMap: [String: Any] = [
             "uniqueId": uniqueId,
             "code": error?.code ?? 0,

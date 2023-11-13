@@ -11,7 +11,7 @@ import YYModel
 
 
 @objc open class AUIChorusLocalServiceImpl: NSObject {
-    private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    private var respDelegates: NSHashTable<AUIChorusRespDelegate> = NSHashTable<AUIChorusRespDelegate>.weakObjects()
     private var ktvApi: KTVApiDelegate!
     private var rtcKit: AgoraRtcEngineKit!
     private var channelName: String!
@@ -22,7 +22,6 @@ import YYModel
     
     deinit {
         aui_info("deinit AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
-        getRoomContext().interactionHandler(channelName: channelName)?.removeDelegate(delegate: self)
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
         rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
     }
@@ -36,7 +35,6 @@ import YYModel
         self.ktvApi = ktvApi
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
         rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
-        getRoomContext().interactionHandler(channelName: channelName)?.addDelegate(delegate: self)
     }
 }
 
@@ -118,13 +116,11 @@ extension AUIChorusLocalServiceImpl: AUIRtmAttributesProxyDelegate {
                 case let .remove(offset, oldElement, _):
                     unChangesOldList.remove(at: offset)
                     self.respDelegates.allObjects.forEach { obj in
-                        guard let delegate = obj as? AUIChorusRespDelegate else {return}
-                        delegate.onChoristerDidLeave(chorister: oldElement)
+                        obj.onChoristerDidLeave(chorister: oldElement)
                     }
                 case let .insert(_, newElement, _):
                     self.respDelegates.allObjects.forEach { obj in
-                        guard let delegate = obj as? AUIChorusRespDelegate else {return}
-                        delegate.onChoristerDidEnter(chorister: newElement)
+                        obj.onChoristerDidEnter(chorister: newElement)
                     }
                 }
             }
@@ -176,6 +172,16 @@ extension AUIChorusLocalServiceImpl {
             return
         }
         
+        var err: NSError? = nil
+        let metaData = NSMutableDictionary()
+        for obj in respDelegates.allObjects {
+            err = obj.onWillJoinChours?(songCode: songCode, userId: userId, metaData: metaData)
+            if let err = err {
+                completion(err)
+                return
+            }
+        }
+        
         let metaDataList = NSMutableArray(array: chorusUserList)
         let model = AUIChoristerModel()
         model.chorusSongNo = songCode
@@ -185,8 +191,10 @@ extension AUIChorusLocalServiceImpl {
 //        model.owner = user
         metaDataList.add(model)
         let str = metaDataList.yy_modelToJSONString() ?? ""
-        let metaData = [kChorusKey: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        metaData[kChorusKey] = str
+        self.rtmManager.setMetadata(channelName: channelName, 
+                                    lockName: kRTM_Referee_LockName, 
+                                    metadata: metaData as! [String : String]) { error in
             completion(error)
         }
     }
@@ -205,11 +213,8 @@ extension AUIChorusLocalServiceImpl {
             completion(error)
         }
     }
-}
-
-//MARK: AUIServiceInteractionDelegate
-extension AUIChorusLocalServiceImpl: AUIServiceInteractionDelegate {
-    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+    
+    public func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError? {
         let filterList = chorusUserList.filter({ $0.userId != userId })
         if filterList.count != chorusUserList.count {
             let metaDataList = NSMutableArray(array: filterList)
@@ -219,9 +224,14 @@ extension AUIChorusLocalServiceImpl: AUIServiceInteractionDelegate {
         return nil
     }
     
-    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
-        guard songCode == self.chorusUserList.first?.chorusSongNo else { return nil }
-        metaData[kChorusKey] = NSArray().yy_modelToJSONString() ?? ""
+//    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
+//        guard songCode == self.chorusUserList.first?.chorusSongNo else { return nil }
+//        metaData[kChorusKey] = NSArray().yy_modelToJSONString() ?? ""
+//        return nil
+//    }
+    
+    public func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError? {
+        removeKeys.add(kChorusKey)
         return nil
     }
 }

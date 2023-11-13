@@ -18,7 +18,7 @@ open class AUIRoomContext: NSObject {
             currentUserInfo.userAvatar = config.userAvatar
         }
     }
-    public var roomRtmToken: String = ""
+    
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
     public var roomInteractionHandlerMap: [String: AUIServiceInteractionHandler] = [:]

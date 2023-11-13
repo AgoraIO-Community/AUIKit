@@ -26,7 +26,7 @@ open class AUICommonConfig: NSObject {
 @objcMembers
 open class AUIRoomConfig: NSObject {
     public var channelName: String = ""     //正常rtm使用的频道
-//    public var rtmToken007: String = ""     //rtm login用，只能007
+    public var rtmToken007: String = ""     //rtm login用，只能007
     public var rtcToken007: String = ""     //rtm join用
     
     public var rtcChannelName: String = ""  //rtc使用的频道

@@ -39,7 +39,7 @@ private let kChooseSongKey = "song"
 open class AUIMusicLocalServiceImpl: NSObject {
     //选歌列表
     private var chooseSongList: [AUIChooseMusicModel] = []
-    private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    private var respDelegates: NSHashTable<AUIMusicRespDelegate> = NSHashTable<AUIMusicRespDelegate>.weakObjects()
     private var rtmManager: AUIRtmManager!
     private var channelName: String!
     private var ktvApi: KTVApiDelegate!
@@ -47,7 +47,6 @@ open class AUIMusicLocalServiceImpl: NSObject {
     private var callbackMap: [String: ((NSError?)-> ())] = [:]
     
     deinit {
-        getRoomContext().interactionHandler(channelName: channelName)?.removeDelegate(delegate: self)
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
         aui_info("deinit AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
@@ -59,7 +58,6 @@ open class AUIMusicLocalServiceImpl: NSObject {
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.ktvApi = ktvApi
-        getRoomContext().interactionHandler(channelName: channelName)?.addDelegate(delegate: self)
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
     }
@@ -78,8 +76,7 @@ extension AUIMusicLocalServiceImpl: AUIRtmAttributesProxyDelegate {
             aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
             self.chooseSongList = chooseSongList
             self.respDelegates.allObjects.forEach { obj in
-                guard let delegate = obj as? AUIMusicRespDelegate else {return}
-                delegate.onUpdateAllChooseSongs(songs: chooseSongList)
+                obj.onUpdateAllChooseSongs(songs: chooseSongList)
             }
             
         }
@@ -390,10 +387,13 @@ extension AUIMusicLocalServiceImpl {
         
         
         let metaData = NSMutableDictionary()
-        let err = getRoomContext().interactionHandler(channelName: channelName)?.onSongWillSelect(channelName: channelName, userId: songModel.userId ?? "", metaData: metaData)
-        if let err = err {
-            callback(err)
-            return
+        var err: NSError? = nil
+        for obj in self.respDelegates.allObjects {
+            err = obj.onSongWillAdd?(userId: songModel.userId ?? "", metaData: metaData)
+            if let err = err {
+                callback(err)
+                return
+            }
         }
         
         let metaDataSongList = NSMutableArray(array: chooseSongList)
@@ -417,11 +417,14 @@ extension AUIMusicLocalServiceImpl {
             return
         }
         
+        var err: NSError? = nil
         let metaData = NSMutableDictionary()
-        let err = getRoomContext().interactionHandler(channelName: channelName)?.onSongDidRemove(channelName: channelName, songCode: songCode, metaData: metaData)
-        if let err = err {
-            callback(err)
-            return
+        for obj in respDelegates.allObjects {
+            err = obj.onSongWillRemove?(songCode: songCode, metaData: metaData)
+            if let err = err {
+                callback(err)
+                return
+            }
         }
         
         let metaDataSongList = NSMutableArray(array: chooseSongList)
@@ -480,17 +483,19 @@ extension AUIMusicLocalServiceImpl {
         }
         song.pinAt = origPinAt
     }
-}
-
-//MARK: AUIServiceInteractionDelegate
-extension AUIMusicLocalServiceImpl: AUIServiceInteractionDelegate {
-    public func onUserInfoClean(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
+    
+    public func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError? {
         let filterSongList = chooseSongList.filter({ $0.userId != userId })
         if filterSongList.count != chooseSongList.count {
             let metaDataSongList = NSMutableArray(array: filterSongList)
             let str = metaDataSongList.yy_modelToJSONString() ?? ""
             metaData[kChooseSongKey] = str
         }
+        return nil
+    }
+    
+    public func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError? {
+        removeKeys.add(kChooseSongKey)
         return nil
     }
 }

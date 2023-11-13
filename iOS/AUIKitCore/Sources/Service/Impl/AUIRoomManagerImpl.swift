@@ -10,7 +10,7 @@ import AgoraRtcKit
 import YYModel
 import AgoraRtmKit
 
-let kRoomInfoAttrKry = "basic"
+public let kRoomInfoAttrKry = "basic"
 
 let kUserInfoAttrKey = "basic"
 let kUserMuteAttrKey = "mute"
@@ -106,32 +106,32 @@ extension AUIRoomManagerImpl: AUIRoomManagerDelegate {
     public func enterRoom(roomId: String, callback:@escaping (NSError?) -> ()) {
         aui_info("enterRoom: \(roomId) ", tag: "AUIRoomManagerImpl")
         
-        let rtmToken = AUIRoomContext.shared.roomRtmToken
-        guard rtmManager.isLogin else {
-            rtmManager.login(token: rtmToken) {[weak self] err in
-                if let err = err {
-                    callback(err as NSError)
-                    return
-                }
-                self?.enterRoom(roomId: roomId, callback: callback)
-            }
-
-            return
-        }
-        
-        guard let roomConfig = AUIRoomContext.shared.roomConfigMap[roomId] else {
-            assert(false)
-            aui_info("enterRoom: \(roomId) fail", tag: "AUIRoomManagerImpl")
-            callback(AUICommonError.missmatchRoomConfig.toNSError())
-            return
-        }
-        aui_info("enterRoom subscribe: \(roomId)", tag: "AUIRoomManagerImpl")
-        rtmManager.subscribe(channelName: roomId, rtcToken: roomConfig.rtcToken007) { error in
-            aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUIRoomManagerImpl")
-            callback(error as? NSError)
-        }
-        
-        self.rtmManager.subscribeError(channelName: roomId, delegate: self)
+//        let rtmToken = AUIRoomContext.shared.roomRtmToken
+//        guard rtmManager.isLogin else {
+//            rtmManager.login(token: rtmToken) {[weak self] err in
+//                if let err = err {
+//                    callback(err as NSError)
+//                    return
+//                }
+//                self?.enterRoom(roomId: roomId, callback: callback)
+//            }
+//
+//            return
+//        }
+//        
+//        guard let roomConfig = AUIRoomContext.shared.roomConfigMap[roomId] else {
+//            assert(false)
+//            aui_info("enterRoom: \(roomId) fail", tag: "AUIRoomManagerImpl")
+//            callback(AUICommonError.missmatchRoomConfig.toNSError())
+//            return
+//        }
+//        aui_info("enterRoom subscribe: \(roomId)", tag: "AUIRoomManagerImpl")
+//        rtmManager.subscribe(channelName: roomId, rtcToken: roomConfig.rtcToken007) { error in
+//            aui_info("enterRoom subscribe finished \(roomId) \(error?.localizedDescription ?? "")", tag: "AUIRoomManagerImpl")
+//            callback(error as? NSError)
+//        }
+//        
+//        self.rtmManager.subscribeError(channelName: roomId, delegate: self)
     }
     
     public func exitRoom(roomId: String, callback: @escaping (NSError?) -> ()) {
