@@ -46,11 +46,7 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmAttributesProxyDelegate {
                 let origMicSeat = self.micSeats[index]
                 
                 self.micSeats[index] = micSeat
-                self.respDelegates.allObjects.forEach { obj in
-                    guard let delegate = obj as? AUIMicSeatRespDelegate else {
-                        return
-                    }
-                    
+                self.respDelegates.allObjects.forEach { delegate in
                     if let origUser = origMicSeat?.user, origUser.userId.count > 0, micSeat.user?.userId ?? "" != origUser.userId {
                         delegate.onAnchorLeaveSeat(seatIndex: index, user: origUser)
                     }
@@ -285,7 +281,7 @@ extension AUIMicSeatLocalServiceImpl {
         self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if userId == value.user?.userId {
-                map.removeValue(forKey: "owner")
+                map["owner"] = AUIUserThumbnailInfo().yy_modelToJSONObject()
                 map["micSeatStatus"] = AUILockSeatStatus.idle.rawValue
             }
             seatMap["\(key)"] = map
@@ -324,7 +320,7 @@ extension AUIMicSeatLocalServiceImpl {
         self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
             var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
             if key == seatIndex {
-                map.removeValue(forKey: "owner")
+                map["owner"] = AUIUserThumbnailInfo().yy_modelToJSONObject()
                 map["micSeatStatus"] = AUILockSeatStatus.idle.rawValue
                 userId = value.user?.userId
             }

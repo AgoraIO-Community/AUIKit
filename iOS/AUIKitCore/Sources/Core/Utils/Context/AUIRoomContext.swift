@@ -50,7 +50,7 @@ open class AUIRoomContext: NSObject {
             return handler
         }
         
-        assert(false, "arbiter == nil!")
+//        assert(false, "arbiter == nil!")
         return nil
     }
     
