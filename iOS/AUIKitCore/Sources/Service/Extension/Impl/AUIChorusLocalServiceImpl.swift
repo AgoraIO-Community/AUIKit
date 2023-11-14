@@ -58,7 +58,7 @@ extension AUIChorusLocalServiceImpl: AUIChorusServiceDelegate {
     
     public func joinChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
         let joinUserId = userId ?? getRoomContext().currentUserInfo.userId
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmJoinChorus(songCode: songCode, userId: joinUserId, completion: completion)
             return
         }
@@ -76,7 +76,7 @@ extension AUIChorusLocalServiceImpl: AUIChorusServiceDelegate {
     
     public func leaveChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
         let leaveUserId = userId ?? getRoomContext().currentUserInfo.userId
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmLeaveChorus(songCode: songCode, userId: leaveUserId, completion: completion)
             return
         }
@@ -150,7 +150,7 @@ extension AUIChorusLocalServiceImpl: AUIRtmMessageProxyDelegate {
             }
             return
         }
-        guard getRoomContext().isLockOwner(channelName:channelName) else { return }
+        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
         aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
         if interfaceName == kAUIPlayerJoinInterface, let model = AUIPlayerJoinNetworkModel.model(rtmMessage: message) {
             rtmJoinChorus(songCode: model.songCode ?? "", userId: model.userId ?? "") {[weak self] err in

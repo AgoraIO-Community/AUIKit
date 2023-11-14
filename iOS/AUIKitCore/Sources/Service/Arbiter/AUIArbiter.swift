@@ -26,6 +26,31 @@ import AgoraRtmKit
         rtmManager.subscribeLock(channelName: channelName, lockName: kRTM_Referee_LockName, delegate: self)
         aui_info("init AUIArbiter", tag: "AUIArbiter")
     }
+    
+    public func create() {
+        rtmManager.setLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+        }
+    }
+    
+    public func destroy() {
+        rtmManager.removeLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+        }
+    }
+    
+    public func acquire() {
+        rtmManager.acquireLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+        }
+    }
+    
+    public func release() {
+        rtmManager.releaseLock(channelName: channelName, lockName: kRTM_Referee_LockName) { err in
+        }
+    }
+    
+    
+    public func isArbiter() -> Bool {
+        return lockOwnerId == currentUserInfo.userId
+    }
 }
 
 //MARK: AUIRtmLockProxyDelegate

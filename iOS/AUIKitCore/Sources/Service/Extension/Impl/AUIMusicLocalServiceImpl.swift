@@ -204,7 +204,7 @@ extension AUIMusicLocalServiceImpl: AUIMusicServiceDelegate {
             return
         }
         
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let songModel = AUIChooseMusicModel.yy_model(with: dic)!
             songModel.owner = getRoomContext().currentUserInfo
             rtmChooseSong(songModel: songModel) { err in
@@ -229,7 +229,7 @@ extension AUIMusicLocalServiceImpl: AUIMusicServiceDelegate {
         aui_info("removeSong: \(songCode)", tag: "AUIMusicServiceImpl")
         
         let removeUserId = getRoomContext().currentUserInfo.userId
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmRemoveSong(songCode: songCode, removeUserId: removeUserId) { err in
                 completion?(err)
             }
@@ -250,7 +250,7 @@ extension AUIMusicLocalServiceImpl: AUIMusicServiceDelegate {
     public func pinSong(songCode: String, completion: AUICallback?) {
         aui_info("pinSong: \(songCode)", tag: "AUIMusicServiceImpl")
         let updateUserId = getRoomContext().currentUserInfo.userId
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmPinSong(songCode: songCode, updateUserId: updateUserId) { err in
                 completion?(err)
             }
@@ -272,7 +272,7 @@ extension AUIMusicLocalServiceImpl: AUIMusicServiceDelegate {
         aui_info("updatePlayStatus: \(songCode)", tag: "AUIMusicServiceImpl")
         
         let updateUserId = getRoomContext().currentUserInfo.userId
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmUpdatePlayStatus(songCode: songCode, playStatus: playStatus, updateUserId: updateUserId) { err in
                 completion?(err)
             }
@@ -323,7 +323,7 @@ extension AUIMusicLocalServiceImpl: AUIRtmMessageProxyDelegate {
             }
             return
         }
-        guard getRoomContext().isLockOwner(channelName:channelName) else { return }
+        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
         aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
         if interfaceName == kAUISongAddNetworkInterface, let model = AUISongAddNetworkModel.model(rtmMessage: message) {
             let dic = model.yy_modelToJSONObject() as? [String : Any] ?? [:]

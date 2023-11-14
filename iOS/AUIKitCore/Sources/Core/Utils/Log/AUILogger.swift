@@ -10,6 +10,15 @@ import SwiftyBeaver
 
 
 let logger = AUILog.createLog(config: AUILogConfig())
+
+/// <#Description#>
+/// - Parameters:
+///   - text: <#text description#>
+///   - cost: seconds
+///   - tag: <#tag description#>
+public func aui_benchmark(_ text: String, cost: Double, tag: String = "AUIKit") {
+    logger.info("[Benchmark]\(text): \(Int64(cost * 1000)) ms", context: tag)
+}
 public func aui_info(_ text: String, tag: String = "AUIKit") {
     logger.info(text, context: tag)
 }

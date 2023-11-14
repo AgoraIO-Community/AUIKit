@@ -45,16 +45,13 @@ open class AUIRoomContext: NSObject {
     }
     
     public func getArbiter(channelName: String) -> AUIArbiter? {
-        guard let _ = roomInfoMap[channelName] else {return nil}
+//        guard let _ = roomInfoMap[channelName] else {return nil}
         if let handler = roomArbiterMap[channelName] {
             return handler
         }
         
+        assert(false, "arbiter == nil!")
         return nil
-    }
-    
-    public func isLockOwner(channelName: String) -> Bool {
-        return getArbiter(channelName: channelName)?.lockOwnerId == currentUserInfo.userId
     }
     
     public func clean(channelName: String) {

@@ -183,9 +183,9 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     }
     
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveStorageEvent event: AgoraRtmStorageEvent) {
-        guard event.channelType == .stream else {
-            return
-        }
+//        guard event.channelType == .stream else {
+//            return
+//        }
         
         aui_info("didReceiveStorageEvent event: [\(event.target)] channelType: [\(event.channelType.rawValue)] storageType: [\(event.eventType.rawValue)] =======", tag: "AUIRtmMsgProxy")
         //key使用channelType__eventType，保证message channel/stream channel, user storage event/channel storage event共存
@@ -223,9 +223,9 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
         aui_info("[\(event.channelName)] didReceivePresenceEvent event: [\(event.type.rawValue)] channel type: [\(event.channelType.rawValue)]] states: \(event.states.count) =======", tag: "AUIRtmMsgProxy")
         
-        guard event.channelType == .stream else {
-            return
-        }
+//        guard event.channelType == .stream else {
+//            return
+//        }
         
 //        var map: [[]]
         var map: [String: String] = [:]

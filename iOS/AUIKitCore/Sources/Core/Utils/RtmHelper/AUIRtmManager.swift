@@ -185,7 +185,7 @@ extension AUIRtmManager {
         proxy.unsubscribeLock(channelName: channelName, lockName: lockName, delegate: delegate)
     }
     
-    func subscribe(channelName: String, completion:@escaping (Error?)->()) {
+    public func subscribe(channelName: String, completion:@escaping (Error?)->()) {
         let options = AgoraRtmSubscribeOptions()
         options.features = [.metadata, .presence, .lock, .message]
         rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
@@ -211,10 +211,11 @@ extension AUIRtmManager {
                 completion(messageError ?? streamError)
             }
         }
-        
+        let date1 = Date()
         //1.subscribe message
         group.enter()
         subscribe(channelName: channelName) { error in
+            aui_benchmark("rtm subscribe with message type", cost: -date1.timeIntervalSinceNow)
             messageError = error
             group.leave()
         }
@@ -235,7 +236,9 @@ extension AUIRtmManager {
             return
         }
         
+        let date2 = Date()
         streamChannel.join(joinOption) { resp, error in
+            aui_benchmark("rtm subscribe with presence type", cost: -date2.timeIntervalSinceNow)
             aui_info("join '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
 //            completion(error.toNSError())
             streamError = error?.toNSError()

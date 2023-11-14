@@ -104,7 +104,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func enterSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-        if getRoomContext().isLockOwner(channelName: channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmEnterSeat(seatIndex: seatIndex, userInfo: getRoomContext().currentUserInfo, callback: callback)
             return
         }
@@ -116,14 +116,18 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
         model.userName = getRoomContext().currentUserInfo.userName
         model.micSeatNo = seatIndex
         
+        let date = Date()
         let message = model.rtmMessage()
         rtmManager.publish(channelName: channelName, message: message) { err in
         }
-        callbackMap[model.uniqueId] = callback
+        callbackMap[model.uniqueId] = { err in
+            aui_benchmark("enterSeat to arbiter", cost: -date.timeIntervalSinceNow, tag: "AUIMicSeatServiceImpl")
+            callback(err)
+        }
     }
     
     public func leaveSeat(callback: @escaping (NSError?) -> ()) {
-        if getRoomContext().isLockOwner(channelName:channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmLeaveSeat(userId: getRoomContext().currentUserInfo.userId) { err in
             }
             return
@@ -143,7 +147,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func kickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-        if getRoomContext().isLockOwner(channelName:channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmKickSeat(seatIndex: seatIndex, callback: callback)
             return
         }
@@ -160,7 +164,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
-        if getRoomContext().isLockOwner(channelName:channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmMuteAudioSeat(seatIndex: seatIndex, isMute: isMute, callback: callback)
             return
         }
@@ -192,7 +196,7 @@ extension AUIMicSeatLocalServiceImpl: AUIMicSeatServiceDelegate {
     }
     
     public func closeSeat(seatIndex: Int, isClose: Bool, callback: @escaping (NSError?) -> ()) {
-        if getRoomContext().isLockOwner(channelName:channelName) {
+        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmCloseSeat(seatIndex: seatIndex, isClose: isClose, callback: callback)
             return
         }
@@ -407,7 +411,7 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
             }
             return
         }
-        guard getRoomContext().isLockOwner(channelName:channelName) else { return }
+        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
         aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
         if interfaceName == kAUISeatEnterNetworkInterface, let model = AUISeatEnterNetworkModel.model(rtmMessage: message) {
             let user = AUIUserThumbnailInfo()
