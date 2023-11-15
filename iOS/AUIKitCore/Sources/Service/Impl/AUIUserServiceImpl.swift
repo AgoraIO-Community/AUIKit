@@ -1,4 +1,3 @@
-//
 //  AUIUserServiceImpl.swift
 //  AUIKit
 //
@@ -6,31 +5,29 @@
 //
 
 import Foundation
-import AgoraRtcKit
+import AgoraRtmKit
 
 @objc open class AUIUserServiceImpl: NSObject {
     public var userList: [AUIUserInfo] = []
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
-    private let roomManager: AUIRoomManagerDelegate!
     
     deinit {
         aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
         rtmManager.unsubscribeUser(channelName: channelName, delegate: self)
     }
     
-    public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {
+    public init(channelName: String, rtmManager: AUIRtmManager) {
         self.rtmManager = rtmManager
         self.channelName = channelName
-        self.roomManager = roomManager
         super.init()
         self.rtmManager.subscribeUser(channelName: channelName, delegate: self)
         aui_info("init AUIUserServiceImpl", tag: "AUIUserServiceImpl")
     }
 }
 
-
+//MARK: AUIRtmUserProxyDelegate
 extension AUIUserServiceImpl: AUIRtmUserProxyDelegate {
     public func onCurrentUserJoined(channelName: String) {
         guard channelName == self.channelName else {return}
@@ -241,5 +238,4 @@ extension AUIUserServiceImpl {
         }
     }
 }
-
 
