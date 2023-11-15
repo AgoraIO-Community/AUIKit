@@ -23,6 +23,8 @@ open class AUIRtmManager: NSObject {
     
     public private(set) var isLogin: Bool = false
     private var isExternalLogin: Bool!
+    private lazy var throttler: AUIThrottler = AUIThrottler()
+    private var throttlerModel = AUIThrottlerMetaDataModel()
     
     deinit {
         aui_info("deinit AUIRtmManager", tag: "AUIRtmManager")
@@ -287,11 +289,35 @@ extension AUIRtmManager {
         aui_info("cleanMetadata[\(channelName)]", tag: "AUIRtmManager")
 
     }
+    
+    //TODO: 强制fetch
+    public func setBatchMetadata(channelName: String,
+                                 lockName: String,
+                                 metadata: [String: String],
+                                 completion: @escaping (NSError?)->()) {
+        aui_info("setBatchMetadata1[\(channelName)] metadata count: \(metadata.count)")
+        throttlerModel.appendMetaDataInfo(metaData: metadata, completion: completion)
+        //TODO: throttler by channel & lockName
+        throttler.triggerLastEvent(after: 0.01, execute: { [weak self] in
+            guard let self = self else {return}
+            guard self.throttlerModel.metaData.count > 0 else {return}
+            let callbacks = self.throttlerModel.callbacks
+            aui_info("setBatchMetadata2[\(channelName)] metadata count: \(self.throttlerModel.metaData.count)")
+            self.setMetadata(channelName: channelName,
+                             lockName: lockName,
+                             metadata: self.throttlerModel.metaData) { err in
+                callbacks.forEach { callback in
+                    callback(err)
+                }
+            }
+            self.throttlerModel.reset()
+        })
+    }
 
     public func setMetadata(channelName: String,
-                     lockName: String,
-                     metadata: [String: String],
-                     completion: @escaping (NSError?)->()) {
+                            lockName: String,
+                            metadata: [String: String],
+                            completion: @escaping (NSError?)->()) {
         guard let storage = rtmClient.getStorage(),
               let data = storage.createMetadata() else {
             assert(false, "setMetadata fail")
@@ -316,7 +342,7 @@ extension AUIRtmManager {
             aui_info("setMetadata[\(channelName)][\(lockName)] finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
         }
-        aui_info("setMetadata", tag: "AUIRtmManager")
+        aui_info("setMetadata[\(channelName)][\(lockName)] keys:\(metadata.keys)", tag: "AUIRtmManager")
     }
 
     public func updateMetadata(channelName: String,
@@ -469,6 +495,7 @@ extension AUIRtmManager {
 //MARK: message
 extension AUIRtmManager {
     public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
+        //uid和
         let options = AgoraRtmPublishOptions()
         rtmClient.publish(channelName: channelName, message: message, option: options) { resp, error in
             var callbackError: NSError?

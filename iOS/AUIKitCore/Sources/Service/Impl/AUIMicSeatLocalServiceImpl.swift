@@ -266,7 +266,9 @@ extension AUIMicSeatLocalServiceImpl {
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
         let metaData = [kSeatAttrKry: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData) { error in
             callback(error)
         }
     }
@@ -308,7 +310,9 @@ extension AUIMicSeatLocalServiceImpl {
                 break
             }
         }
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData as! [String : String]) { error in
             callback(error)
         }
     }
@@ -340,7 +344,9 @@ extension AUIMicSeatLocalServiceImpl {
         let str = String(data: data, encoding: .utf8)!
         metaData[kSeatAttrKry] = str
         
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData as! [String : String]) { error in
             callback(error)
         }
     }
@@ -358,7 +364,9 @@ extension AUIMicSeatLocalServiceImpl {
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
         let metaData = [kSeatAttrKry: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData) { error in
             callback(error)
         }
     }
@@ -382,7 +390,9 @@ extension AUIMicSeatLocalServiceImpl {
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
         let metaData = [kSeatAttrKry: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName, 
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData) { error in
             callback(error)
         }
     }
@@ -444,12 +454,15 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
         }
     }
 
-    public func onRoomWillInit(metaData: NSMutableDictionary) -> NSError? {
-        guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {return nil}
+    public func onRoomWillInit(completion: @escaping ((NSError?) -> ())){
+        guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {
+            completion(AUICommonError.unknown.toNSError())
+            return
+        }
         var seatMap: [String: [String: Any]] = [:]
         for i in 0...roomInfo.micSeatCount {
             let seat = AUIMicSeatInfo()
-            seat.seatIndex = i + 1
+            seat.seatIndex = i
             if i == 0 {
                 seat.user = getRoomContext().currentUserInfo
                 seat.lockSeat = .user
@@ -459,16 +472,24 @@ extension AUIMicSeatLocalServiceImpl: AUIRtmMessageProxyDelegate {
         
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
-        let metaData = NSMutableDictionary()
+        var metaData = [String: String]()
         metaData[kSeatAttrKry] = str
-        return nil
+        rtmManager.setBatchMetadata(channelName: channelName,
+                                    lockName: "",
+                                    metadata: metaData,
+                                    completion: completion)
     }
     
-    public func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError? {
+    public func onUserInfoClean(userId: String, completion: @escaping ((NSError?) -> ())) {
         let micSeatMetaData = rtmLeaveSeatMetaData(userId: userId)
         let str = micSeatMetaData.yy_modelToJSONString() ?? ""
+        var metaData = [String: String]()
         metaData[kSeatAttrKry] = str
-        return nil
+        
+        rtmManager.setBatchMetadata(channelName: channelName,
+                                    lockName: kRTM_Referee_LockName,
+                                    metadata: metaData,
+                                    completion: completion)
     }
     
 //    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {

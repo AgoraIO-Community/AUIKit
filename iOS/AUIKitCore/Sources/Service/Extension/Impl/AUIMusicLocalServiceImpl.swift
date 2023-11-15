@@ -400,7 +400,9 @@ extension AUIMusicLocalServiceImpl {
         metaDataSongList.add(songModel)
         let str = metaDataSongList.yy_modelToJSONString() ?? ""
         metaData[kChooseSongKey] = str
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData as! [String : String]) { error in
             callback(error)
         }
     }
@@ -431,7 +433,9 @@ extension AUIMusicLocalServiceImpl {
         metaDataSongList.removeObject(at: idx)
         let str = metaDataSongList.yy_modelToJSONString() ?? ""
         metaData[kChooseSongKey] = str
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData as! [String : String]) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData as! [String : String]) { error in
             callback(error)
         }
         
@@ -454,7 +458,9 @@ extension AUIMusicLocalServiceImpl {
         let metaDataSongList = NSMutableArray(array: chooseSongList)
         let str = metaDataSongList.yy_modelToJSONString() ?? ""
         let metaData = [kChooseSongKey: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData) { error in
             callback(error)
         }
         song.status = origStatus
@@ -478,20 +484,27 @@ extension AUIMusicLocalServiceImpl {
         let metaDataSongList = NSMutableArray(array: sortSongList)
         let str = metaDataSongList.yy_modelToJSONString() ?? ""
         let metaData = [kChooseSongKey: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData) { error in
             callback(error)
         }
         song.pinAt = origPinAt
     }
     
-    public func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError? {
+    public func onUserInfoClean(userId: String, completion: @escaping ((NSError?) -> ())) {
+        var metaData = [String: String]()
         let filterSongList = chooseSongList.filter({ $0.userId != userId })
         if filterSongList.count != chooseSongList.count {
             let metaDataSongList = NSMutableArray(array: filterSongList)
             let str = metaDataSongList.yy_modelToJSONString() ?? ""
             metaData[kChooseSongKey] = str
         }
-        return nil
+        
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData,
+                                         completion: completion)
     }
     
     public func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError? {

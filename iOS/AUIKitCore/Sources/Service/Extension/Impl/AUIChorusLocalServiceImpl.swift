@@ -192,9 +192,9 @@ extension AUIChorusLocalServiceImpl {
         metaDataList.add(model)
         let str = metaDataList.yy_modelToJSONString() ?? ""
         metaData[kChorusKey] = str
-        self.rtmManager.setMetadata(channelName: channelName, 
-                                    lockName: kRTM_Referee_LockName, 
-                                    metadata: metaData as! [String : String]) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData as! [String : String]) { error in
             completion(error)
         }
     }
@@ -209,19 +209,25 @@ extension AUIChorusLocalServiceImpl {
         let metaDataList = NSMutableArray(array: userList)
         let str = metaDataList.yy_modelToJSONString() ?? ""
         let metaData = [kChorusKey: str]
-        self.rtmManager.setMetadata(channelName: channelName, lockName: kRTM_Referee_LockName, metadata: metaData) { error in
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: metaData) { error in
             completion(error)
         }
     }
     
-    public func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError? {
+    public func onUserInfoClean(userId: String, completion: @escaping ((NSError?) -> ())){
+        var metaData = [String: String]()
         let filterList = chorusUserList.filter({ $0.userId != userId })
         if filterList.count != chorusUserList.count {
             let metaDataList = NSMutableArray(array: filterList)
             let str = metaDataList.yy_modelToJSONString() ?? ""
             metaData[kChorusKey] = str
         }
-        return nil
+        self.rtmManager.setBatchMetadata(channelName: channelName, 
+                                         lockName: kRTM_Referee_LockName, 
+                                         metadata: metaData,
+                                         completion: completion)
     }
     
 //    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {

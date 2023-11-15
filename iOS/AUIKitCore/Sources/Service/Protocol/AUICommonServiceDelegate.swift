@@ -15,7 +15,7 @@ import Foundation
     /// - Parameters:
     ///   - metaData: meta data
     /// - Returns: Error, if there is an error, it will interrupt the creation process
-    @objc optional func onRoomWillInit(metaData: NSMutableDictionary) -> NSError?
+    @objc optional func onRoomWillInit(completion:  @escaping  ((NSError?) -> ()))
     
     
     /// <#Description#>
@@ -29,7 +29,7 @@ import Foundation
     ///   - userId: user id
     ///   - metaData: meta data
     /// - Returns: Error, if there is an error, it will interrupt the creation process
-    @objc optional func onUserInfoClean(userId: String, metaData: NSMutableDictionary) -> NSError?
+    @objc optional func onUserInfoClean(userId: String, completion:  @escaping  ((NSError?) -> ()))
     
     /// 获取当前房间上下文
     /// - Returns: <#description#>
