@@ -505,8 +505,10 @@ extension AUIMusicServiceImpl {
                                          completion: completion)
     }
     
-    public func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError? {
-        removeKeys.add(kChooseSongKey)
-        return nil
+    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
+        rtmManager.cleanBatchMetadata(channelName: channelName,
+                                      lockName: kRTM_Referee_LockName,
+                                      removeKeys: [kChooseSongKey],
+                                      completion: completion)
     }
 }

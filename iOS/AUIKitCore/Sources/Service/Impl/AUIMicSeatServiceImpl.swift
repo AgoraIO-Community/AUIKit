@@ -504,8 +504,10 @@ extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
 //        return AUICommonError.noPermission.toNSError()
 //    }
     
-    public func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError? {
-        removeKeys.add(kSeatAttrKry)
-        return nil
+    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
+        rtmManager.cleanBatchMetadata(channelName: channelName,
+                                      lockName: kRTM_Referee_LockName,
+                                      removeKeys: [kSeatAttrKry],
+                                      completion: completion)
     }
 }

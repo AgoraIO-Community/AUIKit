@@ -10,7 +10,7 @@ import AgoraChat
 import YYModel
 
 
-
+private let kChatIdKey = "chatRoomId"
 fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
 
 @objcMembers open class AUIIMManagerServiceImplement: NSObject {
@@ -25,7 +25,7 @@ fileprivate let AUIChatRoomJoinedMember = "AUIChatRoomJoinedMember"
     
     private var channelName = ""
     
-    private var rtmManager: AUIRtmManager?
+    private var rtmManager: AUIRtmManager!
     
     
     private var responseDelegates: NSHashTable<AUIMManagerRespDelegate> = NSHashTable<AUIMManagerRespDelegate>.weakObjects()
@@ -129,7 +129,7 @@ extension AUIIMManagerServiceImplement: AUIRtmAttributesProxyDelegate {
     
     public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         aui_info("IM.onAttributesDidChanged:\(value as? [String:String]) channelName:\(channelName)")
-        if let attributes = value as? [String:String],let chatroomId = attributes["chatRoomId"]{
+        if let attributes = value as? [String:String],let chatroomId = attributes[kChatIdKey]{
             aui_info("IM.onAttributesDidChanged chatroomId:\(chatroomId)")
             self.currentRoomId = "\(chatroomId)"
             if !AUIRoomContext.shared.isRoomOwner(channelName: self.channelName) {
@@ -206,7 +206,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
             var callError: NSError?
             var chatroomId = ""
             if error == nil,obj != nil,let data = obj as? Dictionary<String,String> {
-                chatroomId = data["chatRoomId"] ?? ""
+                chatroomId = data[kChatIdKey] ?? ""
                 self.currentRoomId = chatroomId
                 self.joinedChatRoom(roomId: chatroomId) { message, error in
                     callError = error
@@ -310,6 +310,12 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         return textMessage
     }
     
+    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
+        rtmManager.cleanBatchMetadata(channelName: channelName,
+                                      lockName: kRTM_Referee_LockName,
+                                      removeKeys: [kChatIdKey],
+                                      completion: completion)
+    }
 }
 
 //MARK: - AgoraChat Delegate

@@ -22,4 +22,11 @@ class AUIThrottler {
             }
         }
     }
+    
+    func triggerNow() {
+        if workItem?.isCancelled ?? false == false {
+            workItem?.perform()
+            workItem?.cancel()
+        }
+    }
 }

@@ -22,7 +22,7 @@ import Foundation
     /// - Parameters:
     ///   - metaData: <#metaData description#>
     /// - Returns: <#description#>
-    @objc optional func onRoomWillDestroy(removeKeys: NSMutableArray) -> NSError?
+    @objc optional func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ()))
     
     /// Clean up information for specified users
     /// - Parameters:

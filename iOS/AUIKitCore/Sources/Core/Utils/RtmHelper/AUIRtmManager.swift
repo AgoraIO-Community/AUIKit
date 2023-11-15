@@ -23,8 +23,8 @@ open class AUIRtmManager: NSObject {
     
     public private(set) var isLogin: Bool = false
     private var isExternalLogin: Bool!
-    private lazy var throttler: AUIThrottler = AUIThrottler()
-    private var throttlerModel = AUIThrottlerMetaDataModel()
+    private var throttlerUpdateModel = AUIThrottlerUpdateMetaDataModel()
+    private var throttlerRemoveModel = AUIThrottlerRemoveMetaDataModel()
     
     deinit {
         aui_info("deinit AUIRtmManager", tag: "AUIRtmManager")
@@ -263,6 +263,37 @@ extension AUIRtmManager {
 
 //MARK: Channel Metadata
 extension AUIRtmManager {
+    
+    public func cleanBatchMetadata(channelName: String, removeKeys: [String], lockName: String, completion: @escaping (NSError?)->()) {
+        
+    }
+    public func cleanBatchMetadata(channelName: String,
+                                   lockName: String,
+                                   removeKeys: [String],
+                                   fetchImmediately: Bool = false,
+                                   completion: @escaping (NSError?)->()) {
+        aui_info("cleanBatchMetadata[\(channelName)] removeKeys:\(removeKeys)")
+        throttlerRemoveModel.appendMetaDataInfo(keys: removeKeys, completion: completion)
+        //TODO: throttler by channel & lockName
+        throttlerRemoveModel.throttler.triggerLastEvent(after: 0.01, execute: { [weak self] in
+            guard let self = self else {return}
+            guard self.throttlerRemoveModel.keys.count > 0 else {return}
+            let callbacks = self.throttlerRemoveModel.callbacks
+            aui_info("cleanBatchMetadata[\(channelName)] keys count: \(self.throttlerRemoveModel.keys.count)")
+            self.cleanMetadata(channelName: channelName,
+                               removeKeys: self.throttlerRemoveModel.keys,
+                               lockName: lockName) { err in
+                callbacks.forEach { callback in
+                    callback(err)
+                }
+            }
+            self.throttlerRemoveModel.reset()
+        })
+        if fetchImmediately {
+            throttlerRemoveModel.throttler.triggerNow()
+        }
+    }
+    
     public func cleanMetadata(channelName: String, removeKeys: [String], lockName: String, completion: @escaping (NSError?)->()) {
         guard let data = rtmClient.getStorage()?.createMetadata(), let storage = rtmClient.getStorage() else {
             assert(false, "cleanMetadata fail")
@@ -286,32 +317,35 @@ extension AUIRtmManager {
             aui_info("cleanMetadata[\(channelName)][\(lockName)] finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
         }
-        aui_info("cleanMetadata[\(channelName)]", tag: "AUIRtmManager")
+        aui_info("cleanMetadata[\(channelName)] \(removeKeys)", tag: "AUIRtmManager")
 
     }
     
-    //TODO: 强制fetch
     public func setBatchMetadata(channelName: String,
                                  lockName: String,
                                  metadata: [String: String],
+                                 fetchImmediately: Bool = false,
                                  completion: @escaping (NSError?)->()) {
-        aui_info("setBatchMetadata1[\(channelName)] metadata count: \(metadata.count)")
-        throttlerModel.appendMetaDataInfo(metaData: metadata, completion: completion)
+        aui_info("setBatchMetadata1[\(channelName)] metadata keys: \(metadata.keys)")
+        throttlerUpdateModel.appendMetaDataInfo(metaData: metadata, completion: completion)
         //TODO: throttler by channel & lockName
-        throttler.triggerLastEvent(after: 0.01, execute: { [weak self] in
+        throttlerUpdateModel.throttler.triggerLastEvent(after: 0.01, execute: { [weak self] in
             guard let self = self else {return}
-            guard self.throttlerModel.metaData.count > 0 else {return}
-            let callbacks = self.throttlerModel.callbacks
-            aui_info("setBatchMetadata2[\(channelName)] metadata count: \(self.throttlerModel.metaData.count)")
+            guard self.throttlerUpdateModel.metaData.count > 0 else {return}
+            let callbacks = self.throttlerUpdateModel.callbacks
+            aui_info("setBatchMetadata2[\(channelName)] metadata keys: \(self.throttlerUpdateModel.metaData.keys)")
             self.setMetadata(channelName: channelName,
                              lockName: lockName,
-                             metadata: self.throttlerModel.metaData) { err in
+                             metadata: self.throttlerUpdateModel.metaData) { err in
                 callbacks.forEach { callback in
                     callback(err)
                 }
             }
-            self.throttlerModel.reset()
+            self.throttlerUpdateModel.reset()
         })
+        if fetchImmediately {
+            throttlerUpdateModel.throttler.triggerNow()
+        }
     }
 
     public func setMetadata(channelName: String,
