@@ -18,6 +18,15 @@ open class AUICommonConfig: NSObject {
     public var userName: String = ""
     public var userAvatar: String = ""
     
+    
+    public func isValidate() -> Bool {
+        if appId.isEmpty || host.isEmpty || userId.isEmpty || userName.isEmpty  {
+            return false
+        }
+        
+        return true
+    }
+    
     open override var description: String {
         return "AUICommonConfig: userId: \(userId) userName: \(userName)"
     }
