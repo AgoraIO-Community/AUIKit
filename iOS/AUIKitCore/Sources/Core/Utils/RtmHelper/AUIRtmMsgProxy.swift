@@ -54,6 +54,7 @@ import AgoraRtmKit
 
 /// RTM消息转发器
 open class AUIRtmMsgProxy: NSObject {
+    private var rtmChannelType: AgoraRtmChannelType!
     private var attributesDelegates:[String: NSHashTable<AUIRtmAttributesProxyDelegate>] = [:]
     private var attributesCacheAttr: [String: [String: String]] = [:]
     private var lockDelegates: [String: NSHashTable<AUIRtmLockProxyDelegate>] = [:]
@@ -61,6 +62,11 @@ open class AUIRtmMsgProxy: NSObject {
     private var messageDelegates:NSHashTable<AUIRtmMessageProxyDelegate> = NSHashTable<AUIRtmMessageProxyDelegate>.weakObjects()
     private var userDelegates: NSHashTable<AUIRtmUserProxyDelegate> = NSHashTable<AUIRtmUserProxyDelegate>.weakObjects()
     private var errorDelegates: NSHashTable<AUIRtmErrorProxyDelegate> = NSHashTable<AUIRtmErrorProxyDelegate>.weakObjects()
+    
+    required public init(rtmChannelType: AgoraRtmChannelType) {
+        super.init()
+        self.rtmChannelType = rtmChannelType
+    }
     
     func cleanCache(channelName: String) {
         attributesCacheAttr[channelName] = nil
@@ -82,7 +88,10 @@ open class AUIRtmMsgProxy: NSObject {
         guard let itemData = item?.data(using: .utf8), let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
             return
         }
-        delegate.onAttributesDidChanged(channelName: channelName, key: itemKey, value: itemValue)
+        //To ensure that the callback can be correctly received by using async dispatch of changes (such as direct callback but external incomplete forwarding processing)
+        DispatchQueue.main.async {
+            delegate.onAttributesDidChanged(channelName: channelName, key: itemKey, value: itemValue)
+        }
     }
     
     func unsubscribeAttributes(channelName: String, itemKey: String, delegate: AUIRtmAttributesProxyDelegate) {
@@ -141,7 +150,11 @@ open class AUIRtmMsgProxy: NSObject {
         guard let lockDetail = lockDetails?.first(where: { $0.lockName == lockName }) else {
             return
         }
-        delegate.onReceiveLockDetail(channelName: channelName, lockDetail: lockDetail)
+        
+        //To ensure that the callback can be correctly received by using async dispatch of changes (such as direct callback but external incomplete forwarding processing)
+        DispatchQueue.main.async {
+            delegate.onReceiveLockDetail(channelName: channelName, lockDetail: lockDetail)
+        }
     }
     
     func unsubscribeLock(channelName: String, lockName: String, delegate: AUIRtmLockProxyDelegate) {
@@ -163,7 +176,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         }
     }
     
-    public func rtmKit(_ kit: AgoraRtmClientKit, 
+    public func rtmKit(_ kit: AgoraRtmClientKit,
                        channel channelName: String,
                        connectionChangedToState state: AgoraRtmClientConnectionState,
                        reason: AgoraRtmClientConnectionChangeReason) {
@@ -171,8 +184,8 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         if errorDelegates.count <= 0 { return }
         for element in errorDelegates.allObjects {
             element.onConnectionStateChanged?(channelName: channelName,
-                                                                              connectionStateChanged: state,
-                                                                              result: reason)
+                                              connectionStateChanged: state,
+                                              result: reason)
         }
         
         if reason == .changedRejoinSuccess {
@@ -183,9 +196,9 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     }
     
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveStorageEvent event: AgoraRtmStorageEvent) {
-//        guard event.channelType == .stream else {
-//            return
-//        }
+        guard event.channelType == rtmChannelType else {
+            return
+        }
         
         aui_info("didReceiveStorageEvent event: [\(event.target)] channelType: [\(event.channelType.rawValue)] storageType: [\(event.eventType.rawValue)] =======", tag: "AUIRtmMsgProxy")
         //key使用channelType__eventType，保证message channel/stream channel, user storage event/channel storage event共存
@@ -223,9 +236,9 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
         aui_info("[\(event.channelName)] didReceivePresenceEvent event: [\(event.type.rawValue)] channel type: [\(event.channelType.rawValue)]] states: \(event.states.count) =======", tag: "AUIRtmMsgProxy")
         
-//        guard event.channelType == .stream else {
-//            return
-//        }
+        guard event.channelType == rtmChannelType else {
+            return
+        }
         
 //        var map: [[]]
         var map: [String: String] = [:]

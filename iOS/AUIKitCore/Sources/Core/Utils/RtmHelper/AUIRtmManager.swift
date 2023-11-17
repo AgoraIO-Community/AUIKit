@@ -9,14 +9,11 @@ import Foundation
 //import AgoraRtcKit
 import AgoraRtmKit
 
-let kChannelType = AgoraRtmChannelType.stream
-
-
 /// 对RTM相关操作的封装类
 open class AUIRtmManager: NSObject {
-    private var rtmChannelType: AgoraRtmChannelType = kChannelType
+    private var rtmChannelType: AgoraRtmChannelType!
     private var streamChannel: AgoraRtmStreamChannel?
-    private let proxy: AUIRtmMsgProxy = AUIRtmMsgProxy()
+    private lazy var proxy: AUIRtmMsgProxy = AUIRtmMsgProxy(rtmChannelType:rtmChannelType)
     
     private var rtmClient: AgoraRtmClientKit!
     private var rtmStreamChannelMap: [String: AgoraRtmStreamChannel] = [:]
@@ -31,7 +28,7 @@ open class AUIRtmManager: NSObject {
         self.rtmClient.removeDelegate(proxy)
     }
     
-    public init(rtmClient: AgoraRtmClientKit, rtmChannelType: AgoraRtmChannelType, isExternalLogin: Bool) {
+    public required init(rtmClient: AgoraRtmClientKit, rtmChannelType: AgoraRtmChannelType, isExternalLogin: Bool) {
         self.isExternalLogin = isExternalLogin
         self.isLogin = isExternalLogin
         self.rtmClient = rtmClient
