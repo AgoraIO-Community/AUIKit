@@ -44,5 +44,12 @@ open class AUIRoomConfig: NSObject {
     
     public var rtcChorusChannelName: String = ""  //rtc 合唱使用的频道
     public var rtcChorusRtcToken: String = ""  //rtc 合唱join使用
+    
+#if DEBUG
+    public var generateToken: ((String)->())?
+    public var generateTokenCompletion: ((NSError?)-> ())?
+#else
+    #error("remove it")
+#endif
 }
 
