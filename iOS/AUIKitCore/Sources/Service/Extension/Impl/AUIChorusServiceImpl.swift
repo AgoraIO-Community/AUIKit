@@ -217,7 +217,7 @@ extension AUIChorusServiceImpl {
         }
     }
     
-    public func onUserInfoClean(userId: String, completion: @escaping ((NSError?) -> ())){
+    public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())){
         var metaData = [String: String]()
         let filterList = chorusUserList.filter({ $0.userId != userId })
         if filterList.count != chorusUserList.count {
@@ -231,14 +231,8 @@ extension AUIChorusServiceImpl {
                                          completion: completion)
     }
     
-//    public func onSongDidRemove(channelName: String, songCode: String, metaData: NSMutableDictionary) -> NSError? {
-//        guard songCode == self.chorusUserList.first?.chorusSongNo else { return nil }
-//        metaData[kChorusKey] = NSArray().yy_modelToJSONString() ?? ""
-//        return nil
-//    }
-    
-    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
-        rtmManager.cleanBatchMetadata(channelName: channelName, 
+    public func deinitService(completion:  @escaping  ((NSError?) -> ())) {
+        rtmManager.cleanBatchMetadata(channelName: channelName,
                                       lockName: kRTM_Referee_LockName,
                                       removeKeys: [kChorusKey], 
                                       completion: completion)

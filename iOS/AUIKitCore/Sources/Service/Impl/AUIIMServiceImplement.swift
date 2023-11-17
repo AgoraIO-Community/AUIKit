@@ -310,7 +310,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
         return textMessage
     }
     
-    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
+    public func deinitService(completion: @escaping  ((NSError?) -> ())) {
         rtmManager.cleanBatchMetadata(channelName: channelName,
                                       lockName: kRTM_Referee_LockName,
                                       removeKeys: [kChatIdKey],

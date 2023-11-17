@@ -457,7 +457,7 @@ extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
         }
     }
 
-    public func onRoomWillInit(completion: @escaping ((NSError?) -> ())){
+    public func initService(completion: @escaping ((NSError?) -> ())){
         guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {
             completion(AUICommonError.unknown.toNSError())
             return
@@ -483,7 +483,7 @@ extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
                                     completion: completion)
     }
     
-    public func onUserInfoClean(userId: String, completion: @escaping ((NSError?) -> ())) {
+    public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
         let micSeatMetaData = rtmLeaveSeatMetaData(userId: userId)
         let str = micSeatMetaData.yy_modelToJSONString() ?? ""
         var metaData = [String: String]()
@@ -495,16 +495,7 @@ extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
                                     completion: completion)
     }
     
-//    public func onSongWillSelect(channelName: String, userId: String, metaData: NSMutableDictionary) -> NSError? {
-//        for (_, seat) in micSeats {
-//            if seat.user?.userId == userId {
-//                return nil
-//            }
-//        }
-//        return AUICommonError.noPermission.toNSError()
-//    }
-    
-    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
+    public func deinitService(completion:  @escaping  ((NSError?) -> ())) {
         rtmManager.cleanBatchMetadata(channelName: channelName,
                                       lockName: kRTM_Referee_LockName,
                                       removeKeys: [kSeatAttrKry],

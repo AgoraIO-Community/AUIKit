@@ -490,7 +490,7 @@ extension AUIMusicServiceImpl {
         song.pinAt = origPinAt
     }
     
-    public func onUserInfoClean(userId: String, completion: @escaping ((NSError?) -> ())) {
+    public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
         var metaData = [String: String]()
         let filterSongList = chooseSongList.filter({ $0.userId != userId })
         if filterSongList.count != chooseSongList.count {
@@ -505,7 +505,7 @@ extension AUIMusicServiceImpl {
                                          completion: completion)
     }
     
-    public func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ())) {
+    public func deinitService(completion:  @escaping  ((NSError?) -> ())) {
         rtmManager.cleanBatchMetadata(channelName: channelName,
                                       lockName: kRTM_Referee_LockName,
                                       removeKeys: [kChooseSongKey],

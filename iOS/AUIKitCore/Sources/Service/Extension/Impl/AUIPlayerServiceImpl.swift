@@ -172,8 +172,7 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
     public func sendStreamMsg(with dict: [String: Any]) {
         guard let data = compactDictionaryToData(dict) else {return}
-       let code = rtcKit.sendStreamMessage(streamId, data: data)
-        
+        let _ = rtcKit.sendStreamMessage(streamId, data: data)
     }
     
     private func compactDictionaryToData(_ dict: [String: Any]) -> Data? {

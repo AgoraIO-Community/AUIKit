@@ -11,25 +11,20 @@ import Foundation
     
     func getChannelName() -> String
     
-    /// The room is about to be created, and initial metadata needs to be set up
-    /// - Parameters:
-    ///   - metaData: meta data
-    /// - Returns: Error, if there is an error, it will interrupt the creation process
-    @objc optional func onRoomWillInit(completion:  @escaping  ((NSError?) -> ()))
+    /// init param if scene init
+    /// - Parameter completion: <#completion description#>
+    @objc optional func initService(completion:  @escaping  ((NSError?) -> ()))
+    
+    /// clean param if scene deinit
+    /// - Parameter completion: <#completion description#>
+    @objc optional func deinitService(completion:  @escaping  ((NSError?) -> ()))
     
     
-    /// <#Description#>
-    /// - Parameters:
-    ///   - metaData: <#metaData description#>
-    /// - Returns: <#description#>
-    @objc optional func onRoomWillDestroy(completion:  @escaping  ((NSError?) -> ()))
-    
-    /// Clean up information for specified users
+    /// clean user info
     /// - Parameters:
     ///   - userId: user id
-    ///   - metaData: meta data
-    /// - Returns: Error, if there is an error, it will interrupt the creation process
-    @objc optional func onUserInfoClean(userId: String, completion:  @escaping  ((NSError?) -> ()))
+    ///   - completion: completion
+    @objc optional func cleanUserInfo(userId: String, completion:  @escaping  ((NSError?) -> ()))
     
     /// 获取当前房间上下文
     /// - Returns: <#description#>
