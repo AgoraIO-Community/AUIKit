@@ -9,26 +9,19 @@ import Foundation
 
 @objcMembers
 open class AUICommonConfig: NSObject {
+    /// 声网AppId
     public var appId: String = ""
-    /// 网络请求域名
-    public var host: String = ""
-    
-    //用户信息
-    public var userId: String = ""
-    public var userName: String = ""
-    public var userAvatar: String = ""
-    
+    /// 域名(可选，如果没有用到后端服务可以不设置)
+    public var host: String = "" //(optional)
+    /// 用户信息
+    public var owner: AUIUserThumbnailInfo?
     
     public func isValidate() -> Bool {
-        if appId.isEmpty || host.isEmpty || userId.isEmpty || userName.isEmpty  {
+        if appId.isEmpty || owner?.isEmpty() ?? true  {
             return false
         }
         
         return true
-    }
-    
-    open override var description: String {
-        return "AUICommonConfig: userId: \(userId) userName: \(userName)"
     }
 }
 

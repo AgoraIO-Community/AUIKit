@@ -12,10 +12,10 @@ open class AUIRoomContext: NSObject {
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {
-            guard let config = commonConfig else {return}
-            currentUserInfo.userName = config.userName
-            currentUserInfo.userId = config.userId
-            currentUserInfo.userAvatar = config.userAvatar
+            guard let userInfo = commonConfig?.owner else {return}
+            currentUserInfo.userName = userInfo.userName
+            currentUserInfo.userId = userInfo.userId
+            currentUserInfo.userAvatar = userInfo.userAvatar
         }
     }
     

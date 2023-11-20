@@ -13,9 +13,9 @@ private let headImageWidth: CGFloat = 26
 @objc public protocol IAUIRoomMembersView: NSObjectProtocol {
     func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String)
     func appendMember(member: AUIUserCellUserDataProtocol)
-    func removeMember(member: AUIUserCellUserDataProtocol)
     func updateMember(member: AUIUserCellUserDataProtocol)
-    func updateSeatInfo(member: AUIUserCellUserDataProtocol,seatIndex: Int)
+    func removeMember(userId: String)
+    func updateSeatInfo(userId: String,seatIndex: Int)
 }
 
 //@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
@@ -39,9 +39,7 @@ public class AUIRoomMembersView: UIView {
             updateWithMemberImgs(imgs)
         }
     }
-    
-    public var seatMap: [String: Int] = [:]
-    
+        
     public var roomId: String?
     
     private lazy var moreButton: AUIButton = {
@@ -131,34 +129,11 @@ public class AUIRoomMembersView: UIView {
             countLabel.text = "\(imgs.count)"
         }
     }
-    
-//    public func requestData(roomId: String){
-////        guard let roomId = roomId else { return }
-//        userServiceDelegate?.getUserInfoList(roomId: roomId, userIdList: [], callback: { err, userList in
-//            if let userList = userList {
-//                self.members = userList
-//            }
-//        })
-//        /*
-//        for _ in 0...5 {
-//            let user = AUIUserInfo()
-//            user.userName = "user"
-//            user.userAvatar = "https://img1.baidu.com/it/u=413643897,2296924942&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1680627600&t=e945c37a601f9ee7ca3be932c73e605a"
-//            members.append(user)
-//        }
-//         */
-//    }
 }
 
 extension AUIRoomMembersView:IAUIRoomMembersView {
     
     public func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String) {
-        // TODO:
-//        members.forEach {
-//            if $0.userId == AUIRoomContext.shared.roomInfoMap[channelName]?.owner?.userId ?? "" {
-//                $0.isOwner = true
-//            }
-//        }
         self.members = members
     }
     
@@ -166,8 +141,8 @@ extension AUIRoomMembersView:IAUIRoomMembersView {
         members.append(member)
     }
     
-    public func removeMember(member: AUIUserCellUserDataProtocol) {
-        self.members.removeAll(where: {$0.userId == member.userId})
+    public func removeMember(userId: String) {
+        self.members.removeAll(where: {$0.userId == userId})
     }
     
     public func updateMember(member: AUIUserCellUserDataProtocol) {
@@ -178,15 +153,13 @@ extension AUIRoomMembersView:IAUIRoomMembersView {
         }
     }
     
-    public func updateSeatInfo(member: AUIUserCellUserDataProtocol, seatIndex: Int) {
-        seatMap[member.userId] = seatIndex
+    public func updateSeatInfo(userId: String, seatIndex: Int) {
         members.first(where: {
-            $0.userId == member.userId
+            $0.userId == userId
         })?.seatIndex = seatIndex
         let users = members.map {$0}
         self.members = users
     }
-    
     
     @objc public func clickMoreButtonAction() {
         self.onClickMoreButtonAction?(self.members)

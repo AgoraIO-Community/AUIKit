@@ -167,7 +167,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     /// - Parameters:
     ///   - user: AUIUserThumbnailInfo instance
     /// - Returns: error
-    public func configIM(user:AUIUserCellUserDataProtocol, completion: @escaping (NSError?) -> Void) {
+    public func configIM(user:AUIUserThumbnailInfo, completion: @escaping (NSError?) -> Void) {
         let userInfo = AUIUserThumbnailInfo()
         userInfo.userId = user.userId
         userInfo.userName = user.userName
