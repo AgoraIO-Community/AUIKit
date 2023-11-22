@@ -22,13 +22,13 @@ extension AUIRoomInfo {
     class func modelCustomPropertyMapper() -> NSDictionary {
         let superMap = NSMutableDictionary()
         let map = [
-            "thumbnail": "roomThumbnail",
-            "seatCount": "roomSeatCount",
-            "seatIndex": "seatNo",
-            "muteAudio": "isMuteAudio",
-            "muteVideo": "isMuteVideo",
-            "owner": "roomOwner",
-            "memberCount": "onlineUsers"
+            "roomName": "payload.roomName",
+            "thumbnail": "payload.roomThumbnail",
+            "seatCount": "payload.roomSeatCount",
+            "muteAudio": "payload.isMuteAudio",
+            "muteVideo": "payload.isMuteVideo",
+            "owner": "payload.roomOwner",
+            "memberCount": "payload.onlineUsers"
         ]
         superMap.addEntries(from: map)
         return superMap
@@ -36,7 +36,7 @@ extension AUIRoomInfo {
     
     class func modelContainerPropertyGenericClass() -> NSDictionary {
         return [
-            "roomOwner": AUIUserThumbnailInfo.self
+            "owner": AUIUserThumbnailInfo.self
         ]
     }
 }

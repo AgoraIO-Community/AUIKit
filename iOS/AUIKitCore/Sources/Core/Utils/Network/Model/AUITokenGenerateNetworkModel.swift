@@ -10,9 +10,11 @@ import Foundation
 public class AUITokenGenerateNetworkModel: AUINetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/token/generate"
+        interfaceName = "/v2/token/generate"
     }
     
+    public var appId: String? = AUIRoomContext.shared.commonConfig?.appId
+    public var appCert: String? = AUIRoomContext.shared.commonConfig?.appCert
     public var channelName: String?
     public var userId: String?
     
@@ -28,15 +30,6 @@ public class AUITokenGenerateNetworkModel: AUINetworkModel {
             throw AUICommonError.networkParseFail.toNSError()
         }
         
-        
         return result
     }
 }
-
-//public class AUITokenGenerate006NetworkModel: AUITokenGenerateNetworkModel {
-//    public override init() {
-//        super.init()
-//        interfaceName = "/v1/token006/generate"
-//    }
-//    
-//}
