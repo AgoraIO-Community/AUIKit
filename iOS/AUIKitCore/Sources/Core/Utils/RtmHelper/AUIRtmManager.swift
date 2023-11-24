@@ -16,7 +16,6 @@ open class AUIRtmManager: NSObject {
     private lazy var proxy: AUIRtmMsgProxy = AUIRtmMsgProxy(rtmChannelType:rtmChannelType)
     
     private var rtmClient: AgoraRtmClientKit!
-    private var rtmStreamChannelMap: [String: AgoraRtmStreamChannel] = [:]
     
     public private(set) var isLogin: Bool = false
     private var isExternalLogin: Bool!
@@ -61,15 +60,6 @@ open class AUIRtmManager: NSObject {
     public func renew(token: String) {
         aui_info("renew: \(token)", tag: "AUIRtmManager")
         rtmClient.renewToken(token)
-    }
-    
-    public func renewChannel(channelName: String, token: String) {
-        guard let streamChannel = rtmStreamChannelMap[channelName] else {
-            return
-        }
-        
-        aui_info("renewChannel: \(channelName) token: \(token)", tag: "AUIRtmManager")
-        streamChannel.renewToken(token)
     }
 }
 
@@ -187,74 +177,18 @@ extension AUIRtmManager {
     public func subscribe(channelName: String, completion:@escaping (Error?)->()) {
         let options = AgoraRtmSubscribeOptions()
         options.features = [.metadata, .presence, .lock, .message]
+        let date1 = Date()
         rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
+            aui_benchmark("rtm subscribe with message type", cost: -date1.timeIntervalSinceNow)
             aui_info("subscribe '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
         }
         aui_info("subscribe '\(channelName)'", tag: "AUIRtmManager")
     }
     
-    public func subscribe(channelName: String, rtcToken: String, completion:@escaping (Error?)->()) {
-        let group = DispatchGroup()
-        
-        var messageError: Error? = nil
-        var streamError: Error? = nil
-        
-        defer {
-            group.notify(queue: DispatchQueue.main) {
-                if streamError == nil, messageError == nil {
-                    completion(nil)
-                    return
-                }
-                
-                completion(messageError ?? streamError)
-            }
-        }
-        let date1 = Date()
-        //1.subscribe message
-        group.enter()
-        subscribe(channelName: channelName) { error in
-            aui_benchmark("rtm subscribe with message type", cost: -date1.timeIntervalSinceNow)
-            messageError = error
-            group.leave()
-        }
-        
-        //2. join channel to use presence
-        group.enter()
-        let joinOption = AgoraRtmJoinChannelOption()
-        joinOption.features = [.metadata, .presence, .lock]
-        joinOption.token = rtcToken
-        if rtmStreamChannelMap[channelName] == nil {
-            let streamChannel = try? rtmClient.createStreamChannel(channelName)
-            rtmStreamChannelMap[channelName] = streamChannel
-        }
-        guard let streamChannel = rtmStreamChannelMap[channelName] else {
-            assert(false, "streamChannel not found")
-            streamError = AUICommonError.rtmError(-1).toNSError()
-            group.leave()
-            return
-        }
-        
-        let date2 = Date()
-        streamChannel.join(joinOption) { resp, error in
-            aui_benchmark("rtm subscribe with presence type", cost: -date2.timeIntervalSinceNow)
-            aui_info("join '\(channelName)' finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
-//            completion(error.toNSError())
-            streamError = error?.toNSError()
-            group.leave()
-        }
-        aui_info("join '\(channelName)' rtcToken: \(rtcToken)", tag: "AUIRtmManager")
-    }
-    
     public func unSubscribe(channelName: String) {
         proxy.cleanCache(channelName: channelName)
         rtmClient.unsubscribe(channelName)
-        
-        guard let streamChannel = rtmStreamChannelMap[channelName] else {
-            return
-        }
-        streamChannel.leave()
-        rtmStreamChannelMap[channelName] = nil
     }
 }
 
