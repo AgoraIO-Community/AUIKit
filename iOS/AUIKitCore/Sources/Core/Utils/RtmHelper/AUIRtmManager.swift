@@ -174,7 +174,7 @@ extension AUIRtmManager {
         proxy.unsubscribeLock(channelName: channelName, lockName: lockName, delegate: delegate)
     }
     
-    public func subscribe(channelName: String, completion:@escaping (Error?)->()) {
+    public func subscribe(channelName: String, completion:@escaping (NSError?)->()) {
         let options = AgoraRtmSubscribeOptions()
         options.features = [.metadata, .presence, .lock, .message]
         let date1 = Date()
