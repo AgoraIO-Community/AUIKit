@@ -345,7 +345,9 @@ extension AUIRtmManager {
             assert(false, "getMetadata fail")
             return
         }
+        let date = Date()
         storage.getChannelMetadata(channelName: channelName, channelType: rtmChannelType, completion: { resp, error in
+            aui_benchmark("getChannelMetadata[\(channelName)]", cost: -date.timeIntervalSinceNow)
             aui_info("getMetadata[\(channelName)] finished: \(error?.errorCode.rawValue ?? 0) item count: \(resp?.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
             var map: [String: String] = [:]
             resp?.data?.getItems().forEach({ item in
