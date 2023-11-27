@@ -22,6 +22,29 @@ open class AUIRtmManager: NSObject {
     private var throttlerUpdateModel = AUIThrottlerUpdateMetaDataModel()
     private var throttlerRemoveModel = AUIThrottlerRemoveMetaDataModel()
     
+    private var receiptTimer: Timer?
+    private(set) var receiptCallbackMap: [String: AUIReceipt] = [:] {
+        didSet {
+            if receiptCallbackMap.count == 0 {
+                receiptTimer?.invalidate()
+                receiptTimer = nil
+                return
+            }
+            self.receiptTimer = Timer(timeInterval: 1, repeats: true, block: {[weak self] timer in
+                guard let self = self else {return}
+                for receipt in receiptCallbackMap.values {
+                    if receipt.startDate.timeIntervalSinceNow < -10 {
+                        self.receiptCallbackMap.removeValue(forKey: receipt.uniqueId)
+                        receipt.closure?(AUICommonError.noResponse.toNSError())
+                    }
+                }
+            })
+            
+            guard self.receiptTimer?.isValid ?? false else {return}
+            self.receiptTimer?.fire()
+        }
+    }
+    
     deinit {
         aui_info("deinit AUIRtmManager", tag: "AUIRtmManager")
         self.rtmClient.removeDelegate(proxy)
@@ -461,6 +484,28 @@ extension AUIRtmManager {
 
 //MARK: message
 extension AUIRtmManager {
+    public func markReceiptFinished(uniqueId: String) {
+        self.receiptCallbackMap[uniqueId] = nil
+    }
+    
+    public func publishAndWaitReceipt(channelName: String,
+                                      message: String,
+                                      uniqueId: String,
+                                      completion: ( (NSError?)->())?) {
+        let date = Date()
+        publish(channelName: channelName, message: message) {[weak self] err in
+            guard let self = self else {return}
+            if let err = err {
+                completion?(err)
+                return
+            }
+            self.receiptCallbackMap[uniqueId] = AUIReceipt(closure: { error in
+                aui_benchmark("publishAndWaitReceipt completion", cost: -date.timeIntervalSinceNow)
+                completion?(error)
+            }, uniqueId: uniqueId)
+        }
+    }
+    
     public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
         //uid和
         let options = AgoraRtmPublishOptions()

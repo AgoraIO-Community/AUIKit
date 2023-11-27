@@ -18,9 +18,7 @@ let kSeatAttrKry = "micSeat"
     private let rtmManager: AUIRtmManager!
     
     private var micSeats:[Int: AUIMicSeatInfo] = [:]
-    
-    private var callbackMap: [String: ((NSError?)-> ())] = [:]
-    
+        
     deinit {
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
@@ -115,14 +113,11 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         model.userName = getRoomContext().currentUserInfo.userName
         model.micSeatNo = seatIndex
         
-        let date = Date()
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = { err in
-            aui_benchmark("enterSeat to arbiter", cost: -date.timeIntervalSinceNow, tag: "AUIMicSeatServiceImpl")
-            callback(err)
-        }
+        rtmManager.publishAndWaitReceipt(channelName: channelName, 
+                                         message: message,
+                                         uniqueId: model.uniqueId, 
+                                         completion: callback)
     }
     
     public func leaveSeat(callback: @escaping (NSError?) -> ()) {
@@ -137,9 +132,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         model.userId = getRoomContext().currentUserInfo.userId
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = callback
+        rtmManager.publishAndWaitReceipt(channelName: channelName, 
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: callback)
     }
     
     public func pickSeat(seatIndex: Int, userId: String, callback: @escaping (NSError?) -> ()) {
@@ -157,9 +153,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         model.micSeatNo = seatIndex
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = callback
+        rtmManager.publishAndWaitReceipt(channelName: channelName, 
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: callback)
     }
     
     public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
@@ -175,9 +172,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message) { err in
-            }
-            callbackMap[model.uniqueId] = callback
+            rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                             message: message,
+                                             uniqueId: model.uniqueId,
+                                             completion: callback)
         }else {
             let model = AUISeatUnMuteAudioNetworkModel()
             model.roomId = channelName
@@ -185,9 +183,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
 
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message) { err in
-            }
-            callbackMap[model.uniqueId] = callback
+            rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                             message: message,
+                                             uniqueId: model.uniqueId,
+                                             completion: callback)
         }
     }
     
@@ -207,9 +206,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message) { err in
-            }
-            callbackMap[model.uniqueId] = callback
+            rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                             message: message,
+                                             uniqueId: model.uniqueId,
+                                             completion: callback)
         }else {
             let model = AUISeatUnLockNetworkModel()
             model.roomId = channelName
@@ -217,9 +217,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
             model.userId = getRoomContext().currentUserInfo.userId
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message) { err in
-            }
-            callbackMap[model.uniqueId] = callback
+            rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                             message: message,
+                                             uniqueId: model.uniqueId,
+                                             completion: callback)
         }
     }
     
@@ -412,8 +413,8 @@ extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
         }
         let uniqueId = map["uniqueId"] as? String ?? ""
         guard let interfaceName = map["interfaceName"] as? String else {
-            if let callback = callbackMap[uniqueId] {
-                callbackMap[uniqueId] = nil
+            if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
+                rtmManager.markReceiptFinished(uniqueId: uniqueId)
                 let code = map["code"] as? Int ?? 0
                 let reason = map["reason"] as? String ?? "success"
                 callback(code == 0 ? nil : NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : reason]))

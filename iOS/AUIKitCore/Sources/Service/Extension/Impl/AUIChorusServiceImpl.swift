@@ -18,9 +18,7 @@ let kChorusKey = "chorus"
     private var channelName: String!
     private var chorusUserList: [AUIChoristerModel] = []
     private var rtmManager: AUIRtmManager!
-    
-    private var callbackMap: [String: ((NSError?)-> ())] = [:]
-    
+        
     deinit {
         aui_info("deinit AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
@@ -40,7 +38,6 @@ let kChorusKey = "chorus"
 }
 
 extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
-    
     public func getRoomContext() -> AUIRoomContext {
         return AUIRoomContext.shared
     }
@@ -70,9 +67,10 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         model.roomId = channelName
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = completion
+        rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: completion)
     }
     
     public func leaveChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
@@ -88,15 +86,15 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         model.roomId = channelName
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = completion
+        rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: completion)
     }
     
     public func getChannelName() -> String {
         return channelName
     }
-
 }
 
 //MARK: AUIRtmMsgProxyDelegate
@@ -143,8 +141,8 @@ extension AUIChorusServiceImpl: AUIRtmMessageProxyDelegate {
         }
         let uniqueId = map["uniqueId"] as? String ?? ""
         guard let interfaceName = map["interfaceName"] as? String else {
-            if let callback = callbackMap[uniqueId] {
-                callbackMap[uniqueId] = nil
+            if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
+                rtmManager.markReceiptFinished(uniqueId: uniqueId)
                 let code = map["code"] as? Int ?? 0
                 let reason = map["reason"] as? String ?? "success"
                 callback(code == 0 ? nil : NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : reason]))

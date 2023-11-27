@@ -42,9 +42,7 @@ open class AUIMusicServiceImpl: NSObject {
     private var rtmManager: AUIRtmManager!
     private var channelName: String!
     private var ktvApi: KTVApiDelegate!
-    
-    private var callbackMap: [String: ((NSError?)-> ())] = [:]
-    
+        
     deinit {
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
@@ -218,9 +216,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         model.owner = owner
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = completion
+        rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: completion)
     }
     
     public func removeSong(songCode: String, completion: AUICallback?) {
@@ -240,9 +239,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         model.roomId = channelName
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = completion
+        rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: completion)
     }
     
     public func pinSong(songCode: String, completion: AUICallback?) {
@@ -261,9 +261,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         model.roomId = channelName
         
         let message = model.rtmMessage()
-        rtmManager.publish(channelName: channelName, message: message) { err in
-        }
-        callbackMap[model.uniqueId] = completion
+        rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                         message: message,
+                                         uniqueId: model.uniqueId,
+                                         completion: completion)
     }
     
     public func updatePlayStatus(songCode: String, playStatus: AUIPlayStatus, completion: AUICallback?) {
@@ -284,9 +285,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             model.roomId = channelName
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message) { err in
-            }
-            callbackMap[model.uniqueId] = completion
+            rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                             message: message,
+                                             uniqueId: model.uniqueId,
+                                             completion: completion)
         } else {
             let model = AUISongStopNetworkModel()
             model.userId = updateUserId
@@ -294,9 +296,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             model.roomId = channelName
             
             let message = model.rtmMessage()
-            rtmManager.publish(channelName: channelName, message: message) { err in
-            }
-            callbackMap[model.uniqueId] = completion
+            rtmManager.publishAndWaitReceipt(channelName: channelName,
+                                             message: message,
+                                             uniqueId: model.uniqueId,
+                                             completion: completion)
         }
     }
 }
@@ -313,8 +316,8 @@ extension AUIMusicServiceImpl: AUIRtmMessageProxyDelegate {
         }
         let uniqueId = map["uniqueId"] as? String ?? ""
         guard let interfaceName = map["interfaceName"] as? String else {
-            if let callback = callbackMap[uniqueId] {
-                callbackMap[uniqueId] = nil
+            if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
+                rtmManager.markReceiptFinished(uniqueId: uniqueId)
                 let code = map["code"] as? Int ?? 0
                 let reason = map["reason"] as? String ?? "success"
                 callback(code == 0 ? nil : NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : reason]))

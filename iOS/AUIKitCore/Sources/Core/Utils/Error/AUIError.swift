@@ -24,44 +24,50 @@ public enum AUICommonError {
     case choristerNotExist
     case noPermission
     case chooseSongIsFail
+    case noResponse
     
     public func toNSError() -> NSError {
+        func createError(code: Int = -1, msg: String) -> NSError {
+            return NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : msg])
+        }
         switch self {
         case .httpError(let error, let msg):
             if error == 10001 {
-                return NSError(domain: "AUIKit Error", code: Int(error), userInfo: [ NSLocalizedDescriptionKey : "the room has been destroyed"])
+                return createError(code: Int(error), msg: "the room has been destroyed")
             }
-            return NSError(domain: "AUIKit Error", code: Int(error), userInfo: [ NSLocalizedDescriptionKey : msg])
+            return createError(code: Int(error), msg: msg)
         case .rtcError(let error):
-            return NSError(domain: "AUIKit Error", code: Int(error), userInfo: [ NSLocalizedDescriptionKey : "rtc operation fail: \(error)"])
+            return createError(code: Int(error), msg: "rtc operation fail: \(error)")
         case .rtmError(let error):
-            return NSError(domain: "AUIKit Error", code: Int(error), userInfo: [ NSLocalizedDescriptionKey : "rtm error: \(error)"])
+            return createError(code: Int(error), msg: "rtm error: \(error)")
         case .rtmNotPresence:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "rtm fail: not presence"])
+            return createError(msg: "rtm fail: not presence")
         case .networkParseFail:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "http parse fail"])
+            return createError(msg: "http parse fail")
         case .missmatchRoomConfig:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "room config missmatch"])
+            return createError(msg: "room config missmatch")
         case .micSeatNotIdle:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "mic seat not idle"])
+            return createError(msg: "mic seat not idle")
         case .micSeatAlreadyEnter:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user already enter seat"])
+            return createError(msg: "user already enter seat")
         case .userNoEnterSeat:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "user not enter seat"])
+            return createError(msg: "user not enter seat")
         case .chooseSongAlreadyExist:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "already choose song"])
+            return createError(msg: "already choose song")
         case .chooseSongNotExist:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "song not exist"])
+            return createError(msg: "song not exist")
         case .choristerAlreadyExist:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "chorister already exist"])
+            return createError(msg: "chorister already exist")
         case .choristerNotExist:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "chorister not exist"])
+            return createError(msg: "chorister not exist")
         case .noPermission:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "no permission"])
+            return createError(msg: "no permission")
         case .chooseSongIsFail:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "choost song model fail"])
+            return createError(msg: "choost song model fail")
+        case .noResponse:
+            return createError(msg: "no response")
         default:
-            return NSError(domain: "AUIKit Error", code: -1, userInfo: [ NSLocalizedDescriptionKey : "unknown error"])
+            return createError(msg: "unknown error")
         }
     }
 }
