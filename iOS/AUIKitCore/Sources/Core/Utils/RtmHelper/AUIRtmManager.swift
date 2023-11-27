@@ -217,10 +217,6 @@ extension AUIRtmManager {
 
 //MARK: Channel Metadata
 extension AUIRtmManager {
-    
-    public func cleanBatchMetadata(channelName: String, removeKeys: [String], lockName: String, completion: @escaping (NSError?)->()) {
-        
-    }
     public func cleanBatchMetadata(channelName: String,
                                    lockName: String,
                                    removeKeys: [String],
