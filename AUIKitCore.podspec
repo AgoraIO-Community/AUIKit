@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.5.3'
+  s.version          = '0.5.4'
   s.summary          = 'A short description of AUIKit.'
   
   # This description is used to generate tags and improve search results.
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
     ss.dependency 'YYModel'
     ss.dependency 'SwiftyBeaver', '~>1.9.5'
     ss.dependency 'SwiftTheme'
-    ss.dependency 'SDWebImage', '~> 4.4.8'
+    ss.dependency 'SDWebImage', '~> 5.0.0'
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore'
@@ -98,7 +98,7 @@ Pod::Spec.new do |s|
     ss.dependency 'YYModel'
     ss.dependency 'SwiftyBeaver', '~>1.9.5'
     ss.dependency 'SwiftTheme'
-    ss.dependency 'SDWebImage', '~> 4.4.8'
+    ss.dependency 'SDWebImage', '~> 5.0.0'
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore'

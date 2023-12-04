@@ -3,10 +3,10 @@ PODS:
   - AgoraLyricsScore (1.1.2)
   - AgoraRtcEngine_Special_iOS (4.1.1.247)
   - AgoraRtm_iOS (2.1.4)
-  - Alamofire (5.8.0)
-  - AUIKitCore (0.5.2):
-    - AUIKitCore/All (= 0.5.2)
-  - AUIKitCore/All (0.5.2):
+  - Alamofire (5.8.1)
+  - AUIKitCore (0.5.4):
+    - AUIKitCore/All (= 0.5.4)
+  - AUIKitCore/All (0.5.4):
     - Agora_Chat_iOS
     - AgoraLyricsScore
     - AgoraRtcEngine_Special_iOS (~> 4.1.1.1)
@@ -14,17 +14,17 @@ PODS:
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
-    - SDWebImage (~> 4.4.8)
+    - SDWebImage (~> 5.0.0)
     - SwiftTheme
     - SwiftyBeaver (~> 1.9.5)
     - YYModel
     - Zip
-  - libpag (4.3.21)
-  - MJRefresh (3.7.5)
+  - libpag (4.3.33)
+  - MJRefresh (3.7.6)
   - ScoreEffectUI (1.0.2)
-  - SDWebImage (4.4.8):
-    - SDWebImage/Core (= 4.4.8)
-  - SDWebImage/Core (4.4.8)
+  - SDWebImage (5.0.6):
+    - SDWebImage/Core (= 5.0.6)
+  - SDWebImage/Core (5.0.6)
   - SwiftTheme (0.6.4)
   - SwiftyBeaver (1.9.5)
   - YYModel (1.0.4)
@@ -34,7 +34,6 @@ DEPENDENCIES:
   - AgoraLyricsScore (= 1.1.2)
   - AUIKitCore (from `../../`)
   - libpag
-  - SDWebImage (= 4.4.8)
 
 SPEC REPOS:
   trunk:
@@ -61,17 +60,17 @@ SPEC CHECKSUMS:
   AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
   AgoraRtcEngine_Special_iOS: 1da915f9ea50947b0c01f3a7f9674df4e3c90820
   AgoraRtm_iOS: 11b767ee81a7202dcf09e045cd2d359b5abbc965
-  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
-  AUIKitCore: 388fb75a4cd26af9c46dac9b651457dd69e906a7
-  libpag: 8a5c6b406458d85db48b05145d5dba9c406f2097
-  MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
+  Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  AUIKitCore: 2b733d274d370ce1535093d1585d5ac5e63b4209
+  libpag: 1283c103338f3185a8efa1dd904bc18054a62c24
+  MJRefresh: 2fe7fb43a5167ceda20bb7e63f130c04fd1814a5
   ScoreEffectUI: bf1195b4d41a73d43c236450b5d7f958989844aa
-  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
+  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 050e6a717f7f3de6deae5ad8e18251326e3ded65
+PODFILE CHECKSUM: 88ed866c67b73bca5c415b209b8d487276b3ef5a
 
 COCOAPODS: 1.12.1

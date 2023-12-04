@@ -107,11 +107,11 @@ extension TestServiceViewController {
     }
     
     func getRoomList() {
-        self.roomManager?.getRoomInfoList(lastCreateTime: nil, pageSize: 10, callback: { err, lists in
+        self.roomManager?.getRoomInfoList(lastCreateTime: 0, pageSize: 10, callback: { err, lists in
             if let lists = lists {
                 self.roomList.append(contentsOf: lists)
             }
-            aui_info("roomlist == \(lists?.debugDescription), err = \(err)", tag: "TestServiceViewController")
+            aui_info("roomlist == \(lists?.debugDescription ?? ""), err = \(err?.localizedDescription ?? "success")", tag: "TestServiceViewController")
         })
     }
 
@@ -123,7 +123,7 @@ extension TestServiceViewController {
         room.micSeatCount = 8
     
         self.roomManager?.createRoom(room: room, callback: { error, info in
-            aui_info("createRoom error == \(error), info = \(info)")
+            aui_info("createRoom error == \(error?.localizedDescription ?? "success"), info = \(info)")
         })
     }
     
@@ -135,7 +135,7 @@ extension TestServiceViewController {
             self.giftImpl?.bindRespDelegate(delegate: self)
             
             self.roomManager?.enterRoom(roomId: roomInfo.roomId, callback: { err in
-                aui_info("enterRoom err == \(err)")
+                aui_info("enterRoom err == \(err?.localizedDescription ?? "success")")
                 
                 
                 self.userManager = AUIUserServiceImpl(channelName: roomInfo.roomId, rtmManager: self.roomManager!.rtmManager, roomManager: self.roomManager!)
