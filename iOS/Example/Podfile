@@ -3,13 +3,8 @@ use_frameworks!
 platform :ios, '13.0'
 
 target 'AUIKit_Example' do
-#  pod 'AUIKitCore','0.5.0'
 pod 'AUIKitCore', :path => '../../'
 #pod 'AUIKitCore/UI', :path => '../../'
-#  pod 'AgoraUIKit_Test/widgets', :path => '../'
-#  pod 'AgoraRtcEngine_iOS', :path => './libs'
-#  pod 'LookinServer'
-  pod 'SDWebImage', '4.4.8'
   pod 'AgoraLyricsScore', '1.1.2'
   pod 'libpag'
   post_install do |installer|
