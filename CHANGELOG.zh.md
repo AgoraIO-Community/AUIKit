@@ -1,6 +1,9 @@
 
 [English](CHANGELOG.md) | 中文
 
+## [0.5.4](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.4)
+- [iOS]Upgrade SDWebImage to 5.x.
+
 ## [0.5.3](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.3)
 - [iOS]适配Objective-C
 
