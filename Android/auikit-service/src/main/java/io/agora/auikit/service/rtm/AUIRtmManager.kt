@@ -231,6 +231,7 @@ class AUIRtmManager(
                 })
                 rtmStreamChannelMap.remove(channelName)
             }
+            else -> {}
         }
     }
 
