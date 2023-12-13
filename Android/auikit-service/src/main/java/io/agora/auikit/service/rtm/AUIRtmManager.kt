@@ -6,20 +6,19 @@ import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
-import io.agora.rtm2.ErrorInfo
-import io.agora.rtm2.JoinChannelOptions
-import io.agora.rtm2.MetadataItem
-import io.agora.rtm2.MetadataOptions
-import io.agora.rtm2.PresenceOptions
-import io.agora.rtm2.ResultCallback
-import io.agora.rtm2.RtmClient
-import io.agora.rtm2.RtmConstants.RtmChannelType
-import io.agora.rtm2.RtmConstants.RtmErrorCode
-import io.agora.rtm2.RtmEventListener
-import io.agora.rtm2.StateItem
-import io.agora.rtm2.StreamChannel
-import io.agora.rtm2.SubscribeOptions
-import io.agora.rtm2.WhoNowResult
+import io.agora.rtm.ErrorInfo
+import io.agora.rtm.JoinChannelOptions
+import io.agora.rtm.MetadataItem
+import io.agora.rtm.MetadataOptions
+import io.agora.rtm.PresenceOptions
+import io.agora.rtm.ResultCallback
+import io.agora.rtm.RtmClient
+import io.agora.rtm.RtmConstants.RtmChannelType
+import io.agora.rtm.RtmConstants.RtmErrorCode
+import io.agora.rtm.StateItem
+import io.agora.rtm.StreamChannel
+import io.agora.rtm.SubscribeOptions
+import io.agora.rtm.WhoNowResult
 import org.json.JSONObject
 
 class AUIRtmManager(
@@ -34,16 +33,7 @@ class AUIRtmManager(
     private var isLogin = false
 
     init {
-        hookRtmEventListener()
-    }
-
-    private fun hookRtmEventListener() {
-        val rtmClientClazz = rtmClient.javaClass
-        val rtmEventListenerField = rtmClientClazz.getDeclaredField("mRtmEventListener")
-        rtmEventListenerField.isAccessible = true
-        val rtmEventListener = rtmEventListenerField.get(rtmClient) as RtmEventListener
-        proxy.originEventListeners = rtmEventListener
-        rtmEventListenerField.set(rtmClient, proxy)
+        rtmClient.addEventListener(proxy)
     }
 
     // Channel Metadata
@@ -341,8 +331,8 @@ class AUIRtmManager(
         completion: (AUIRtmException?, Map<String, String>?) -> Unit
     ) {
         val storage = rtmClient.storage
-        storage.getChannelMetadata(channelName, kChannelType, object : ResultCallback<io.agora.rtm2.Metadata> {
-            override fun onSuccess(responseInfo: io.agora.rtm2.Metadata?) {
+        storage.getChannelMetadata(channelName, kChannelType, object : ResultCallback<io.agora.rtm.Metadata> {
+            override fun onSuccess(responseInfo: io.agora.rtm.Metadata?) {
                 responseInfo ?: return
                 val map = mutableMapOf<String, String>()
                 responseInfo.metadataItems.forEach { item ->
@@ -532,8 +522,8 @@ class AUIRtmManager(
 
     fun getUserMetadata(userId: String){
         val storage = rtmClient.storage
-        storage.getUserMetadata(userId, object : ResultCallback<io.agora.rtm2.Metadata>{
-            override fun onSuccess(responseInfo: io.agora.rtm2.Metadata?) {
+        storage.getUserMetadata(userId, object : ResultCallback<io.agora.rtm.Metadata>{
+            override fun onSuccess(responseInfo: io.agora.rtm.Metadata?) {
 
             }
 

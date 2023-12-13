@@ -1,13 +1,13 @@
 package io.agora.auikit.service.rtm
 
 import android.util.Log
-import io.agora.rtm2.LockEvent
-import io.agora.rtm2.MessageEvent
-import io.agora.rtm2.PresenceEvent
-import io.agora.rtm2.RtmConstants
-import io.agora.rtm2.RtmEventListener
-import io.agora.rtm2.StorageEvent
-import io.agora.rtm2.TopicEvent
+import io.agora.rtm.LockEvent
+import io.agora.rtm.MessageEvent
+import io.agora.rtm.PresenceEvent
+import io.agora.rtm.RtmConstants
+import io.agora.rtm.RtmEventListener
+import io.agora.rtm.StorageEvent
+import io.agora.rtm.TopicEvent
 import org.json.JSONObject
 
 interface AUIRtmErrorRespObserver {
@@ -118,26 +118,26 @@ class AUIRtmMsgProxy : RtmEventListener {
 
     override fun onPresenceEvent(event: PresenceEvent?) {
         originEventListeners?.onPresenceEvent(event)
-        Log.d("rtm_presence_event", "onPresenceEvent Type: ${event?.type} Publisher: ${event?.publisher}")
+        Log.d("rtm_presence_event", "onPresenceEvent Type: ${event?.eventType} Publisher: ${event?.publisherId}")
         event ?: return
         val map = mutableMapOf<String, String>()
         event.stateItems.forEach {item ->
             map[item.key] = item.value
         }
         Log.d("rtm_presence_event", "onPresenceEvent Map: $map")
-        when(event.type){
+        when(event.eventType){
             RtmConstants.RtmPresenceEventType.REMOTE_JOIN ->
                 userRespObservers.forEach { handler ->
-                    handler.onUserDidJoined(event.channelName, event.publisher ?: "", map)
+                    handler.onUserDidJoined(event.channelName, event.publisherId ?: "", map)
                 }
             RtmConstants.RtmPresenceEventType.REMOTE_LEAVE,
             RtmConstants.RtmPresenceEventType.REMOTE_TIMEOUT ->
                 userRespObservers.forEach { handler ->
-                    handler.onUserDidLeaved(event.channelName, event.publisher ?: "", map)
+                    handler.onUserDidLeaved(event.channelName, event.publisherId ?: "", map)
                 }
             RtmConstants.RtmPresenceEventType.REMOTE_STATE_CHANGED ->
                 userRespObservers.forEach { handler ->
-                    handler.onUserDidUpdated(event.channelName, event.publisher ?: "", map)
+                    handler.onUserDidUpdated(event.channelName, event.publisherId ?: "", map)
                 }
             RtmConstants.RtmPresenceEventType.SNAPSHOT -> {
                 val userList = arrayListOf<Map<String, String>>()
@@ -158,7 +158,7 @@ class AUIRtmMsgProxy : RtmEventListener {
                 }
                 Log.d("rtm_presence_event", "onPresenceEvent SNAPSHOT: $userList")
                 userRespObservers.forEach { handler ->
-                    handler.onUserSnapshotRecv(event.channelName, event.publisher ?: "", userList)
+                    handler.onUserSnapshotRecv(event.channelName, event.publisherId ?: "", userList)
                 }
             }
             else -> {
@@ -198,11 +198,12 @@ class AUIRtmMsgProxy : RtmEventListener {
     }
 
 
-    override fun onConnectionStateChange(
+    override fun onConnectionStateChanged(
         channelName: String?,
         state: RtmConstants.RtmConnectionState?,
         reason: RtmConstants.RtmConnectionChangeReason?
     ) {
+        super.onConnectionStateChanged(channelName, state, reason)
         Log.d("rtm_event", "rtm -- connect state change: $state, reason: $reason")
 
         errorRespObservers.forEach {

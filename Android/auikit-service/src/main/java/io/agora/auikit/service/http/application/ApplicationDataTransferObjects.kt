@@ -11,6 +11,8 @@ data class ApplicationPayload(
     val seatNo: Int
 )
 data class TokenGenerateReq(
+    val appId: String,
+    val appCert: String,
     val channelName: String,
     val userId: String
 )

@@ -31,10 +31,11 @@ import io.agora.auikit.utils.AgoraEngineCreator
 import io.agora.auikit.utils.MapperUtils
 import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.ThreadManager
-import io.agora.rtm2.RtmClient
-import io.agora.rtm2.RtmConstants
+import io.agora.rtm.RtmClient
+import io.agora.rtm.RtmConstants
 import retrofit2.Call
 import retrofit2.Response
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val kRoomAttrKey = "room"
@@ -49,7 +50,7 @@ class AUIRoomManagerImplRespResp(
     val rtmManager by lazy {
         val rtm = rtmClient ?: AgoraEngineCreator.createRtmClient(
             commonConfig.context,
-            AUIRoomContext.shared().appId,
+            AUIRoomContext.shared().commonConfig.appId,
             commonConfig.userId
         )
         AUIRtmManager(commonConfig.context, rtm)
@@ -77,13 +78,19 @@ class AUIRoomManagerImplRespResp(
         createRoomInfo: AUICreateRoomInfo,
         callback: AUICreateRoomCallback?
     ) {
+        val roomId = UUID.randomUUID().toString()
         HttpManager.getService(RoomInterface::class.java)
-            .createRoom(CreateRoomReq(createRoomInfo.roomName,
-                roomContext.currentUserInfo.userId,
-                roomContext.currentUserInfo.userName,
-                roomContext.currentUserInfo.userAvatar,
-                createRoomInfo.micSeatCount,
-                createRoomInfo.micSeatStyle
+            .createRoom(CreateRoomReq(
+                roomId,
+                AUIRoomInfo().apply {
+                    roomName = createRoomInfo.roomName
+                    memberCount = 1
+                    owner = AUIRoomContext.shared().currentUserInfo
+                    thumbnail = createRoomInfo.thumbnail
+                    micSeatCount = createRoomInfo.micSeatCount
+                    micSeatStyle = createRoomInfo.micSeatStyle
+                    password = createRoomInfo.password
+                }
             ))
             .enqueue(object : retrofit2.Callback<CommonResp<CreateRoomResp>> {
                 override fun onResponse(call: Call<CommonResp<CreateRoomResp>>, response: Response<CommonResp<CreateRoomResp>>) {
@@ -92,7 +99,7 @@ class AUIRoomManagerImplRespResp(
                         val info = AUIRoomInfo().apply {
                             this.roomId = rsp.roomId
                             this.roomName = rsp.roomName
-                            this.roomOwner = roomContext.currentUserInfo
+                            this.owner = roomContext.currentUserInfo
                             this.micSeatCount = createRoomInfo.micSeatCount
                             this.micSeatStyle = createRoomInfo.micSeatStyle
                         }
@@ -231,7 +238,7 @@ class AUIRoomManagerImplRespResp(
             .fetchRoomList(RoomListReq(pageSize, lastCreateTime))
             .enqueue(object : retrofit2.Callback<CommonResp<RoomListResp>> {
                 override fun onResponse(call: Call<CommonResp<RoomListResp>>, response: Response<CommonResp<RoomListResp>>) {
-                    val roomList = response.body()?.data?.list
+                    val roomList = response.body()?.data?.getRoomList()
                     if (roomList != null) {
                         roomContext.resetRoomMap(roomList)
                         callback?.onResult(null, roomList)

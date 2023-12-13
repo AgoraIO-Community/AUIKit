@@ -23,7 +23,6 @@ public class AUIRoomContext {
         return instance;
     }
 
-    public String appId = "";
     public Map<String, AUIRoomConfig> roomConfigMap = new HashMap<>();
 
     public @NonNull AUIUserThumbnailInfo currentUserInfo = new AUIUserThumbnailInfo();
@@ -43,10 +42,10 @@ public class AUIRoomContext {
 
     public boolean isRoomOwner(String channelName){
         AUIRoomInfo roomInfo = roomInfoMap.get(channelName);
-        if(roomInfo == null || roomInfo.roomOwner == null){
+        if(roomInfo == null || roomInfo.owner == null){
             return false;
         }
-        return roomInfo.roomOwner.userId.equals(currentUserInfo.userId);
+        return roomInfo.owner.userId.equals(currentUserInfo.userId);
     }
 
     public void resetRoomMap(@Nullable List<AUIRoomInfo> roomInfoList) {
@@ -69,10 +68,10 @@ public class AUIRoomContext {
 
     public String getRoomOwner(String channelName){
         AUIRoomInfo roomInfo = roomInfoMap.get(channelName);
-        if(roomInfo == null || roomInfo.roomOwner == null){
+        if(roomInfo == null || roomInfo.owner == null){
             return "";
         }
-        return roomInfo.roomOwner.userId;
+        return roomInfo.owner.userId;
     }
 
     public @Nullable AUIRoomInfo getRoomInfo(String channelName) {
