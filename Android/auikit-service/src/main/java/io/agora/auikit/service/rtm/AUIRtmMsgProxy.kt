@@ -1,6 +1,7 @@
 package io.agora.auikit.service.rtm
 
 import android.util.Log
+import io.agora.rtm.LockDetail
 import io.agora.rtm.LockEvent
 import io.agora.rtm.MessageEvent
 import io.agora.rtm.PresenceEvent
@@ -37,6 +38,11 @@ interface AUIRtmUserRespObserver {
     fun onUserDidUpdated(channelName: String, userId: String, userInfo: Map<String, Any>)
 }
 
+interface AUIRtmLockRespObserver {
+    fun onReceiveLock(channelName: String, lockName: String, lockOwner: String)
+    fun onReleaseLock(channelName: String, lockName: String, lockOwner: String)
+}
+
 class AUIRtmMsgProxy : RtmEventListener {
 
     var originEventListeners: RtmEventListener? = null
@@ -44,6 +50,8 @@ class AUIRtmMsgProxy : RtmEventListener {
     private val msgCacheAttr: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
     private val userRespObservers: MutableList<AUIRtmUserRespObserver> = mutableListOf()
     private val errorRespObservers: MutableList<AUIRtmErrorRespObserver> = mutableListOf()
+    private val lockRespObservers: MutableList<AUIRtmLockRespObserver> = mutableListOf()
+    private val lockDetailCaches = mutableMapOf<String, MutableList<LockDetail>>()
     var skipMetaEmpty = 0
 
     fun cleanCache(channelName: String) {
@@ -84,6 +92,26 @@ class AUIRtmMsgProxy : RtmEventListener {
     fun unRegisterErrorRespObserver(observer: AUIRtmErrorRespObserver) {
         errorRespObservers.remove(observer)
     }
+
+    fun registerLockRespObserver(
+        channelName: String,
+        lockName: String,
+        observer: AUIRtmLockRespObserver
+    ) {
+        if (lockRespObservers.contains(observer)) {
+            return
+        }
+        lockRespObservers.add(observer)
+        lockDetailCaches[channelName]?.find { it.lockName == lockName }?.let {
+            observer.onReceiveLock(channelName, it.lockName, it.lockOwner)
+        }
+    }
+
+    fun unRegisterLockRespObserver(observer: AUIRtmLockRespObserver) {
+        lockRespObservers.remove(observer)
+    }
+
+
 
     override fun onStorageEvent(event: StorageEvent?) {
         Log.d("rtm_event", "onStorageEvent update: ${event?.target}")
@@ -194,9 +222,40 @@ class AUIRtmMsgProxy : RtmEventListener {
     }
 
     override fun onLockEvent(event: LockEvent?) {
+        Log.d("rtm_lock_event", "onLockEvent event: $event")
         originEventListeners?.onLockEvent(event)
-    }
+        event?: return
+        val addLockDetails = mutableListOf<LockDetail>()
+        val removeLockDetails = mutableListOf<LockDetail>()
+        when(event.eventType){
+            RtmConstants.RtmLockEventType.SNAPSHOT, RtmConstants.RtmLockEventType.ACQUIRED -> {
+                val snapshotList = lockDetailCaches[event.channelName] ?: mutableListOf()
+                snapshotList.addAll(event.lockDetailList)
+                lockDetailCaches[event.channelName] = snapshotList
+                addLockDetails.addAll(event.lockDetailList)
+            }
+            RtmConstants.RtmLockEventType.EXPIRED, RtmConstants.RtmLockEventType.REMOVED, RtmConstants.RtmLockEventType.RELEASED -> {
+                lockDetailCaches[event.channelName]?.let { snapshotList ->
+                    event.lockDetailList.forEach { lockDetail ->
+                        snapshotList.removeIf { it.lockName == lockDetail.lockName && it.lockOwner == lockDetail.lockOwner }
+                    }
+                }
+                removeLockDetails.addAll(event.lockDetailList)
+            }
+            else -> {}
+        }
 
+        addLockDetails.forEach { lockDetail ->
+            lockRespObservers.forEach { observer ->
+                observer.onReceiveLock(event.channelName, lockDetail.lockName, lockDetail.lockOwner)
+            }
+        }
+        removeLockDetails.forEach { lockDetail ->
+            lockRespObservers.forEach { observer ->
+                observer.onReleaseLock(event.channelName, lockDetail.lockName, lockDetail.lockOwner)
+            }
+        }
+    }
 
     override fun onConnectionStateChanged(
         channelName: String?,

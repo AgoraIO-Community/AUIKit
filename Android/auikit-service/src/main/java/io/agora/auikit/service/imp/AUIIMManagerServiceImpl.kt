@@ -42,8 +42,6 @@ class AUIIMManagerServiceImpl constructor(
     init {
         rtmManager.subscribeMsg(channelName, chatRoomIdKey, this)
 
-
-
         if (roomContext.isRoomOwner(channelName)) {
             initChatRoom()
         }
@@ -57,7 +55,7 @@ class AUIIMManagerServiceImpl constructor(
             }
 
             AgoraEngineCreator.createChatClient(
-                roomContext.commonConfig.context,
+                roomContext.requireCommonConfig().context,
                 chatManager.getAppKey()
             )
             chatManager.initManager()

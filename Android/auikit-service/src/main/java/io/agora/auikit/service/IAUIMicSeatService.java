@@ -3,6 +3,8 @@ package io.agora.auikit.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import io.agora.auikit.model.AUIMicSeatInfo;
@@ -95,6 +97,8 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
      * @param index 麦位号
      */
     void onClickInvited(int index);
+
+    int getMicSeatIndex(@NotNull String userId);
 
     interface AUIMicSeatRespObserver {
 

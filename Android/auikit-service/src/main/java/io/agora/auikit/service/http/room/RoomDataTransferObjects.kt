@@ -11,8 +11,7 @@ data class CreateRoomResp(
     val roomName: String
 )
 data class RoomUserReq(
-    val roomId: String,
-    val userId: String
+    val roomId: String
 )
 data class DestroyRoomResp(
     val roomId: String
@@ -29,8 +28,7 @@ data class RoomListResp(
     val count: Int,
     val list: List<PayloadResp<AUIRoomInfo>>
 ){
-    fun
-            getRoomList(): List<AUIRoomInfo>{
+    fun getRoomList(): List<AUIRoomInfo>{
         val list = mutableListOf<AUIRoomInfo>()
         this.list.forEach {
             list.add(AUIRoomInfo().apply {

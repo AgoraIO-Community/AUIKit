@@ -3,9 +3,13 @@ package io.agora.auikit.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.agora.auikit.service.arbiter.AUIArbiter;
 
 public class AUIRoomContext {
     private static volatile AUIRoomContext instance = null;
@@ -24,9 +28,10 @@ public class AUIRoomContext {
     }
 
     public Map<String, AUIRoomConfig> roomConfigMap = new HashMap<>();
+    public Map<String, AUIArbiter> roomArbiterMap = new HashMap<>();
 
     public @NonNull AUIUserThumbnailInfo currentUserInfo = new AUIUserThumbnailInfo();
-    private AUICommonConfig mCommonConfig = new AUICommonConfig();
+    public @Nullable AUICommonConfig mCommonConfig;
     private final Map<String, AUIRoomInfo> roomInfoMap = new HashMap<>();
 
     public void setCommonConfig(@NonNull AUICommonConfig config) {
@@ -36,7 +41,10 @@ public class AUIRoomContext {
         currentUserInfo.userAvatar = config.userAvatar;
     }
 
-    public @NonNull AUICommonConfig getCommonConfig() {
+    public @NonNull AUICommonConfig requireCommonConfig() {
+        if(mCommonConfig == null){
+            throw new RuntimeException("mCommonConfig is null now!");
+        }
         return mCommonConfig;
     }
 
@@ -64,6 +72,11 @@ public class AUIRoomContext {
 
     public void cleanRoom(String channelName){
         roomInfoMap.remove(channelName);
+        roomConfigMap.remove(channelName);
+        AUIArbiter auiArbiter = roomArbiterMap.remove(channelName);
+        if(auiArbiter != null){
+            auiArbiter.deInit();
+        }
     }
 
     public String getRoomOwner(String channelName){
@@ -78,4 +91,7 @@ public class AUIRoomContext {
         return roomInfoMap.get(channelName);
     }
 
+    public @Nullable AUIArbiter getArbiter(@NotNull String channelName) {
+        return roomArbiterMap.get(channelName);
+    }
 }
