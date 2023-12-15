@@ -9,7 +9,6 @@ import io.agora.rtm.RtmConstants
 import io.agora.rtm.RtmEventListener
 import io.agora.rtm.StorageEvent
 import io.agora.rtm.TopicEvent
-import org.json.JSONObject
 
 interface AUIRtmErrorRespObserver {
 
@@ -26,9 +25,12 @@ interface AUIRtmErrorRespObserver {
     fun onMsgReceiveEmpty(channelName: String) {}
 }
 
-interface AUIRtmMsgRespObserver {
-    fun onMsgDidChanged(channelName: String, key: String, value: Any)
-    fun onMsgReceiveEmpty(channelName: String) {}
+interface AUIRtmAttributeRespObserver {
+    fun onAttributeChanged(channelName: String, key: String, value: Any)
+}
+
+interface AUIRtmMessageRespObserver {
+    fun onMessageReceive(channelName: String, message: String)
 }
 
 interface AUIRtmUserRespObserver {
@@ -46,11 +48,12 @@ interface AUIRtmLockRespObserver {
 class AUIRtmMsgProxy : RtmEventListener {
 
     var originEventListeners: RtmEventListener? = null
-    private val msgRespObservers: MutableMap<String, ArrayList<AUIRtmMsgRespObserver>> = mutableMapOf()
+    private val attributeRespObservers: MutableMap<String, ArrayList<AUIRtmAttributeRespObserver>> = mutableMapOf()
     private val msgCacheAttr: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
     private val userRespObservers: MutableList<AUIRtmUserRespObserver> = mutableListOf()
     private val errorRespObservers: MutableList<AUIRtmErrorRespObserver> = mutableListOf()
     private val lockRespObservers: MutableList<AUIRtmLockRespObserver> = mutableListOf()
+    private val messageRespObservers: MutableList<AUIRtmMessageRespObserver> = mutableListOf()
     private val lockDetailCaches = mutableMapOf<String, MutableList<LockDetail>>()
     var skipMetaEmpty = 0
 
@@ -58,16 +61,16 @@ class AUIRtmMsgProxy : RtmEventListener {
         msgCacheAttr.remove(channelName)
     }
 
-    fun registerMsgRespObserver(channelName: String, itemKey: String, observer: AUIRtmMsgRespObserver) {
+    fun registerAttributeRespObserver(channelName: String, itemKey: String, observer: AUIRtmAttributeRespObserver) {
         val key = "${channelName}__${itemKey}"
-        val observers = msgRespObservers[key] ?: ArrayList()
+        val observers = attributeRespObservers[key] ?: ArrayList()
         observers.add(observer)
-        msgRespObservers[key] = observers
+        attributeRespObservers[key] = observers
     }
 
-    fun unRegisterMsgRespObserver(channelName: String, itemKey: String, observer: AUIRtmMsgRespObserver) {
+    fun unRegisterAttributeRespObserver(channelName: String, itemKey: String, observer: AUIRtmAttributeRespObserver) {
         val key = "${channelName}__${itemKey}"
-        val observers = msgRespObservers[key] ?: return
+        val observers = attributeRespObservers[key] ?: return
         observers.remove(observer)
     }
 
@@ -93,6 +96,17 @@ class AUIRtmMsgProxy : RtmEventListener {
         errorRespObservers.remove(observer)
     }
 
+    fun registerMessageRespObserver(observer: AUIRtmMessageRespObserver) {
+        if (messageRespObservers.contains(observer)) {
+            return
+        }
+        messageRespObservers.add(observer)
+    }
+
+    fun unRegisterMessageRespObserver(observer: AUIRtmMessageRespObserver) {
+        messageRespObservers.remove(observer)
+    }
+
     fun registerLockRespObserver(
         channelName: String,
         lockName: String,
@@ -112,7 +126,6 @@ class AUIRtmMsgProxy : RtmEventListener {
     }
 
 
-
     override fun onStorageEvent(event: StorageEvent?) {
         Log.d("rtm_event", "onStorageEvent update: ${event?.target}")
         originEventListeners?.onStorageEvent(event)
@@ -122,8 +135,7 @@ class AUIRtmMsgProxy : RtmEventListener {
                 skipMetaEmpty --
                 return
             }
-            val handlerKey = "${event.target}__"
-            msgRespObservers[handlerKey]?.forEach { handler ->
+            errorRespObservers.forEach { handler ->
                 handler.onMsgReceiveEmpty(event.target)
             }
             return
@@ -137,8 +149,8 @@ class AUIRtmMsgProxy : RtmEventListener {
             cache[item.key] = item.value
             val handlerKey = "${event.target}__${item.key}"
             Log.d("rtm_event", "onStorageEvent: key event:  ${item.key} \n value: ${item.value}")
-            msgRespObservers[handlerKey]?.forEach { handler ->
-                handler.onMsgDidChanged(event.target, item.key, item.value)
+            attributeRespObservers[handlerKey]?.forEach { handler ->
+                handler.onAttributeChanged(event.target, item.key, item.value)
             }
         }
         msgCacheAttr[cacheKey] = cache
@@ -197,8 +209,10 @@ class AUIRtmMsgProxy : RtmEventListener {
 
 
     override fun onMessageEvent(event: MessageEvent?) {
+        originEventListeners?.onMessageEvent(event)
         event ?: return
-        val str = event.message?.data?.let {
+        Log.d("rtm_event", "onMessageEvent event: $event")
+        val message = event.message?.data?.let {
             if (it is ByteArray) {
                 String(it)
             } else if (it is String) {
@@ -206,13 +220,9 @@ class AUIRtmMsgProxy : RtmEventListener {
             } else {
                 ""
             }
-        }
-        val json = str?.let { JSONObject(it) }
-        val messageType = json?.get("messageType").toString()
-        originEventListeners?.onMessageEvent(event)
-        val delegateKey = "${event.channelName}__$messageType"
-        msgRespObservers[delegateKey]?.forEach { handler ->
-            str?.let { handler.onMsgDidChanged(event.channelName, messageType, it) }
+        } ?: ""
+        messageRespObservers.forEach {
+            it.onMessageReceive(event.channelName, message)
         }
     }
 

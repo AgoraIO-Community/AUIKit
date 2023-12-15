@@ -12,8 +12,8 @@ import io.agora.auikit.service.http.HttpManager
 import io.agora.auikit.service.http.Utils
 import io.agora.auikit.service.http.gift.GiftInterface
 import io.agora.auikit.service.im.AUIChatManager
+import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
 import org.json.JSONObject
@@ -25,14 +25,14 @@ class AUIGiftServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val chatManager:AUIChatManager
-) : IAUIGiftsService, AUIRtmMsgRespObserver {
+) : IAUIGiftsService, AUIRtmAttributeRespObserver {
 
     private val observableHelper =
         ObservableHelper<IAUIGiftsService.AUIGiftRespObserver>()
     private var roomContext:AUIRoomContext
 
     init {
-        rtmManager.subscribeMsg(channelName, giftKey, this)
+        rtmManager.subscribeAttribute(channelName, giftKey, this)
         this.roomContext = AUIRoomContext.shared()
     }
 
@@ -81,7 +81,7 @@ class AUIGiftServiceImpl constructor(
 
     override fun getChannelName() = channelName
 
-    override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
+    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
         if (key == giftKey){
             val gift = JSONObject(value.toString())
             GsonTools.toBean(gift["messageInfo"].toString(), AUIGiftEntity::class.java)?.let { it ->

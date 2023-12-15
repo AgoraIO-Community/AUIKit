@@ -24,8 +24,8 @@ import io.agora.auikit.service.http.song.SongPlayReq
 import io.agora.auikit.service.http.song.SongRemoveReq
 import io.agora.auikit.service.http.song.SongStopReq
 import io.agora.auikit.service.ktv.KTVApi
+import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.ObservableHelper
 import io.agora.rtc2.Constants
 import retrofit2.Call
@@ -35,7 +35,7 @@ class AUIJukeboxServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val ktvApi: KTVApi
-) : IAUIJukeboxService, AUIRtmMsgRespObserver {
+) : IAUIJukeboxService, AUIRtmAttributeRespObserver {
 
     private val TAG: String = "Jukebox_LOG"
     private val kChooseSongKey = "song"
@@ -54,7 +54,7 @@ class AUIJukeboxServiceImpl constructor(
     private val chooseMusicList = mutableListOf<AUIChooseMusicModel>()
 
     init {
-        rtmManager.subscribeMsg(channelName, kChooseSongKey, this)
+        rtmManager.subscribeAttribute(channelName, kChooseSongKey, this)
     }
 
     override fun registerRespObserver(observer: AUIJukeboxRespObserver?) {
@@ -392,7 +392,7 @@ class AUIJukeboxServiceImpl constructor(
         return response.code() == 200
     }
 
-    override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
+    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
         if (key != kChooseSongKey) {
             return
         }

@@ -19,8 +19,8 @@ import io.agora.auikit.service.ktv.ISwitchRoleStateListener
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.ktv.KTVSingRole
 import io.agora.auikit.service.ktv.SwitchRoleFailReason
+import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.ObservableHelper
 import retrofit2.Call
 import retrofit2.Response
@@ -29,12 +29,12 @@ class AUIChorusServiceImpl constructor(
     private val channelName: String,
     private val ktvApi: KTVApi,
     private val rtmManager: AUIRtmManager
-) : IAUIChorusService, AUIRtmMsgRespObserver {
+) : IAUIChorusService, AUIRtmAttributeRespObserver {
     private val TAG: String = "Chorus_LOG"
     private val kChorusKey = "chorus"
 
     init {
-        rtmManager.subscribeMsg(channelName, kChorusKey, this)
+        rtmManager.subscribeAttribute(channelName, kChorusKey, this)
     }
 
     private val gson: Gson = GsonBuilder()
@@ -142,7 +142,7 @@ class AUIChorusServiceImpl constructor(
         })
     }
 
-    override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
+    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
         if (key != kChorusKey) {
             return
         }

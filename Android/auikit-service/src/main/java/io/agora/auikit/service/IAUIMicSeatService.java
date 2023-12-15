@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 import io.agora.auikit.model.AUIMicSeatInfo;
 import io.agora.auikit.model.AUIUserThumbnailInfo;
 import io.agora.auikit.service.callback.AUICallback;
@@ -101,13 +99,6 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
     int getMicSeatIndex(@NotNull String userId);
 
     interface AUIMicSeatRespObserver {
-
-        /**
-         * 全量的麦位列表变化
-         *
-         * @param seatInfoList 麦位列表
-         */
-        default void onSeatListChange(List<AUIMicSeatInfo> seatInfoList){}
 
         /**
          * 有成员上麦（主动上麦/房主抱人上麦）

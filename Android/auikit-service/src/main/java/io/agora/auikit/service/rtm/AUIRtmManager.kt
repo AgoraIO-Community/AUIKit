@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import io.agora.auikit.utils.AUILogger
+import io.agora.auikit.utils.GsonTools
 import io.agora.rtm.ErrorInfo
 import io.agora.rtm.JoinChannelOptions
 import io.agora.rtm.MetadataItem
@@ -19,7 +20,6 @@ import io.agora.rtm.StateItem
 import io.agora.rtm.StreamChannel
 import io.agora.rtm.SubscribeOptions
 import io.agora.rtm.WhoNowResult
-import org.json.JSONObject
 
 class AUIRtmManager constructor(
     context: Context,
@@ -114,12 +114,20 @@ class AUIRtmManager constructor(
         isLogin = false
     }
 
-    fun subscribeMsg(channelName: String, itemKey: String, handler: AUIRtmMsgRespObserver) {
-        proxy.registerMsgRespObserver(channelName, itemKey, handler)
+    fun subscribeAttribute(channelName: String, itemKey: String, handler: AUIRtmAttributeRespObserver) {
+        proxy.registerAttributeRespObserver(channelName, itemKey, handler)
     }
 
-    fun unsubscribeMsg(channelName: String, itemKey: String, handler: AUIRtmMsgRespObserver) {
-        proxy.unRegisterMsgRespObserver(channelName, itemKey, handler)
+    fun unsubscribeAttribute(channelName: String, itemKey: String, handler: AUIRtmAttributeRespObserver) {
+        proxy.unRegisterAttributeRespObserver(channelName, itemKey, handler)
+    }
+
+    fun subscribeMessage(handler: AUIRtmMessageRespObserver) {
+        proxy.registerMessageRespObserver(handler)
+    }
+
+    fun unsubscribeMessage(handler: AUIRtmMessageRespObserver) {
+        proxy.unRegisterMessageRespObserver(handler)
     }
 
     fun subscribeUser(delegate: AUIRtmUserRespObserver) {
@@ -686,15 +694,11 @@ class AUIRtmManager constructor(
     }
 
     // message
-    private val receiptTimeoutRun = mutableMapOf<String, AUIReceipt>()
+    private val receiptTimeoutRun = mutableMapOf<String, AUIRtmReceiptHandler>()
     private val receiptHandler = Handler(Looper.getMainLooper())
 
-    fun sendReceipt(channelName: String, uniqueId: String, error: AUIRtmException) {
-        val data = JSONObject()
-        data.put("uniqueId", uniqueId)
-        data.put("code", error.code)
-        data.put("reason", error.reason)
-        publish(channelName, data.toString()) {}
+    fun sendReceipt(channelName: String, receipt: AUIRtmReceiptModel) {
+        publish(channelName, GsonTools.beanToString(receipt) ?: "") {}
     }
 
     fun cleanReceipts() {
@@ -702,11 +706,24 @@ class AUIRtmManager constructor(
         receiptHandler.removeCallbacksAndMessages(null)
     }
 
-    fun markReceiptFinished(uniqueId: String) {
+    fun markReceiptFinished(uniqueId: String, error: AUIRtmException? ) {
         receiptTimeoutRun[uniqueId]?.let {
-            it.closure.invoke(null)
+            it.closure.invoke(error)
             receiptHandler.removeCallbacks(it.runnable)
         }
+    }
+
+    fun <Model> publishAndWaitReceipt(
+        channelName: String,
+        publishModel: AUIRtmPublishModel<Model>,
+        completion: (AUIRtmException?) -> Unit
+    ){
+        publishAndWaitReceipt(
+            channelName,
+            GsonTools.beanToString(publishModel) ?: "",
+            publishModel.uniqueId,
+            completion = completion
+        )
     }
 
     fun publishAndWaitReceipt(
@@ -721,7 +738,7 @@ class AUIRtmManager constructor(
                 completion.invoke(error)
                 return@publish
             }
-            val receipt = AUIReceipt(
+            val receipt = AUIRtmReceiptHandler(
                 uniqueId,
                 completion
             ) {
