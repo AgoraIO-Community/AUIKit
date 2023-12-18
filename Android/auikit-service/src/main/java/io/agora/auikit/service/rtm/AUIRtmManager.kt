@@ -40,7 +40,11 @@ class AUIRtmManager constructor(
     }
 
     fun deInit(){
+        throttlerUpdateMetaDataModel.reset()
+        throttlerRemoveMetaDataModel.reset()
+        proxy.unRegisterAllObservers()
         rtmClient.removeEventListener(proxy)
+
     }
 
     fun renew(token: String) {
@@ -146,7 +150,6 @@ class AUIRtmManager constructor(
     ) {
         when (channelType) {
             RtmChannelType.MESSAGE -> {
-                proxy.skipMetaEmpty = 1
                 val option = SubscribeOptions()
                 option.withMetadata = true
                 option.withPresence = true
@@ -327,7 +330,7 @@ class AUIRtmManager constructor(
         metadata: Map<String, String>,
         completion: (AUIRtmException?) -> Unit
     ) {
-        val storage = rtmClient.storage
+        val storage = rtmClient.storage ?: return
         val data = storage.createMetadata()
         metadata.forEach { entry ->
             val item = MetadataItem()

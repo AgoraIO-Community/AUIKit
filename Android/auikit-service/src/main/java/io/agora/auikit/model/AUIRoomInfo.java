@@ -1,6 +1,5 @@
 package io.agora.auikit.model;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
@@ -8,8 +7,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class AUIRoomInfo extends AUICreateRoomInfo implements Serializable {
-    @SerializedName("roomSeatCount")
-    public int micSeatCount = 8; // 麦位个数
 
     @SerializedName("roomOwner")
     public @Nullable AUIUserThumbnailInfo owner; // 房主信息

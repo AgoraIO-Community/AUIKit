@@ -29,3 +29,10 @@ data class AUIRtmReceiptModel(
     val code: Int,
     val reason: String
 )
+
+data class AUIRtmPayload<Payload>(
+    val roomId: String,
+    val createTime: Long = System.currentTimeMillis(),
+    val updateTime: Long = System.currentTimeMillis(),
+    val payload: Payload?
+)

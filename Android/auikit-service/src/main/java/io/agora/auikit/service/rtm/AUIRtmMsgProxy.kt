@@ -55,10 +55,18 @@ class AUIRtmMsgProxy : RtmEventListener {
     private val lockRespObservers: MutableList<AUIRtmLockRespObserver> = mutableListOf()
     private val messageRespObservers: MutableList<AUIRtmMessageRespObserver> = mutableListOf()
     private val lockDetailCaches = mutableMapOf<String, MutableList<LockDetail>>()
-    var skipMetaEmpty = 0
+    var isMetaEmpty = false
 
     fun cleanCache(channelName: String) {
         msgCacheAttr.remove(channelName)
+    }
+
+    fun unRegisterAllObservers(){
+        attributeRespObservers.clear()
+        userRespObservers.clear()
+        errorRespObservers.clear()
+        lockRespObservers.clear()
+        messageRespObservers.clear()
     }
 
     fun registerAttributeRespObserver(channelName: String, itemKey: String, observer: AUIRtmAttributeRespObserver) {
@@ -127,19 +135,20 @@ class AUIRtmMsgProxy : RtmEventListener {
 
 
     override fun onStorageEvent(event: StorageEvent?) {
-        Log.d("rtm_event", "onStorageEvent update: ${event?.target}")
+        Log.d("rtm_event", "onStorageEvent update: $event")
         originEventListeners?.onStorageEvent(event)
         event ?: return
         if (event.data.metadataItems.isEmpty()) {
-            if(skipMetaEmpty > 0){
-                skipMetaEmpty --
+            if(isMetaEmpty){
                 return
             }
+            isMetaEmpty = true
             errorRespObservers.forEach { handler ->
                 handler.onMsgReceiveEmpty(event.target)
             }
             return
         }
+        isMetaEmpty = false
         val cacheKey = event.target
         val cache = msgCacheAttr[cacheKey] ?: mutableMapOf()
         event.data.metadataItems.forEach { item ->
@@ -187,16 +196,18 @@ class AUIRtmMsgProxy : RtmEventListener {
                     Log.d("rtm_presence_event", "user.states: ${user.states}")
                     Log.d("rtm_presence_event", "user.userId: ${user.userId}")
                     Log.d("rtm_presence_event", "----------SNAPSHOT User End--------")
+                    val userMap = mutableMapOf<String, String>()
+                    userMap["userId"] = user.userId
+
                     if (user.states.isNotEmpty()) {
-                        val userMap = mutableMapOf<String, String>()
-                        userMap["userId"] = user.userId
                         user.states.forEach { item ->
                             userMap[item.key] = item.value
                         }
-                        userList.add(userMap)
                     }
+                    userList.add(userMap)
                 }
                 Log.d("rtm_presence_event", "onPresenceEvent SNAPSHOT: $userList")
+                Log.d("room_enter_flow", "onPresenceEvent SNAPSHOT: $userList")
                 userRespObservers.forEach { handler ->
                     handler.onUserSnapshotRecv(event.channelName, event.publisherId ?: "", userList)
                 }

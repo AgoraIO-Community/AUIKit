@@ -1,6 +1,7 @@
 package io.agora.auikit.service.http.room
 
 import io.agora.auikit.model.AUIRoomInfo
+import io.agora.auikit.service.http.PayloadResp
 
 data class CreateRoomReq(
     val roomId: String,
@@ -43,13 +44,6 @@ data class RoomListResp(
         return list
     }
 }
-
-class PayloadResp<Payload>(
-    val roomId: String,
-    val createTime: Long,
-    val updateTime: Long,
-    val payload: Payload?
-)
 
 data class CreateChatRoomReq(
     val roomId : String,
