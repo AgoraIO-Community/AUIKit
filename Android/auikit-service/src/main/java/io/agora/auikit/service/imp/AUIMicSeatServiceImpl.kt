@@ -280,7 +280,9 @@ class AUIMicSeatServiceImpl(
         val publishModel: AUIRtmPublishModel<JsonObject>? =
             GsonTools.toBean(message, object : TypeToken<AUIRtmPublishModel<JsonObject>>() {}.type)
 
-        publishModel ?: return
+        if (publishModel?.uniqueId == null) {
+            return
+        }
 
         if (publishModel.interfaceName == null) {
             // receipt message from arbiter

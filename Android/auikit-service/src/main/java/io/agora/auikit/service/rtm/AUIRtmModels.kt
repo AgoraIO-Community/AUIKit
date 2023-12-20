@@ -49,7 +49,7 @@ data class AUIRtmPlayerInfo(
 )
 
 data class AUIRtmPublishModel<Model>(
-    val uniqueId: String = UUID.randomUUID().toString(),
+    val uniqueId: String? = UUID.randomUUID().toString(),
     val interfaceName: String?,
     val data: Model?,
 )

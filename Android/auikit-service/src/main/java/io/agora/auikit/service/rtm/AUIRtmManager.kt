@@ -724,7 +724,7 @@ class AUIRtmManager constructor(
         publishAndWaitReceipt(
             channelName,
             GsonTools.beanToString(publishModel) ?: "",
-            publishModel.uniqueId,
+            publishModel.uniqueId ?: "",
             completion = completion
         )
     }
