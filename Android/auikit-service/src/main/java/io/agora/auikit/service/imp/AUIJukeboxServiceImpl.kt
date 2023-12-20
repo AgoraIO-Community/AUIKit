@@ -3,6 +3,7 @@ package io.agora.auikit.service.imp
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.google.gson.ToNumberPolicy
 import com.google.gson.reflect.TypeToken
 import io.agora.auikit.model.AUIChooseMusicModel
@@ -15,37 +16,37 @@ import io.agora.auikit.service.callback.AUIChooseSongListCallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIMusicListCallback
 import io.agora.auikit.service.http.CommonResp
-import io.agora.auikit.service.http.HttpManager
-import io.agora.auikit.service.http.song.SongAddReq
-import io.agora.auikit.service.http.song.SongInterface
-import io.agora.auikit.service.http.song.SongOwner
-import io.agora.auikit.service.http.song.SongPinReq
-import io.agora.auikit.service.http.song.SongPlayReq
-import io.agora.auikit.service.http.song.SongRemoveReq
-import io.agora.auikit.service.http.song.SongStopReq
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
+import io.agora.auikit.service.rtm.AUIRtmException
 import io.agora.auikit.service.rtm.AUIRtmManager
+import io.agora.auikit.service.rtm.AUIRtmMessageRespObserver
+import io.agora.auikit.service.rtm.AUIRtmPublishModel
+import io.agora.auikit.service.rtm.AUIRtmReceiptModel
+import io.agora.auikit.service.rtm.AUIRtmSongInfo
+import io.agora.auikit.service.rtm.kAUISongAddNetworkInterface
+import io.agora.auikit.service.rtm.kAUISongPinNetworkInterface
+import io.agora.auikit.service.rtm.kAUISongPlayNetworkInterface
+import io.agora.auikit.service.rtm.kAUISongRemoveNetworkInterface
+import io.agora.auikit.service.rtm.kAUISongStopNetworkInterface
+import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
 import io.agora.rtc2.Constants
-import retrofit2.Call
 import retrofit2.Response
 
+val kChooseSongKey = "song"
 class AUIJukeboxServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val ktvApi: KTVApi
-) : IAUIJukeboxService, AUIRtmAttributeRespObserver {
+) : IAUIJukeboxService, AUIRtmAttributeRespObserver, AUIRtmMessageRespObserver {
 
     private val TAG: String = "Jukebox_LOG"
-    private val kChooseSongKey = "song"
 
     private val gson: Gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd HH:mm:ss")
         .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
         .create()
-
-    private val songInterface by lazy { HttpManager.getService(SongInterface::class.java) }
 
     private val observableHelper =
         ObservableHelper<AUIJukeboxRespObserver>()
@@ -55,6 +56,7 @@ class AUIJukeboxServiceImpl constructor(
 
     init {
         rtmManager.subscribeAttribute(channelName, kChooseSongKey, this)
+        rtmManager.subscribeMessage(this)
     }
 
     override fun registerRespObserver(observer: AUIJukeboxRespObserver?) {
@@ -154,233 +156,138 @@ class AUIJukeboxServiceImpl constructor(
 
     // 点一首歌
     override fun chooseSong(song: AUIMusicModel, completion: AUICallback?) {
-        val chooseMusicModel = gson.fromJson(gson.toJson(song), AUIChooseMusicModel::class.java)
-        chooseMusicModel.apply {
-            owner = roomContext.currentUserInfo
-            createAt = System.currentTimeMillis()
-            pinAt = 0L
-            status = AUIPlayStatus.idle
+        if (roomContext.getArbiter(channelName)?.isArbiter() == true) {
+            val chooseSong = AUIChooseMusicModel()
+            chooseSong.createAt = System.currentTimeMillis()
+            chooseSong.owner = roomContext.currentUserInfo
+            chooseSong.songCode = song.songCode
+            chooseSong.name = song.name
+            chooseSong.singer = song.singer
+            chooseSong.poster = song.poster
+            chooseSong.releaseTime = song.releaseTime
+            chooseSong.duration = song.duration
+            chooseSong.musicUrl = song.musicUrl
+            chooseSong.lrcUrl = song.lrcUrl
+            rtmChooseSong(chooseSong, completion)
+            return
         }
-        val songAddReq = SongAddReq(
-            roomId = channelName,
-            userId = roomContext.currentUserInfo.userId,
-            songCode = chooseMusicModel.songCode,
-            name = chooseMusicModel.name,
-            singer = chooseMusicModel.singer,
-            poster = chooseMusicModel.poster,
-            releaseTime = chooseMusicModel.releaseTime,
-            duration = chooseMusicModel.duration,
-            musicUrl = chooseMusicModel.musicUrl ?: "",
-            lrcUrl = chooseMusicModel.lrcUrl ?: "",
-            owner = SongOwner(
-                userId = roomContext.currentUserInfo.userId,
-                userName = roomContext.currentUserInfo.userName,
-                userAvatar = roomContext.currentUserInfo.userAvatar,
-            )
-        )
-        songInterface.songAdd(songAddReq)
-            .enqueue(object : retrofit2.Callback<CommonResp<Any>> {
-                override fun onResponse(call: Call<CommonResp<Any>>, response: Response<CommonResp<Any>>) {
-                    if (isNetSuccess(response)) {
-                        val respBody = response.body() ?: return
-                        if (isSuccess(respBody)) {
-//                            delegateHelper.notifyDelegate { delegate: AUiJukeboxRespDelegate ->
-//                                delegate.onAddChooseSong(chooseMusicModel)
-//                            }
-//                            chooseMusicList.add(chooseMusicModel)
-                            completion?.onResult(null)
-                        } else {
-                            completion?.onResult(
-                                AUIException(
-                                    respBody.code,
-                                    respBody.message
-                                )
-                            )
-                        }
-                    } else {
-                        completion?.onResult(
-                            AUIException(
-                                response.code(),
-                                response.message()
-                            )
-                        )
-                    }
-                }
 
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    completion?.onResult(
-                        AUIException(
-                            -1,
-                            t.message
-                        )
-                    )
-                }
-            })
+        val rtmSongInfo = AUIRtmSongInfo(
+            channelName,
+            roomContext.currentUserInfo.userId,
+            song.songCode,
+            song.singer,
+            song.name,
+            song.poster,
+            song.duration,
+            song.musicUrl,
+            song.lrcUrl,
+            roomContext.currentUserInfo
+        )
+
+        rtmManager.publishAndWaitReceipt(
+            channelName,
+            AUIRtmPublishModel(
+                interfaceName = kAUISongAddNetworkInterface,
+                data = rtmSongInfo
+            )
+        ) { error ->
+            if (error != null) {
+                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error=$error"))
+            } else {
+                completion?.onResult(null)
+            }
+        }
     }
 
     // 移除一首自己点的歌
     override fun removeSong(songCode: String, completion: AUICallback?) {
-        val songRemoveReq = SongRemoveReq(channelName, songCode, roomContext.currentUserInfo.userId)
-        songInterface.songRemove(songRemoveReq)
-            .enqueue(object : retrofit2.Callback<CommonResp<Any>> {
-                override fun onResponse(call: Call<CommonResp<Any>>, response: Response<CommonResp<Any>>) {
-                    if (isNetSuccess(response)) {
-                        val respBody = response.body() ?: return
-                        if (isSuccess(respBody)) {
-                            completion?.onResult(null)
-                        } else {
-                            completion?.onResult(
-                                AUIException(
-                                    respBody.code,
-                                    respBody.message
-                                )
-                            )
-                        }
-                    } else {
-                        completion?.onResult(
-                            AUIException(
-                                response.code(),
-                                response.message()
-                            )
-                        )
-                    }
-                }
+        if (roomContext.getArbiter(channelName)?.isArbiter() == true) {
+            rtmRemoveSong(songCode, roomContext.currentUserInfo.userId, completion)
+            return
+        }
 
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    completion?.onResult(
-                        AUIException(
-                            -1,
-                            t.message
-                        )
-                    )
-                }
-            })
+        val rtmSongInfo = AUIRtmSongInfo(
+            channelName,
+            roomContext.currentUserInfo.userId
+        )
+
+        rtmManager.publishAndWaitReceipt(
+            channelName,
+            AUIRtmPublishModel(
+                interfaceName = kAUISongRemoveNetworkInterface,
+                data = rtmSongInfo
+            )
+        ) { error ->
+            if (error != null) {
+                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error=$error"))
+            } else {
+                completion?.onResult(null)
+            }
+        }
     }
 
     // 置顶歌曲
     override fun pingSong(songCode: String, completion: AUICallback?) {
-        val songPinReq = SongPinReq(channelName, songCode, roomContext.currentUserInfo.userId)
-        songInterface.songPin(songPinReq)
-            .enqueue(object : retrofit2.Callback<CommonResp<Any>> {
-                override fun onResponse(call: Call<CommonResp<Any>>, response: Response<CommonResp<Any>>) {
-                    if (isNetSuccess(response)) {
-                        val respBody = response.body() ?: return
-                        if (isSuccess(respBody)) {
-                            completion?.onResult(null)
-                        } else {
-                            completion?.onResult(
-                                AUIException(
-                                    respBody.code,
-                                    respBody.message
-                                )
-                            )
-                        }
-                    } else {
-                        completion?.onResult(
-                            AUIException(
-                                response.code(),
-                                response.message()
-                            )
-                        )
-                    }
-                }
+        if (roomContext.getArbiter(channelName)?.isArbiter() == true) {
+            rtmPinSong(songCode, roomContext.currentUserInfo.userId, completion)
+            return
+        }
 
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    completion?.onResult(
-                        AUIException(
-                            -1,
-                            t.message
-                        )
-                    )
-                }
-            })
+        val rtmSongInfo = AUIRtmSongInfo(
+            channelName,
+            roomContext.currentUserInfo.userId
+        )
+
+        rtmManager.publishAndWaitReceipt(
+            channelName,
+            AUIRtmPublishModel(
+                interfaceName = kAUISongPinNetworkInterface,
+                data = rtmSongInfo
+            )
+        ) { error ->
+            if (error != null) {
+                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error=$error"))
+            } else {
+                completion?.onResult(null)
+            }
+        }
     }
 
     // 更新播放状态
     override fun updatePlayStatus(songCode: String, @AUIPlayStatus playStatus: Int, completion: AUICallback?) {
         Log.d(TAG, "updatePlayStatus: $songCode, playStatus: $playStatus")
-        if (playStatus == AUIPlayStatus.playing) {
-            playSong(songCode, completion)
-        } else if (playStatus == AUIPlayStatus.idle) {
-            stopSong(songCode, completion)
+        if (roomContext.getArbiter(channelName)?.isArbiter() == true) {
+            rtmUpdatePlayStatus(songCode, playStatus, roomContext.currentUserInfo.userId, completion)
+            return
+        }
+        val rtmSongInfo = AUIRtmSongInfo(
+            channelName,
+            roomContext.currentUserInfo.userId
+        )
+        val model = if (playStatus == AUIPlayStatus.playing) {
+            AUIRtmPublishModel(
+                interfaceName = kAUISongPlayNetworkInterface,
+                data = rtmSongInfo
+            )
+        } else{
+            AUIRtmPublishModel(
+                interfaceName = kAUISongStopNetworkInterface,
+                data = rtmSongInfo
+            )
+        }
+        rtmManager.publishAndWaitReceipt(
+            channelName,
+            model
+        ) { error ->
+            if (error != null) {
+                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error=$error"))
+            } else {
+                completion?.onResult(null)
+            }
         }
     }
 
-    private fun playSong(songCode: String, completion: AUICallback?) {
-        val songPlayReq = SongPlayReq(channelName, songCode, roomContext.currentUserInfo.userId)
-        songInterface.songPlay(songPlayReq)
-            .enqueue(object : retrofit2.Callback<CommonResp<Any>> {
-                override fun onResponse(call: Call<CommonResp<Any>>, response: Response<CommonResp<Any>>) {
-                    if (isNetSuccess(response)) {
-                        val respBody = response.body() ?: return
-                        if (isSuccess(respBody)) {
-                            completion?.onResult(null)
-                        } else {
-                            completion?.onResult(
-                                AUIException(
-                                    respBody.code,
-                                    respBody.message
-                                )
-                            )
-                        }
-                    } else {
-                        completion?.onResult(
-                            AUIException(
-                                response.code(),
-                                response.message()
-                            )
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    completion?.onResult(
-                        AUIException(
-                            -1,
-                            t.message
-                        )
-                    )
-                }
-            })
-    }
-
-    private fun stopSong(songCode: String, completion: AUICallback?) {
-        val songStopReq = SongStopReq(channelName, songCode, roomContext.currentUserInfo.userId)
-        songInterface.songStop(songStopReq)
-            .enqueue(object : retrofit2.Callback<CommonResp<Any>> {
-                override fun onResponse(call: Call<CommonResp<Any>>, response: Response<CommonResp<Any>>) {
-                    if (isNetSuccess(response)) {
-                        val respBody = response.body() ?: return
-                        if (isSuccess(respBody)) {
-                            completion?.onResult(null)
-                        } else {
-                            completion?.onResult(
-                                AUIException(
-                                    respBody.code,
-                                    respBody.message
-                                )
-                            )
-                        }
-                    } else {
-                        completion?.onResult(
-                            AUIException(
-                                response.code(),
-                                response.message()
-                            )
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    completion?.onResult(
-                        AUIException(
-                            -1,
-                            t.message
-                        )
-                    )
-                }
-            })
-    }
 
     override fun getChannelName() = channelName
 
@@ -405,4 +312,258 @@ class AUIJukeboxServiceImpl constructor(
             delegate.onUpdateAllChooseSongs(this.chooseMusicList)
         }
     }
+
+    override fun onMessageReceive(channelName: String, message: String) {
+        if (channelName != this.channelName) {
+            return
+        }
+
+        val publishModel: AUIRtmPublishModel<JsonObject>? =
+            GsonTools.toBean(message, object : TypeToken<AUIRtmPublishModel<JsonObject>>() {}.type)
+
+        publishModel ?: return
+
+        if (publishModel.interfaceName == null) {
+            // receipt message from arbiter
+            val receiptModel = GsonTools.toBean(message, AUIRtmReceiptModel::class.java) ?: return
+            if (receiptModel.code == 0) {
+                // success
+                rtmManager.markReceiptFinished(receiptModel.uniqueId, null)
+            } else {
+                // failure
+                rtmManager.markReceiptFinished(
+                    receiptModel.uniqueId, AUIRtmException(
+                        receiptModel.code,
+                        receiptModel.reason, "receipt message from arbiter"
+                    )
+                )
+            }
+        } else {
+            val song =
+                GsonTools.toBean(publishModel.data, AUIRtmSongInfo::class.java)
+            if (song == null) {
+                rtmManager.sendReceipt(
+                    channelName,
+                    AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                )
+                return
+            }
+            when (publishModel.interfaceName) {
+                kAUISongAddNetworkInterface -> {
+                    val chooseSong = AUIChooseMusicModel()
+                    chooseSong.createAt = System.currentTimeMillis()
+                    chooseSong.owner = roomContext.currentUserInfo
+                    chooseSong.songCode = song.songCode
+                    chooseSong.name = song.name
+                    chooseSong.singer = song.singer
+                    chooseSong.poster = song.poster
+                    chooseSong.duration = song.duration
+                    chooseSong.musicUrl = song.musicUrl
+                    chooseSong.lrcUrl = song.lrcUrl
+                    rtmChooseSong(chooseSong){ error ->
+                        rtmManager.sendReceipt(
+                            channelName,
+                            AUIRtmReceiptModel(
+                                publishModel.uniqueId,
+                                error?.code ?: 0,
+                                error?.message ?: ""
+                            )
+                        )
+                    }
+                }
+                kAUISongRemoveNetworkInterface -> {
+                    rtmRemoveSong(song.songCode, song.userId) { error ->
+                        rtmManager.sendReceipt(
+                            channelName,
+                            AUIRtmReceiptModel(
+                                publishModel.uniqueId,
+                                error?.code ?: 0,
+                                error?.message ?: ""
+                            )
+                        )
+                    }
+                }
+                kAUISongPinNetworkInterface -> {
+                    rtmPinSong(song.songCode, song.userId) { error ->
+                        rtmManager.sendReceipt(
+                            channelName,
+                            AUIRtmReceiptModel(
+                                publishModel.uniqueId,
+                                error?.code ?: 0,
+                                error?.message ?: ""
+                            )
+                        )
+                    }
+                }
+                kAUISongPlayNetworkInterface -> {
+                    rtmUpdatePlayStatus(song.songCode, AUIPlayStatus.playing, song.userId){error ->
+                        rtmManager.sendReceipt(
+                            channelName,
+                            AUIRtmReceiptModel(
+                                publishModel.uniqueId,
+                                error?.code ?: 0,
+                                error?.message ?: ""
+                            )
+                        )
+                    }
+                }
+                kAUISongStopNetworkInterface -> {
+                    rtmUpdatePlayStatus(song.songCode, AUIPlayStatus.idle, song.userId){error ->
+                        rtmManager.sendReceipt(
+                            channelName,
+                            AUIRtmReceiptModel(
+                                publishModel.uniqueId,
+                                error?.code ?: 0,
+                                error?.message ?: ""
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun rtmChooseSong(song: AUIChooseMusicModel, callback: AUICallback?) {
+        if(chooseMusicList.find { it.songCode == song.songCode } != null){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_SONG_ALREADY_EXIST, ""))
+            return
+        }
+
+        val metaData = mutableMapOf<String, String>()
+        var willError: AUIException? = null
+        observableHelper.notifyEventHandlers {
+            willError = it.onSongWillAdd(song.owner?.userId, metaData)
+            if (willError != null) {
+                return@notifyEventHandlers
+            }
+        }
+        if(willError != null){
+            callback?.onResult(willError)
+            return
+        }
+
+        val songList = ArrayList(chooseMusicList)
+        songList.add(song)
+        metaData[kChooseSongKey] = GsonTools.beanToString(songList) ?: ""
+        rtmManager.setBatchMetadata(channelName, metadata = metaData){ error ->
+            if (error == null) {
+                callback?.onResult(null)
+            } else {
+                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
+            }
+        }
+    }
+
+    private fun rtmRemoveSong(songCode: String, removeUserId: String, callback: AUICallback?){
+        val index = chooseMusicList.indexOfFirst { it.songCode == songCode }
+        if(index < 0){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_SONG_NOT_EXIST, ""))
+            return
+        }
+        val song = chooseMusicList[index]
+        if(song.owner?.userId != removeUserId && !roomContext.isRoomOwner(channelName)){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, ""))
+            return
+        }
+
+        val metaData = mutableMapOf<String, String>()
+        var willError: AUIException? = null
+        observableHelper.notifyEventHandlers {
+            willError = it.onSongWillRemove(song.owner?.userId, metaData)
+            if (willError != null) {
+                return@notifyEventHandlers
+            }
+        }
+        if(willError != null){
+            callback?.onResult(willError)
+            return
+        }
+
+        val songList = ArrayList(chooseMusicList.filter { it.songCode != songCode })
+        metaData[kChooseSongKey] = GsonTools.beanToString(songList) ?: ""
+        rtmManager.setBatchMetadata(channelName, metadata = metaData){ error ->
+            if (error == null) {
+                callback?.onResult(null)
+            } else {
+                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
+            }
+        }
+    }
+
+    private fun rtmPinSong(songCode: String, updateUserId: String, callback: AUICallback?) {
+        val index = chooseMusicList.indexOfFirst { it.songCode == songCode }
+        if(index < 0){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_SONG_NOT_EXIST, ""))
+            return
+        }
+
+        if(chooseMusicList[index].owner?.userId != updateUserId){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, ""))
+            return
+        }
+
+        val songList = ArrayList(chooseMusicList)
+        val song = songList[index]
+        val origPinAt = song.pinAt
+        song.pinAt = System.currentTimeMillis()
+        songList.sortWith { o1, o2 ->
+            //歌曲播放中优先（只会有一个，多个目前没有，如果有需要修改排序策略）
+            if (o1.status == AUIPlayStatus.playing) {
+                return@sortWith -1
+            }
+            if (o2.status == AUIPlayStatus.playing) {
+                return@sortWith 1
+            }
+
+            //都没有置顶时间，比较创建时间，创建时间小的在前（即创建早的在前）
+            if(o1.pinAt < 1 && o2.pinAt < 1){
+                return@sortWith if (o2.createAt - o1.createAt > 0) -1 else 1
+            }
+
+            //有一个有置顶时间，置顶时间大的在前（即后置顶的在前）
+            return@sortWith if (o2.pinAt - o1.pinAt > 0) 1 else -1
+        }
+        val metaData = mutableMapOf<String, String>()
+        metaData[kChooseSongKey] = GsonTools.beanToString(songList) ?: ""
+        song.pinAt = origPinAt
+        rtmManager.setBatchMetadata(channelName, metadata = metaData) { error ->
+            if (error == null) {
+                callback?.onResult(null)
+            } else {
+                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
+            }
+        }
+
+    }
+
+    private fun rtmUpdatePlayStatus(songCode: String, playStatus: Int, updateUserId: String, callback: AUICallback?){
+        val index = chooseMusicList.indexOfFirst { it.songCode == songCode }
+        if(index < 0){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_SONG_NOT_EXIST, ""))
+            return
+        }
+
+        val song = chooseMusicList[index]
+        if(song.owner?.userId != updateUserId && !roomContext.isRoomOwner(channelName)){
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, ""))
+            return
+        }
+
+        val metaData = mutableMapOf<String, String>()
+
+        val origStatus = song.status
+        song.status = playStatus
+        val songList = ArrayList(chooseMusicList)
+        metaData[kChooseSongKey] = GsonTools.beanToString(songList) ?: ""
+        song.status = origStatus
+        rtmManager.setBatchMetadata(channelName, metadata = metaData){ error ->
+            if (error == null) {
+                callback?.onResult(null)
+            } else {
+                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
+            }
+        }
+    }
+
 }

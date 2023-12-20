@@ -1,5 +1,6 @@
 package io.agora.auikit.service.rtm
 
+import io.agora.auikit.model.AUIUserThumbnailInfo
 import java.util.UUID
 
 const val kAUISeatEnterInterface = "/v1/seat/enter"
@@ -16,6 +17,26 @@ data class AUIRtmMicSeatInfo(
     val userName: String,
     val userAvatar: String,
     val micSeatNo: Int
+)
+
+const val kAUISongAddNetworkInterface = "/v1/song/add"
+const val kAUISongPinNetworkInterface = "/v1/song/pin"
+const val kAUISongRemoveNetworkInterface = "/v1/song/remove"
+const val kAUISongPlayNetworkInterface = "/v1/song/play"
+const val kAUISongStopNetworkInterface = "/v1/song/stop"
+
+data class AUIRtmSongInfo(
+    val roomId: String,
+    val userId: String,
+
+    val songCode: String = "",
+    val singer: String = "",
+    val name: String = "",
+    val poster: String = "",
+    val duration: Int = 0,
+    val musicUrl: String? = "",
+    val lrcUrl: String? = "",
+    val owner: AUIUserThumbnailInfo? = null
 )
 
 data class AUIRtmPublishModel<Model>(
