@@ -106,7 +106,7 @@ class AUIMicSeatServiceImpl(
                 channelName,
                 AUIRtmPublishModel(interfaceName = kAUISeatEnterInterface, data = seatInfo)
             ) { error ->
-                if (error != null) {
+                if (error == null) {
                     callback?.onResult(null)
                 } else {
                     callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
@@ -143,7 +143,7 @@ class AUIMicSeatServiceImpl(
                 channelName,
                 AUIRtmPublishModel(interfaceName = kAUISeatLeaveInterface, data = seatInfo)
             ) { error ->
-                if (error != null) {
+                if (error == null) {
                     callback?.onResult(null)
                 } else {
                     callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
@@ -181,7 +181,7 @@ class AUIMicSeatServiceImpl(
                 channelName,
                 AUIRtmPublishModel(interfaceName = kAUISeatKickInterface, data = micSeat)
             ) { error ->
-                if (error != null) {
+                if (error == null) {
                     callback?.onResult(null)
                 } else {
                     callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
@@ -210,7 +210,7 @@ class AUIMicSeatServiceImpl(
                     data = micSeat
                 )
             ) { error ->
-                if (error != null) {
+                if (error == null) {
                     callback?.onResult(null)
                 } else {
                     callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
@@ -237,7 +237,7 @@ class AUIMicSeatServiceImpl(
                     data = micSeat
                 )
             ) { error ->
-                if (error != null) {
+                if (error == null) {
                     callback?.onResult(null)
                 } else {
                     callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
@@ -582,6 +582,19 @@ class AUIMicSeatServiceImpl(
         }
 
         val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
+
+        var willError: AUIException? = null
+        observableHelper.notifyEventHandlers {
+            willError = it.onSeatWillLeave(userId, metadata)
+            if (willError != null) {
+                return@notifyEventHandlers
+            }
+        }
+        if (willError != null) {
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
+            return
+        }
+
         rtmManager.setBatchMetadata(
             channelName,
             metadata = metadata

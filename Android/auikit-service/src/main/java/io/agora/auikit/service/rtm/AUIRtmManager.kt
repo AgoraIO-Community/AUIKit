@@ -710,7 +710,7 @@ class AUIRtmManager constructor(
     }
 
     fun markReceiptFinished(uniqueId: String, error: AUIRtmException? ) {
-        receiptTimeoutRun[uniqueId]?.let {
+        receiptTimeoutRun.remove(uniqueId)?.let {
             it.closure.invoke(error)
             receiptHandler.removeCallbacks(it.runnable)
         }
@@ -733,7 +733,7 @@ class AUIRtmManager constructor(
         channelName: String,
         message: String,
         uniqueId: String,
-        timeout: Long = 100,
+        timeout: Long = 2000,
         completion: (AUIRtmException?) -> Unit
     ) {
         publish(channelName, message) { error ->

@@ -5,9 +5,12 @@ import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 import io.agora.auikit.model.AUIMicSeatInfo;
 import io.agora.auikit.model.AUIUserThumbnailInfo;
 import io.agora.auikit.service.callback.AUICallback;
+import io.agora.auikit.service.callback.AUIException;
 
 /**
  * 麦位Service抽象协议，一个房间对应一个MicSeatService
@@ -150,5 +153,9 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
          * @param index
          */
         default void onShowInvited(int index){}
+
+        default @Nullable AUIException onSeatWillLeave(String userId, Map<String, String> metadata) {
+            return null;
+        }
     }
 }

@@ -22,9 +22,11 @@ public interface IAUICommonService<Observer> {
      */
     void unRegisterRespObserver(@Nullable Observer observer);
 
-    default void deInitService(AUICallback completion) {}
+    default void deInitService(@Nullable AUICallback completion) {}
 
-    default void initService(AUICallback completion) {}
+    default void initService(@Nullable AUICallback completion) {}
+
+    default void cleanUserInfo(@NonNull String userId, @Nullable AUICallback completion) {}
 
 
     /** 获取当前房间上下文

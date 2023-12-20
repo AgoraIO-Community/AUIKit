@@ -39,6 +39,15 @@ data class AUIRtmSongInfo(
     val owner: AUIUserThumbnailInfo? = null
 )
 
+const val kAUIPlayerJoinInterface = "/v1/chorus/join"
+const val kAUIPlayerLeaveInterface = "/v1/chorus/leave"
+
+data class AUIRtmPlayerInfo(
+    val songCode: String,
+    val userId: String,
+    val roomId: String
+)
+
 data class AUIRtmPublishModel<Model>(
     val uniqueId: String = UUID.randomUUID().toString(),
     val interfaceName: String?,

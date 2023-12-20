@@ -288,6 +288,25 @@ class AUIJukeboxServiceImpl constructor(
         }
     }
 
+    override fun cleanUserInfo(userId: String, completion: AUICallback?) {
+        super.cleanUserInfo(userId, completion)
+        val musicList = chooseMusicList.filter { it.owner?.userId != userId }
+        if (musicList.size != chooseMusicList.size) {
+            val metadata = mutableMapOf<String, String>()
+            metadata[kChooseSongKey] = GsonTools.beanToString(musicList) ?: ""
+            rtmManager.setBatchMetadata(
+                channelName,
+                metadata = metadata
+            ) { error ->
+                if (error != null) {
+                    completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error=$error"))
+                } else {
+                    completion?.onResult(null)
+                }
+            }
+        }
+    }
+
 
     override fun getChannelName() = channelName
 

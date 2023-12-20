@@ -159,6 +159,7 @@
         app:iconPadding="0dp"
         app:iconSize="24dp"
         app:iconTintMode="src_atop"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivChangeSong" />
 
@@ -317,6 +318,6 @@
         android:id="@+id/rlMusicControlMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="switchOriginal,ivChooseSong,ivMusicStart,ivChangeSong,ivMusicVoiceSettings,ivMusicPreset" />
+        app:constraint_referenced_ids="switchOriginal,ivMusicStart,ivChangeSong,ivMusicVoiceSettings,ivMusicPreset" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,9 +2,14 @@ package io.agora.auikit.service;
 
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+
 import io.agora.auikit.model.AUIChoristerModel;
 import io.agora.auikit.service.callback.AUICallback;
 import io.agora.auikit.service.callback.AUIChoristerListCallback;
+import io.agora.auikit.service.callback.AUIException;
 import io.agora.auikit.service.callback.AUISwitchSingerRoleCallback;
 
 public interface IAUIChorusService extends IAUICommonService<IAUIChorusService.AUIChorusRespObserver> {
@@ -38,5 +43,9 @@ public interface IAUIChorusService extends IAUICommonService<IAUIChorusService.A
         void onSingerRoleChanged(int oldRole, int newRole);
 
         void onChoristerDidChanged();
+
+        default @Nullable AUIException onWillJoinChorus(@NotNull String songCode, @NotNull String userId, @NotNull Map<String, String> metaData){
+            return null;
+        }
     }
 }
