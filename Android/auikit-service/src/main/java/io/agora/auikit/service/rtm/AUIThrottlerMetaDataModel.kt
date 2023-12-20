@@ -22,6 +22,7 @@ class AUIThrottlerUpdateMetaDataModel {
     fun reset() {
         _metaData.clear()
         _callbacks.clear()
+        throttler.clean()
     }
 }
 
@@ -45,5 +46,6 @@ class AUIThrottlerRemoveMetaDataModel {
     fun reset() {
         _keys.clear()
         _callbacks.clear()
+        throttler.clean()
     }
 }

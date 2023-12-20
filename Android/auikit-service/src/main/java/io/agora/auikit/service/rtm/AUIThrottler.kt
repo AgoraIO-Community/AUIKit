@@ -7,7 +7,7 @@ class AUIThrottler() {
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
 
-    fun triggerLastEvent(delay: Long, execute: ()->Unit) {
+    fun triggerLastEvent(delay: Long, execute: () -> Unit) {
         runnable?.let {
             handler.removeCallbacks(it)
             runnable = null
@@ -23,8 +23,17 @@ class AUIThrottler() {
 
     fun triggerNow() {
         runnable?.let {
-            handler.removeCallbacks(it)
-            it.run()
+            handler.removeCallbacksAndMessages(null)
+            runnable = null
+            if (Thread.currentThread() == handler.looper.thread) {
+                it.run()
+            } else {
+                handler.post(it)
+            }
         }
+    }
+
+    fun clean() {
+        handler.removeCallbacksAndMessages(null)
     }
 }
