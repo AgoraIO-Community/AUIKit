@@ -42,6 +42,24 @@ class AUIChorusServiceImpl constructor(
         rtmManager.subscribeMessage(this)
     }
 
+    override fun deInitService(completion: AUICallback?) {
+        super.deInitService(completion)
+
+        if (roomContext.getArbiter(channelName)?.isArbiter() != true) {
+            return
+        }
+        rtmManager.cleanBatchMetadata(
+            channelName,
+            remoteKeys = listOf(kChorusKey)
+        ) { error ->
+            if (error != null) {
+                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
+            } else {
+                completion?.onResult(null)
+            }
+        }
+    }
+
     private val gson: Gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd HH:mm:ss")
         .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)

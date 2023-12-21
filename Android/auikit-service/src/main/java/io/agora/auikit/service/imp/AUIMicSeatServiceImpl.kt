@@ -71,9 +71,13 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun deInitService(completion: AUICallback?) {
-        rtmManager.cleanMetadata(
+        if (roomContext.getArbiter(channelName)?.isArbiter() != true) {
+            return
+        }
+
+        rtmManager.cleanBatchMetadata(
             channelName,
-            removeKeys = listOf(kSeatAttrKey)
+            remoteKeys = listOf(kSeatAttrKey)
         ) { error ->
             if (error == null) {
                 completion?.onResult(null)

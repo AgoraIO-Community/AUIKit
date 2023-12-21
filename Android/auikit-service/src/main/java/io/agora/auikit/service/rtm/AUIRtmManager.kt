@@ -557,7 +557,7 @@ class AUIRtmManager constructor(
             cleanMetadata(
                 channelName,
                 channelType,
-                remoteKeys,
+                throttlerRemoveMetaDataModel.keys,
                 lockName
             ) { error ->
                 callbacks.forEach {

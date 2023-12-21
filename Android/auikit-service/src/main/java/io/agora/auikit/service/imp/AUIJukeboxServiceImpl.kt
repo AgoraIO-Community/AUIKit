@@ -59,6 +59,24 @@ class AUIJukeboxServiceImpl constructor(
         rtmManager.subscribeMessage(this)
     }
 
+    override fun deInitService(completion: AUICallback?) {
+        super.deInitService(completion)
+        if (roomContext.getArbiter(channelName)?.isArbiter() != true) {
+            return
+        }
+
+        rtmManager.cleanBatchMetadata(
+            channelName,
+            remoteKeys = listOf(kChooseSongKey)
+        ) { error ->
+            if (error != null) {
+                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
+            } else {
+                completion?.onResult(null)
+            }
+        }
+    }
+
     override fun registerRespObserver(observer: AUIJukeboxRespObserver?) {
         observableHelper.subscribeEvent(observer)
     }
