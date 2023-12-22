@@ -391,7 +391,7 @@ class AUIJukeboxServiceImpl constructor(
                 kAUISongAddNetworkInterface -> {
                     val chooseSong = AUIChooseMusicModel()
                     chooseSong.createAt = System.currentTimeMillis()
-                    chooseSong.owner = roomContext.currentUserInfo
+                    chooseSong.owner = song.owner
                     chooseSong.songCode = song.songCode
                     chooseSong.name = song.name
                     chooseSong.singer = song.singer
@@ -573,7 +573,6 @@ class AUIJukeboxServiceImpl constructor(
                 callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
             }
         }
-
     }
 
     private fun rtmUpdatePlayStatus(songCode: String, playStatus: Int, updateUserId: String, callback: AUICallback?){

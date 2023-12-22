@@ -615,9 +615,11 @@ class AUIMicSeatServiceImpl(
 
     private fun rtmKickSeat(seatIndex: Int, callback: AUICallback?) {
         val seatMap = mutableMapOf<String, Any>()
+        var userId = ""
         micSeats.forEach { (key, value) ->
             var seatInfo = value
             if (key == seatIndex) {
+                userId = value.user?.userId ?: ""
                 seatInfo = AUIMicSeatInfo()
                 seatInfo.seatIndex = value.seatIndex
                 seatInfo.muteVideo = value.muteVideo
@@ -627,6 +629,18 @@ class AUIMicSeatServiceImpl(
         }
 
         val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
+        var willError: AUIException? = null
+        observableHelper.notifyEventHandlers {
+            willError = it.onSeatWillLeave(userId, metadata)
+            if (willError != null) {
+                return@notifyEventHandlers
+            }
+        }
+        if (willError != null) {
+            callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
+            return
+        }
+
         rtmManager.setBatchMetadata(
             channelName,
             metadata = metadata
