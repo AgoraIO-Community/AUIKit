@@ -377,11 +377,14 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     }
 
     // 离开合唱
-    public void onLeaveChorus() {
+    public void onLeaveChorus(boolean isRoomOwner) {
         mainHandler.post(() -> {
             mJoinChorusView.setVisibility(View.VISIBLE);
             mLeaveChorus.setVisibility(View.GONE);
             mMusicControllerGroup.setVisibility(View.GONE);
+            if(isRoomOwner){
+                mSwitchSongBtn.setVisibility(View.VISIBLE);
+            }
         });
     }
 

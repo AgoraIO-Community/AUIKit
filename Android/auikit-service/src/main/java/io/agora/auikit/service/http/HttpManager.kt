@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object HttpManager {
 
     private var baseUrl = ""
-    private const val version = "v1"
+    private const val version = "v2"
     private var retrofit: Retrofit? = null
 
     fun <T> getService(clazz: Class<T>): T {

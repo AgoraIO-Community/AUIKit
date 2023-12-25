@@ -11,15 +11,8 @@ import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngine
 import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.RtcEngineEx
-import io.agora.rtm2.LockEvent
-import io.agora.rtm2.MessageEvent
-import io.agora.rtm2.PresenceEvent
-import io.agora.rtm2.RtmClient
-import io.agora.rtm2.RtmConfig
-import io.agora.rtm2.RtmConstants
-import io.agora.rtm2.RtmEventListener
-import io.agora.rtm2.StorageEvent
-import io.agora.rtm2.TopicEvent
+import io.agora.rtm.RtmClient
+import io.agora.rtm.RtmConfig
 
 object AgoraEngineCreator {
 
@@ -28,42 +21,8 @@ object AgoraEngineCreator {
         appId: String,
         userId: String
     ): RtmClient {
-        val rtmConfig = RtmConfig()
-        rtmConfig.userId = userId
-        rtmConfig.appId = appId
-        rtmConfig.eventListener = object : RtmEventListener {
-            override fun onMessageEvent(event: MessageEvent?) {
-
-            }
-
-            override fun onPresenceEvent(event: PresenceEvent?) {
-
-            }
-
-            override fun onTopicEvent(event: TopicEvent?) {
-
-            }
-
-            override fun onLockEvent(event: LockEvent?) {
-
-            }
-
-            override fun onStorageEvent(event: StorageEvent?) {
-
-            }
-
-            override fun onConnectionStateChange(
-                channelName: String?,
-                state: RtmConstants.RtmConnectionState?,
-                reason: RtmConstants.RtmConnectionChangeReason?
-            ) {
-
-            }
-
-            override fun onTokenPrivilegeWillExpire(channelName: String?) {
-
-            }
-        }
+        val rtmConfig = RtmConfig.Builder(appId, userId)
+            .build()
         return RtmClient.create(rtmConfig)
     }
 

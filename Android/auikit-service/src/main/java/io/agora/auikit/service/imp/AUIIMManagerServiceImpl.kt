@@ -14,10 +14,10 @@ import io.agora.auikit.service.http.Utils
 import io.agora.auikit.service.http.room.CreateChatRoomReq
 import io.agora.auikit.service.http.room.CreateChatRoomRsp
 import io.agora.auikit.service.http.room.RoomInterface
-import io.agora.auikit.service.im.AUIChatManager
 import io.agora.auikit.service.im.AUIChatEventHandler
+import io.agora.auikit.service.im.AUIChatManager
+import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.AgoraEngineCreator
 import io.agora.auikit.utils.ObservableHelper
@@ -33,16 +33,14 @@ class AUIIMManagerServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val chatManager: AUIChatManager
-) : IAUIIMManagerService, AUIRtmMsgRespObserver, AUIChatEventHandler {
+) : IAUIIMManagerService, AUIRtmAttributeRespObserver, AUIChatEventHandler {
     private val roomContext = AUIRoomContext.shared()
     private val mChatRoomIdMap = mutableMapOf<String, String?>()
     private val observableHelper =
         ObservableHelper<IAUIIMManagerService.AUIIMManagerRespObserver>()
 
     init {
-        rtmManager.subscribeMsg(channelName, chatRoomIdKey, this)
-
-
+        rtmManager.subscribeAttribute(channelName, chatRoomIdKey, this)
 
         if (roomContext.isRoomOwner(channelName)) {
             initChatRoom()
@@ -57,7 +55,7 @@ class AUIIMManagerServiceImpl constructor(
             }
 
             AgoraEngineCreator.createChatClient(
-                roomContext.commonConfig.context,
+                roomContext.requireCommonConfig().context,
                 chatManager.getAppKey()
             )
             chatManager.initManager()
@@ -174,7 +172,7 @@ class AUIIMManagerServiceImpl constructor(
     }
 
     override fun userQuitRoom(completion: ((error: AUIException?) -> Unit)?) {
-        rtmManager.unsubscribeMsg(channelName, chatRoomIdKey, this)
+        rtmManager.unsubscribeAttribute(channelName, chatRoomIdKey, this)
         chatManager.leaveChatRoom()
         chatManager.logoutChat()
         chatManager.unsubscribeChatMsg(this)
@@ -184,7 +182,7 @@ class AUIIMManagerServiceImpl constructor(
     }
 
     override fun userDestroyedChatroom() {
-        rtmManager.unsubscribeMsg(channelName, chatRoomIdKey, this)
+        rtmManager.unsubscribeAttribute(channelName, chatRoomIdKey, this)
         chatManager.asyncDestroyChatRoom(object : CallBack {
             override fun onSuccess() {
 
@@ -260,7 +258,7 @@ class AUIIMManagerServiceImpl constructor(
             })
     }
 
-    override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
+    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
         // 解析数据 获取环信聊天室id
         if (key == chatRoomIdKey) {
             val room = JSONObject(value.toString())

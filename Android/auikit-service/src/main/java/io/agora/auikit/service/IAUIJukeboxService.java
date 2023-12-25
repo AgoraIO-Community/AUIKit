@@ -5,12 +5,14 @@ import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import io.agora.auikit.model.AUIChooseMusicModel;
 import io.agora.auikit.model.AUIMusicModel;
 import io.agora.auikit.model.AUIPlayStatus;
 import io.agora.auikit.service.callback.AUICallback;
 import io.agora.auikit.service.callback.AUIChooseSongListCallback;
+import io.agora.auikit.service.callback.AUIException;
 import io.agora.auikit.service.callback.AUIMusicListCallback;
 
 /**
@@ -120,5 +122,13 @@ public interface IAUIJukeboxService extends IAUICommonService<IAUIJukeboxService
          * @param songs 更新歌曲
          */
         default void onUpdateAllChooseSongs(@NonNull List<AUIChooseMusicModel> songs){}
+
+        default @Nullable AUIException onSongWillAdd(String userId, Map<String, String> metaData) {
+            return null;
+        }
+
+        default @Nullable AUIException onSongWillRemove(String userId, Map<String, String> metaData) {
+            return null;
+        }
     }
 }

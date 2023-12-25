@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import io.agora.auikit.model.AUIRoomContext;
+import io.agora.auikit.service.callback.AUICallback;
 
 public interface IAUICommonService<Observer> {
 
@@ -20,6 +21,13 @@ public interface IAUICommonService<Observer> {
      * @param observer 响应事件回调
      */
     void unRegisterRespObserver(@Nullable Observer observer);
+
+    default void deInitService(@Nullable AUICallback completion) {}
+
+    default void initService(@Nullable AUICallback completion) {}
+
+    default void cleanUserInfo(@NonNull String userId, @Nullable AUICallback completion) {}
+
 
     /** 获取当前房间上下文
      *

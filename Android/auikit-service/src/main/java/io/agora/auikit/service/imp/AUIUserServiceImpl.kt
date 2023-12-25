@@ -9,10 +9,10 @@ import io.agora.auikit.service.callback.AUIUserListCallback
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmUserRespObserver
 import io.agora.auikit.utils.AUILogger
-import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.GsonTools
+import io.agora.auikit.utils.ObservableHelper
 
-class AUIUserServiceImplResp constructor(
+class AUIUserServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
 ) : IAUIUserService, AUIRtmUserRespObserver {
@@ -73,7 +73,7 @@ class AUIUserServiceImplResp constructor(
         val user = mUserList.first { it.userId == currentUserId }
         user.muteAudio = if (isMute) 1 else 0
         val map = GsonTools.beanToMap(user)
-        rtmManager.setPresenceState(channelName, map.mapValues { it.value.toString() }) { error ->
+        rtmManager.setPresenceState(channelName, attr = map.mapValues { it.value.toString() }) { error ->
             if (error != null) {
                 callback?.onResult(
                     AUIException(
@@ -104,7 +104,7 @@ class AUIUserServiceImplResp constructor(
         }
         user.muteVideo = if (isMute) 1 else 0
         val map = GsonTools.beanToMap(user) as Map<String, String>
-        rtmManager.setPresenceState(channelName, map) { error ->
+        rtmManager.setPresenceState(channelName, attr = map) { error ->
             if (error != null) {
                 callback?.onResult(
                     AUIException(
@@ -208,7 +208,7 @@ class AUIUserServiceImplResp constructor(
 
         val userAttr = GsonTools.beanToMap(userInfo)
         AUILogger.logger().d(TAG, "setupUserAttr: $roomId : $userAttr")
-        rtmManager.setPresenceState(roomId, userAttr) { error ->
+        rtmManager.setPresenceState(roomId, attr = userAttr) { error ->
             if(error != null){
                 AUILogger.logger().d(TAG, "setupUserAttr: $roomId fail: ${error.reason}")
             }else{

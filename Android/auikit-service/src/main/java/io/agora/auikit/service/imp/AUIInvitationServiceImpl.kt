@@ -17,10 +17,10 @@ import io.agora.auikit.service.http.invitation.InvitationCreateReq
 import io.agora.auikit.service.http.invitation.InvitationInterface
 import io.agora.auikit.service.http.invitation.InvitationPayload
 import io.agora.auikit.service.http.invitation.RejectInvitationAccept
+import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMsgRespObserver
-import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.GsonTools
+import io.agora.auikit.utils.ObservableHelper
 import io.agora.auikit.utils.ThreadManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,15 +28,15 @@ import retrofit2.Response
 
 private const val RoomApplyKey = "application"
 private const val RoomInvitationKey = "invitation"
-class AUIInvitationServiceImplResp(
+class AUIInvitationServiceImpl(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIInvitationService, AUIRtmMsgRespObserver {
+) : IAUIInvitationService, AUIRtmAttributeRespObserver {
     private val roomContext:AUIRoomContext
 
     init {
-        rtmManager.subscribeMsg(channelName, RoomApplyKey,this)
-        rtmManager.subscribeMsg(channelName, RoomInvitationKey,this)
+        rtmManager.subscribeAttribute(channelName, RoomApplyKey,this)
+        rtmManager.subscribeAttribute(channelName, RoomInvitationKey,this)
         this.roomContext = AUIRoomContext.shared()
     }
 
@@ -267,7 +267,7 @@ class AUIInvitationServiceImplResp(
 
     override fun getRoomContext() = roomContext
 
-    override fun onMsgDidChanged(channelName: String, key: String, value: Any) {
+    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
         Log.e("apex","AUiServiceImpl key: $key")
         if (key == RoomApplyKey){ //申请
             observableHelper.notifyEventHandlers {

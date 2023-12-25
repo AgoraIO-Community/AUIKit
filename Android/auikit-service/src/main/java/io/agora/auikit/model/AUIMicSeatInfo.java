@@ -17,9 +17,20 @@ public class AUIMicSeatInfo {
     public @AUIMicSeatStatus int seatStatus = AUIMicSeatStatus.idle;
     /** 麦位禁用声音 */
     @SerializedName("isMuteAudio")
-    public int muteAudio = 0;
+    public boolean muteAudio = false;
 
     /** 麦位禁用视频 */
     @SerializedName("isMuteVideo")
-    public int muteVideo = 0;
+    public boolean muteVideo = false;
+
+    @Override
+    public String toString() {
+        return "AUIMicSeatInfo{" +
+                "user=" + user +
+                ", seatIndex=" + seatIndex +
+                ", seatStatus=" + seatStatus +
+                ", muteAudio=" + muteAudio +
+                ", muteVideo=" + muteVideo +
+                '}';
+    }
 }

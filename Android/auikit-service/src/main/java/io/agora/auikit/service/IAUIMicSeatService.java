@@ -3,11 +3,14 @@ package io.agora.auikit.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 import io.agora.auikit.model.AUIMicSeatInfo;
 import io.agora.auikit.model.AUIUserThumbnailInfo;
 import io.agora.auikit.service.callback.AUICallback;
+import io.agora.auikit.service.callback.AUIException;
 
 /**
  * 麦位Service抽象协议，一个房间对应一个MicSeatService
@@ -96,14 +99,9 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
      */
     void onClickInvited(int index);
 
-    interface AUIMicSeatRespObserver {
+    int getMicSeatIndex(@NotNull String userId);
 
-        /**
-         * 全量的麦位列表变化
-         *
-         * @param seatInfoList 麦位列表
-         */
-        default void onSeatListChange(List<AUIMicSeatInfo> seatInfoList){}
+    interface AUIMicSeatRespObserver {
 
         /**
          * 有成员上麦（主动上麦/房主抱人上麦）
@@ -155,5 +153,9 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
          * @param index
          */
         default void onShowInvited(int index){}
+
+        default @Nullable AUIException onSeatWillLeave(String userId, Map<String, String> metadata) {
+            return null;
+        }
     }
 }
