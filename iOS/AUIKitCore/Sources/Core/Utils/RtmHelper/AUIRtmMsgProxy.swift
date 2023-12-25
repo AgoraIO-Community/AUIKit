@@ -308,7 +308,8 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
             break
         case .lockExpired, .lockRemoved, .lockReleased:
             var snapshotList = self.lockDetailCaches[event.channelName] ?? []
-            snapshotList += event.lockDetailList
+            let removeIds = event.lockDetailList.map {$0.owner}
+            snapshotList = snapshotList.filter({removeIds.contains($0.owner)})
             self.lockDetailCaches[event.channelName] = snapshotList
             
             removeLockDetails = event.lockDetailList

@@ -16,9 +16,9 @@ import Foundation
     public var roomId: String = ""            //房间id
     public var owner: AUIUserThumbnailInfo?   //房主信息
     
-    public var thumbnail: String = ""   //房间列表上的缩略图（移除）
-    public var memberCount: UInt = 0          //房间人数（移除）
-    public var createTime: Int64 = 0          //创建时间（移除）
+//    public var thumbnail: String = ""   //房间列表上的缩略图（移除）
+//    public var memberCount: UInt = 0          //房间人数（移除）
+//    public var createTime: Int64 = 0          //创建时间（移除）
 }
 
 ///用户简略信息，用于各个模型传递简单数据
