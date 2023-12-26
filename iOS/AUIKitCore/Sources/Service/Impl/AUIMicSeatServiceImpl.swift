@@ -107,14 +107,14 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         }
         
         let model = AUISeatEnterNetworkModel()
-        model.roomId = channelName
         model.userAvatar = getRoomContext().currentUserInfo.userAvatar
         model.userId = getRoomContext().currentUserInfo.userId
         model.userName = getRoomContext().currentUserInfo.userName
         model.micSeatNo = seatIndex
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName, 
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId, 
                                          completion: callback)
@@ -128,11 +128,11 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         }
         
         let model = AUISeatLeaveNetworkModel()
-        model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName, 
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: callback)
@@ -148,12 +148,12 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         }
         
         let model = AUISeatKickNetworkModel()
-        model.roomId = channelName
         model.userId = getRoomContext().currentUserInfo.userId
         model.micSeatNo = seatIndex
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName, 
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: callback)
@@ -167,23 +167,23 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         
         if isMute {
             let model = AUISeatMuteAudioNetworkModel()
-            model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             
-            let message = model.rtmMessage()
-            rtmManager.publishAndWaitReceipt(channelName: channelName,
+            let message = model.rtmMessage(roomId: channelName)
+            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                             channelName: channelName,
                                              message: message,
                                              uniqueId: model.uniqueId,
                                              completion: callback)
         }else {
             let model = AUISeatUnMuteAudioNetworkModel()
-            model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
 
-            let message = model.rtmMessage()
-            rtmManager.publishAndWaitReceipt(channelName: channelName,
+            let message = model.rtmMessage(roomId: channelName)
+            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                             channelName: channelName,
                                              message: message,
                                              uniqueId: model.uniqueId,
                                              completion: callback)
@@ -201,23 +201,23 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         
         if isClose {
             let model = AUISeatLockNetworkModel()
-            model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             
-            let message = model.rtmMessage()
-            rtmManager.publishAndWaitReceipt(channelName: channelName,
+            let message = model.rtmMessage(roomId: channelName)
+            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                             channelName: channelName,
                                              message: message,
                                              uniqueId: model.uniqueId,
                                              completion: callback)
         }else {
             let model = AUISeatUnLockNetworkModel()
-            model.roomId = channelName
             model.micSeatNo = seatIndex
             model.userId = getRoomContext().currentUserInfo.userId
             
-            let message = model.rtmMessage()
-            rtmManager.publishAndWaitReceipt(channelName: channelName,
+            let message = model.rtmMessage(roomId: channelName)
+            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                             channelName: channelName,
                                              message: message,
                                              uniqueId: model.uniqueId,
                                              completion: callback)
@@ -404,14 +404,16 @@ extension AUIMicSeatServiceImpl {
 
 //MARK: AUIRtmMessageProxyDelegate
 extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
-    public func onMessageReceive(channelName: String, message: String) {
-        guard channelName == getChannelName() else {return}
+    public func onMessageReceive(publisher: String, message: String) {
+//        guard channelName == getChannelName() else {return}
         
         guard let data = message.data(using: .utf8),
               let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             return
         }
         let uniqueId = map["uniqueId"] as? String ?? ""
+        let channelName = map["channelName"] as? String ?? ""
+        guard channelName == getChannelName() else {return}
         guard let interfaceName = map["interfaceName"] as? String else {
             if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
                 rtmManager.markReceiptFinished(uniqueId: uniqueId)
@@ -429,31 +431,31 @@ extension AUIMicSeatServiceImpl: AUIRtmMessageProxyDelegate {
             user.userAvatar = model.userAvatar ?? ""
             user.userName = model.userName ?? ""
             rtmEnterSeat(seatIndex: model.micSeatNo, userInfo: user) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId:publisher, channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatLeaveNetworkInterface, let model = AUISeatLeaveNetworkModel.model(rtmMessage: message) {
             rtmLeaveSeat(userId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatKickNetworkInterface, let model = AUISeatKickNetworkModel.model(rtmMessage: message) {
             rtmKickSeat(seatIndex: model.micSeatNo) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatMuteAudioNetworkInterface, let model = AUISeatMuteAudioNetworkModel.model(rtmMessage: message) {
             rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: true) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatUnmuteAudioNetworkInterface, let model = AUISeatUnMuteAudioNetworkModel.model(rtmMessage: message) {
             rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: false) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatLockNetworkInterface, let model = AUISeatLockNetworkModel.model(rtmMessage: message) {
             rtmCloseSeat(seatIndex: model.micSeatNo, isClose: true) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISeatUnlockNetworkInterface, let model = AUISeatUnLockNetworkModel.model(rtmMessage: message) {
             rtmCloseSeat(seatIndex: model.micSeatNo, isClose: false) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
             }
         }
     }

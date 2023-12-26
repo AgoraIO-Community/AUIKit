@@ -65,14 +65,15 @@ open class AUINetworkModel: NSObject {
         return dic
     }
     
-    public func rtmMessage() -> String {
+    public func rtmMessage(roomId: String) -> String {
         let modelObj = self.yy_modelToJSONObject()
         let jsonObj = [
             "interfaceName": interfaceName,
             "uniqueId": uniqueId,
+            "channelName": roomId,
             "data": modelObj
         ]
-        
+        assert(roomId.count > 0)
         let data = try! JSONSerialization.data(withJSONObject: jsonObj, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
         return str

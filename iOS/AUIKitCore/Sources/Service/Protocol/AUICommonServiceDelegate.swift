@@ -39,4 +39,8 @@ extension AUICommonServiceDelegate {
     public func currentUserIsRoomOwner() -> Bool {
         return getRoomContext().isRoomOwner(channelName: getChannelName())
     }
+    
+    public func getLockOwnerId() -> String? {
+        return getRoomContext().getArbiter(channelName: getChannelName())?.lockOwnerId
+    }
 }

@@ -199,7 +199,7 @@ extension AUIRtmManager {
     
     public func subscribe(channelName: String, completion:@escaping (NSError?)->()) {
         let options = AgoraRtmSubscribeOptions()
-        options.features = [.metadata, .presence, .lock, .message]
+        options.features = [.metadata, .presence, .lock]
         let date1 = Date()
         rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
             aui_benchmark("rtm subscribe with message type", cost: -date1.timeIntervalSinceNow)
@@ -484,12 +484,13 @@ extension AUIRtmManager {
         self.receiptCallbackMap[uniqueId] = nil
     }
     
-    public func publishAndWaitReceipt(channelName: String,
+    public func publishAndWaitReceipt(userId: String,
+                                      channelName: String,
                                       message: String,
                                       uniqueId: String,
                                       completion: ( (NSError?)->())?) {
         let date = Date()
-        publish(channelName: channelName, message: message) {[weak self] err in
+        publish(userId: userId, channelName: channelName, message: message) {[weak self] err in
             guard let self = self else {return}
             if let err = err {
                 completion?(err)
@@ -502,10 +503,11 @@ extension AUIRtmManager {
         }
     }
     
-    public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
+    public func publish(userId: String, channelName: String, message: String, completion: @escaping (NSError?)->()) {
         //uid和
         let options = AgoraRtmPublishOptions()
-        rtmClient.publish(channelName: channelName, message: message, option: options) { resp, error in
+        options.channelType = .user
+        rtmClient.publish(channelName: userId, message: message, option: options) { resp, error in
             var callbackError: NSError?
             if let error = error {
                 callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
@@ -516,15 +518,16 @@ extension AUIRtmManager {
         aui_info("publish '\(message)' to '\(channelName)'", tag: "AUIRtmManager")
     }
     
-    public func sendReceipt(channelName: String, uniqueId: String, error: NSError?) {
+    public func sendReceipt(userId: String, channelName: String, uniqueId: String, error: NSError?) {
         let receiptMap: [String: Any] = [
             "uniqueId": uniqueId,
             "code": error?.code ?? 0,
+            "channelName": channelName,
             "reason": error?.localizedDescription ?? ""
         ]
         let data = try! JSONSerialization.data(withJSONObject: receiptMap, options: .prettyPrinted)
         let message = String(data: data, encoding: .utf8)!
-        publish(channelName: channelName, message: message) { err in
+        publish(userId: userId, channelName: channelName, message: message) { err in
         }
     }
 }

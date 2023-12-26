@@ -20,7 +20,6 @@ open class AUISongAddNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISongAddNetworkInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
     public var singer: String?
     public var name: String?
@@ -45,7 +44,6 @@ open class AUISongPinNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISongPinNetworkInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
 }
 
@@ -55,7 +53,6 @@ open class AUISongRemoveNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISongRemoveNetworkInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
 }
 
@@ -65,7 +62,6 @@ open class AUISongPlayNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISongPlayNetworkInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
 }
 
@@ -75,7 +71,6 @@ open class AUISongStopNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISongStopNetworkInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
 }
 

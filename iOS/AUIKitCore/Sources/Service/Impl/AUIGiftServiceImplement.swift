@@ -57,7 +57,7 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
     }
     
     
-    public func onMessageReceive(channelName: String, message: String) {
+    public func onMessageReceive(publisher: String, message: String) {
         let messageJson = message.a.jsonToDictionary()
         aui_info("messageJson :\(messageJson)")
         guard let messageType = messageJson["messageType"] as? String,let messageInfo = messageJson["messageInfo"] as? String else { return }
@@ -95,7 +95,7 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
             return
         }
         
-        self.rtmManager?.publish(channelName: self.channelName, message: message,completion: completion)
+        self.rtmManager?.publish(userId: getLockOwnerId() ?? "", channelName: self.channelName, message: message,completion: completion)
     }
     
     

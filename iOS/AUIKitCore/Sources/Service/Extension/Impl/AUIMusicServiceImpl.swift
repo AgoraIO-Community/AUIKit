@@ -211,12 +211,12 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         
         let model = AUISongAddNetworkModel.yy_model(with: dic)!
         model.userId = getRoomContext().currentUserInfo.userId
-        model.roomId = channelName
         let owner = getRoomContext().currentUserInfo
         model.owner = owner
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName,
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: completion)
@@ -236,10 +236,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         let model = AUISongRemoveNetworkModel()
         model.userId = removeUserId
         model.songCode = songCode
-        model.roomId = channelName
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName,
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: completion)
@@ -258,10 +258,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         let model = AUISongPinNetworkModel()
         model.userId = updateUserId
         model.songCode = songCode
-        model.roomId = channelName
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName,
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: completion)
@@ -282,10 +282,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             let model = AUISongPlayNetworkModel()
             model.userId = updateUserId
             model.songCode = songCode
-            model.roomId = channelName
             
-            let message = model.rtmMessage()
-            rtmManager.publishAndWaitReceipt(channelName: channelName,
+            let message = model.rtmMessage(roomId: channelName)
+            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                             channelName: channelName,
                                              message: message,
                                              uniqueId: model.uniqueId,
                                              completion: completion)
@@ -293,10 +293,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             let model = AUISongStopNetworkModel()
             model.userId = updateUserId
             model.songCode = songCode
-            model.roomId = channelName
             
-            let message = model.rtmMessage()
-            rtmManager.publishAndWaitReceipt(channelName: channelName,
+            let message = model.rtmMessage(roomId: channelName)
+            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                             channelName: channelName,
                                              message: message,
                                              uniqueId: model.uniqueId,
                                              completion: completion)
@@ -307,14 +307,16 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
 //MARK: AUIRtmMessageProxyDelegate
 extension AUIMusicServiceImpl: AUIRtmMessageProxyDelegate {
     //TODO: using thread queue processing to reduce main thread stuttering
-    public func onMessageReceive(channelName: String, message: String) {
-        guard channelName == getChannelName() else {return}
+    public func onMessageReceive(publisher: String, message: String) {
+//        guard channelName == getChannelName() else {return}
         
         guard let data = message.data(using: .utf8),
               let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             return
         }
         let uniqueId = map["uniqueId"] as? String ?? ""
+        let channelName = map["channelName"] as? String ?? ""
+        guard channelName == getChannelName() else {return}
         guard let interfaceName = map["interfaceName"] as? String else {
             if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
                 rtmManager.markReceiptFinished(uniqueId: uniqueId)
@@ -332,23 +334,23 @@ extension AUIMusicServiceImpl: AUIRtmMessageProxyDelegate {
             //TODO: use ntp time
             songModel.createAt = Int64(Date().timeIntervalSince1970 * 1000)
             rtmChooseSong(songModel: songModel) {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: self?.getLockOwnerId() ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongPinNetworkInterface, let model = AUISongPinNetworkModel.model(rtmMessage: message) {
             rtmPinSong(songCode: model.songCode ?? "", updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongRemoveNetworkInterface, let model = AUISongRemoveNetworkModel.model(rtmMessage: message) {
             rtmRemoveSong(songCode: model.songCode ?? "", removeUserId: model.userId ?? ""){[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongPlayNetworkInterface, let model = AUISongPlayNetworkModel.model(rtmMessage: message) {
             rtmUpdatePlayStatus(songCode: model.songCode ?? "", playStatus: .playing, updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUISongStopNetworkInterface, let model = AUISongStopNetworkModel.model(rtmMessage: message) {
             rtmUpdatePlayStatus(songCode: model.songCode ?? "", playStatus: .idle, updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
             }
         }
     }

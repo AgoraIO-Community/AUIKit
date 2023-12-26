@@ -64,10 +64,10 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         let model = AUIPlayerJoinNetworkModel()
         model.songCode = songCode
         model.userId = joinUserId
-        model.roomId = channelName
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName,
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: completion)
@@ -83,10 +83,10 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
         let model = AUIPlayerLeaveNetworkModel()
         model.songCode = songCode
         model.userId = leaveUserId
-        model.roomId = channelName
         
-        let message = model.rtmMessage()
-        rtmManager.publishAndWaitReceipt(channelName: channelName,
+        let message = model.rtmMessage(roomId: channelName)
+        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
+                                         channelName: channelName,
                                          message: message,
                                          uniqueId: model.uniqueId,
                                          completion: completion)
@@ -132,14 +132,16 @@ extension AUIChorusServiceImpl: AUIRtmAttributesProxyDelegate {
 //MARK: AUIRtmMessageProxyDelegate
 extension AUIChorusServiceImpl: AUIRtmMessageProxyDelegate {
     //TODO: using thread queue processing to reduce main thread stuttering
-    public func onMessageReceive(channelName: String, message: String) {
-        guard channelName == getChannelName() else {return}
+    public func onMessageReceive(publisher: String, message: String) {
+//        guard channelName == getChannelName() else {return}
         
         guard let data = message.data(using: .utf8),
               let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             return
         }
         let uniqueId = map["uniqueId"] as? String ?? ""
+        let channelName = map["channelName"] as? String ?? ""
+        guard channelName == getChannelName() else {return}
         guard let interfaceName = map["interfaceName"] as? String else {
             if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
                 rtmManager.markReceiptFinished(uniqueId: uniqueId)
@@ -153,11 +155,11 @@ extension AUIChorusServiceImpl: AUIRtmMessageProxyDelegate {
         aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
         if interfaceName == kAUIPlayerJoinInterface, let model = AUIPlayerJoinNetworkModel.model(rtmMessage: message) {
             rtmJoinChorus(songCode: model.songCode ?? "", userId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: publisher, channelName: channelName, uniqueId: uniqueId, error: err)
             }
         } else if interfaceName == kAUIPlayerLeaveInterface, let model = AUIPlayerLeaveNetworkModel.model(rtmMessage: message) {
             rtmLeaveChorus(songCode: model.songCode ?? "", userId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(channelName: channelName, uniqueId: uniqueId, error: err)
+                self?.rtmManager.sendReceipt(userId: publisher, channelName: channelName, uniqueId: uniqueId, error: err)
             }
         }
     }

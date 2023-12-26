@@ -17,7 +17,6 @@ open class AUIPlayerJoinNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUIPlayerJoinInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
 
 }
@@ -28,7 +27,6 @@ open class AUIPlayerLeaveNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUIPlayerLeaveInterface
     }
     
-    public var roomId: String?
     public var songCode: String?
 
 }

@@ -23,7 +23,6 @@ open class AUISeatEnterNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatEnterNetworkInterface
     }
     
-    public var roomId: String?
     public var micSeatUserId: String?
     public var userName: String?
     public var userAvatar: String?
@@ -37,7 +36,6 @@ open class AUISeatLeaveNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatLeaveNetworkInterface
     }
     
-    public var roomId: String?
 //    public var micSeatNo: Int = 0
     
 }
@@ -48,7 +46,6 @@ open class AUISeatKickNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatKickNetworkInterface
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
 }
 
@@ -58,7 +55,6 @@ open class AUISeatMuteAudioNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatMuteAudioNetworkInterface
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
     public var isMuteAudio: Int = 0
 }
@@ -69,7 +65,6 @@ open class AUISeatUnMuteAudioNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatUnmuteAudioNetworkInterface
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
 }
 
@@ -79,7 +74,6 @@ open class AUISeatMuteVideoNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/seat/video/mute"
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
     public var isMuteVideo: Int = 0
 }
@@ -90,7 +84,6 @@ open class AUISeatUnMuteVideoNetworkModel: AUICommonNetworkModel {
         interfaceName = "/v1/seat/video/unmute"
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
 }
 
@@ -101,7 +94,6 @@ open class AUISeatLockNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatLockNetworkInterface
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
 //    public var isLock: Int = 0
 }
@@ -112,6 +104,5 @@ open class AUISeatUnLockNetworkModel: AUICommonNetworkModel {
         interfaceName = kAUISeatUnlockNetworkInterface
     }
     
-    public var roomId: String?
     public var micSeatNo: Int = 0
 }

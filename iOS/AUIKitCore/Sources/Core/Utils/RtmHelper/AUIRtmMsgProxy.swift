@@ -34,7 +34,7 @@ import AgoraRtmKit
 }
 
 @objc public protocol AUIRtmMessageProxyDelegate: NSObjectProtocol {
-    func onMessageReceive(channelName: String, message: String)
+    func onMessageReceive(publisher: String, message: String)
 }
 
 @objc public protocol AUIRtmUserProxyDelegate: NSObjectProtocol {
@@ -282,7 +282,7 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         
         if let message = event.message.stringData {
             for element in messageDelegates.allObjects {
-                element.onMessageReceive(channelName: event.channelName, message: message)
+                element.onMessageReceive(publisher: event.publisher, message: message)
             }
         } else {
             aui_warn("recv unknown type message", tag: "AUIRtmMsgProxy")
