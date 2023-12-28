@@ -100,6 +100,7 @@ class AUIChorusServiceImpl constructor(
 
         rtmManager.publishAndWaitReceipt(
             channelName,
+            lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUIPlayerJoinInterface,
                 data = info
@@ -129,6 +130,7 @@ class AUIChorusServiceImpl constructor(
 
         rtmManager.publishAndWaitReceipt(
             channelName,
+            lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUIPlayerLeaveInterface,
                 data = info
@@ -216,8 +218,8 @@ class AUIChorusServiceImpl constructor(
         }
     }
 
-    override fun onMessageReceive(channelName: String, message: String) {
-        if (channelName != this.channelName) {
+    override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
+        if (publisherId.isEmpty() && channelName != this.channelName) {
             return
         }
 
@@ -249,7 +251,8 @@ class AUIChorusServiceImpl constructor(
             if (info == null) {
                 rtmManager.sendReceipt(
                     channelName,
-                    AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                    publisherId,
+                    AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                 )
                 return
             }
@@ -258,9 +261,11 @@ class AUIChorusServiceImpl constructor(
                     rtmJoinChorus(info.songCode, info.userId) { error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )
@@ -270,9 +275,11 @@ class AUIChorusServiceImpl constructor(
                     rtmLeaveChorus(info.songCode, info.userId) { error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )

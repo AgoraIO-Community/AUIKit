@@ -57,6 +57,7 @@ data class AUIRtmPublishModel<Model>(
 data class AUIRtmReceiptModel(
     val uniqueId: String,
     val code: Int,
+    val channelName: String,
     val reason: String
 )
 

@@ -30,7 +30,7 @@ interface AUIRtmAttributeRespObserver {
 }
 
 interface AUIRtmMessageRespObserver {
-    fun onMessageReceive(channelName: String, message: String)
+    fun onMessageReceive(channelName: String, publisherId: String, message: String)
 }
 
 interface AUIRtmUserRespObserver {
@@ -233,7 +233,7 @@ class AUIRtmMsgProxy : RtmEventListener {
             }
         } ?: ""
         messageRespObservers.forEach {
-            it.onMessageReceive(event.channelName, message)
+            it.onMessageReceive(event.channelName, event.publisherId, message)
         }
     }
 

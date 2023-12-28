@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import io.agora.auikit.model.AUIRoomContext;
+import io.agora.auikit.service.arbiter.AUIArbiter;
 import io.agora.auikit.service.callback.AUICallback;
 
 public interface IAUICommonService<Observer> {
@@ -37,4 +38,11 @@ public interface IAUICommonService<Observer> {
 
     @NonNull String getChannelName();
 
+    default @NonNull String getLockOwnerId() {
+        AUIArbiter arbiter = AUIRoomContext.shared().getArbiter(getChannelName());
+        if(arbiter == null){
+            return "";
+        }
+        return arbiter.lockOwnerId();
+    }
 }

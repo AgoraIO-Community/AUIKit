@@ -48,4 +48,5 @@ class AUIArbiter(
 
     fun isArbiter() = lockOwnerId == currentUserId
 
+    fun lockOwnerId() = lockOwnerId
 }

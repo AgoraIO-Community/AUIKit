@@ -108,6 +108,7 @@ class AUIMicSeatServiceImpl(
             )
             rtmManager.publishAndWaitReceipt(
                 channelName,
+                lockOwnerId,
                 AUIRtmPublishModel(interfaceName = kAUISeatEnterInterface, data = seatInfo)
             ) { error ->
                 if (error == null) {
@@ -145,6 +146,7 @@ class AUIMicSeatServiceImpl(
             )
             rtmManager.publishAndWaitReceipt(
                 channelName,
+                lockOwnerId,
                 AUIRtmPublishModel(interfaceName = kAUISeatLeaveInterface, data = seatInfo)
             ) { error ->
                 if (error == null) {
@@ -183,6 +185,7 @@ class AUIMicSeatServiceImpl(
         } else {
             rtmManager.publishAndWaitReceipt(
                 channelName,
+                lockOwnerId,
                 AUIRtmPublishModel(interfaceName = kAUISeatKickInterface, data = micSeat)
             ) { error ->
                 if (error == null) {
@@ -209,6 +212,7 @@ class AUIMicSeatServiceImpl(
         } else {
             rtmManager.publishAndWaitReceipt(
                 channelName,
+                lockOwnerId,
                 AUIRtmPublishModel(
                     interfaceName = if (isMute) kAUISeatMuteAudioInterface else kAUISeatUnmuteAudioInterface,
                     data = micSeat
@@ -236,6 +240,7 @@ class AUIMicSeatServiceImpl(
         } else {
             rtmManager.publishAndWaitReceipt(
                 channelName,
+                lockOwnerId,
                 AUIRtmPublishModel(
                     interfaceName = if (isClose) kAUISeatLockInterface else kAUISeatUnlockInterface,
                     data = micSeat
@@ -276,8 +281,8 @@ class AUIMicSeatServiceImpl(
 
     override fun getChannelName() = channelName
 
-    override fun onMessageReceive(channelName: String, message: String) {
-        if (channelName != this.channelName) {
+    override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
+        if (publisherId.isEmpty() && channelName != this.channelName) {
             return
         }
 
@@ -317,9 +322,11 @@ class AUIMicSeatServiceImpl(
                         }) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -327,7 +334,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName,"Gson parse failed!")
                         )
                     }
                 }
@@ -339,9 +347,11 @@ class AUIMicSeatServiceImpl(
                         rtmLeaveSeat(seatInfo.userId) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -349,7 +359,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                         )
                     }
                 }
@@ -361,9 +372,11 @@ class AUIMicSeatServiceImpl(
                         rtmKickSeat(seatInfo.micSeatNo) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -371,7 +384,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                         )
                     }
                 }
@@ -383,9 +397,11 @@ class AUIMicSeatServiceImpl(
                         rtmMuteAudioSeat(seatInfo.micSeatNo, true) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -393,7 +409,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                         )
                     }
                 }
@@ -405,9 +422,11 @@ class AUIMicSeatServiceImpl(
                         rtmMuteAudioSeat(seatInfo.micSeatNo, false) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -415,7 +434,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                         )
                     }
                 }
@@ -427,9 +447,11 @@ class AUIMicSeatServiceImpl(
                         rtmCloseSeat(seatInfo.micSeatNo, true) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -437,7 +459,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                         )
                     }
                 }
@@ -449,9 +472,11 @@ class AUIMicSeatServiceImpl(
                         rtmCloseSeat(seatInfo.micSeatNo, false) { error ->
                             rtmManager.sendReceipt(
                                 channelName,
+                                publisherId,
                                 AUIRtmReceiptModel(
                                     publishModel.uniqueId,
                                     error?.code ?: 0,
+                                    channelName,
                                     error?.message ?: ""
                                 )
                             )
@@ -459,7 +484,8 @@ class AUIMicSeatServiceImpl(
                     } else {
                         rtmManager.sendReceipt(
                             channelName,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                            publisherId,
+                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                         )
                     }
                 }
