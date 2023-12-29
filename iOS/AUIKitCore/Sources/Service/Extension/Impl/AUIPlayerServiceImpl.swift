@@ -63,13 +63,13 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     }
     
     public func stopSing() {
-        ktvApi.getMediaPlayer()?.stop()
+        ktvApi.getMusicPlayer()?.stop()
         ktvApi.switchSingerRole(newRole: .audience) { state, reason in
         }
     }
     
-    public func getMusicPlayer() -> AgoraMusicPlayerProtocol? {
-        return ktvApi.getMediaPlayer()
+    public func getMusicPlayer() -> AgoraRtcMediaPlayerProtocol? {
+        return ktvApi.getMusicPlayer()
     }
     
     public func resumeSing() {
@@ -87,11 +87,11 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
     //音乐播放音量
     public func adjustMusicPlayerPlayoutVolume(volume: Int) {
-        ktvApi.getMediaPlayer()?.adjustPlayoutVolume(Int32(volume))
+        ktvApi.getMusicPlayer()?.adjustPlayoutVolume(Int32(volume))
     }
     
     public func adjustMusicPlayerPublishVolume(volume: Int) {
-        ktvApi.getMediaPlayer()?.adjustPublishSignalVolume(Int32(volume))
+        ktvApi.getMusicPlayer()?.adjustPublishSignalVolume(Int32(volume))
 //        ktvApi.adjustRemoteVolume(volume: Int32(volume))
     }
     
@@ -105,7 +105,7 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     }
     
     public func selectMusicPlayerTrackMode(mode: KTVPlayerTrackMode) {
-        ktvApi.getMediaPlayer()?.selectAudioTrack(mode == .origin ? 0 : 1)
+        ktvApi.getMusicPlayer()?.selectAudioTrack(mode == .origin ? 0 : 1)
     }
     
     public func getPlayerPosition() -> Int {
@@ -123,7 +123,7 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
     //升降调
     public func setAudioPitch(pitch: Int) {
-        ktvApi.getMediaPlayer()?.setAudioPitch(pitch)
+        ktvApi.getMusicPlayer()?.setAudioPitch(pitch)
     }
     
     public func setAudioEffectPreset(present: AgoraAudioEffectPreset) {
@@ -148,21 +148,6 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
     
     public func removeEventHandler(ktvApiEventHandler: KTVApiEventHandlerDelegate) {
         ktvApi.removeEventHandler(ktvApiEventHandler: ktvApiEventHandler)
-    }
-    
-    public func didKTVAPIReceiveAudioVolumeIndication(with speakers: [AgoraRtcAudioVolumeInfo], totalVolume: NSInteger) {
-        ktvApi.didKTVAPIReceiveAudioVolumeIndication(with: speakers, totalVolume: totalVolume)
-    }
-    
-    public func didKTVAPIReceiveStreamMessageFrom(uid: NSInteger, streamId: NSInteger, data: Data) {
-        ktvApi.didKTVAPIReceiveStreamMessageFrom(uid: uid, streamId: streamId, data: data)
-        for obj in respDelegates.allObjects {
-            (obj as? AUIPlayerRespDelegate)?.onDataStreamMsgReceived(with: uid, streamId: streamId, data: data)
-        }
-    }
-    
-    public func didKTVAPILocalAudioStats(stats: AgoraRtcLocalAudioStats) {
-        ktvApi.didKTVAPILocalAudioStats(stats: stats)
     }
     
     //开启耳返
@@ -215,6 +200,9 @@ extension AUIPlayerServiceImpl: AUIPlayerServiceDelegate {
 }
 
 extension AUIPlayerServiceImpl: KTVApiEventHandlerDelegate {
+    public func onMusicPlayerProgressChanged(with progress: Int) {
+    }
+    
     public func onTokenPrivilegeWillExpire() {
         
     }
