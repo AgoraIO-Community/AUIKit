@@ -205,6 +205,7 @@ class AUIJukeboxServiceImpl constructor(
 
         rtmManager.publishAndWaitReceipt(
             channelName,
+            lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUISongAddNetworkInterface,
                 data = rtmSongInfo
@@ -232,6 +233,7 @@ class AUIJukeboxServiceImpl constructor(
 
         rtmManager.publishAndWaitReceipt(
             channelName,
+            lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUISongRemoveNetworkInterface,
                 data = rtmSongInfo
@@ -259,6 +261,7 @@ class AUIJukeboxServiceImpl constructor(
 
         rtmManager.publishAndWaitReceipt(
             channelName,
+            lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUISongPinNetworkInterface,
                 data = rtmSongInfo
@@ -296,6 +299,7 @@ class AUIJukeboxServiceImpl constructor(
         }
         rtmManager.publishAndWaitReceipt(
             channelName,
+            lockOwnerId,
             model
         ) { error ->
             if (error != null) {
@@ -350,8 +354,8 @@ class AUIJukeboxServiceImpl constructor(
         }
     }
 
-    override fun onMessageReceive(channelName: String, message: String) {
-        if (channelName != this.channelName) {
+    override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
+        if (publisherId.isEmpty() && channelName != this.channelName) {
             return
         }
 
@@ -383,7 +387,8 @@ class AUIJukeboxServiceImpl constructor(
             if (song == null) {
                 rtmManager.sendReceipt(
                     channelName,
-                    AUIRtmReceiptModel(publishModel.uniqueId, -1, "Gson parse failed!")
+                    publisherId,
+                    AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
                 )
                 return
             }
@@ -402,9 +407,11 @@ class AUIJukeboxServiceImpl constructor(
                     rtmChooseSong(chooseSong){ error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )
@@ -414,9 +421,11 @@ class AUIJukeboxServiceImpl constructor(
                     rtmRemoveSong(song.songCode, song.userId) { error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )
@@ -426,9 +435,11 @@ class AUIJukeboxServiceImpl constructor(
                     rtmPinSong(song.songCode, song.userId) { error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )
@@ -438,9 +449,11 @@ class AUIJukeboxServiceImpl constructor(
                     rtmUpdatePlayStatus(song.songCode, AUIPlayStatus.playing, song.userId){error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )
@@ -450,9 +463,11 @@ class AUIJukeboxServiceImpl constructor(
                     rtmUpdatePlayStatus(song.songCode, AUIPlayStatus.idle, song.userId){error ->
                         rtmManager.sendReceipt(
                             channelName,
+                            publisherId,
                             AUIRtmReceiptModel(
                                 publishModel.uniqueId,
                                 error?.code ?: 0,
+                                channelName,
                                 error?.message ?: ""
                             )
                         )

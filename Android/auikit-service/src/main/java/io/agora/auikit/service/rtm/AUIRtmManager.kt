@@ -40,11 +40,11 @@ class AUIRtmManager constructor(
     }
 
     fun deInit(){
+        cleanReceipts()
         throttlerUpdateMetaDataModel.reset()
         throttlerRemoveMetaDataModel.reset()
         proxy.unRegisterAllObservers()
         rtmClient.removeEventListener(proxy)
-
     }
 
     fun renew(token: String) {
@@ -700,8 +700,8 @@ class AUIRtmManager constructor(
     private val receiptTimeoutRun = mutableMapOf<String, AUIRtmReceiptHandler>()
     private val receiptHandler = Handler(Looper.getMainLooper())
 
-    fun sendReceipt(channelName: String, receipt: AUIRtmReceiptModel) {
-        publish(channelName, GsonTools.beanToString(receipt) ?: "") {}
+    fun sendReceipt(channelName: String, userId: String, receipt: AUIRtmReceiptModel) {
+        publish(channelName, userId, GsonTools.beanToString(receipt) ?: "") {}
     }
 
     fun cleanReceipts() {
@@ -718,11 +718,13 @@ class AUIRtmManager constructor(
 
     fun <Model> publishAndWaitReceipt(
         channelName: String,
+        userId: String,
         publishModel: AUIRtmPublishModel<Model>,
         completion: (AUIRtmException?) -> Unit
     ){
         publishAndWaitReceipt(
             channelName,
+            userId,
             GsonTools.beanToString(publishModel) ?: "",
             publishModel.uniqueId ?: "",
             completion = completion
@@ -731,12 +733,13 @@ class AUIRtmManager constructor(
 
     fun publishAndWaitReceipt(
         channelName: String,
+        userId: String,
         message: String,
         uniqueId: String,
         timeout: Long = 2000,
         completion: (AUIRtmException?) -> Unit
     ) {
-        publish(channelName, message) { error ->
+        publish(channelName, userId, message) { error ->
             if (error != null) {
                 completion.invoke(error)
                 return@publish
@@ -761,12 +764,20 @@ class AUIRtmManager constructor(
 
     fun publish(
         channelName: String,
+        userId: String,
         message: String,
         completion: (AUIRtmException?) -> Unit
     ) {
-        rtmClient.publish(channelName,
+        val options = PublishOptions()
+        var target = channelName
+        if(userId.isNotEmpty()){
+            options.setChannelType(RtmChannelType.USER)
+            target = userId
+        }
+        rtmClient.publish(
+            target,
             message,
-            PublishOptions(),
+            options,
             object : ResultCallback<Void> {
                 override fun onSuccess(responseInfo: Void?) {
                     completion.invoke(null)
