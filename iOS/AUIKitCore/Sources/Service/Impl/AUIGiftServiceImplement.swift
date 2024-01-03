@@ -95,7 +95,7 @@ extension AUIGiftServiceImplement: AUIGiftsManagerServiceDelegate,AUIRtmMessageP
             return
         }
         
-        self.rtmManager?.publish(userId: getLockOwnerId() ?? "", channelName: self.channelName, message: message,completion: completion)
+        self.rtmManager?.publish(channelName: self.channelName, message: message,completion: completion)
     }
     
     

@@ -199,7 +199,7 @@ extension AUIRtmManager {
     
     public func subscribe(channelName: String, completion:@escaping (NSError?)->()) {
         let options = AgoraRtmSubscribeOptions()
-        options.features = [.metadata, .presence, .lock]
+        options.features = [.metadata, .presence, .lock, .message]
         let date1 = Date()
         rtmClient.subscribe(channelName: channelName, option: options) { resp, error in
             aui_benchmark("rtm subscribe with message type", cost: -date1.timeIntervalSinceNow)
@@ -508,6 +508,20 @@ extension AUIRtmManager {
         let options = AgoraRtmPublishOptions()
         options.channelType = .user
         rtmClient.publish(channelName: userId, message: message, option: options) { resp, error in
+            var callbackError: NSError?
+            if let error = error {
+                callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
+            }
+            completion(callbackError)
+            aui_info("publish '\(message)' to '\(channelName)': \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
+        }
+        aui_info("publish '\(message)' to '\(channelName)'", tag: "AUIRtmManager")
+    }
+    
+    public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
+        //uid和
+        let options = AgoraRtmPublishOptions()
+        rtmClient.publish(channelName: channelName, message: message, option: options) { resp, error in
             var callbackError: NSError?
             if let error = error {
                 callbackError = AUICommonError.httpError(error.errorCode.rawValue, error.reason).toNSError()
