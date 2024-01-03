@@ -109,7 +109,7 @@ class AUIMicSeatServiceImpl(
             rtmManager.publishAndWaitReceipt(
                 channelName,
                 lockOwnerId,
-                AUIRtmPublishModel(interfaceName = kAUISeatEnterInterface, data = seatInfo)
+                AUIRtmPublishModel(interfaceName = kAUISeatEnterInterface, data = seatInfo, channelName = channelName)
             ) { error ->
                 if (error == null) {
                     callback?.onResult(null)
@@ -147,7 +147,7 @@ class AUIMicSeatServiceImpl(
             rtmManager.publishAndWaitReceipt(
                 channelName,
                 lockOwnerId,
-                AUIRtmPublishModel(interfaceName = kAUISeatLeaveInterface, data = seatInfo)
+                AUIRtmPublishModel(interfaceName = kAUISeatLeaveInterface, data = seatInfo, channelName = channelName)
             ) { error ->
                 if (error == null) {
                     callback?.onResult(null)
@@ -186,7 +186,7 @@ class AUIMicSeatServiceImpl(
             rtmManager.publishAndWaitReceipt(
                 channelName,
                 lockOwnerId,
-                AUIRtmPublishModel(interfaceName = kAUISeatKickInterface, data = micSeat)
+                AUIRtmPublishModel(interfaceName = kAUISeatKickInterface, data = micSeat, channelName = channelName)
             ) { error ->
                 if (error == null) {
                     callback?.onResult(null)
@@ -215,7 +215,8 @@ class AUIMicSeatServiceImpl(
                 lockOwnerId,
                 AUIRtmPublishModel(
                     interfaceName = if (isMute) kAUISeatMuteAudioInterface else kAUISeatUnmuteAudioInterface,
-                    data = micSeat
+                    data = micSeat,
+                    channelName = channelName
                 )
             ) { error ->
                 if (error == null) {
@@ -243,7 +244,8 @@ class AUIMicSeatServiceImpl(
                 lockOwnerId,
                 AUIRtmPublishModel(
                     interfaceName = if (isClose) kAUISeatLockInterface else kAUISeatUnlockInterface,
-                    data = micSeat
+                    data = micSeat,
+                    channelName = channelName
                 )
             ) { error ->
                 if (error == null) {

@@ -103,7 +103,8 @@ class AUIChorusServiceImpl constructor(
             lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUIPlayerJoinInterface,
-                data = info
+                data = info,
+                channelName = channelName
             )
         ) { error ->
             if (error != null) {
@@ -133,7 +134,8 @@ class AUIChorusServiceImpl constructor(
             lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUIPlayerLeaveInterface,
-                data = info
+                data = info,
+                channelName = channelName
             )
         ) { error ->
             if (error != null) {
@@ -181,8 +183,13 @@ class AUIChorusServiceImpl constructor(
             return
         }
         Log.d(TAG, "channelName:$channelName,key:$key,value:$value")
-        val chorusLists: List<AUIChoristerModel> =
-            gson.fromJson(value as String, object : TypeToken<List<AUIChoristerModel>>() {}.type) ?: mutableListOf()
+
+        val json = value as? String ?: return
+        var chorusLists: List<AUIChoristerModel> = mutableListOf()
+        if (json.contains("[")) {
+            chorusLists = gson.fromJson(json, object : TypeToken<List<AUIChoristerModel>>() {}.type) ?: mutableListOf()
+        }
+        
         chorusLists.forEach { newChorister ->
             var hasChorister = false
             this.chorusList.forEach {

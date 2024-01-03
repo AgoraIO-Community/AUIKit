@@ -208,7 +208,8 @@ class AUIJukeboxServiceImpl constructor(
             lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUISongAddNetworkInterface,
-                data = rtmSongInfo
+                data = rtmSongInfo,
+                channelName = channelName
             )
         ) { error ->
             if (error != null) {
@@ -228,7 +229,8 @@ class AUIJukeboxServiceImpl constructor(
 
         val rtmSongInfo = AUIRtmSongInfo(
             channelName,
-            roomContext.currentUserInfo.userId
+            roomContext.currentUserInfo.userId,
+            songCode = songCode
         )
 
         rtmManager.publishAndWaitReceipt(
@@ -236,7 +238,8 @@ class AUIJukeboxServiceImpl constructor(
             lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUISongRemoveNetworkInterface,
-                data = rtmSongInfo
+                data = rtmSongInfo,
+                channelName = channelName
             )
         ) { error ->
             if (error != null) {
@@ -264,7 +267,8 @@ class AUIJukeboxServiceImpl constructor(
             lockOwnerId,
             AUIRtmPublishModel(
                 interfaceName = kAUISongPinNetworkInterface,
-                data = rtmSongInfo
+                data = rtmSongInfo,
+                channelName = channelName
             )
         ) { error ->
             if (error != null) {
@@ -289,12 +293,14 @@ class AUIJukeboxServiceImpl constructor(
         val model = if (playStatus == AUIPlayStatus.playing) {
             AUIRtmPublishModel(
                 interfaceName = kAUISongPlayNetworkInterface,
-                data = rtmSongInfo
+                data = rtmSongInfo,
+                channelName = channelName
             )
         } else{
             AUIRtmPublishModel(
                 interfaceName = kAUISongStopNetworkInterface,
-                data = rtmSongInfo
+                data = rtmSongInfo,
+                channelName = channelName
             )
         }
         rtmManager.publishAndWaitReceipt(

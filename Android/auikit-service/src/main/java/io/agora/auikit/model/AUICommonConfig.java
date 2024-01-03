@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 
 public class AUICommonConfig {
     public @NonNull Context context;
+    // 声网AppId
     public @NonNull String appId = "";
+    // 声网App证书(可选，如果没有用到后端token生成服务可以不设置)
     public @NonNull String appCert = "";
+    // 域名(可选，如果没有用到后端服务可以不设置)
     public @NonNull String host = "";
-    public @NonNull String userId = "";
-    public @NonNull String userName = "";
-    public @NonNull String userAvatar = "";  //用户头像
+    // 用户信息
+    public @NonNull AUIUserThumbnailInfo owner;
 }

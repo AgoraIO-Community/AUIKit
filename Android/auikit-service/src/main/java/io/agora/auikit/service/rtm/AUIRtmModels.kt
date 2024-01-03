@@ -52,6 +52,7 @@ data class AUIRtmPublishModel<Model>(
     val uniqueId: String? = UUID.randomUUID().toString(),
     val interfaceName: String?,
     val data: Model?,
+    val channelName: String?
 )
 
 data class AUIRtmReceiptModel(
