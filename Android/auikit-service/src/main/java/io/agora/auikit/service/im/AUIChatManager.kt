@@ -210,7 +210,7 @@ class AUIChatManager(
 
 
     fun isLoggedIn():Boolean{
-        return ChatClient.getInstance().isLoggedIn
+        return ChatClient.getInstance().isSdkInited && ChatClient.getInstance().isLoggedIn
     }
 
     override fun onMessageReceived(messages: MutableList<ChatMessage>?) {

@@ -122,7 +122,7 @@ class AUIGiftServiceImpl constructor(
         val giftJson = JSONObject()
         giftJson.put("messageType", giftKey)
         giftJson.put("messageInfo", GsonTools.beanToString(gift))
-        rtmManager.publish(channelName, lockOwnerId, giftJson.toString()){ error ->
+        rtmManager.publish(channelName, "", giftJson.toString()){ error ->
             if(error == null ){
                 callback.onResult(null)
             }else{
@@ -144,7 +144,7 @@ class AUIGiftServiceImpl constructor(
     override fun getChannelName() = channelName
 
     override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
-        if(publisherId.isEmpty() && this@AUIGiftServiceImpl.channelName != channelName){
+        if(this@AUIGiftServiceImpl.channelName != channelName){
             return
         }
         val json = JSONObject(message)

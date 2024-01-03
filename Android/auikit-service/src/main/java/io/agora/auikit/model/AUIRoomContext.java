@@ -36,9 +36,7 @@ public class AUIRoomContext {
 
     public void setCommonConfig(@NonNull AUICommonConfig config) {
         mCommonConfig = config;
-        currentUserInfo.userId = config.userId;
-        currentUserInfo.userName = config.userName;
-        currentUserInfo.userAvatar = config.userAvatar;
+        currentUserInfo = config.owner;
     }
 
     public @NonNull AUICommonConfig requireCommonConfig() {
