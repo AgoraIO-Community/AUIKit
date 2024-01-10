@@ -204,8 +204,8 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
             aui_warn("sendReceipt fail")
             return
         }
-        rtmManager.publish(channelName: publisher, message: jsonStr, completion: { err in
-        })
+        rtmManager.publish(userId: publisher, channelName: channelName, message: jsonStr) { err in
+        }
     }
     public func onMessageReceive(publisher: String, message: String) {
         guard let data = message.data(using: .utf8),
