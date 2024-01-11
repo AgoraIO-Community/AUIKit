@@ -116,14 +116,16 @@ enum AUIMessageType: Int, Codable {
 
 enum AUICollectionOprationType: Int, Codable {
     case add = 0      //新增
-    case update = 1   //更新
-    case remove = 2   //删除
+    case update = 1   //更新，对传递进来的map进行根节点上的替换
+    case merge = 2    //合并，对传递进来的map进行每个子节点的替换
+    case remove = 3   //删除
     case increase = 10 //增加
     case decrease = 11 //减少
 }
 
 struct AUICollectionMessagePayload: Codable {
     public var type: AUICollectionOprationType?
+    public var dataCmd: String?
     public var data: AUIAnyType?
 
     enum CodingKeys: String, CodingKey {

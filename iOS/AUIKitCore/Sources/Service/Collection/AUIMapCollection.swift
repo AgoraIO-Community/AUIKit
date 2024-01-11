@@ -13,8 +13,9 @@ public class AUIMapCollection: NSObject {
     private var observeKey: String
     private var rtmManager: AUIRtmManager
     private var currentMap: [String: Any] = [:]
-    private var metadataWillSetColsure: ((String, [String: Any], [String: Any])-> NSError?)?
-    private var metadataWillRemoveColsure: ((String, [String: Any])-> NSError?)?
+    private var metadataWillSetColsure: ((String, String?, [String: Any], [String: Any])-> NSError?)?
+    private var metadataWillMergeColsure: ((String, String?, [String: Any], [String: Any])-> NSError?)?
+    private var metadataWillRemoveColsure: ((String, String?, [String: Any])-> NSError?)?
     
     deinit {
         rtmManager.unsubscribeAttributes(channelName: channelName, itemKey: observeKey, delegate: self)
@@ -40,27 +41,65 @@ public class AUIMapCollection: NSObject {
         }
      }
      */
-    func subscribeWillSet(callback: ((String, [String: Any], [String: Any])-> NSError?)?) {
+    func subscribeWillSet(callback: ((String, String?, [String: Any], [String: Any])-> NSError?)?) {
         self.metadataWillSetColsure = callback
     }
     
-    func subscribeWillRemove(callback: ((String, [String: Any])-> NSError?)?) {
+    func subscribeWillMerge(callback: ((String, String?, [String: Any], [String: Any])-> NSError?)?) {
+        self.metadataWillMergeColsure = callback
+    }
+    
+    func subscribeWillRemove(callback: ((String, String?, [String: Any])-> NSError?)?) {
         self.metadataWillRemoveColsure = callback
     }
     
-    
-    /// 更新
+    /// 更新，替换根节点
     /// - Parameters:
+    ///   - valueCmd: 命令类型
     ///   - value: <#value description#>
     ///   - objectId: <#objectId description#>
-    public func updateMetaData(value: [String: Any], objectId: String, callback: ((NSError?)->())?) {
+    ///   - callback: <#callback description#>
+    public func updateMetaData(valueCmd: String?, value: [String: Any], objectId: String, callback: ((NSError?)->())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
-            rtmSetMetaData(publisherId: currentUserId, value: value, objectId: objectId, callback: callback)
+            rtmSetMetaData(publisherId: currentUserId, valueCmd: valueCmd, value: value, objectId: objectId, callback: callback)
             return
         }
         
-        let payload = AUICollectionMessagePayload(type: .update, data: AUIAnyType(map: value))
+        let payload = AUICollectionMessagePayload(type: .update, dataCmd: valueCmd, data: AUIAnyType(map: value))
+        let message = AUICollectionMessage(channelName: channelName,
+                                           messageType: AUIMessageType.normal,
+                                           uniqueId: UUID().uuidString,
+                                           objectId: objectId,
+                                           payload: payload)
+
+        guard let jsonStr = encodeModelToJsonStr(message) else {
+            callback?(NSError(domain: "AUIKit Error", code: Int(-1), userInfo: [ NSLocalizedDescriptionKey : "updateMetaData fail"]))
+            return
+        }
+        let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
+        rtmManager.publishAndWaitReceipt(userId: userId,
+                                         channelName: channelName,
+                                         message: jsonStr,
+                                         uniqueId: message.uniqueId ?? "",
+                                         completion: callback)
+    }
+    
+    
+    /// 合并，替换所有子节点
+    /// - Parameters:
+    ///   - valueCmd: <#valueCmd description#>
+    ///   - value: <#value description#>
+    ///   - objectId: <#objectId description#>
+    ///   - callback: <#callback description#>
+    public func mergeMetaData(valueCmd: String?, value: [String: Any], objectId: String, callback: ((NSError?)->())?) {
+        if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
+            let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
+            rtmMergeMetaData(publisherId: currentUserId, valueCmd: valueCmd, value: value, objectId: objectId, callback: callback)
+            return
+        }
+        
+        let payload = AUICollectionMessagePayload(type: .merge, dataCmd: valueCmd, data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            uniqueId: UUID().uuidString,
@@ -82,18 +121,19 @@ public class AUIMapCollection: NSObject {
     
     /// 添加
     /// - Parameter value: <#value description#>
-    func addMetaData(value: [String: Any], callback: ((NSError?)->())?) {
-        updateMetaData(value: value, objectId: "", callback: callback)
+    func addMetaData(valueCmd: String?, value: [String: Any], callback: ((NSError?)->())?) {
+        updateMetaData(valueCmd: valueCmd, value: value, objectId: "", callback: callback)
     }
     
     /// 移除
     /// - Parameters:
+    ///   - valueCmd: <#value description#>
     ///   - value: <#value description#>
     ///   - callback: <#callback description#>
-    func removeMetaData(objectId: String, callback: ((NSError?)->())?) {
+    func removeMetaData(valueCmd: String?, objectId: String, callback: ((NSError?)->())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
-            rtmRemoveMetaData(publisherId: currentUserId, objectId: objectId, callback: callback)
+            rtmRemoveMetaData(publisherId: currentUserId, valueCmd: valueCmd, objectId: objectId, callback: callback)
             return
         }
         
@@ -120,14 +160,40 @@ public class AUIMapCollection: NSObject {
 //MARK: private
 extension AUIMapCollection {
     private func rtmSetMetaData(publisherId: String,
+                                valueCmd: String?,
                                 value: [String: Any],
                                 objectId: String,
                                 callback: ((NSError?)->())?) {
-        if let err = self.metadataWillSetColsure?(publisherId, value, currentMap) {
+        if let err = self.metadataWillSetColsure?(publisherId, valueCmd, value, currentMap) {
             callback?(err)
             return
         }
         
+        var map = currentMap
+        value.forEach { (key: String, value: Any) in
+            map[key] = value
+        }
+        guard let data = try? JSONSerialization.data(withJSONObject: map, options: .prettyPrinted),
+              let metaData = String(data: data, encoding: .utf8) else {
+            callback?(NSError(domain: "AUIKit Error", code: Int(-1), userInfo: [ NSLocalizedDescriptionKey : "rtmSetMetaData fail"]))
+            return
+        }
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: [observeKey: metaData]) { error in
+            callback?(error)
+        }
+    }
+    
+    private func rtmMergeMetaData(publisherId: String,
+                                  valueCmd: String?,
+                                  value: [String: Any],
+                                  objectId: String,
+                                  callback: ((NSError?)->())?) {
+        if let err = self.metadataWillMergeColsure?(publisherId, valueCmd, value, currentMap) {
+            callback?(err)
+            return
+        }
         
         func replaceMap(origMap: [String: Any], newMap: [String: Any]) -> [String: Any] {
             var _origMap = origMap
@@ -158,9 +224,10 @@ extension AUIMapCollection {
     }
     
     func rtmRemoveMetaData(publisherId: String,
+                           valueCmd: String?,
                            objectId: String,
                            callback: ((NSError?)->())?) {
-        if let err = self.metadataWillRemoveColsure?(publisherId, currentMap) {
+        if let err = self.metadataWillRemoveColsure?(publisherId, valueCmd, currentMap) {
             callback?(err)
             return
         }
@@ -235,19 +302,26 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
             return
         }
         
+        let valueCmd = message.payload?.dataCmd
         var err: NSError? = nil
         switch updateType {
-        case .add, .update:
+        case .add, .update, .merge:
             if let value = message.payload?.data?.toJsonObject() as? [String : Any] {
-                rtmSetMetaData(publisherId: publisher, value: value, objectId: "") {[weak self] error in
-                    self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                if updateType == .merge {
+                    rtmMergeMetaData(publisherId: publisher, valueCmd: valueCmd, value: value, objectId: "") {[weak self] error in
+                        self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                    }
+                } else {
+                    rtmSetMetaData(publisherId: publisher, valueCmd: valueCmd, value: value, objectId: "") {[weak self] error in
+                        self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                    }
                 }
                 return
             }
             err = NSError(domain: "AUIKit Error", code: -1,
                           userInfo: [ NSLocalizedDescriptionKey : "payload is not a map"])
         case .remove:
-            rtmRemoveMetaData(publisherId: publisher, objectId: "") {[weak self] error in
+            rtmRemoveMetaData(publisherId: publisher, valueCmd: valueCmd, objectId: "") {[weak self] error in
                 self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
             }
         case .increase:

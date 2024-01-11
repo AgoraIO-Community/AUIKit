@@ -11,6 +11,14 @@ import AgoraRtmKit
 
 let kSeatAttrKry = "micSeat"
 
+enum AUIMicSeatCmd: String {
+    case leaveSeatCmd = "leaveSeatCmd"
+    case enterSeatCmd = "enterSeatCmd"
+    case kickSeatCmd = "kickSeatCmd"
+    case muteAudioCmd = "muteAudioCmd"
+    case closeSeatCmd = "closeSeatCmd"
+}
+
 //麦位Service实现(纯端上修改KV)
 @objc open class AUIMicSeatServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AUIMicSeatRespDelegate> = NSHashTable<AUIMicSeatRespDelegate>.weakObjects()
@@ -34,6 +42,9 @@ let kSeatAttrKry = "micSeat"
         super.init()
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
 //        rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
+        mapCollection.subscribeWillSet {[weak self] publisherId, dataCmd, updateMap, currentMap in
+            return self?.metadataWillSet(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
+        }
         aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
 }
@@ -115,9 +126,10 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
                 "micSeatStatus": AUILockSeatStatus.user.rawValue
             ]
         ]
-        self.mapCollection.updateMetaData(value: value,
-                                          objectId: "",
-                                          callback: callback)
+        self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.enterSeatCmd.rawValue,
+                                         value: value,
+                                         objectId: "",
+                                         callback: callback)
     }
     
     public func leaveSeat(callback: @escaping (NSError?) -> ()) {
@@ -134,7 +146,8 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
                 "micSeatStatus": AUILockSeatStatus.idle.rawValue
             ]
         ]
-        self.mapCollection.updateMetaData(value: value,
+        self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.kickSeatCmd.rawValue,
+                                          value: value,
                                           objectId: "",
                                           callback: callback)
     }
@@ -145,7 +158,8 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
                 "isMuteAudio": isMute
             ]
         ]
-        self.mapCollection.updateMetaData(value: value,
+        self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.muteAudioCmd.rawValue,
+                                          value: value,
                                           objectId: "",
                                           callback: callback)
     }
@@ -173,7 +187,8 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         
         //TODO: value.isEmpty
         
-        self.mapCollection.updateMetaData(value: value,
+        self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.closeSeatCmd.rawValue,
+                                          value: value,
                                           objectId: "",
                                           callback: callback)
     }
@@ -213,9 +228,49 @@ extension AUIMicSeatServiceImpl {
         
         //TODO: value.isEmpty
         
-        self.mapCollection.updateMetaData(value: value,
+        self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.leaveSeatCmd.rawValue,
+                                          value: value,
                                           objectId: "",
                                           callback: callback)
+    }
+    
+    private func metadataWillSet(publiserId: String, 
+                                 dataCmd: String?,
+                                 updateMap: [String: Any],
+                                 currentMap: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMicSeatCmd(rawValue: dataCmd ?? ""),
+              updateMap.keys.count == 1,
+              let seatIndex = updateMap.keys.first,
+              let value = updateMap[seatIndex] else {
+            return AUICommonError.unknown.toNSError()
+        }
+        
+        switch dataCmd {
+        case .enterSeatCmd:
+//            func getUserId(_ v: Any) -> String? {
+//                let owner = (v as? [String: Any])?["owner"] as? [String: Any]
+//                let userId = owner?["userId"] as? String
+//                return userId
+//            }
+//            
+//            if self.micSeats.values.contains(where: { getUserId($0) == getUserId(value)  }) {
+//                return AUICommonError.micSeatAlreadyEnter.toNSError()
+//            }
+//            guard let seat = self.micSeats[seatIndex], seat.lockSeat == .idle, seat.user?.isEmpty() ?? true else {
+//                return AUICommonError.micSeatNotIdle.toNSError()
+//            }
+            break
+        case .leaveSeatCmd:
+            break
+        case .kickSeatCmd:
+            break
+        case .muteAudioCmd:
+            break
+        case .closeSeatCmd:
+            break
+        }
+        
+        return nil
     }
 //    private func rtmEnterSeat(seatIndex: Int, userInfo: AUIUserThumbnailInfo, callback: @escaping (NSError?) -> ()) {
 //        if self.micSeats.values.contains(where: { $0.user?.userId == userInfo.userId }) {
@@ -374,62 +429,7 @@ extension AUIMicSeatServiceImpl {
 }
 
 //MARK: AUIRtmMessageProxyDelegate
-extension AUIMicSeatServiceImpl/*: AUIRtmMessageProxyDelegate*/ {
-//    public func onMessageReceive(publisher: String, message: String) {
-////        guard channelName == getChannelName() else {return}
-//        
-//        guard let data = message.data(using: .utf8),
-//              let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-//            return
-//        }
-//        let uniqueId = map["uniqueId"] as? String ?? ""
-//        let channelName = map["channelName"] as? String ?? ""
-//        guard channelName == getChannelName() else {return}
-//        guard let interfaceName = map["interfaceName"] as? String else {
-//            if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
-//                rtmManager.markReceiptFinished(uniqueId: uniqueId)
-//                let code = map["code"] as? Int ?? 0
-//                let reason = map["reason"] as? String ?? "success"
-//                callback(code == 0 ? nil : NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : reason]))
-//            }
-//            return
-//        }
-//        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
-//        aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
-//        if interfaceName == kAUISeatEnterNetworkInterface, let model = AUISeatEnterNetworkModel.model(rtmMessage: message) {
-//            let user = AUIUserThumbnailInfo()
-//            user.userId = model.userId ?? ""
-//            user.userAvatar = model.userAvatar ?? ""
-//            user.userName = model.userName ?? ""
-//            rtmEnterSeat(seatIndex: model.micSeatNo, userInfo: user) {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId:publisher, channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        } else if interfaceName == kAUISeatLeaveNetworkInterface, let model = AUISeatLeaveNetworkModel.model(rtmMessage: message) {
-//            rtmLeaveSeat(userId: model.userId ?? "") {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        } else if interfaceName == kAUISeatKickNetworkInterface, let model = AUISeatKickNetworkModel.model(rtmMessage: message) {
-//            rtmKickSeat(seatIndex: model.micSeatNo) {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        } else if interfaceName == kAUISeatMuteAudioNetworkInterface, let model = AUISeatMuteAudioNetworkModel.model(rtmMessage: message) {
-//            rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: true) {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        } else if interfaceName == kAUISeatUnmuteAudioNetworkInterface, let model = AUISeatUnMuteAudioNetworkModel.model(rtmMessage: message) {
-//            rtmMuteAudioSeat(seatIndex: model.micSeatNo, isMute: false) {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        } else if interfaceName == kAUISeatLockNetworkInterface, let model = AUISeatLockNetworkModel.model(rtmMessage: message) {
-//            rtmCloseSeat(seatIndex: model.micSeatNo, isClose: true) {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        } else if interfaceName == kAUISeatUnlockNetworkInterface, let model = AUISeatUnLockNetworkModel.model(rtmMessage: message) {
-//            rtmCloseSeat(seatIndex: model.micSeatNo, isClose: false) {[weak self] err in
-//                self?.rtmManager.sendReceipt(userId: model.userId ?? "", channelName: channelName, uniqueId: uniqueId, error: err)
-//            }
-//        }
-//    }
+extension AUIMicSeatServiceImpl {
 
     public func initService(completion: @escaping ((NSError?) -> ())){
         guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {
@@ -476,6 +476,6 @@ extension AUIMicSeatServiceImpl/*: AUIRtmMessageProxyDelegate*/ {
 //                                      lockName: kRTM_Referee_LockName,
 //                                      removeKeys: [kSeatAttrKry],
 //                                      completion: completion)
-        mapCollection.removeMetaData(objectId: "", callback: completion)
+        mapCollection.removeMetaData(valueCmd: nil, objectId: "", callback: completion)
     }
 }
