@@ -42,8 +42,8 @@ enum AUIMicSeatCmd: String {
         super.init()
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
 //        rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
-        mapCollection.subscribeWillSet {[weak self] publisherId, dataCmd, updateMap, currentMap in
-            return self?.metadataWillSet(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
+        mapCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
+            return self?.metadataWillMerge(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
         }
         aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
@@ -234,35 +234,58 @@ extension AUIMicSeatServiceImpl {
                                           callback: callback)
     }
     
-    private func metadataWillSet(publiserId: String, 
-                                 dataCmd: String?,
-                                 updateMap: [String: Any],
-                                 currentMap: [String: Any]) -> NSError? {
+    private func metadataWillMerge(publiserId: String,
+                                   dataCmd: String?,
+                                   updateMap: [String: Any],
+                                   currentMap: [String: Any]) -> NSError? {
         guard let dataCmd = AUIMicSeatCmd(rawValue: dataCmd ?? ""),
               updateMap.keys.count == 1,
-              let seatIndex = updateMap.keys.first,
-              let value = updateMap[seatIndex] else {
+              let seatIndex = Int(updateMap.keys.first ?? ""),
+              let value = updateMap["\(seatIndex)"] else {
             return AUICommonError.unknown.toNSError()
         }
         
+        let owner = (value as? [String: Any])?["owner"] as? [String: Any]
+        var userId: String = owner?["userId"] as? String ?? ""
+        userId = userId.isEmpty ? publiserId : userId
         switch dataCmd {
         case .enterSeatCmd:
-//            func getUserId(_ v: Any) -> String? {
-//                let owner = (v as? [String: Any])?["owner"] as? [String: Any]
-//                let userId = owner?["userId"] as? String
-//                return userId
-//            }
-//            
-//            if self.micSeats.values.contains(where: { getUserId($0) == getUserId(value)  }) {
-//                return AUICommonError.micSeatAlreadyEnter.toNSError()
-//            }
-//            guard let seat = self.micSeats[seatIndex], seat.lockSeat == .idle, seat.user?.isEmpty() ?? true else {
-//                return AUICommonError.micSeatNotIdle.toNSError()
-//            }
+            if self.micSeats.values.contains(where: { $0.user?.userId == userId }) {
+                return AUICommonError.micSeatAlreadyEnter.toNSError()
+            }
+            guard let seat = self.micSeats[seatIndex], seat.lockSeat == .idle, seat.user?.isEmpty() ?? true else {
+                return AUICommonError.micSeatNotIdle.toNSError()
+            }
             break
         case .leaveSeatCmd:
+            if seatIndex == 0 {
+                return AUICommonError.noPermission.toNSError()
+            }
+            guard self.micSeats.values.contains(where: { $0.user?.userId == userId }) else {
+                return AUICommonError.userNoEnterSeat.toNSError()
+            }
+            var err: NSError?
+            //TODO: onSeatWillLeave不需要metaData？
+            let metaData = NSMutableDictionary()//rtmLeaveSeatMetaData(userId: userId)
+            for obj in respDelegates.allObjects {
+                err = obj.onSeatWillLeave?(userId: userId, metaData: metaData)
+                if let err = err {
+                    return err
+                }
+            }
             break
         case .kickSeatCmd:
+            if seatIndex == 0 {
+                return AUICommonError.noPermission.toNSError()
+            }
+            var err: NSError? = nil
+            let metaData = NSMutableDictionary()
+            for obj in respDelegates.allObjects {
+                err = obj.onSeatWillLeave?(userId: userId, metaData: metaData)
+                if let _ = err {
+                    return err
+                }
+            }
             break
         case .muteAudioCmd:
             break

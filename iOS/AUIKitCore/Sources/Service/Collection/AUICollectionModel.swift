@@ -130,6 +130,7 @@ struct AUICollectionMessagePayload: Codable {
 
     enum CodingKeys: String, CodingKey {
         case type
+        case dataCmd
         case data
     }
 }

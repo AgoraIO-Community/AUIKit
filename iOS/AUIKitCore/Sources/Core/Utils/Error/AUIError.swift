@@ -20,11 +20,11 @@ public enum AUICommonError {
     case userNoEnterSeat   //观众未上麦
     case chooseSongAlreadyExist   //歌曲已经选择过了
     case chooseSongNotExist   //歌曲已经选择过了
-    case choristerAlreadyExist
-    case choristerNotExist
-    case noPermission
-    case chooseSongIsFail
-    case noResponse
+    case choristerAlreadyExist   //合唱用户已存在
+    case choristerNotExist    //合唱用户不存在
+    case noPermission   //无权限
+    case chooseSongIsFail   //选择歌曲失败
+    case noResponse    //无响应
     
     public func toNSError() -> NSError {
         func createError(code: Int = -1, msg: String) -> NSError {
