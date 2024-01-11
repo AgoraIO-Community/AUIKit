@@ -249,7 +249,7 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
         
         var err: NSError? = nil
         switch updateType {
-        case .add, .update:
+        case .add, .update, .merge:
             if let value = message.payload?.data as? [String : Any] {
                 rtmSetMetaData(publisherId: publisher, value: value, objectId: objectId) {[weak self] error in
                     self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
