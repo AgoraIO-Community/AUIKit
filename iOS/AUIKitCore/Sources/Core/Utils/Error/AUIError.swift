@@ -71,3 +71,11 @@ public enum AUICommonError {
         }
     }
 }
+
+extension NSError {
+    static func auiError(_ description: String) -> NSError {
+        return NSError(domain: "AUIKit Error",
+                       code: -1,
+                       userInfo: [ NSLocalizedDescriptionKey : description])
+    }
+}

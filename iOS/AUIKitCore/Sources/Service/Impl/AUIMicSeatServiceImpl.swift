@@ -229,9 +229,9 @@ extension AUIMicSeatServiceImpl {
         //TODO: value.isEmpty
         
         self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.leaveSeatCmd.rawValue,
-                                          value: value,
-                                          objectId: "",
-                                          callback: callback)
+                                         value: value,
+                                         objectId: "",
+                                         callback: callback)
     }
     
     private func metadataWillMerge(publiserId: String,
