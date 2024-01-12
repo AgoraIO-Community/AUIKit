@@ -119,6 +119,7 @@ enum AUICollectionOprationType: Int, Codable {
     case update = 1   //更新，对传递进来的map进行根节点上的替换
     case merge = 2    //合并，对传递进来的map进行每个子节点的替换
     case remove = 3   //删除
+    case clean = 4    //清理对应scene的key/value，相当于在rtm metadata里移除这个collection的所有信息
     case increase = 10 //增加
     case decrease = 11 //减少
 }

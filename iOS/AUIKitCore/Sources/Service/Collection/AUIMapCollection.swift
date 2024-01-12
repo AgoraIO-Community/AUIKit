@@ -189,7 +189,7 @@ extension AUIMapCollection: IAUICollection {
             return
         }
         
-        let payload = AUICollectionMessagePayload(type: .remove, data: nil)
+        let payload = AUICollectionMessagePayload(type: .clean, data: nil)
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            uniqueId: UUID().uuidString,
@@ -354,12 +354,15 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
                 return
             }
             err = NSError.auiError("payload is not a map")
-        case .remove:
-            cleanMetaData(callback: {[weak self] error in
-                self?.sendReceipt(publisher: publisher, 
+        case .clean:
+            rtmCleanMetaData(callback: {[weak self] error in
+                self?.sendReceipt(publisher: publisher,
                                   uniqueId: uniqueId,
                                   error: error)
             })
+        case .remove:
+            err = NSError.auiError("map collection remove type unsupported")
+            break
         case .increase:
             break
         case .decrease:

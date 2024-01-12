@@ -227,7 +227,7 @@ extension AUIListCollection: IAUICollection {
             return
         }
         
-        let payload = AUICollectionMessagePayload(type: .remove, data: nil)
+        let payload = AUICollectionMessagePayload(type: .clean, data: nil)
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            uniqueId: UUID().uuidString,
@@ -462,7 +462,11 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
             }
             err = NSError.auiError("payload is not a map")
         case .remove:
-            cleanMetaData(callback: {[weak self] error in
+            rtmRemoveMetaData(publisherId: publisher, valueCmd: valueCmd, objectId: objectId) {[weak self] error in
+                self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+            }
+        case .clean:
+            rtmCleanMetaData(callback: {[weak self] error in
                 self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
             })
         case .increase:
