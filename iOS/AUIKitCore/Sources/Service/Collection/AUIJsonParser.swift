@@ -57,3 +57,12 @@ func encodeModelToJsonStr(_ model: Codable) -> String? {
     
     return message
 }
+
+func decodeToJsonObj(_ jsonStr: String) -> Any? {
+    guard let jsonData = jsonStr.data(using: .utf8),
+          let jsonObj = try? JSONSerialization.jsonObject(with: jsonData, options: []) else {
+        return nil
+    }
+    
+    return jsonObj
+}
