@@ -137,8 +137,9 @@ struct AUICollectionMessagePayload: Codable {
 }
 
 struct AUICollectionMessage: Codable {
-    public var channelName: String?
-    public var messageType: AUIMessageType?
+    public var channelName: String?  //频道名，防止用户加入多个频道导致消息窜了
+    public var messageType: AUIMessageType?  //消息类型，表示正常类型/回执
+    public var sceneKey: String?   //表示修改的表字段，根据这个key每个collection自动和自己的observerKey判断是否匹配以进行下一步
     public var uniqueId: String?   //唯一表示，用于校验回执
     public var objectId: String?   //唯一标识，array类型才有用，用户删除某个item
     public var payload: AUICollectionMessagePayload?

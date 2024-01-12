@@ -105,6 +105,7 @@ extension AUIMapCollection: IAUICollection {
                                                   data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: objectId,
                                            payload: payload)
@@ -144,6 +145,7 @@ extension AUIMapCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .merge, dataCmd: valueCmd, data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: objectId,
                                            payload: payload)
@@ -192,6 +194,7 @@ extension AUIMapCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .clean, data: nil)
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: "",
                                            payload: payload)
@@ -286,6 +289,7 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
         let payload = AUICollectionMessagePayload(data: AUIAnyType(map: data))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: .receipt,
+                                           sceneKey: observeKey,
                                            uniqueId: uniqueId,
                                            objectId: "",
                                            payload: payload)
@@ -302,7 +306,8 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
     public func onMessageReceive(publisher: String, message: String) {
         guard let data = message.data(using: .utf8),
               let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let message: AUICollectionMessage = decodeModel(map) else {
+              let message: AUICollectionMessage = decodeModel(map),
+              message.sceneKey == observeKey else {
             return
         }
         aui_map_log("onMessageReceive: \(map)")

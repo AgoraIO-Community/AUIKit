@@ -105,6 +105,7 @@ extension AUIListCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .update, data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: objectId,
                                            payload: payload)
@@ -139,6 +140,7 @@ extension AUIListCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .merge, data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: objectId,
                                            payload: payload)
@@ -171,6 +173,7 @@ extension AUIListCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .add, data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            payload: payload)
 
@@ -204,6 +207,7 @@ extension AUIListCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .remove)
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: objectId,
                                            payload: payload)
@@ -230,6 +234,7 @@ extension AUIListCollection: IAUICollection {
         let payload = AUICollectionMessagePayload(type: .clean, data: nil)
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
                                            objectId: "",
                                            payload: payload)
@@ -395,6 +400,7 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
         let payload = AUICollectionMessagePayload(data: AUIAnyType(map: data))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: .receipt,
+                                           sceneKey: observeKey,
                                            uniqueId: uniqueId,
                                            objectId: "",
                                            payload: payload)
@@ -409,7 +415,8 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
     public func onMessageReceive(publisher: String, message: String) {
         guard let data = message.data(using: .utf8),
               let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let message: AUICollectionMessage = decodeModel(map) else {
+              let message: AUICollectionMessage = decodeModel(map),
+              message.sceneKey == observeKey else {
             return
         }
         aui_list_log("onMessageReceive: \(map)")
