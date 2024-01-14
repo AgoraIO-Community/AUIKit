@@ -90,24 +90,26 @@ extension AUIListCollection: IAUICollection {
     
     public func updateMetaData(valueCmd: String?,
                                value: [String : Any],
-                               objectId: String,
+                               filter: [[String: Any]]?,
                                callback: ((NSError?) -> ())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
             rtmSetMetaData(publisherId: currentUserId, 
                            valueCmd: valueCmd,
                            value: value, 
-                           objectId: objectId,
+                           filter: filter,
                            callback: callback)
             return
         }
         
-        let payload = AUICollectionMessagePayload(type: .update, data: AUIAnyType(map: value))
+        let payload = AUICollectionMessagePayload(type: .update, 
+                                                  dataCmd: valueCmd,
+                                                  filter: filter == nil ? nil : AUIAnyType(array: filter!),
+                                                  data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
-                                           objectId: objectId,
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
@@ -125,24 +127,26 @@ extension AUIListCollection: IAUICollection {
     
     public func mergeMetaData(valueCmd: String?,
                               value: [String : Any],
-                              objectId: String,
+                              filter: [[String: Any]]?,
                               callback: ((NSError?) -> ())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
             rtmMergeMetaData(publisherId: currentUserId,
                              valueCmd: valueCmd,
                              value: value,
-                             objectId: objectId,
+                             filter: filter,
                              callback: callback)
             return
         }
         
-        let payload = AUICollectionMessagePayload(type: .merge, data: AUIAnyType(map: value))
+        let payload = AUICollectionMessagePayload(type: .merge,
+                                                  dataCmd: valueCmd,
+                                                  filter: filter == nil ? nil : AUIAnyType(array: filter!),
+                                                  data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
-                                           objectId: objectId,
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
@@ -160,17 +164,22 @@ extension AUIListCollection: IAUICollection {
     
     public func addMetaData(valueCmd: String?,
                             value: [String : Any],
+                            filter: [[String: Any]]?,
                             callback: ((NSError?) -> ())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
             rtmAddMetaData(publisherId: currentUserId,
                            valueCmd: valueCmd,
                            value: value,
+                           filter: filter,
                            callback: callback)
             return
         }
         
-        let payload = AUICollectionMessagePayload(type: .add, data: AUIAnyType(map: value))
+        let payload = AUICollectionMessagePayload(type: .add,
+                                                  dataCmd: valueCmd,
+                                                  filter: filter == nil ? nil : AUIAnyType(array: filter!),
+                                                  data: AUIAnyType(map: value))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            sceneKey: observeKey,
@@ -192,24 +201,25 @@ extension AUIListCollection: IAUICollection {
     }
     
     public func removeMetaData(valueCmd: String?,
-                               objectId: String,
+                               filter: [[String: Any]]?,
                                callback: ((NSError?) -> ())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
             rtmRemoveMetaData(publisherId: currentUserId, 
                               valueCmd: valueCmd,
-                              objectId: objectId, 
+                              filter: filter,
                               callback: callback)
             return
         }
         
         
-        let payload = AUICollectionMessagePayload(type: .remove)
+        let payload = AUICollectionMessagePayload(type: .remove, 
+                                                  dataCmd: valueCmd,
+                                                  filter: filter == nil ? nil : AUIAnyType(array: filter!))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
                                            sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
-                                           objectId: objectId,
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
@@ -236,7 +246,6 @@ extension AUIListCollection: IAUICollection {
                                            messageType: AUIMessageType.normal,
                                            sceneKey: observeKey,
                                            uniqueId: UUID().uuidString,
-                                           objectId: "",
                                            payload: payload)
         
         guard let jsonStr = encodeModelToJsonStr(message) else {
@@ -254,15 +263,15 @@ extension AUIListCollection: IAUICollection {
 }
 
 extension AUIListCollection {
-    private func getItemIndex(objectId: String) -> Int? {
-        let idx =  currentList.firstIndex(where: { $0["objectId"] as? String == objectId })
-        return idx
-    }
-    
     private func rtmAddMetaData(publisherId: String,
                                 valueCmd: String?,
                                 value: [String: Any],
+                                filter: [[String: Any]]?,
                                 callback: ((NSError?)->())?) {
+        if let _ = getItemIndexes(array: currentList, filter: filter) {
+            callback?(NSError.auiError("rtmAddMetaData fail, the result was found in the filter"))
+            return
+        }
         if let err = self.metadataWillAddColsure?(publisherId, valueCmd, value) {
             callback?(err)
             return
@@ -270,14 +279,16 @@ extension AUIListCollection {
         var list = currentList
         list.append(value)
         
-        let data = try! JSONSerialization.data(withJSONObject: list, options: .prettyPrinted)
-        guard let value = String(data: data, encoding: .utf8) else {
+        guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmAddMetaData fail"))
             return
         }
+        currentList = list
+        aui_list_log("rtmAddMetaData valueCmd: \(valueCmd ?? "") value: \(value), \nfilter: \(filter ?? [])")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
                                          metadata: [observeKey: value]) { error in
+            aui_list_log("rtmAddMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
     }
@@ -285,33 +296,37 @@ extension AUIListCollection {
     private func rtmSetMetaData(publisherId: String,
                                 valueCmd: String?,
                                 value: [String: Any],
-                                objectId: String,
+                                filter: [[String: Any]]?,
                                 callback: ((NSError?)->())?) {
-        guard let itemIdx = getItemIndex(objectId: objectId) else {
-            callback?(NSError.auiError("rtmSetMetaData fail, objectId not found"))
+        guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
+            callback?(NSError.auiError("rtmSetMetaData fail, the result was not found in the filter"))
             return
         }
-        let item = currentList[itemIdx]
-        if let err = self.metadataWillUpdateColsure?(publisherId, valueCmd, value, item) {
-            callback?(err)
-            return
-        }
-        
         var list = currentList
-        var tempItem = item
-        value.forEach { (key, value) in
-            tempItem[key] = value
+        for itemIdx in itemIndexes {
+            let item = list[itemIdx]
+            //once break, always break
+            if let err = self.metadataWillUpdateColsure?(publisherId, valueCmd, value, item) {
+                callback?(err)
+                return
+            }
+            
+            var tempItem = item
+            value.forEach { (key, value) in
+                tempItem[key] = value
+            }
+            list[itemIdx] = tempItem
         }
-        list[itemIdx] = tempItem
-        
-        let data = try! JSONSerialization.data(withJSONObject: list, options: .prettyPrinted)
-        guard let value = String(data: data, encoding: .utf8) else {
+        guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
         }
+        currentList = list
+        aui_list_log("rtmSetMetaData valueCmd: \(valueCmd ?? ""), filter: \(filter ?? []), value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
                                          metadata: [observeKey: value]) { error in
+            aui_list_log("rtmSetMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
     }
@@ -319,66 +334,79 @@ extension AUIListCollection {
     func rtmMergeMetaData(publisherId: String,
                           valueCmd: String?,
                           value: [String: Any],
-                          objectId: String,
+                          filter: [[String: Any]]?,
                           callback: ((NSError?)->())?) {
-        guard let itemIdx = getItemIndex(objectId: objectId) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail, objectId not found"))
-            return
-        }
-        let item = currentList[itemIdx]
-        if let err = self.metadataWillMergeColsure?(publisherId, valueCmd, value, item) {
-            callback?(err)
+        guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
+            callback?(NSError.auiError("rtmMergeMetaData fail, the result was not found in the filter"))
             return
         }
         
         var list = currentList
-        let tempItem = mergeMap(origMap: item, newMap: value)
-        list[itemIdx] = tempItem
+        for itemIdx in itemIndexes {
+            let item = list[itemIdx]
+            //once break, always break
+            if let err = self.metadataWillMergeColsure?(publisherId, valueCmd, value, item) {
+                callback?(err)
+                return
+            }
+            
+            let tempItem = mergeMap(origMap: item, newMap: value)
+            list[itemIdx] = tempItem
+        }
         
-        let data = try! JSONSerialization.data(withJSONObject: list, options: .prettyPrinted)
-        guard let value = String(data: data, encoding: .utf8) else {
+        guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
         }
+        currentList = list
+        aui_list_log("rtmMergeMetaData valueCmd: \(valueCmd ?? ""), filter: \(filter ?? []), value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
                                          metadata: [observeKey: value]) { error in
+            aui_list_log("rtmMergeMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
     }
     
     func rtmRemoveMetaData(publisherId: String,
                            valueCmd: String?,
-                           objectId: String,
+                           filter: [[String: Any]]?,
                            callback: ((NSError?)->())?) {
-        guard let itemIdx = getItemIndex(objectId: objectId) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail, objectId not found"))
-            return
-        }
-        let item = currentList[itemIdx]
-        if let err = self.metadataWillRemoveColsure?(publisherId, valueCmd, objectId, item) {
-            callback?(err)
+        guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
+            callback?(NSError.auiError("rtmRemoveMetaData fail, the result was not found in the filter"))
             return
         }
         
-        let list = self.currentList.filter { $0["objectId"] as? String != objectId}
+        for itemIdx in itemIndexes {
+            let item = currentList[itemIdx]
+            if let err = self.metadataWillRemoveColsure?(publisherId, valueCmd, item) {
+                callback?(err)
+                return
+            }
+        }
         
-        let data = try! JSONSerialization.data(withJSONObject: list, options: .prettyPrinted)
-        guard let value = String(data: data, encoding: .utf8) else {
+        let filterList = currentList.enumerated().filter { !itemIndexes.contains($0.offset) }
+        let list = filterList.map { $0.element }
+        guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
         }
+        currentList = list
+        aui_list_log("rtmRemoveMetaData valueCmd: \(valueCmd ?? ""), filter: \(filter ?? []), value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
                                          metadata: [observeKey: value]) { error in
+            aui_list_log("rtmRemoveMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
     }
     
     func rtmCleanMetaData(callback: ((NSError?)->())?) {
+        aui_list_log("rtmCleanMetaData")
         self.rtmManager.cleanBatchMetadata(channelName: channelName,
                                            lockName: kRTM_Referee_LockName,
                                            removeKeys: [observeKey]) { error in
+            aui_list_log("rtmCleanMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
     }
@@ -402,7 +430,6 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
                                            messageType: .receipt,
                                            sceneKey: observeKey,
                                            uniqueId: uniqueId,
-                                           objectId: "",
                                            payload: payload)
         guard let jsonStr = encodeModelToJsonStr(message) else {
             aui_list_warn("sendReceipt fail")
@@ -413,20 +440,19 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
     }
     
     public func onMessageReceive(publisher: String, message: String) {
-        guard let data = message.data(using: .utf8),
-              let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let message: AUICollectionMessage = decodeModel(map),
-              message.sceneKey == observeKey else {
+        guard let map = decodeToJsonObj(message) as? [String: Any],
+              let collectionMessage: AUICollectionMessage = decodeModel(map),
+              collectionMessage.sceneKey == observeKey else {
             return
         }
         aui_list_log("onMessageReceive: \(map)")
-        let uniqueId = message.uniqueId ?? ""
-        let channelName = message.channelName ?? ""
+        let uniqueId = collectionMessage.uniqueId ?? ""
+        let channelName = collectionMessage.channelName ?? ""
         guard channelName == self.channelName else {return}
-        if message.messageType == .receipt {
+        if collectionMessage.messageType == .receipt {
             if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
                 rtmManager.markReceiptFinished(uniqueId: uniqueId)
-                let data = message.payload?.data?.toJsonObject() as? [String : Any]
+                let data = collectionMessage.payload?.data?.toJsonObject() as? [String : Any]
                 let code = data?["code"] as? Int ?? 0
                 let reason = data?["reason"] as? String ?? "success"
                 callback(code == 0 ? nil : NSError.auiError(reason))
@@ -434,47 +460,63 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
             return
         }
         
-        guard let updateType = message.payload?.type else {
+        guard let updateType = collectionMessage.payload?.type else {
             sendReceipt(publisher: publisher,
                         uniqueId: uniqueId,
                         error: NSError.auiError("updateType not found"))
             return
         }
         
-        let objectId = message.objectId ?? ""
-        let valueCmd = message.payload?.dataCmd
+        let filter: [[String: Any]]? = collectionMessage.payload?.filter?.toJsonObject() as? [[String: Any]]
+        let valueCmd = collectionMessage.payload?.dataCmd
         var err: NSError? = nil
         switch updateType {
         case .add, .update, .merge:
-            if let value = message.payload?.data?.toJsonObject() as? [String : Any] {
+            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any] {
                 if updateType == .add {
                     rtmAddMetaData(publisherId: publisher,
                                    valueCmd: valueCmd,
-                                   value: value) { [weak self] error in
-                        self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                                   value: value,
+                                   filter: filter) { [weak self] error in
+                        self?.sendReceipt(publisher: publisher,
+                                          uniqueId: uniqueId,
+                                          error: error)
                     }
                 } else if updateType == .merge {
                     rtmMergeMetaData(publisherId: publisher,
                                      valueCmd: valueCmd,
                                      value: value, 
-                                     objectId: objectId) {[weak self] error in
-                        self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                                     filter: filter) {[weak self] error in
+                        self?.sendReceipt(publisher: publisher, 
+                                          uniqueId: uniqueId,
+                                          error: error)
                     }
                 } else {
-                    rtmSetMetaData(publisherId: publisher, valueCmd: valueCmd, value: value, objectId: objectId) {[weak self] error in
-                        self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                    rtmSetMetaData(publisherId: publisher, 
+                                   valueCmd: valueCmd,
+                                   value: value,
+                                   filter: filter) {[weak self] error in
+                        self?.sendReceipt(publisher: publisher, 
+                                          uniqueId: uniqueId,
+                                          error: error)
                     }
                 }
                 return
             }
             err = NSError.auiError("payload is not a map")
         case .remove:
-            rtmRemoveMetaData(publisherId: publisher, valueCmd: valueCmd, objectId: objectId) {[weak self] error in
-                self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+            rtmRemoveMetaData(publisherId: publisher, 
+                              valueCmd: valueCmd,
+                              filter: filter) {[weak self] error in
+                self?.sendReceipt(publisher: publisher, 
+                                  uniqueId: uniqueId,
+                                  error: error)
             }
         case .clean:
             rtmCleanMetaData(callback: {[weak self] error in
-                self?.sendReceipt(publisher: publisher, uniqueId: uniqueId, error: error)
+                self?.sendReceipt(publisher: publisher, 
+                                  uniqueId: uniqueId,
+                                  error: error)
             })
         case .increase:
             break

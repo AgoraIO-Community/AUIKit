@@ -126,13 +126,12 @@ enum AUICollectionOprationType: Int, Codable {
 
 struct AUICollectionMessagePayload: Codable {
     public var type: AUICollectionOprationType?
-    public var dataCmd: String?
+    public var dataCmd: String?                    //[可选]基于这次改动的类型
+    public var filter: AUIAnyType?   //表示列表里对应item[filter.key] == filter.value 的数据都要按照data里修改
     public var data: AUIAnyType?
 
     enum CodingKeys: String, CodingKey {
-        case type
-        case dataCmd
-        case data
+        case type, dataCmd, filter, data
     }
 }
 
@@ -141,10 +140,9 @@ struct AUICollectionMessage: Codable {
     public var messageType: AUIMessageType?  //消息类型，表示正常类型/回执
     public var sceneKey: String?   //表示修改的表字段，根据这个key每个collection自动和自己的observerKey判断是否匹配以进行下一步
     public var uniqueId: String?   //唯一表示，用于校验回执
-    public var objectId: String?   //唯一标识，array类型才有用，用户删除某个item
     public var payload: AUICollectionMessagePayload?
     
     enum CodingKeys: String, CodingKey {
-        case channelName, messageType, uniqueId, objectId, payload
+        case channelName, messageType, sceneKey, uniqueId, payload
     }
 }

@@ -66,3 +66,12 @@ func decodeToJsonObj(_ jsonStr: String) -> Any? {
     
     return jsonObj
 }
+
+func encodeToJsonStr(_ jsonObj: Any) -> String? {
+    guard let data = try? JSONSerialization.data(withJSONObject: jsonObj, options: .prettyPrinted),
+          let value = String(data: data, encoding: .utf8) else {
+        return nil
+    }
+    
+    return value
+}

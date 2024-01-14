@@ -11,6 +11,13 @@ import YYModel
 
 private let kChooseSongKey = "song"
 
+enum AUIMusicCmd: String {
+    case chooseSongCmd = "chooseSongCmd"
+    case removeSongCmd = "removeSongCmd"
+    case pingSongCmd = "pingSongCmd"
+    case updatePlayStatusCmd = "updatePlayStatusCmd"
+}
+
 class AUIMusicLoadingInfo: NSObject {
     var songCode: String?
     var lrcMsgId: String?
@@ -19,7 +26,6 @@ class AUIMusicLoadingInfo: NSObject {
     var callback: AUILoadSongCompletion?
 
     func makeCallbackIfNeed() -> Bool {
-
         if let lrcUrl = lrcUrl, lrcUrl.count == 0 {
             //TODO: error
             //callback?()
@@ -42,10 +48,11 @@ open class AUIMusicServiceImpl: NSObject {
     private var rtmManager: AUIRtmManager!
     private var channelName: String!
     private var ktvApi: KTVApiDelegate!
+    
+    private var listCollection: AUIListCollection!
         
     deinit {
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
-        rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
         aui_info("deinit AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
     }
     
@@ -55,8 +62,26 @@ open class AUIMusicServiceImpl: NSObject {
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.ktvApi = ktvApi
+        self.listCollection = AUIListCollection(channelName: channelName, observeKey: kChooseSongKey, rtmManager: rtmManager)
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
-        rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
+        
+        listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem in
+            return self?.metadataWillAdd(publiserId: publisherId, 
+                                         dataCmd: dataCmd,
+                                         newItem: newItem)
+        }
+        listCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
+            return self?.metadataWillMerge(publiserId: publisherId, 
+                                           dataCmd: dataCmd,
+                                           updateMap: updateMap, 
+                                           currentMap: currentMap)
+        }
+        
+        listCollection.subscribeWillRemove {[weak self] publisherId, dataCmd, item in
+            return self?.metadataWillRemove(publiserId: publisherId,
+                                            dataCmd: dataCmd,
+                                            currentMap: item)
+        }
     }
 }
 
@@ -173,186 +198,70 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
     
     public func getAllChooseSongList(completion: AUIChooseSongListCompletion?) {
         aui_info("getAllChooseSongList", tag: "AUIMusicServiceImpl")
-        self.rtmManager.getMetadata(channelName: self.channelName) { error, map in
+        
+        listCollection.getMetaData {[weak self] error, obj in
+            guard let self = self else {return}
             aui_info("getAllChooseSongList error: \(error?.localizedDescription ?? "success")", tag: "AUIMusicServiceImpl")
             if let error = error {
                 //TODO: error
                 completion?(error, nil)
                 return
             }
-            
-            guard let jsonStr = map?[kChooseSongKey] else {
-                //TODO: error
-                completion?(nil, nil)
+            guard let obj = obj as? [[String: Any]] else {
+                completion?(NSError.auiError("getAllChooseSongList fail not a array"), nil)
                 return
             }
-            
-            self.chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: jsonStr) as? [AUIChooseMusicModel] ?? []
+            self.chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: obj) as? [AUIChooseMusicModel] ?? []
             completion?(nil, self.chooseSongList)
         }
     }
     
     public func chooseSong(songModel:AUIMusicModel, completion: AUICallback?) {
         aui_info("chooseSong: \(songModel.songCode)", tag: "AUIMusicServiceImpl")
-        
         guard let dic = songModel.yy_modelToJSONObject() as? [String: Any] else {
             completion?(AUICommonError.chooseSongIsFail.toNSError())
             return
         }
-        
-        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
-            let songModel = AUIChooseMusicModel.yy_model(with: dic)!
-            songModel.owner = getRoomContext().currentUserInfo
-            rtmChooseSong(songModel: songModel) { err in
-                completion?(err)
-            }
-            return
-        }
-        
         let model = AUISongAddNetworkModel.yy_model(with: dic)!
         model.userId = getRoomContext().currentUserInfo.userId
-        let owner = getRoomContext().currentUserInfo
-        model.owner = owner
-        
-        let message = model.rtmMessage(roomId: channelName)
-        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
-                                         channelName: channelName,
-                                         message: message,
-                                         uniqueId: model.uniqueId,
-                                         completion: completion)
+        model.owner = getRoomContext().currentUserInfo
+        guard let value = model.yy_modelToJSONObject() as? [String: Any] else {
+            completion?(NSError.auiError("convert to json fail"))
+            return
+        }
+        listCollection.addMetaData(valueCmd: AUIMusicCmd.chooseSongCmd.rawValue,
+                                   value: value,
+                                   filter: [["songCode": model.songCode ?? ""]],
+                                   callback: completion)
     }
     
     public func removeSong(songCode: String, completion: AUICallback?) {
         aui_info("removeSong: \(songCode)", tag: "AUIMusicServiceImpl")
-        
-        let removeUserId = getRoomContext().currentUserInfo.userId
-        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
-            rtmRemoveSong(songCode: songCode, removeUserId: removeUserId) { err in
-                completion?(err)
-            }
-            return
-        }
-        
-        let model = AUISongRemoveNetworkModel()
-        model.userId = removeUserId
-        model.songCode = songCode
-        
-        let message = model.rtmMessage(roomId: channelName)
-        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
-                                         channelName: channelName,
-                                         message: message,
-                                         uniqueId: model.uniqueId,
-                                         completion: completion)
+        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+                                      filter: [["songCode": songCode]],
+                                      callback: completion)
     }
     
     public func pinSong(songCode: String, completion: AUICallback?) {
         aui_info("pinSong: \(songCode)", tag: "AUIMusicServiceImpl")
-        let updateUserId = getRoomContext().currentUserInfo.userId
-        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
-            rtmPinSong(songCode: songCode, updateUserId: updateUserId) { err in
-                completion?(err)
-            }
-            return
-        }
-        
-        let model = AUISongPinNetworkModel()
-        model.userId = updateUserId
-        model.songCode = songCode
-        
-        let message = model.rtmMessage(roomId: channelName)
-        rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
-                                         channelName: channelName,
-                                         message: message,
-                                         uniqueId: model.uniqueId,
-                                         completion: completion)
+        let userId = getRoomContext().currentUserInfo.userId
+        let value = ["pinAt": Int64(Date().timeIntervalSince1970 * 1000)]
+        listCollection.mergeMetaData(valueCmd: AUIMusicCmd.pingSongCmd.rawValue,
+                                     value: value,
+                                     filter: [["songCode": songCode, "userId": userId]],
+                                     callback: completion)
     }
     
-    public func updatePlayStatus(songCode: String, playStatus: AUIPlayStatus, completion: AUICallback?) {
+    public func updatePlayStatus(songCode: String, 
+                                 playStatus: AUIPlayStatus,
+                                 completion: AUICallback?) {
         aui_info("updatePlayStatus: \(songCode)", tag: "AUIMusicServiceImpl")
-        
-        let updateUserId = getRoomContext().currentUserInfo.userId
-        if getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false {
-            rtmUpdatePlayStatus(songCode: songCode, playStatus: playStatus, updateUserId: updateUserId) { err in
-                completion?(err)
-            }
-            return
-        }
-        
-        if playStatus == .playing {
-            let model = AUISongPlayNetworkModel()
-            model.userId = updateUserId
-            model.songCode = songCode
-            
-            let message = model.rtmMessage(roomId: channelName)
-            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
-                                             channelName: channelName,
-                                             message: message,
-                                             uniqueId: model.uniqueId,
-                                             completion: completion)
-        } else {
-            let model = AUISongStopNetworkModel()
-            model.userId = updateUserId
-            model.songCode = songCode
-            
-            let message = model.rtmMessage(roomId: channelName)
-            rtmManager.publishAndWaitReceipt(userId: getLockOwnerId() ?? "",
-                                             channelName: channelName,
-                                             message: message,
-                                             uniqueId: model.uniqueId,
-                                             completion: completion)
-        }
-    }
-}
-
-//MARK: AUIRtmMessageProxyDelegate
-extension AUIMusicServiceImpl: AUIRtmMessageProxyDelegate {
-    //TODO: using thread queue processing to reduce main thread stuttering
-    public func onMessageReceive(publisher: String, message: String) {
-//        guard channelName == getChannelName() else {return}
-        
-        guard let data = message.data(using: .utf8),
-              let map = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            return
-        }
-        let uniqueId = map["uniqueId"] as? String ?? ""
-        let channelName = map["channelName"] as? String ?? ""
-        guard channelName == getChannelName() else {return}
-        guard let interfaceName = map["interfaceName"] as? String else {
-            if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
-                rtmManager.markReceiptFinished(uniqueId: uniqueId)
-                let code = map["code"] as? Int ?? 0
-                let reason = map["reason"] as? String ?? "success"
-                callback(code == 0 ? nil : NSError(domain: "AUIKit Error", code: Int(code), userInfo: [ NSLocalizedDescriptionKey : reason]))
-            }
-            return
-        }
-        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
-        aui_info("onMessageReceive[\(interfaceName)]", tag: "AUIMicSeatServiceImpl")
-        if interfaceName == kAUISongAddNetworkInterface, let model = AUISongAddNetworkModel.model(rtmMessage: message) {
-            let dic = model.yy_modelToJSONObject() as? [String : Any] ?? [:]
-            let songModel = AUIChooseMusicModel.yy_model(with: dic)!
-            //TODO: use ntp time
-            songModel.createAt = Int64(Date().timeIntervalSince1970 * 1000)
-            rtmChooseSong(songModel: songModel) {[weak self] err in
-                self?.rtmManager.sendReceipt(userId: self?.getLockOwnerId() ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
-            }
-        } else if interfaceName == kAUISongPinNetworkInterface, let model = AUISongPinNetworkModel.model(rtmMessage: message) {
-            rtmPinSong(songCode: model.songCode ?? "", updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
-            }
-        } else if interfaceName == kAUISongRemoveNetworkInterface, let model = AUISongRemoveNetworkModel.model(rtmMessage: message) {
-            rtmRemoveSong(songCode: model.songCode ?? "", removeUserId: model.userId ?? ""){[weak self] err in
-                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
-            }
-        } else if interfaceName == kAUISongPlayNetworkInterface, let model = AUISongPlayNetworkModel.model(rtmMessage: message) {
-            rtmUpdatePlayStatus(songCode: model.songCode ?? "", playStatus: .playing, updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
-            }
-        } else if interfaceName == kAUISongStopNetworkInterface, let model = AUISongStopNetworkModel.model(rtmMessage: message) {
-            rtmUpdatePlayStatus(songCode: model.songCode ?? "", playStatus: .idle, updateUserId: model.userId ?? "") {[weak self] err in
-                self?.rtmManager.sendReceipt(userId: model.userId ?? "",channelName: channelName, uniqueId: uniqueId, error: err)
-            }
-        }
+        let userId = getRoomContext().currentUserInfo.userId
+        let value = ["status": playStatus.rawValue]
+        listCollection.mergeMetaData(valueCmd: AUIMusicCmd.updatePlayStatusCmd.rawValue,
+                                      value: value,
+                                      filter: [["songCode": songCode, "userId": userId]],
+                                      callback: completion)
     }
 }
 
@@ -380,119 +289,89 @@ extension AUIMusicServiceImpl {
         return songList
     }
     
-    private func rtmChooseSong(songModel:AUIChooseMusicModel, callback: @escaping AUICallback) {
-        //TODO: check song owner is on micseat
-        
-        if self.chooseSongList.contains(where: { $0.songCode == songModel.songCode }) {
-            callback(AUICommonError.chooseSongAlreadyExist.toNSError())
-            return
+    private func metadataWillAdd(publiserId: String,
+                                 dataCmd: String?,
+                                 newItem: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMusicCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
         }
         
-        
-        let metaData = NSMutableDictionary()
-        var err: NSError? = nil
-        for obj in self.respDelegates.allObjects {
-            err = obj.onSongWillAdd?(userId: songModel.userId ?? "", metaData: metaData)
-            if let err = err {
-                callback(err)
-                return
+        let owner = newItem["owner"] as? [String: Any]
+        let userId = owner?["userId"] as? String ?? ""
+        switch dataCmd {
+        case .chooseSongCmd:
+//            if self.chooseSongList.contains(where: { $0.songCode == songCode }) {
+//                return AUICommonError.chooseSongAlreadyExist.toNSError()
+//            }
+            //过滤条件在filter里包含
+    
+            let metaData = NSMutableDictionary(dictionary: newItem)
+            var err: NSError? = nil
+            for obj in self.respDelegates.allObjects {
+                err = obj.onSongWillAdd?(userId: userId, metaData: metaData)
+                if let err = err {
+                    return err
+                }
             }
+            return nil
+        default:
+            break
         }
         
-        let metaDataSongList = NSMutableArray(array: chooseSongList)
-        metaDataSongList.add(songModel)
-        let str = metaDataSongList.yy_modelToJSONString() ?? ""
-        metaData[kChooseSongKey] = str
-        self.rtmManager.setBatchMetadata(channelName: channelName,
-                                         lockName: kRTM_Referee_LockName,
-                                         metadata: metaData as! [String : String]) { error in
-            callback(error)
-        }
+        return NSError.auiError("add music cmd incorrect")
     }
-    
-    private func rtmRemoveSong(songCode: String, removeUserId: String, callback: @escaping AUICallback) {
-        //TODO: check is song owner or is room owner
-        guard let idx = chooseSongList.firstIndex(where: { $0.songCode == songCode }) else {
-            callback(AUICommonError.chooseSongNotExist.toNSError())
-            return
-        }
-        let song = chooseSongList[idx]
-        guard song.owner?.userId == removeUserId || getRoomContext().isRoomOwner(channelName: channelName, userId: removeUserId) else {
-            callback(AUICommonError.noPermission.toNSError())
-            return
+            
+    private func metadataWillMerge(publiserId: String,
+                                   dataCmd: String?,
+                                   updateMap: [String: Any],
+                                   currentMap: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMusicCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
         }
         
-        var err: NSError? = nil
-        let metaData = NSMutableDictionary()
-        for obj in respDelegates.allObjects {
-            err = obj.onSongWillRemove?(songCode: songCode, metaData: metaData)
-            if let err = err {
-                callback(err)
-                return
+        switch dataCmd {
+        case .pingSongCmd:
+            //过滤条件在filter里包含
+            return nil
+        case .updatePlayStatusCmd:
+            //过滤条件在filter里包含
+            return nil
+        default:
+            break
+        }
+        
+        return NSError.auiError("merge music cmd incorrect")
+    }
+            
+    private func metadataWillRemove(publiserId: String,
+                                    dataCmd: String?,
+                                    currentMap: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMusicCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
+        }
+        
+        let owner = currentMap["owner"] as? [String: Any]
+        let userId = owner?["userId"] as? String ?? ""
+        let songCode = currentMap["songCode"] as? String ?? ""
+        switch dataCmd {
+        case .removeSongCmd:
+            //点歌本人/房主可操作
+            guard publiserId == userId || getRoomContext().isRoomOwner(channelName: channelName, userId: publiserId) else {
+                return AUICommonError.noPermission.toNSError()
             }
+            let metaData = NSMutableDictionary()
+            for obj in respDelegates.allObjects {
+                let err = obj.onSongWillRemove?(songCode: songCode, metaData: metaData)
+                if let err = err {
+                    return err
+                }
+            }
+            return nil
+        default:
+            break
         }
         
-        let metaDataSongList = NSMutableArray(array: chooseSongList)
-        metaDataSongList.removeObject(at: idx)
-        let str = metaDataSongList.yy_modelToJSONString() ?? ""
-        metaData[kChooseSongKey] = str
-        self.rtmManager.setBatchMetadata(channelName: channelName,
-                                         lockName: kRTM_Referee_LockName,
-                                         metadata: metaData as! [String : String]) { error in
-            callback(error)
-        }
-        
-        //TODO: remove chorus list if need
-    }
-    
-    private func rtmUpdatePlayStatus(songCode: String, playStatus: AUIPlayStatus, updateUserId: String, callback: @escaping AUICallback) {
-        guard let idx = chooseSongList.firstIndex(where: { $0.songCode == songCode }) else {
-            callback(AUICommonError.chooseSongNotExist.toNSError())
-            return
-        }
-        
-        let song = chooseSongList[idx]
-        guard song.owner?.userId == updateUserId else {
-            callback(AUICommonError.noPermission.toNSError())
-            return
-        }
-        let origStatus = song.status
-        song.status = playStatus.rawValue
-        let metaDataSongList = NSMutableArray(array: chooseSongList)
-        let str = metaDataSongList.yy_modelToJSONString() ?? ""
-        let metaData = [kChooseSongKey: str]
-        self.rtmManager.setBatchMetadata(channelName: channelName,
-                                         lockName: kRTM_Referee_LockName,
-                                         metadata: metaData) { error in
-            callback(error)
-        }
-        song.status = origStatus
-    }
-    
-    private func rtmPinSong(songCode: String, updateUserId: String, callback: @escaping AUICallback) {
-        aui_info("pinSong: \(songCode)", tag: "AUIMusicServiceImpl")
-        guard let idx = chooseSongList.firstIndex(where: { $0.songCode == songCode }) else {
-            callback(AUICommonError.chooseSongNotExist.toNSError())
-            return
-        }
-        
-        let song = chooseSongList[idx]
-        guard song.owner?.userId == updateUserId else {
-            callback(AUICommonError.noPermission.toNSError())
-            return
-        }
-        let origPinAt = song.pinAt
-        song.pinAt = Int64(Date().timeIntervalSince1970 * 1000)
-        let sortSongList = _sortChooseSongList()
-        let metaDataSongList = NSMutableArray(array: sortSongList)
-        let str = metaDataSongList.yy_modelToJSONString() ?? ""
-        let metaData = [kChooseSongKey: str]
-        self.rtmManager.setBatchMetadata(channelName: channelName,
-                                         lockName: kRTM_Referee_LockName,
-                                         metadata: metaData) { error in
-            callback(error)
-        }
-        song.pinAt = origPinAt
+        return NSError.auiError("remove music cmd incorrect")
     }
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
@@ -511,9 +390,10 @@ extension AUIMusicServiceImpl {
     }
     
     public func deinitService(completion:  @escaping  ((NSError?) -> ())) {
-        rtmManager.cleanBatchMetadata(channelName: channelName,
-                                      lockName: kRTM_Referee_LockName,
-                                      removeKeys: [kChooseSongKey],
-                                      completion: completion)
+//        rtmManager.cleanBatchMetadata(channelName: channelName,
+//                                      lockName: kRTM_Referee_LockName,
+//                                      removeKeys: [kChooseSongKey],
+//                                      completion: completion)
+        listCollection.cleanMetaData(callback: completion)
     }
 }

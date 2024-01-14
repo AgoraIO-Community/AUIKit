@@ -31,7 +31,6 @@ enum AUIMicSeatCmd: String {
         
     deinit {
         rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
-//        rtmManager.unsubscribeMessage(channelName: getChannelName(), delegate: self)
         aui_info("deinit AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
     
@@ -41,7 +40,6 @@ enum AUIMicSeatCmd: String {
         self.mapCollection = AUIMapCollection(channelName: channelName, observeKey: kSeatAttrKry, rtmManager: rtmManager)
         super.init()
         rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
-//        rtmManager.subscribeMessage(channelName: getChannelName(), delegate: self)
         mapCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
             return self?.metadataWillMerge(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
         }
@@ -128,7 +126,7 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         ]
         self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.enterSeatCmd.rawValue,
                                          value: value,
-                                         objectId: "",
+                                         filter: nil,
                                          callback: callback)
     }
     
@@ -147,9 +145,9 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
             ]
         ]
         self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.kickSeatCmd.rawValue,
-                                          value: value,
-                                          objectId: "",
-                                          callback: callback)
+                                         value: value,
+                                         filter: nil,
+                                         callback: callback)
     }
     
     public func muteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
@@ -159,9 +157,9 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
             ]
         ]
         self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.muteAudioCmd.rawValue,
-                                          value: value,
-                                          objectId: "",
-                                          callback: callback)
+                                         value: value,
+                                         filter: nil,
+                                         callback: callback)
     }
     
     public func muteVideoSeat(seatIndex: Int, isMute: Bool, callback: @escaping AUICallback) {
@@ -188,9 +186,9 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         //TODO: value.isEmpty
         
         self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.closeSeatCmd.rawValue,
-                                          value: value,
-                                          objectId: "",
-                                          callback: callback)
+                                         value: value,
+                                         filter: nil,
+                                         callback: callback)
     }
     
     public func isOnMicSeat(userId: String) -> Bool {
@@ -230,7 +228,7 @@ extension AUIMicSeatServiceImpl {
         
         self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.leaveSeatCmd.rawValue,
                                          value: value,
-                                         objectId: "",
+                                         filter: nil,
                                          callback: callback)
     }
     
@@ -246,14 +244,15 @@ extension AUIMicSeatServiceImpl {
         }
         
         let owner = (value as? [String: Any])?["owner"] as? [String: Any]
-        var userId: String = owner?["userId"] as? String ?? ""
-        userId = userId.isEmpty ? publiserId : userId
+        let userId: String = owner?["userId"] as? String ?? ""
         switch dataCmd {
         case .enterSeatCmd:
             if self.micSeats.values.contains(where: { $0.user?.userId == userId }) {
                 return AUICommonError.micSeatAlreadyEnter.toNSError()
             }
-            guard let seat = self.micSeats[seatIndex], seat.lockSeat == .idle, seat.user?.isEmpty() ?? true else {
+            guard let seat = self.micSeats[seatIndex],
+                  seat.lockSeat == .idle,
+                  seat.user?.isEmpty() ?? true else {
                 return AUICommonError.micSeatNotIdle.toNSError()
             }
             break
@@ -261,7 +260,8 @@ extension AUIMicSeatServiceImpl {
             if seatIndex == 0 {
                 return AUICommonError.noPermission.toNSError()
             }
-            guard self.micSeats.values.contains(where: { $0.user?.userId == userId }) else {
+            guard micSeats[seatIndex]?.user?.userId == publiserId
+                    || getRoomContext().isRoomOwner(channelName: channelName, userId: publiserId) else {
                 return AUICommonError.userNoEnterSeat.toNSError()
             }
             var err: NSError?
@@ -295,165 +295,9 @@ extension AUIMicSeatServiceImpl {
         
         return nil
     }
-//    private func rtmEnterSeat(seatIndex: Int, userInfo: AUIUserThumbnailInfo, callback: @escaping (NSError?) -> ()) {
-//        if self.micSeats.values.contains(where: { $0.user?.userId == userInfo.userId }) {
-//            callback(AUICommonError.micSeatAlreadyEnter.toNSError())
-//            return
-//        }
-//        guard let seat = self.micSeats[seatIndex], seat.lockSeat == .idle, seat.user?.isEmpty() ?? true else {
-//            callback(AUICommonError.micSeatNotIdle.toNSError())
-//            return
-//        }
-//        
-//        var seatMap: [String: [String: Any]] = [:]
-//        
-//        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
-//            var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
-//            if key == seatIndex {
-//                map["owner"] = userInfo.yy_modelToJSONObject()
-//                map["micSeatStatus"] = AUILockSeatStatus.user.rawValue
-//            }
-//            seatMap["\(key)"] = map
-//        }
-//        
-//        let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
-//        let str = String(data: data, encoding: .utf8)!
-//        let metaData = [kSeatAttrKry: str]
-//        self.rtmManager.setBatchMetadata(channelName: channelName,
-//                                         lockName: kRTM_Referee_LockName,
-//                                         metadata: metaData) { error in
-//            callback(error)
-//        }
-//    }
-    
-//    private func rtmLeaveSeatMetaData(userId: String) -> NSMutableDictionary {
-//        guard self.micSeats.values.contains(where: { $0.user?.userId == userId }) else {
-//            return [:]
-//        }
-//        
-//        var seatMap: [String: [String: Any]] = [:]
-//        
-//        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
-//            var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
-//            if userId == value.user?.userId {
-//                map["owner"] = AUIUserThumbnailInfo().yy_modelToJSONObject()
-//                map["micSeatStatus"] = AUILockSeatStatus.idle.rawValue
-//            }
-//            seatMap["\(key)"] = map
-//        }
-//        
-//        let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
-//        let str = String(data: data, encoding: .utf8)!
-//        let metaData = NSMutableDictionary()
-//        metaData[kSeatAttrKry] = str
-//        return metaData
-//    }
-    
-//    private func rtmLeaveSeat(userId: String, callback: @escaping (NSError?) -> ()) {
-//        guard self.micSeats.values.contains(where: { $0.user?.userId == userId }) else {
-//            callback(AUICommonError.userNoEnterSeat.toNSError())
-//            return
-//        }
-//        var err: NSError?
-//        let metaData = rtmLeaveSeatMetaData(userId: userId)
-//        for obj in respDelegates.allObjects {
-//            err = obj.onSeatWillLeave?(userId: userId, metaData: metaData)
-//            if let err = err {
-//                callback(err)
-//                break
-//            }
-//        }
-//        self.rtmManager.setBatchMetadata(channelName: channelName,
-//                                         lockName: kRTM_Referee_LockName,
-//                                         metadata: metaData as! [String : String]) { error in
-//            callback(error)
-//        }
-//    }
-    
-//    private func rtmKickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {
-//        var seatMap: [String: [String: Any]] = [:]
-//        
-//        var userId: String?
-//        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
-//            var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
-//            if key == seatIndex {
-//                map["owner"] = AUIUserThumbnailInfo().yy_modelToJSONObject()
-//                map["micSeatStatus"] = AUILockSeatStatus.idle.rawValue
-//                userId = value.user?.userId
-//            }
-//            seatMap["\(key)"] = map
-//        }
-//        
-//        var err: NSError? = nil
-//        let metaData = NSMutableDictionary()
-//        for obj in respDelegates.allObjects {
-//            err = obj.onSeatWillLeave?(userId: userId!, metaData: metaData)
-//            if let _ = err {
-//                callback(err)
-//                break
-//            }
-//        }
-//        let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
-//        let str = String(data: data, encoding: .utf8)!
-//        metaData[kSeatAttrKry] = str
-//        
-//        self.rtmManager.setBatchMetadata(channelName: channelName,
-//                                         lockName: kRTM_Referee_LockName,
-//                                         metadata: metaData as! [String : String]) { error in
-//            callback(error)
-//        }
-//    }
-    
-//    private func rtmMuteAudioSeat(seatIndex: Int, isMute: Bool, callback: @escaping (NSError?) -> ()) {
-//        var seatMap: [String: [String: Any]] = [:]
-//        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
-//            var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
-//            if key == seatIndex {
-//                map["isMuteAudio"] = isMute
-//            }
-//            seatMap["\(key)"] = map
-//        }
-//        
-//        let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
-//        let str = String(data: data, encoding: .utf8)!
-//        let metaData = [kSeatAttrKry: str]
-//        self.rtmManager.setBatchMetadata(channelName: channelName,
-//                                         lockName: kRTM_Referee_LockName,
-//                                         metadata: metaData) { error in
-//            callback(error)
-//        }
-//    }
-    
-//    private func rtmCloseSeat(seatIndex: Int, isClose: Bool, callback: @escaping (NSError?) -> ())  {
-//        var seatMap: [String: [String: Any]] = [:]
-//        self.micSeats.forEach { (key: Int, value: AUIMicSeatInfo) in
-//            var map = value.yy_modelToJSONObject() as? [String: Any] ?? [:]
-//            if key == seatIndex {
-//                if isClose {
-//                    map["micSeatStatus"] = AUILockSeatStatus.locked.rawValue
-//                } else if value.user?.isEmpty() ?? true {
-//                    map["micSeatStatus"] = AUILockSeatStatus.idle.rawValue
-//                } else {
-//                    map["micSeatStatus"] = AUILockSeatStatus.user.rawValue
-//                }
-//            }
-//            seatMap["\(key)"] = map
-//        }
-//        
-//        let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
-//        let str = String(data: data, encoding: .utf8)!
-//        let metaData = [kSeatAttrKry: str]
-//        self.rtmManager.setBatchMetadata(channelName: channelName,
-//                                         lockName: kRTM_Referee_LockName,
-//                                         metadata: metaData) { error in
-//            callback(error)
-//        }
-//    }
 }
 
-//MARK: AUIRtmMessageProxyDelegate
 extension AUIMicSeatServiceImpl {
-
     public func initService(completion: @escaping ((NSError?) -> ())){
         guard let roomInfo = getRoomContext().roomInfoMap[channelName] else {
             completion(AUICommonError.unknown.toNSError())
@@ -499,6 +343,6 @@ extension AUIMicSeatServiceImpl {
 //                                      lockName: kRTM_Referee_LockName,
 //                                      removeKeys: [kSeatAttrKry],
 //                                      completion: completion)
-        mapCollection.removeMetaData(valueCmd: nil, objectId: "", callback: completion)
+        mapCollection.cleanMetaData(callback: completion)
     }
 }

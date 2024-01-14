@@ -27,7 +27,7 @@ import Foundation
     
     /// 获取合唱者列表
     /// - Parameter completion: 需要回调的对象
-    func getChoristersList(completion: (Error?, [AUIChoristerModel]?)->())
+    func getChoristersList(completion: @escaping (Error?, [AUIChoristerModel]?)->())
     
     /// 加入合唱
     /// - Parameters:
