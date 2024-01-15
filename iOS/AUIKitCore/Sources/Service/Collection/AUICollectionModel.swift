@@ -120,8 +120,26 @@ enum AUICollectionOprationType: Int, Codable {
     case merge = 2    //合并，对传递进来的map进行每个子节点的替换
     case remove = 3   //删除
     case clean = 4    //清理对应scene的key/value，相当于在rtm metadata里移除这个collection的所有信息
-    case increase = 10 //增加
-    case decrease = 11 //减少
+    case calculate = 10 //计算属性，增加/减少
+}
+
+struct AUICollectionCalcValue: Codable {
+    public var value: Int
+    public var min: Int
+    public var max: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case value, min, max
+    }
+}
+
+struct AUICollectionCalcData: Codable {
+    public var key: [String]?
+    public var value: AUICollectionCalcValue?
+    
+    enum CodingKeys: String, CodingKey {
+        case key, value
+    }
 }
 
 struct AUICollectionMessagePayload: Codable {

@@ -90,6 +90,26 @@ public typealias AUICollectionAttributesDidChangedClosure = (String, String, Any
                         filter: [[String: Any]]?,
                         callback: ((NSError?)->())?)
     
+    
+    
+    
+    /// 增加/减小节点(节点必须是Int)
+    /// - Parameters:
+    ///   - valueCmd: <#valueCmd description#>
+    ///   - key: <#key description#>
+    ///   - value: <#value description#>
+    ///   - min: <#min description#>
+    ///   - max: <#max description#>
+    ///   - filter: <#filter description#>
+    ///   - callback: <#callback description#>
+    func calculateMetaData(valueCmd: String?,
+                           key: [String],
+                           value: Int,
+                           min: Int,
+                           max: Int,
+                           filter: [[String: Any]]?,
+                           callback: ((NSError?)->())?)
+    
     /// 移除整个collection对应的key
     /// - Parameter callback: <#callback description#>
     func cleanMetaData(callback: ((NSError?)->())?)
@@ -107,6 +127,38 @@ func mergeMap(origMap: [String: Any], newMap: [String: Any]) -> [String: Any] {
             _origMap[k] = v
         }
     }
+    return _origMap
+}
+
+func calculateMap(origMap: [String: Any],
+                  key: [String],
+                  value: Int,
+                  min: Int,
+                  max: Int) -> [String: Any]? {
+    var _origMap = origMap
+    if key.count > 1 {
+        let curKey = key.first ?? ""
+        let subKey = Array(key.suffix(from: 1))
+        
+        guard let subValue = _origMap[curKey] as? [String: Any],
+              let newMap = calculateMap(origMap: subValue,
+                                        key: subKey,
+                                        value: value,
+                                        min: min,
+                                        max: max) else {
+            return nil
+        }
+        _origMap[curKey] = newMap
+        return _origMap
+    }
+    guard let curKey = key.first, let subValue = _origMap[curKey] as? Int else { return nil }
+    let curValue = subValue + value
+    guard curValue <= max, curValue >= min else {
+        aui_info("")
+        return nil
+    }
+    _origMap[curKey] = curValue
+    
     return _origMap
 }
 

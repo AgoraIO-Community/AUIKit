@@ -194,6 +194,46 @@ extension AUIMapCollection: IAUICollection {
         callback?(NSError.auiError("unsupport method"))
     }
     
+    public func calculateMetaData(valueCmd: String?,
+                                  key: [String],
+                                  value: Int,
+                                  min: Int,
+                                  max: Int,
+                                  filter: [[String: Any]]?,
+                                  callback: ((NSError?)->())?) {
+        if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
+            let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
+            rtmCalculateMetaData(publisherId: currentUserId,
+                                 valueCmd: valueCmd,
+                                 key: key,
+                                 value: AUICollectionCalcValue(value: value, min: min, max: max),
+                                 callback: callback)
+            return
+        }
+        
+        let calcData = AUICollectionCalcData(key: key,
+                                             value: AUICollectionCalcValue(value: value, min: min, max: max))
+        let data: [String: Any] = encodeModel(calcData) ?? [:]
+        let payload = AUICollectionMessagePayload(type: .calculate,
+                                                  dataCmd: valueCmd,
+                                                  data: AUIAnyType(map: data))
+        let message = AUICollectionMessage(channelName: channelName,
+                                           messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
+                                           uniqueId: UUID().uuidString,
+                                           payload: payload)
+
+        guard let jsonStr = encodeModelToJsonStr(message) else {
+            callback?(NSError.auiError("updateMetaData fail"))
+            return
+        }
+        let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
+        rtmManager.publishAndWaitReceipt(userId: userId,
+                                         channelName: channelName,
+                                         message: jsonStr,
+                                         uniqueId: message.uniqueId ?? "",
+                                         completion: callback)
+    }
     
     /// 清理，map collection就是删除该key
     /// - Parameter callback: <#callback description#>
@@ -271,6 +311,34 @@ extension AUIMapCollection {
                                          lockName: kRTM_Referee_LockName,
                                          metadata: [observeKey: value]) { error in
             aui_map_log("rtmMergeMetaData completion: \(error?.localizedDescription ?? "success")")
+            callback?(error)
+        }
+        currentMap = map
+    }
+    
+    private func rtmCalculateMetaData(publisherId: String,
+                                      valueCmd: String?,
+                                      key: [String],
+                                      value: AUICollectionCalcValue,
+                                      callback: ((NSError?)->())?) {
+        //TODO: will calculate?
+        
+        
+        
+        let map = calculateMap(origMap: currentMap,
+                               key: key,
+                               value: value.value,
+                               min: value.min,
+                               max: value.max)
+        guard let map = map, let value = encodeToJsonStr(map) else {
+            callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))
+            return
+        }
+        aui_map_log("rtmCalculateMetaData valueCmd: \(valueCmd ?? "") key: \(key), value: \(value)")
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: [observeKey: value]) { error in
+            aui_map_log("rtmCalculateMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
         currentMap = map
@@ -371,18 +439,30 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
             }
             err = NSError.auiError("payload is not a map")
         case .clean:
-            rtmCleanMetaData(callback: {[weak self] error in
+            rtmCleanMetaData { [weak self] error in
                 self?.sendReceipt(publisher: publisher,
                                   uniqueId: uniqueId,
                                   error: error)
-            })
+            }
         case .remove:
             err = NSError.auiError("map collection remove type unsupported")
             break
-        case .increase:
-            break
-        case .decrease:
-            break
+        case .calculate:
+            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any],
+               let data: AUICollectionCalcData = decodeModel(value),
+               let key = data.key,
+               let calc = data.value {
+                rtmCalculateMetaData(publisherId: publisher,
+                                     valueCmd: valueCmd,
+                                     key: key,
+                                     value: calc) {[weak self] error in
+                    self?.sendReceipt(publisher: publisher,
+                                      uniqueId: uniqueId,
+                                      error: error)
+                }
+                return
+            }
+            err = NSError.auiError("payload is not a map")
         }
         
         guard let err = err else {return}

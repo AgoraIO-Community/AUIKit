@@ -245,6 +245,48 @@ extension AUIListCollection: IAUICollection {
                                          completion: callback)
     }
     
+    public func calculateMetaData(valueCmd: String?,
+                                  key: [String],
+                                  value: Int,
+                                  min: Int,
+                                  max: Int,
+                                  filter: [[String: Any]]?,
+                                  callback: ((NSError?)->())?) {
+        if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
+            let currentUserId = AUIRoomContext.shared.currentUserInfo.userId
+            rtmCalculateMetaData(publisherId: currentUserId,
+                                 valueCmd: valueCmd,
+                                 key: key,
+                                 value: AUICollectionCalcValue(value: value, min: min, max: max),
+                                 filter: filter,
+                                 callback: callback)
+            return
+        }
+        
+        let calcData = AUICollectionCalcData(key: key,
+                                             value: AUICollectionCalcValue(value: value, min: min, max: max))
+        let data: [String: Any] = encodeModel(calcData) ?? [:]
+        let payload = AUICollectionMessagePayload(type: .calculate,
+                                                  dataCmd: valueCmd,
+                                                  data: AUIAnyType(map: data))
+        let message = AUICollectionMessage(channelName: channelName,
+                                           messageType: AUIMessageType.normal,
+                                           sceneKey: observeKey,
+                                           uniqueId: UUID().uuidString,
+                                           payload: payload)
+
+        guard let jsonStr = encodeModelToJsonStr(message) else {
+            callback?(NSError.auiError("updateMetaData fail"))
+            return
+        }
+        let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
+        rtmManager.publishAndWaitReceipt(userId: userId,
+                                         channelName: channelName,
+                                         message: jsonStr,
+                                         uniqueId: message.uniqueId ?? "",
+                                         completion: callback)
+    }
+    
     public func cleanMetaData(callback: ((NSError?) -> ())?) {
         if AUIRoomContext.shared.getArbiter(channelName: channelName)?.isArbiter() ?? false {
             rtmCleanMetaData(callback: callback)
@@ -415,6 +457,48 @@ extension AUIListCollection {
         currentList = list
     }
     
+    private func rtmCalculateMetaData(publisherId: String,
+                                      valueCmd: String?,
+                                      key: [String],
+                                      value: AUICollectionCalcValue,
+                                      filter: [[String: Any]]?,
+                                      callback: ((NSError?)->())?) {
+        //TODO: will calculate?
+        
+        guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
+            callback?(NSError.auiError("rtmCalculateMetaData fail, the result was not found in the filter"))
+            return
+        }
+        
+        var list = currentList
+        for itemIdx in itemIndexes {
+            let item = currentList[itemIdx]
+            
+            guard let tempItem = calculateMap(origMap: item,
+                                              key: key,
+                                              value: value.value,
+                                              min: value.min,
+                                              max: value.max) else {
+                callback?(NSError.auiError("rtmCalculateMetaData fail"))
+                return
+            }
+            list[itemIdx] = tempItem
+        }
+        
+        guard let value = encodeToJsonStr(list) else {
+            callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))
+            return
+        }
+        aui_list_log("rtmCalculateMetaData valueCmd: \(valueCmd ?? "") key: \(key), value: \(value)")
+        self.rtmManager.setBatchMetadata(channelName: channelName,
+                                         lockName: kRTM_Referee_LockName,
+                                         metadata: [observeKey: value]) { error in
+            aui_list_log("rtmCalculateMetaData completion: \(error?.localizedDescription ?? "success")")
+            callback?(error)
+        }
+        currentList = list
+    }
+    
     func rtmCleanMetaData(callback: ((NSError?)->())?) {
         aui_list_log("rtmCleanMetaData")
         self.rtmManager.cleanBatchMetadata(channelName: channelName,
@@ -532,10 +616,23 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
                                   uniqueId: uniqueId,
                                   error: error)
             })
-        case .increase:
-            break
-        case .decrease:
-            break
+        case .calculate:
+            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any],
+               let data: AUICollectionCalcData = decodeModel(value),
+               let key = data.key,
+               let calc = data.value {
+                rtmCalculateMetaData(publisherId: publisher,
+                                     valueCmd: valueCmd,
+                                     key: key,
+                                     value: calc,
+                                     filter: filter) {[weak self] error in
+                    self?.sendReceipt(publisher: publisher,
+                                      uniqueId: uniqueId,
+                                      error: error)
+                }
+                return
+            }
+            err = NSError.auiError("payload is not a map")
         }
         
         guard let err = err else {return}
