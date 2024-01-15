@@ -28,7 +28,6 @@ enum AUIChorusCMd: String {
         
     deinit {
         aui_info("deinit AUIChorusServiceImpl", tag: "AUIChorusServiceImpl")
-        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
     }
     
     @objc public init(channelName: String, rtcKit: AgoraRtcEngineKit, ktvApi: KTVApiDelegate, rtmManager: AUIRtmManager) {
@@ -38,13 +37,16 @@ enum AUIChorusCMd: String {
         self.channelName = channelName
         self.rtcKit = rtcKit
         self.ktvApi = ktvApi
-        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChorusKey, delegate: self)
         
         self.listCollection = AUIListCollection(channelName: channelName, observeKey: kChorusKey, rtmManager: rtmManager)
         listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem in
             return self?.metadataWillAdd(publiserId: publisherId,
                                          dataCmd: dataCmd,
                                          newItem: newItem)
+        }
+        
+        listCollection.subscribeAttributesDidChanged {[weak self] channelName, key, value in
+            self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
         }
     }
 }
@@ -111,9 +113,9 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
     }
 }
 
-//MARK: AUIRtmMsgProxyDelegate
-extension AUIChorusServiceImpl: AUIRtmAttributesProxyDelegate {
-    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+//MARK: set meta data
+extension AUIChorusServiceImpl {
+    private func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         if key == kChorusKey {
             aui_info("recv chorus attr did changed \(value)", tag: "AUIPlayerServiceImpl")
             guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
@@ -141,11 +143,7 @@ extension AUIChorusServiceImpl: AUIRtmAttributesProxyDelegate {
             self.chorusUserList = chorusList
         }
     }
-}
 
-//MARK: set meta data
-extension AUIChorusServiceImpl {
-    
     private func metadataWillAdd(publiserId: String,
                                  dataCmd: String?,
                                  newItem: [String: Any]) -> NSError? {
@@ -154,7 +152,7 @@ extension AUIChorusServiceImpl {
         }
         
         let owner = newItem["owner"] as? [String: Any]
-        let userId = owner?["userId"] as? String ?? ""
+//        let userId = owner?["userId"] as? String ?? ""
         switch dataCmd {
         case .joinCmd:
 //            if self.chooseSongList.contains(where: { $0.songCode == songCode }) {

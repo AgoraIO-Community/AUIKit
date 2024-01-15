@@ -18,11 +18,17 @@ public class AUIListCollection: NSObject {
     private var channelName: String
     private var observeKey: String
     private var rtmManager: AUIRtmManager
-    private var currentList: [[String: Any]] = []
-    private var metadataWillAddColsure: AUICollectionAddClosure?
-    private var metadataWillUpdateColsure: AUICollectionUpdateClosure?
-    private var metadataWillMergeColsure: AUICollectionUpdateClosure?
-    private var metadataWillRemoveColsure: AUICollectionRemoveClosure?
+    private var currentList: [[String: Any]] = []{
+        didSet {
+            //TODO: if oldValue == currentList {return}
+            self.attributesDidChangedClosure?(channelName, observeKey, currentList)
+        }
+    }
+    private var metadataWillAddClosure: AUICollectionAddClosure?
+    private var metadataWillUpdateClosure: AUICollectionUpdateClosure?
+    private var metadataWillMergeClosure: AUICollectionUpdateClosure?
+    private var metadataWillRemoveClosure: AUICollectionRemoveClosure?
+    private var attributesDidChangedClosure: AUICollectionAttributesDidChangedClosure?
     
     deinit {
         rtmManager.unsubscribeAttributes(channelName: channelName, itemKey: observeKey, delegate: self)
@@ -44,7 +50,7 @@ public class AUIListCollection: NSObject {
 extension AUIListCollection: IAUICollection {
     
     public func subscribeWillAdd(callback: AUICollectionAddClosure?) {
-        self.metadataWillAddColsure = callback
+        self.metadataWillAddClosure = callback
     }
     /*
      上层service调用(例如麦位Service)
@@ -55,15 +61,19 @@ extension AUIListCollection: IAUICollection {
      }
      */
     public func subscribeWillUpdate(callback: AUICollectionUpdateClosure?) {
-        self.metadataWillUpdateColsure = callback
+        self.metadataWillUpdateClosure = callback
     }
     
     public func subscribeWillMerge(callback: AUICollectionUpdateClosure?) {
-        self.metadataWillMergeColsure = callback
+        self.metadataWillMergeClosure = callback
     }
     
     public func subscribeWillRemove(callback: AUICollectionRemoveClosure?) {
-        self.metadataWillRemoveColsure = callback
+        self.metadataWillRemoveClosure = callback
+    }
+    
+    public func subscribeAttributesDidChanged(callback: AUICollectionAttributesDidChangedClosure?) {
+        self.attributesDidChangedClosure = callback
     }
     
     public func getMetaData(callback: AUICollectionGetClosure?) {
@@ -272,7 +282,7 @@ extension AUIListCollection {
             callback?(NSError.auiError("rtmAddMetaData fail, the result was found in the filter"))
             return
         }
-        if let err = self.metadataWillAddColsure?(publisherId, valueCmd, value) {
+        if let err = self.metadataWillAddClosure?(publisherId, valueCmd, value) {
             callback?(err)
             return
         }
@@ -283,7 +293,7 @@ extension AUIListCollection {
             callback?(NSError.auiError("rtmAddMetaData fail"))
             return
         }
-        currentList = list
+        
         aui_list_log("rtmAddMetaData valueCmd: \(valueCmd ?? "") value: \(value), \nfilter: \(filter ?? [])")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
@@ -291,6 +301,7 @@ extension AUIListCollection {
             aui_list_log("rtmAddMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
+        currentList = list
     }
     
     private func rtmSetMetaData(publisherId: String,
@@ -306,7 +317,7 @@ extension AUIListCollection {
         for itemIdx in itemIndexes {
             let item = list[itemIdx]
             //once break, always break
-            if let err = self.metadataWillUpdateColsure?(publisherId, valueCmd, value, item) {
+            if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, value, item) {
                 callback?(err)
                 return
             }
@@ -321,7 +332,7 @@ extension AUIListCollection {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
         }
-        currentList = list
+        
         aui_list_log("rtmSetMetaData valueCmd: \(valueCmd ?? ""), filter: \(filter ?? []), value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
@@ -329,6 +340,7 @@ extension AUIListCollection {
             aui_list_log("rtmSetMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
+        currentList = list
     }
     
     func rtmMergeMetaData(publisherId: String,
@@ -345,7 +357,7 @@ extension AUIListCollection {
         for itemIdx in itemIndexes {
             let item = list[itemIdx]
             //once break, always break
-            if let err = self.metadataWillMergeColsure?(publisherId, valueCmd, value, item) {
+            if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, value, item) {
                 callback?(err)
                 return
             }
@@ -358,7 +370,7 @@ extension AUIListCollection {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
         }
-        currentList = list
+        
         aui_list_log("rtmMergeMetaData valueCmd: \(valueCmd ?? ""), filter: \(filter ?? []), value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
@@ -366,6 +378,7 @@ extension AUIListCollection {
             aui_list_log("rtmMergeMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
+        currentList = list
     }
     
     func rtmRemoveMetaData(publisherId: String,
@@ -379,7 +392,7 @@ extension AUIListCollection {
         
         for itemIdx in itemIndexes {
             let item = currentList[itemIdx]
-            if let err = self.metadataWillRemoveColsure?(publisherId, valueCmd, item) {
+            if let err = self.metadataWillRemoveClosure?(publisherId, valueCmd, item) {
                 callback?(err)
                 return
             }
@@ -391,7 +404,7 @@ extension AUIListCollection {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
         }
-        currentList = list
+        
         aui_list_log("rtmRemoveMetaData valueCmd: \(valueCmd ?? ""), filter: \(filter ?? []), value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
@@ -399,6 +412,7 @@ extension AUIListCollection {
             aui_list_log("rtmRemoveMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
+        currentList = list
     }
     
     func rtmCleanMetaData(callback: ((NSError?)->())?) {

@@ -30,7 +30,6 @@ enum AUIMicSeatCmd: String {
     private var mapCollection: AUIMapCollection!
         
     deinit {
-        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         aui_info("deinit AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
     
@@ -39,59 +38,13 @@ enum AUIMicSeatCmd: String {
         self.channelName = channelName
         self.mapCollection = AUIMapCollection(channelName: channelName, observeKey: kSeatAttrKry, rtmManager: rtmManager)
         super.init()
-        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kSeatAttrKry, delegate: self)
         mapCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
             return self?.metadataWillMerge(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
         }
-        aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
-    }
-}
-
-extension AUIMicSeatServiceImpl: AUIRtmAttributesProxyDelegate {
-    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
-        mapCollection.onAttributesDidChanged(channelName: channelName, key: key, value: value)
-        if key == kSeatAttrKry {
-            aui_info("recv seat attr did changed \(value)", tag: "AUIMicSeatServiceImpl")
-            guard let map = value as? [String: [String: Any]] else {return}
-            map.values.forEach { element in
-                guard let micSeat = AUIMicSeatInfo.yy_model(with: element) else {return}
-                aui_info(" micSeat.islock \(micSeat.lockSeat) micSeat.Index = \(micSeat.seatIndex)", tag: "AUIMicSeatServiceImpl")
-                let index: Int = Int(micSeat.seatIndex)
-                let origMicSeat = self.micSeats[index]
-                
-                self.micSeats[index] = micSeat
-                self.respDelegates.allObjects.forEach { delegate in
-                    if let origUser = origMicSeat?.user, origUser.userId.count > 0, micSeat.user?.userId ?? "" != origUser.userId {
-                        delegate.onAnchorLeaveSeat(seatIndex: index, user: origUser)
-                    }
-                    
-                    if let user = micSeat.user, user.userId.count > 0, origMicSeat?.user?.userId ?? "" != user.userId {
-                        delegate.onAnchorEnterSeat(seatIndex: index, user: user)
-                    }
-                    
-                    if origMicSeat?.lockSeat ?? .idle != micSeat.lockSeat {
-                        delegate.onSeatClose(seatIndex: index, isClose: micSeat.lockSeat == .locked)
-                    }
-                    
-                    if origMicSeat?.muteAudio ?? false != micSeat.muteAudio {
-                        delegate.onSeatAudioMute(seatIndex: index, isMute: micSeat.muteAudio)
-                    }
-                    
-                    if origMicSeat?.muteVideo ?? false != micSeat.muteVideo {
-                        delegate.onSeatVideoMute(seatIndex: index, isMute: micSeat.muteVideo)
-                    }
-                    /*
-                    if origMicSeat?.muteVideo != micSeat.muteVideo {
-                        delegate.onSeatVideoMute(seatIndex: index, isMute: micSeat.muteVideo)
-                    }
-                    
-                    if origMicSeat?.muteAudio != micSeat.muteAudio {
-                        delegate.onSeatAudioMute(seatIndex: index, isMute: micSeat.muteAudio)
-                    }
-                     */
-                }
-            }
+        mapCollection.subscribeAttributesDidChanged {[weak self] channelName, key, value in
+            self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
         }
+        aui_info("init AUIMicSeatServiceImpl", tag: "AUIMicSeatServiceImpl")
     }
 }
 
@@ -230,6 +183,51 @@ extension AUIMicSeatServiceImpl {
                                          value: value,
                                          filter: nil,
                                          callback: callback)
+    }
+    
+    private func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+        if key == kSeatAttrKry {
+            aui_info("recv seat attr did changed \(value)", tag: "AUIMicSeatServiceImpl")
+            guard let map = value as? [String: [String: Any]] else {return}
+            map.values.forEach { element in
+                guard let micSeat = AUIMicSeatInfo.yy_model(with: element) else {return}
+                aui_info(" micSeat.islock \(micSeat.lockSeat) micSeat.Index = \(micSeat.seatIndex)", tag: "AUIMicSeatServiceImpl")
+                let index: Int = Int(micSeat.seatIndex)
+                let origMicSeat = self.micSeats[index]
+                
+                self.micSeats[index] = micSeat
+                self.respDelegates.allObjects.forEach { delegate in
+                    if let origUser = origMicSeat?.user, origUser.userId.count > 0, micSeat.user?.userId ?? "" != origUser.userId {
+                        delegate.onAnchorLeaveSeat(seatIndex: index, user: origUser)
+                    }
+                    
+                    if let user = micSeat.user, user.userId.count > 0, origMicSeat?.user?.userId ?? "" != user.userId {
+                        delegate.onAnchorEnterSeat(seatIndex: index, user: user)
+                    }
+                    
+                    if origMicSeat?.lockSeat ?? .idle != micSeat.lockSeat {
+                        delegate.onSeatClose(seatIndex: index, isClose: micSeat.lockSeat == .locked)
+                    }
+                    
+                    if origMicSeat?.muteAudio ?? false != micSeat.muteAudio {
+                        delegate.onSeatAudioMute(seatIndex: index, isMute: micSeat.muteAudio)
+                    }
+                    
+                    if origMicSeat?.muteVideo ?? false != micSeat.muteVideo {
+                        delegate.onSeatVideoMute(seatIndex: index, isMute: micSeat.muteVideo)
+                    }
+                    /*
+                    if origMicSeat?.muteVideo != micSeat.muteVideo {
+                        delegate.onSeatVideoMute(seatIndex: index, isMute: micSeat.muteVideo)
+                    }
+                    
+                    if origMicSeat?.muteAudio != micSeat.muteAudio {
+                        delegate.onSeatAudioMute(seatIndex: index, isMute: micSeat.muteAudio)
+                    }
+                     */
+                }
+            }
+        }
     }
     
     private func metadataWillMerge(publiserId: String,

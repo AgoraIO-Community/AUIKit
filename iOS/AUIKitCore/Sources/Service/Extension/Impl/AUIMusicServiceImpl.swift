@@ -52,7 +52,6 @@ open class AUIMusicServiceImpl: NSObject {
     private var listCollection: AUIListCollection!
         
     deinit {
-        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         aui_info("deinit AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
     }
     
@@ -63,7 +62,6 @@ open class AUIMusicServiceImpl: NSObject {
         self.channelName = channelName
         self.ktvApi = ktvApi
         self.listCollection = AUIListCollection(channelName: channelName, observeKey: kChooseSongKey, rtmManager: rtmManager)
-        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         
         listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem in
             return self?.metadataWillAdd(publiserId: publisherId, 
@@ -82,24 +80,9 @@ open class AUIMusicServiceImpl: NSObject {
                                             dataCmd: dataCmd,
                                             currentMap: item)
         }
-    }
-}
-
-//MARK: AUIRtmMsgProxyDelegate
-extension AUIMusicServiceImpl: AUIRtmAttributesProxyDelegate {
-    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
-        if key == kChooseSongKey {
-            aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
-            guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
-                  let chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: songArray) as? [AUIChooseMusicModel] else {
-                return
-            }
-            
-            aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
-            self.chooseSongList = chooseSongList
-            self.respDelegates.allObjects.forEach { obj in
-                obj.onUpdateAllChooseSongs(songs: chooseSongList)
-            }
+        
+        listCollection.subscribeAttributesDidChanged {[weak self] channelName, key, value in
+            self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
         }
     }
 }
@@ -287,6 +270,22 @@ extension AUIMusicServiceImpl {
         })
         
         return songList
+    }
+    
+    private func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+        if key == kChooseSongKey {
+            aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
+            guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
+                  let chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: songArray) as? [AUIChooseMusicModel] else {
+                return
+            }
+            
+            aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
+            self.chooseSongList = chooseSongList
+            self.respDelegates.allObjects.forEach { obj in
+                obj.onUpdateAllChooseSongs(songs: chooseSongList)
+            }
+        }
     }
     
     private func metadataWillAdd(publiserId: String,

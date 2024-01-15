@@ -10,13 +10,16 @@ import Foundation
 public typealias AUICollectionGetClosure = (NSError?, Any?)-> Void
 
 //(publisher uid, valueCmd, new value)
-public typealias AUICollectionAddClosure = (String, String?, [String: Any])-> NSError?
+public typealias AUICollectionAddClosure = (String, String?, [String: Any]) -> NSError?
 
 //(publisher uid, valueCmd, new value, old value of item)
-public typealias AUICollectionUpdateClosure = (String, String?, [String: Any], [String: Any])-> NSError?
+public typealias AUICollectionUpdateClosure = (String, String?, [String: Any], [String: Any]) -> NSError?
 
 //(publisher uid, valueCmd, oldValue)
-public typealias AUICollectionRemoveClosure = (String, String?, [String: Any])-> NSError?
+public typealias AUICollectionRemoveClosure = (String, String?, [String: Any]) -> NSError?
+
+//(channelName, key, value)
+public typealias AUICollectionAttributesDidChangedClosure = (String, String, Any) -> Void
 
 @objc public protocol IAUICollection: NSObjectProtocol {
     
@@ -36,6 +39,9 @@ public typealias AUICollectionRemoveClosure = (String, String?, [String: Any])->
     /// - Parameter callback: <#callback description#>
     @objc optional func subscribeWillRemove(callback: AUICollectionRemoveClosure?)
     
+    /// 收到的meta data变化
+    /// - Parameter callback: <#callback description#>
+    func subscribeAttributesDidChanged(callback: AUICollectionAttributesDidChangedClosure?)
     
     /// 查询当前scene节点所有内容
     /// - Parameter callback: <#callback description#>

@@ -19,9 +19,15 @@ public class AUIMapCollection: NSObject {
     private var channelName: String
     private var observeKey: String
     private var rtmManager: AUIRtmManager
-    private var currentMap: [String: Any] = [:]
-    private var metadataWillUpdateColsure: AUICollectionUpdateClosure?
-    private var metadataWillMergeColsure: AUICollectionUpdateClosure?
+    private var currentMap: [String: Any] = [:] {
+        didSet {
+            //TODO: if oldValue == currentMap {return}
+            self.attributesDidChangedClosure?(channelName, observeKey, currentMap)
+        }
+    }
+    private var metadataWillUpdateClosure: AUICollectionUpdateClosure?
+    private var metadataWillMergeClosure: AUICollectionUpdateClosure?
+    private var attributesDidChangedClosure: AUICollectionAttributesDidChangedClosure?
     
     deinit {
         rtmManager.unsubscribeAttributes(channelName: channelName, itemKey: observeKey, delegate: self)
@@ -51,11 +57,15 @@ extension AUIMapCollection: IAUICollection {
      }
      */
     public func subscribeWillUpdate(callback: AUICollectionUpdateClosure?) {
-        self.metadataWillUpdateColsure = callback
+        self.metadataWillUpdateClosure = callback
     }
     
     public func subscribeWillMerge(callback: AUICollectionUpdateClosure?) {
-        self.metadataWillMergeColsure = callback
+        self.metadataWillMergeClosure = callback
+    }
+    
+    public func subscribeAttributesDidChanged(callback: AUICollectionAttributesDidChangedClosure?) {
+        self.attributesDidChangedClosure = callback
     }
     
     public func getMetaData(callback: AUICollectionGetClosure?) {
@@ -219,7 +229,7 @@ extension AUIMapCollection {
                                 valueCmd: String?,
                                 value: [String: Any],
                                 callback: ((NSError?)->())?) {
-        if let err = self.metadataWillUpdateColsure?(publisherId, valueCmd, value, currentMap) {
+        if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, value, currentMap) {
             callback?(err)
             return
         }
@@ -232,7 +242,6 @@ extension AUIMapCollection {
             callback?(NSError.auiError("rtmSetMetaData fail"))
             return
         }
-        currentMap = map
         aui_map_log("rtmSetMetaData valueCmd: \(valueCmd ?? "") value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
@@ -240,13 +249,14 @@ extension AUIMapCollection {
             aui_map_log("rtmSetMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
+        currentMap = map
     }
     
     private func rtmMergeMetaData(publisherId: String,
                                   valueCmd: String?,
                                   value: [String: Any],
                                   callback: ((NSError?)->())?) {
-        if let err = self.metadataWillMergeColsure?(publisherId, valueCmd, value, currentMap) {
+        if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, value, currentMap) {
             callback?(err)
             return
         }
@@ -256,7 +266,6 @@ extension AUIMapCollection {
             callback?(NSError.auiError("rtmSetMetaData fail"))
             return
         }
-        currentMap = map
         aui_map_log("rtmMergeMetaData valueCmd: \(valueCmd ?? "") value: \(value)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
@@ -264,6 +273,7 @@ extension AUIMapCollection {
             aui_map_log("rtmMergeMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
+        currentMap = map
     }
     
     func rtmCleanMetaData(callback: ((NSError?)->())?) {
