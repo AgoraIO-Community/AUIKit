@@ -374,18 +374,9 @@ extension AUIMusicServiceImpl {
     }
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
-        var metaData = [String: String]()
-        let filterSongList = chooseSongList.filter({ $0.userId != userId })
-        if filterSongList.count != chooseSongList.count {
-            let metaDataSongList = NSMutableArray(array: filterSongList)
-            let str = metaDataSongList.yy_modelToJSONString() ?? ""
-            metaData[kChooseSongKey] = str
-        }
-        
-        self.rtmManager.setBatchMetadata(channelName: channelName,
-                                         lockName: kRTM_Referee_LockName,
-                                         metadata: metaData,
-                                         completion: completion)
+        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+                                      filter: [["userId": userId]],
+                                      callback: completion)
     }
     
     public func deinitService(completion:  @escaping  ((NSError?) -> ())) {

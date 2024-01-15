@@ -151,7 +151,7 @@ extension AUIChorusServiceImpl {
             return AUICommonError.unknown.toNSError()
         }
         
-        let owner = newItem["owner"] as? [String: Any]
+//        let owner = newItem["owner"] as? [String: Any]
 //        let userId = owner?["userId"] as? String ?? ""
         switch dataCmd {
         case .joinCmd:
@@ -168,17 +168,9 @@ extension AUIChorusServiceImpl {
     }
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())){
-        var metaData = [String: String]()
-        let filterList = chorusUserList.filter({ $0.userId != userId })
-        if filterList.count != chorusUserList.count {
-            let metaDataList = NSMutableArray(array: filterList)
-            let str = metaDataList.yy_modelToJSONString() ?? ""
-            metaData[kChorusKey] = str
-        }
-        self.rtmManager.setBatchMetadata(channelName: channelName,
-                                         lockName: kRTM_Referee_LockName,
-                                         metadata: metaData,
-                                         completion: completion)
+        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+                                      filter: [["userId": userId]],
+                                      callback: completion)
     }
     
     public func deinitService(completion:  @escaping  ((NSError?) -> ())) {

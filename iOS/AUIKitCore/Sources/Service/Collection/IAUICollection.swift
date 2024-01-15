@@ -154,7 +154,7 @@ func calculateMap(origMap: [String: Any],
     guard let curKey = key.first, let subValue = _origMap[curKey] as? Int else { return nil }
     let curValue = subValue + value
     guard curValue <= max, curValue >= min else {
-        aui_info("")
+        aui_info("calculateMap out of range")
         return nil
     }
     _origMap[curKey] = curValue

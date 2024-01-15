@@ -131,7 +131,7 @@ extension AUIListCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -168,7 +168,7 @@ extension AUIListCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -205,7 +205,7 @@ extension AUIListCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
         
     }
@@ -241,7 +241,7 @@ extension AUIListCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -283,7 +283,7 @@ extension AUIListCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -308,7 +308,7 @@ extension AUIListCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -321,7 +321,7 @@ extension AUIListCollection {
                                 filter: [[String: Any]]?,
                                 callback: ((NSError?)->())?) {
         if let _ = getItemIndexes(array: currentList, filter: filter) {
-            callback?(NSError.auiError("rtmAddMetaData fail, the result was found in the filter"))
+            callback?(NSError.auiError("rtmAddMetaData fail, the result was found in the filter: '\(filter ?? [])'"))
             return
         }
         if let err = self.metadataWillAddClosure?(publisherId, valueCmd, value) {
@@ -352,7 +352,7 @@ extension AUIListCollection {
                                 filter: [[String: Any]]?,
                                 callback: ((NSError?)->())?) {
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmSetMetaData fail, the result was not found in the filter"))
+            callback?(NSError.auiError("rtmSetMetaData fail, the result was not found in the filter: '\(filter ?? [])'"))
             return
         }
         var list = currentList
@@ -391,7 +391,7 @@ extension AUIListCollection {
                           filter: [[String: Any]]?,
                           callback: ((NSError?)->())?) {
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmMergeMetaData fail, the result was not found in the filter"))
+            callback?(NSError.auiError("rtmMergeMetaData fail, the result was not found in the filter: '\(filter ?? [])'"))
             return
         }
         
@@ -428,7 +428,7 @@ extension AUIListCollection {
                            filter: [[String: Any]]?,
                            callback: ((NSError?)->())?) {
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail, the result was not found in the filter"))
+            callback?(NSError.auiError("rtmRemoveMetaData fail, the result was not found in the filter: '\(filter ?? [])'"))
             return
         }
         
@@ -479,7 +479,7 @@ extension AUIListCollection {
                                               value: value.value,
                                               min: value.min,
                                               max: value.max) else {
-                callback?(NSError.auiError("rtmCalculateMetaData fail"))
+                callback?(NSError.auiError("rtmCalculateMetaData fail! calculate meta data return nil"))
                 return
             }
             list[itemIdx] = tempItem
@@ -521,8 +521,11 @@ extension AUIListCollection: AUIRtmAttributesProxyDelegate {
 //MARK: AUIRtmMessageProxyDelegate
 extension AUIListCollection: AUIRtmMessageProxyDelegate {
     private func sendReceipt(publisher: String, uniqueId: String, error: NSError?) {
-        let data: [String: Any] = ["code": error?.code ?? 0,
-                                   "reason": error?.localizedDescription ?? ""]
+        let error = AUICollectionError(code: error?.code ?? 0, reason: error?.localizedDescription ?? "")
+        guard let data: [String: Any] = encodeModel(error) else {
+            aui_list_warn("sendReceipt encodeModel error fail")
+            return
+        }
         let payload = AUICollectionMessagePayload(data: AUIAnyType(map: data))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: .receipt,
@@ -530,7 +533,7 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
                                            uniqueId: uniqueId,
                                            payload: payload)
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            aui_list_warn("sendReceipt fail")
+            aui_list_warn("sendReceipt encodeModelToJsonStr fail!")
             return
         }
         rtmManager.publish(channelName: publisher, message: jsonStr, completion: { err in
@@ -544,33 +547,34 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
             return
         }
         aui_list_log("onMessageReceive: \(map)")
-        let uniqueId = collectionMessage.uniqueId ?? ""
-        let channelName = collectionMessage.channelName ?? ""
+        let uniqueId = collectionMessage.uniqueId
+        let channelName = collectionMessage.channelName
         guard channelName == self.channelName else {return}
         if collectionMessage.messageType == .receipt {
             if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
                 rtmManager.markReceiptFinished(uniqueId: uniqueId)
-                let data = collectionMessage.payload?.data?.toJsonObject() as? [String : Any]
-                let code = data?["code"] as? Int ?? 0
-                let reason = data?["reason"] as? String ?? "success"
+                let data = collectionMessage.payload.data?.toJsonObject() as? [String : Any] ?? [:]
+                let error: AUICollectionError? = decodeModel(data)
+                let code = error?.code ?? 0
+                let reason = error?.reason ?? "success"
                 callback(code == 0 ? nil : NSError.auiError(reason))
             }
             return
         }
         
-        guard let updateType = collectionMessage.payload?.type else {
+        guard let updateType = collectionMessage.payload.type else {
             sendReceipt(publisher: publisher,
                         uniqueId: uniqueId,
                         error: NSError.auiError("updateType not found"))
             return
         }
         
-        let filter: [[String: Any]]? = collectionMessage.payload?.filter?.toJsonObject() as? [[String: Any]]
-        let valueCmd = collectionMessage.payload?.dataCmd
+        let filter: [[String: Any]]? = collectionMessage.payload.filter?.toJsonObject() as? [[String: Any]]
+        let valueCmd = collectionMessage.payload.dataCmd
         var err: NSError? = nil
         switch updateType {
         case .add, .update, .merge:
-            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any] {
+            if let value = collectionMessage.payload.data?.toJsonObject() as? [String : Any] {
                 if updateType == .add {
                     rtmAddMetaData(publisherId: publisher,
                                    valueCmd: valueCmd,
@@ -617,14 +621,12 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
                                   error: error)
             })
         case .calculate:
-            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any],
-               let data: AUICollectionCalcData = decodeModel(value),
-               let key = data.key,
-               let calc = data.value {
+            if let value = collectionMessage.payload.data?.toJsonObject() as? [String : Any],
+               let data: AUICollectionCalcData = decodeModel(value) {
                 rtmCalculateMetaData(publisherId: publisher,
                                      valueCmd: valueCmd,
-                                     key: key,
-                                     value: calc,
+                                     key: data.key,
+                                     value: data.value,
                                      filter: filter) {[weak self] error in
                     self?.sendReceipt(publisher: publisher,
                                       uniqueId: uniqueId,

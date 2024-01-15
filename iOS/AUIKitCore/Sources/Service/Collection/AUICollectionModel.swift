@@ -123,6 +123,15 @@ enum AUICollectionOprationType: Int, Codable {
     case calculate = 10 //计算属性，增加/减少
 }
 
+struct AUICollectionError: Codable {
+    public var code: Int?
+    public var reason: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case code, reason
+    }
+}
+
 struct AUICollectionCalcValue: Codable {
     public var value: Int
     public var min: Int
@@ -134,8 +143,8 @@ struct AUICollectionCalcValue: Codable {
 }
 
 struct AUICollectionCalcData: Codable {
-    public var key: [String]?
-    public var value: AUICollectionCalcValue?
+    public var key: [String]
+    public var value: AUICollectionCalcValue
     
     enum CodingKeys: String, CodingKey {
         case key, value
@@ -154,11 +163,11 @@ struct AUICollectionMessagePayload: Codable {
 }
 
 struct AUICollectionMessage: Codable {
-    public var channelName: String?  //频道名，防止用户加入多个频道导致消息窜了
-    public var messageType: AUIMessageType?  //消息类型，表示正常类型/回执
-    public var sceneKey: String?   //表示修改的表字段，根据这个key每个collection自动和自己的observerKey判断是否匹配以进行下一步
-    public var uniqueId: String?   //唯一表示，用于校验回执
-    public var payload: AUICollectionMessagePayload?
+    public var channelName: String  //频道名，防止用户加入多个频道导致消息窜了
+    public var messageType: AUIMessageType  //消息类型，表示正常类型/回执
+    public var sceneKey: String   //表示修改的表字段，根据这个key每个collection自动和自己的observerKey判断是否匹配以进行下一步
+    public var uniqueId: String   //唯一表示，用于校验回执
+    public var payload: AUICollectionMessagePayload
     
     enum CodingKeys: String, CodingKey {
         case channelName, messageType, sceneKey, uniqueId, payload

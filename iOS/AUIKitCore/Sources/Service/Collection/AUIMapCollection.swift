@@ -126,7 +126,7 @@ extension AUIMapCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -166,7 +166,7 @@ extension AUIMapCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -231,7 +231,7 @@ extension AUIMapCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
     
@@ -258,7 +258,7 @@ extension AUIMapCollection: IAUICollection {
         rtmManager.publishAndWaitReceipt(userId: userId,
                                          channelName: channelName,
                                          message: jsonStr,
-                                         uniqueId: message.uniqueId ?? "",
+                                         uniqueId: message.uniqueId,
                                          completion: callback)
     }
 }
@@ -367,8 +367,11 @@ extension AUIMapCollection: AUIRtmAttributesProxyDelegate {
 //MARK: AUIRtmMessageProxyDelegate
 extension AUIMapCollection: AUIRtmMessageProxyDelegate {
     private func sendReceipt(publisher: String, uniqueId: String, error: NSError?) {
-        let data: [String: Any] = ["code": error?.code ?? 0,
-                                   "reason": error?.localizedDescription ?? ""]
+        let error = AUICollectionError(code: error?.code ?? 0, reason: error?.localizedDescription ?? "")
+        guard let data: [String: Any] = encodeModel(error) else {
+            aui_map_warn("sendReceipt encodeModel error fail")
+            return
+        }
         let payload = AUICollectionMessagePayload(data: AUIAnyType(map: data))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: .receipt,
@@ -392,32 +395,33 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
             return
         }
         aui_map_log("onMessageReceive: \(map)")
-        let uniqueId = collectionMessage.uniqueId ?? ""
-        let channelName = collectionMessage.channelName ?? ""
+        let uniqueId = collectionMessage.uniqueId
+        let channelName = collectionMessage.channelName
         guard channelName == self.channelName else {return}
         if collectionMessage.messageType == .receipt {
             if let callback = rtmManager.receiptCallbackMap[uniqueId]?.closure {
                 rtmManager.markReceiptFinished(uniqueId: uniqueId)
-                let data = collectionMessage.payload?.data?.toJsonObject() as? [String : Any]
-                let code = data?["code"] as? Int ?? 0
-                let reason = data?["reason"] as? String ?? "success"
+                let data = collectionMessage.payload.data?.toJsonObject() as? [String : Any] ?? [:]
+                let error: AUICollectionError? = decodeModel(data)
+                let code = error?.code ?? 0
+                let reason = error?.reason ?? "success"
                 callback(code == 0 ? nil : NSError.auiError(reason))
             }
             return
         }
         
-        guard let updateType = collectionMessage.payload?.type else {
+        guard let updateType = collectionMessage.payload.type else {
             sendReceipt(publisher: publisher,
                         uniqueId: uniqueId,
                         error: NSError.auiError("updateType not found"))
             return
         }
         
-        let valueCmd = collectionMessage.payload?.dataCmd
+        let valueCmd = collectionMessage.payload.dataCmd
         var err: NSError? = nil
         switch updateType {
         case .add, .update, .merge:
-            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any] {
+            if let value = collectionMessage.payload.data?.toJsonObject() as? [String : Any] {
                 if updateType == .merge {
                     rtmMergeMetaData(publisherId: publisher, 
                                      valueCmd: valueCmd,
@@ -448,14 +452,12 @@ extension AUIMapCollection: AUIRtmMessageProxyDelegate {
             err = NSError.auiError("map collection remove type unsupported")
             break
         case .calculate:
-            if let value = collectionMessage.payload?.data?.toJsonObject() as? [String : Any],
-               let data: AUICollectionCalcData = decodeModel(value),
-               let key = data.key,
-               let calc = data.value {
+            if let value = collectionMessage.payload.data?.toJsonObject() as? [String : Any],
+               let data: AUICollectionCalcData = decodeModel(value) {
                 rtmCalculateMetaData(publisherId: publisher,
                                      valueCmd: valueCmd,
-                                     key: key,
-                                     value: calc) {[weak self] error in
+                                     key: data.key,
+                                     value: data.value) {[weak self] error in
                     self?.sendReceipt(publisher: publisher,
                                       uniqueId: uniqueId,
                                       error: error)
