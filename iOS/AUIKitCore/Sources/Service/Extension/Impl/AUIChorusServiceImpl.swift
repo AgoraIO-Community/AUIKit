@@ -168,7 +168,7 @@ extension AUIChorusServiceImpl {
     }
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())){
-        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+        listCollection.removeMetaData(valueCmd: AUIChorusCMd.leaveCmd.rawValue,
                                       filter: [["userId": userId]],
                                       callback: completion)
     }
