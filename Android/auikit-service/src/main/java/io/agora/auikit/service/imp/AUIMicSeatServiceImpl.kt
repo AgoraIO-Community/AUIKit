@@ -59,10 +59,9 @@ class AUIMicSeatServiceImpl(
             }
             seatMap.put(i.toString(), seat)
         }
-        mapCollection.setMetaData(
+        mapCollection.updateMetaData(
             AUIMicSeatCmd.initSeatCmd.name,
             seatMap,
-            UUID.randomUUID().toString()
         ) { error ->
             completion?.onResult(error)
         }
@@ -98,8 +97,8 @@ class AUIMicSeatServiceImpl(
 
     override fun enterSeat(seatIndex: Int, callback: AUICallback?) {
         mapCollection.mergeMetaData(
-            AUIMicSeatCmd.enterSeatCmd.name,
-            mapOf(
+            valueCmd = AUIMicSeatCmd.enterSeatCmd.name,
+            value = mapOf(
                 Pair(
                     seatIndex.toString(),
                     mapOf(
@@ -108,8 +107,7 @@ class AUIMicSeatServiceImpl(
                     )
                 )
             ),
-            UUID.randomUUID().toString(),
-            callback
+            callback = callback
         )
     }
 
@@ -129,8 +127,8 @@ class AUIMicSeatServiceImpl(
         micSeat.seatIndex
 
         mapCollection.mergeMetaData(
-            AUIMicSeatCmd.leaveSeatCmd.name,
-            mapOf(
+            valueCmd = AUIMicSeatCmd.leaveSeatCmd.name,
+            value = mapOf(
                 Pair(
                     micSeat.seatIndex.toString(),
                     mapOf(
@@ -139,8 +137,7 @@ class AUIMicSeatServiceImpl(
                     )
                 )
             ),
-            UUID.randomUUID().toString(),
-            callback
+            callback = callback
         )
     }
 
@@ -166,8 +163,8 @@ class AUIMicSeatServiceImpl(
 
     override fun kickSeat(seatIndex: Int, callback: AUICallback?) {
         mapCollection.mergeMetaData(
-            AUIMicSeatCmd.kickSeatCmd.name,
-            mapOf(
+            valueCmd = AUIMicSeatCmd.kickSeatCmd.name,
+            value = mapOf(
                 Pair(
                     seatIndex.toString(),
                     mapOf(
@@ -176,8 +173,7 @@ class AUIMicSeatServiceImpl(
                     )
                 )
             ),
-            UUID.randomUUID().toString(),
-            callback
+            callback = callback
         )
     }
 
@@ -190,10 +186,9 @@ class AUIMicSeatServiceImpl(
 
     override fun muteAudioSeat(seatIndex: Int, isMute: Boolean, callback: AUICallback?) {
         mapCollection.mergeMetaData(
-            AUIMicSeatCmd.muteAudioCmd.name,
-            mapOf(Pair(seatIndex.toString(), mapOf(Pair("isMuteAudio", isMute)))),
-            UUID.randomUUID().toString(),
-            callback
+            valueCmd = AUIMicSeatCmd.muteAudioCmd.name,
+            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("isMuteAudio", isMute)))),
+            callback = callback
         )
     }
 
@@ -211,10 +206,10 @@ class AUIMicSeatServiceImpl(
         } else if (micSeat?.user != null) {
             status = AUIMicSeatStatus.used
         }
-        mapCollection.mergeMetaData(AUIMicSeatCmd.closeSeatCmd.name,
-            mapOf(Pair(seatIndex.toString(), mapOf(Pair("micSeatStatus", status)))),
-            "",
-            callback
+        mapCollection.mergeMetaData(
+            valueCmd = AUIMicSeatCmd.closeSeatCmd.name,
+            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("micSeatStatus", status)))),
+            callback = callback
         )
     }
 

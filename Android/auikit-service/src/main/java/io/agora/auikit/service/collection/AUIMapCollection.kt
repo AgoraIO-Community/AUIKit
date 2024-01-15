@@ -1,5 +1,6 @@
 package io.agora.auikit.service.collection
 
+import com.google.gson.reflect.TypeToken
 import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
@@ -32,7 +33,7 @@ class AUIMapCollection(
             val json = JSONObject(strValue)
             val keys = json.keys()
             val map = mutableMapOf<String, Any>()
-            while (keys.hasNext()){
+            while (keys.hasNext()) {
                 val next = keys.next()
                 map[next] = json.get(next)
             }
@@ -40,7 +41,7 @@ class AUIMapCollection(
         }
     }
 
-    private var metadataWillSetClosure: ((
+    private var metadataWillUpdateClosure: ((
         publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
     ) -> AUIException?)? = null
 
@@ -48,10 +49,7 @@ class AUIMapCollection(
         publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
     ) -> AUIException?)? = null
 
-    private var metadataWillRemoveClosure: ((
-        publisherId: String, valueCmd: String?, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
-
+    private var attributesDidChangedClosure: ((String, String, Any) -> Unit)? = null
 
     private var currentValue: Map<String, Any> = mutableMapOf<String, Any>()
 
@@ -77,12 +75,12 @@ class AUIMapCollection(
      *
      * @param closure 事件回调，当返回null时表示允许设置metadata，当返回AUIException表示有异常，不允许设置metadata
      */
-    fun subscribeWillSet(
+    fun subscribeWillUpdate(
         closure: (
             publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
         ) -> AUIException?
     ) {
-        metadataWillSetClosure = closure
+        metadataWillUpdateClosure = closure
     }
 
     fun subscribeWillMerge(
@@ -93,12 +91,36 @@ class AUIMapCollection(
         metadataWillMergeClosure = closure
     }
 
-    fun subscribeWillRemove(
-        closure: (
-            publisherId: String, valueCmd: String?, oldValue: Map<String, Any>
-        ) -> AUIException?
-    ) {
-        metadataWillRemoveClosure = closure
+    fun subscribeAttributesDidChanged(closure: (String, String, Any) -> Unit) {
+        attributesDidChangedClosure = closure
+    }
+
+    fun getMetaData(callback: (AUIException?, Any?) -> Unit) {
+        rtmManager.getMetadata(
+            channelName = channelName,
+            completion = { error, metaData ->
+                if (error != null) {
+                    callback.invoke(AUIException(error.code, error.message), null)
+                    return@getMetadata
+                }
+                val data = metaData?.get(observekey)
+                if (data == null) {
+                    callback.invoke(AUIException(-1, "Key data not exist. key=$observekey"), null)
+                    return@getMetadata
+                }
+
+                val map = GsonTools.toBean<Map<String, Any>>(
+                    data,
+                    object : TypeToken<Map<String, Any>>() {}.type
+                )
+                if (map == null) {
+                    callback.invoke(AUIException(-1, "Key data parse error. key=$observekey"), null)
+                    return@getMetadata
+                }
+
+                callback.invoke(null, map)
+            }
+        )
     }
 
     /**
@@ -109,14 +131,14 @@ class AUIMapCollection(
      * @param objectId
      * @param callback
      */
-    fun setMetaData(
+    fun updateMetaData(
         valueCmd: String?,
         value: Map<String, Any>,
-        objectId: String,
+        filter: List<Map<String, Any>>? = null,
         callback: AUICallback?
     ) {
         if (isArbiter()) {
-            rtmSetMetaData(localUid(), valueCmd, value, objectId, callback)
+            rtmUpdateMetaData(localUid(), valueCmd, value, callback)
             return
         }
 
@@ -124,7 +146,7 @@ class AUIMapCollection(
         val data = AUICollectionMessage(
             channelName = channelName,
             uniqueId = uniqueId,
-            objectId = objectId,
+            sceneKey = observekey,
             payload = AUICollectionMessagePayload(
                 dataCmd = valueCmd,
                 data = value
@@ -139,7 +161,7 @@ class AUIMapCollection(
             channelName = channelName,
             userId = arbiterUid(),
             message = jsonStr,
-            uniqueId = objectId
+            uniqueId = uniqueId
         ) { error ->
             if (error != null) {
                 callback?.onResult(
@@ -165,11 +187,11 @@ class AUIMapCollection(
     fun mergeMetaData(
         valueCmd: String?,
         value: Map<String, Any>,
-        objectId: String,
+        filter: List<Map<String, Any>>? = null,
         callback: AUICallback?
     ) {
         if (isArbiter()) {
-            rtmMergeMetaData(localUid(), valueCmd, value, objectId, callback)
+            rtmMergeMetaData(localUid(), valueCmd, value, callback)
             return
         }
 
@@ -177,7 +199,7 @@ class AUIMapCollection(
         val data = AUICollectionMessage(
             channelName = channelName,
             uniqueId = uniqueId,
-            objectId = objectId,
+            sceneKey = observekey,
             payload = AUICollectionMessagePayload(
                 type = AUICollectionOperationTypeMerge,
                 dataCmd = valueCmd,
@@ -193,7 +215,7 @@ class AUIMapCollection(
             channelName = channelName,
             userId = arbiterUid(),
             message = jsonStr,
-            uniqueId = objectId
+            uniqueId = uniqueId
         ) { error ->
             if (error != null) {
                 callback?.onResult(
@@ -214,8 +236,13 @@ class AUIMapCollection(
      * @param value
      * @param callback
      */
-    fun addMetaData(valueCmd: String?, value: Map<String, Any>, callback: AUICallback?) {
-        setMetaData(valueCmd, value, "", callback)
+    fun addMetaData(
+        valueCmd: String?,
+        value: Map<String, Any>,
+        filter: List<Map<String, Any>>?,
+        callback: AUICallback?
+    ) {
+        updateMetaData(valueCmd, value, filter, callback)
     }
 
     /**
@@ -225,9 +252,17 @@ class AUIMapCollection(
      * @param objectId
      * @param callback
      */
-    fun removeMetaData(valueCmd: String?, objectId: String, callback: AUICallback?) {
+    fun removeMetaData(
+        valueCmd: String?,
+        filter: List<Map<String, Any>>?,
+        callback: AUICallback?
+    ) {
+        throw RuntimeException("unsupport method")
+    }
+
+    fun cleanMetaData(callback: AUICallback?) {
         if (isArbiter()) {
-            rtmRemoveMetaData(localUid(), valueCmd, objectId, callback)
+            rtmCleanMetaData(callback)
             return
         }
 
@@ -235,29 +270,29 @@ class AUIMapCollection(
         val data = AUICollectionMessage(
             channelName = channelName,
             uniqueId = uniqueId,
-            objectId = objectId,
+            sceneKey = observekey,
             payload = AUICollectionMessagePayload(
-                type = AUICollectionOperationTypeRemove,
-                dataCmd = valueCmd,
+                type = AUICollectionOperationTypeClean,
+                dataCmd = null,
                 data = null
             )
         )
         val jsonStr = GsonTools.beanToString(data)
         if (jsonStr == null) {
-            callback?.onResult(AUIException(-1, "updateMetaData fail"))
+            callback?.onResult(AUIException(-1, "cleanMetaData fail"))
             return
         }
         rtmManager.publishAndWaitReceipt(
             channelName = channelName,
             userId = arbiterUid(),
             message = jsonStr,
-            uniqueId = objectId
+            uniqueId = uniqueId
         ) { error ->
             if (error != null) {
                 callback?.onResult(
                     AUIException(
                         AUIException.ERROR_CODE_RTM,
-                        "setBatchMetadata error >> $error"
+                        "cleanMetaData error >> $error"
                     )
                 )
             } else {
@@ -272,52 +307,15 @@ class AUIMapCollection(
 
     private fun isArbiter() = AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() ?: false
 
-    private fun rtmRemoveMetaData(
-        publisherId: String,
-        valueCmd: String?,
-        objectId: String,
-        callback: AUICallback?
-    ) {
-        val error = metadataWillRemoveClosure?.invoke(publisherId, valueCmd, HashMap(currentValue))
-        if (error != null) {
-            callback?.onResult(error)
-            return
-        }
 
-        val map = HashMap(currentValue)
-        map.clear()
-        val data = GsonTools.beanToString(map)
-        if (data == null) {
-            callback?.onResult(AUIException(-1, "rtmSetMetaData fail"))
-            return
-        }
-
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = mapOf(Pair(observekey, data)),
-        ) { e ->
-            if (e != null) {
-                callback?.onResult(
-                    AUIException(
-                        AUIException.ERROR_CODE_RTM,
-                        "setBatchMetadata error >> $e"
-                    )
-                )
-            } else {
-                callback?.onResult(null)
-            }
-        }
-    }
-
-    private fun rtmSetMetaData(
+    private fun rtmUpdateMetaData(
         publisherId: String,
         valueCmd: String?,
         value: Map<String, Any>,
-        objectId: String,
         callback: AUICallback?
     ) {
         val error =
-            metadataWillSetClosure?.invoke(publisherId, valueCmd, value, HashMap(currentValue))
+            metadataWillUpdateClosure?.invoke(publisherId, valueCmd, value, HashMap(currentValue))
         if (error != null) {
             callback?.onResult(error)
             return
@@ -354,7 +352,6 @@ class AUIMapCollection(
         publisherId: String,
         valueCmd: String?,
         value: Map<String, Any>,
-        objectId: String,
         callback: AUICallback?
     ) {
         val error =
@@ -364,7 +361,7 @@ class AUIMapCollection(
             return
         }
 
-        val map = replaceMap(currentValue, value)
+        val map = mergeMap(currentValue, value)
         val data = GsonTools.beanToString(map)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmSetMetaData fail"))
@@ -388,21 +385,35 @@ class AUIMapCollection(
         }
     }
 
-    private fun replaceMap(origMap: Map<String, Any>, newMap: Map<String, Any>): Map<String, Any> {
+    private fun rtmCleanMetaData(callback: AUICallback?) {
+        rtmManager.cleanBatchMetadata(
+            channelName = channelName,
+            remoteKeys = listOf(observekey),
+            completion = { error ->
+                if (error != null) {
+                    callback?.onResult(AUIException(error.code, error.message))
+                } else {
+                    callback?.onResult(null)
+                }
+            }
+        )
+    }
+
+    private fun mergeMap(origMap: Map<String, Any>, newMap: Map<String, Any>): Map<String, Any> {
         val resultMap = HashMap<String, Any>(origMap)
         newMap.forEach { (k, v) ->
             val dic = v as? Map<String, Any>
             if (dic != null) {
                 val origDic = mutableMapOf<String, Any>()
-                if(resultMap[k] is JSONObject){
+                if (resultMap[k] is JSONObject) {
                     val json = resultMap[k] as JSONObject
                     val keys = json.keys()
-                    while (keys.hasNext()){
+                    while (keys.hasNext()) {
                         val key = keys.next()
                         origDic[key] = json.get(key)
                     }
                 }
-                val newDic = replaceMap(origDic, dic)
+                val newDic = mergeMap(origDic, dic)
                 resultMap[k] = newDic
             } else {
                 resultMap[k] = v
@@ -445,42 +456,51 @@ class AUIMapCollection(
             return
         }
         val valueCmd = messageModel.payload.dataCmd
-        val objectId = messageModel.objectId ?: ""
+        var error: AUIException? = null
         when (updateType) {
             AUICollectionOperationTypeAdd, AUICollectionOperationTypeUpdate, AUICollectionOperationTypeMerge -> {
                 val data = messageModel.payload.data
-                if (data == null) {
-                    sendReceipt(
-                        publisherId,
-                        uniqueId,
-                        AUIException(-1, "payload is null or not a map")
-                    )
-                } else {
+                if (data != null) {
                     if (updateType == AUICollectionOperationTypeMerge) {
-                        rtmMergeMetaData(publisherId, valueCmd, data, objectId) {
+                        rtmMergeMetaData(publisherId, valueCmd, data) {
                             sendReceipt(publisherId, uniqueId, it)
                         }
                     } else {
-                        rtmSetMetaData(publisherId, valueCmd, data, objectId) {
+                        rtmUpdateMetaData(publisherId, valueCmd, data) {
                             sendReceipt(publisherId, uniqueId, it)
                         }
                     }
+
+                } else {
+                    error = AUIException(-1, "payload is null or not a map")
                 }
             }
 
-            AUICollectionOperationTypeRemove -> {
-                rtmRemoveMetaData(publisherId, valueCmd, objectId) {
+            AUICollectionOperationTypeClean -> {
+                rtmCleanMetaData {
                     sendReceipt(publisherId, uniqueId, it)
                 }
             }
 
-            AUICollectionOperationTypeIncrease -> {
+            AUICollectionOperationTypeRemove -> {
+                error = AUIException(-1, "map collection remove type unsupported")
+            }
 
+            AUICollectionOperationTypeIncrease -> {
+                error = AUIException(-1, "map collection increase type unsupported")
             }
 
             AUICollectionOperationTypeDecrease -> {
-
+                error = AUIException(-1, "map collection decrease type unsupported")
             }
+        }
+
+        if (error != null) {
+            sendReceipt(
+                publisherId,
+                uniqueId,
+                error
+            )
         }
     }
 
@@ -493,7 +513,7 @@ class AUIMapCollection(
             channelName = channelName,
             messageType = AUICollectionMessageTypeReceipt,
             uniqueId = uniqueId,
-            objectId = "",
+            sceneKey = observekey,
             payload = AUICollectionMessagePayload(
                 dataCmd = "",
                 data = data,
