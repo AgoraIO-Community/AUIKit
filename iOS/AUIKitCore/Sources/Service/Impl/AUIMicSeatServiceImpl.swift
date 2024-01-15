@@ -242,7 +242,7 @@ extension AUIMicSeatServiceImpl {
         }
         
         let owner = (value as? [String: Any])?["owner"] as? [String: Any]
-        let userId: String = owner?["userId"] as? String ?? ""
+        var userId: String = owner?["userId"] as? String ?? ""
         switch dataCmd {
         case .enterSeatCmd:
             if self.micSeats.values.contains(where: { $0.user?.userId == userId }) {
@@ -278,6 +278,7 @@ extension AUIMicSeatServiceImpl {
             }
             var err: NSError? = nil
             let metaData = NSMutableDictionary()
+            userId = self.micSeats[seatIndex]?.user?.userId ?? ""
             for obj in respDelegates.allObjects {
                 err = obj.onSeatWillLeave?(userId: userId, metaData: metaData)
                 if let _ = err {
