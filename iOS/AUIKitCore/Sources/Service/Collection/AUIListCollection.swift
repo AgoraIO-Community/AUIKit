@@ -533,11 +533,13 @@ extension AUIListCollection: AUIRtmMessageProxyDelegate {
                                            uniqueId: uniqueId,
                                            payload: payload)
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            aui_list_warn("sendReceipt encodeModelToJsonStr fail!")
+            aui_list_warn("sendReceipt fail")
             return
         }
-        rtmManager.publish(channelName: publisher, message: jsonStr, completion: { err in
-        })
+        rtmManager.publish(userId: publisher,
+                           channelName: channelName,
+                           message: jsonStr) { err in
+        }
     }
     
     public func onMessageReceive(publisher: String, message: String) {

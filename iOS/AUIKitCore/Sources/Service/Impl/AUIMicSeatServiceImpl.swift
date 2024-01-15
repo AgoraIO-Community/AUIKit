@@ -265,6 +265,7 @@ extension AUIMicSeatServiceImpl {
             var err: NSError?
             //TODO: onSeatWillLeave不需要metaData？
             let metaData = NSMutableDictionary()//rtmLeaveSeatMetaData(userId: userId)
+            userId = self.micSeats[seatIndex]?.user?.userId ?? ""
             for obj in respDelegates.allObjects {
                 err = obj.onSeatWillLeave?(userId: userId, metaData: metaData)
                 if let err = err {
