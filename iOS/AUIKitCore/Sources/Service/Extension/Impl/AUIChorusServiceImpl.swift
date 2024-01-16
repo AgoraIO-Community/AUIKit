@@ -85,9 +85,9 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
     
     public func joinChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
         aui_info("joinChorus: \(songCode)", tag: "AUIChorusServiceImpl")
-        let model = AUIPlayerJoinNetworkModel()
-        model.songCode = songCode
-        model.userId = userId
+        let model = AUIChoristerModel()
+        model.chorusSongNo = songCode
+        model.userId = getRoomContext().currentUserInfo.userId
         
         guard let value = model.yy_modelToJSONObject() as? [String: Any] else {
             completion(AUICommonError.chooseSongIsFail.toNSError())

@@ -212,8 +212,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
             completion?(AUICommonError.chooseSongIsFail.toNSError())
             return
         }
-        let model = AUISongAddNetworkModel.yy_model(with: dic)!
-        model.userId = getRoomContext().currentUserInfo.userId
+        let model = AUIChooseMusicModel.yy_model(with: dic)!
         model.owner = getRoomContext().currentUserInfo
         guard let value = model.yy_modelToJSONObject() as? [String: Any] else {
             completion?(NSError.auiError("convert to json fail"))
@@ -221,7 +220,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
         }
         listCollection.addMetaData(valueCmd: AUIMusicCmd.chooseSongCmd.rawValue,
                                    value: value,
-                                   filter: [["songCode": model.songCode ?? ""]],
+                                   filter: [["songCode": model.songCode]],
                                    callback: completion)
     }
     

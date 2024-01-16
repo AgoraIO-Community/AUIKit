@@ -11,8 +11,8 @@ import Foundation
 /// 合唱者模型
 @objcMembers open class AUIChoristerModel: NSObject {
     @objc public var userId: String = ""
-    public var chorusSongNo: String?          //合唱者演唱歌曲
-    public var owner: AUIUserThumbnailInfo?   //合唱者信息
+    @objc public var chorusSongNo: String?          //合唱者演唱歌曲
+//    public var owner: AUIUserThumbnailInfo?   //合唱者信息
 }
 
 /// 合唱Service
