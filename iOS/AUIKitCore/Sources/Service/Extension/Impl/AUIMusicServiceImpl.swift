@@ -227,11 +227,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
     
     public func pinSong(songCode: String, completion: AUICallback?) {
         aui_info("pinSong: \(songCode)", tag: "AUIMusicServiceImpl")
-        let userId = getRoomContext().currentUserInfo.userId
         let value = ["pinAt": Int64(Date().timeIntervalSince1970 * 1000)]
         listCollection.mergeMetaData(valueCmd: AUIMusicCmd.pingSongCmd.rawValue,
                                      value: value,
-                                     filter: [["songCode": songCode, "userId": userId]],
+                                     filter: [["songCode": songCode]],
                                      callback: completion)
     }
     
@@ -239,11 +238,10 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
                                  playStatus: AUIPlayStatus,
                                  completion: AUICallback?) {
         aui_info("updatePlayStatus: \(songCode)", tag: "AUIMusicServiceImpl")
-        let userId = getRoomContext().currentUserInfo.userId
         let value = ["status": playStatus.rawValue]
         listCollection.mergeMetaData(valueCmd: AUIMusicCmd.updatePlayStatusCmd.rawValue,
                                       value: value,
-                                      filter: [["songCode": songCode, "userId": userId]],
+                                      filter: [["songCode": songCode]],
                                       callback: completion)
     }
 }
