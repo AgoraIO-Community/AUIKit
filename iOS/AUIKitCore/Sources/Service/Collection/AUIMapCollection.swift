@@ -31,6 +31,9 @@ extension AUIMapCollection {
         value.forEach { (key: String, value: Any) in
             map[key] = value
         }
+        if let _map = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, map) as? [String: Any] {
+            map = _map
+        }
         guard let value = encodeToJsonStr(map) else {
             callback?(NSError.auiError("rtmSetMetaData fail"))
             return
@@ -54,7 +57,10 @@ extension AUIMapCollection {
             return
         }
         
-        let map = mergeMap(origMap: currentMap, newMap: value)
+        var map = mergeMap(origMap: currentMap, newMap: value)
+        if let _map = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, map) as? [String: Any] {
+            map = _map
+        }
         guard let value = encodeToJsonStr(map) else {
             callback?(NSError.auiError("rtmSetMetaData fail"))
             return
@@ -86,11 +92,15 @@ extension AUIMapCollection {
             return
         }
         
-        let map = calculateMap(origMap: currentMap,
+        var map = calculateMap(origMap: currentMap,
                                key: key,
                                value: value.value,
                                min: value.min,
                                max: value.max)
+        if let tmpMap = map,
+           let _map = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, tmpMap) as? [String: Any] {
+            map = _map
+        }
         guard let map = map, let value = encodeToJsonStr(map) else {
             callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))
             return

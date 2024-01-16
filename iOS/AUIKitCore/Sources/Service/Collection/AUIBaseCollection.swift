@@ -25,6 +25,8 @@ public class AUIBaseCollection: NSObject {
     private(set) var metadataWillMergeClosure: AUICollectionUpdateClosure?
     private(set) var metadataWillRemoveClosure: AUICollectionRemoveClosure?
     private(set) var metadataWillCalculateClosure: AUICollectionCalculateClosure?
+    
+    private(set) var attributesWillSetClosure: AUICollectionAttributesWillSetClosure?
     private(set) var attributesDidChangedClosure: AUICollectionAttributesDidChangedClosure?
     
     deinit {
@@ -64,6 +66,10 @@ extension AUIBaseCollection: IAUICollection {
     
     public func subscribeWillCalculate(callback: AUICollectionCalculateClosure?) {
         self.metadataWillCalculateClosure = callback
+    }
+    
+    public func subscribeAttributesWillSet(callback: AUICollectionAttributesWillSetClosure?) {
+        self.attributesWillSetClosure = callback
     }
     
     public func subscribeAttributesDidChanged(callback: AUICollectionAttributesDidChangedClosure?) {

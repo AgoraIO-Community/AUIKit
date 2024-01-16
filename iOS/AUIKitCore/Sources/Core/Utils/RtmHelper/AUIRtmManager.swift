@@ -521,7 +521,7 @@ extension AUIRtmManager {
     public func publish(channelName: String, message: String, completion: @escaping (NSError?)->()) {
         //uid和
         let options = AgoraRtmPublishOptions()
-        options.channelType = AgoraRtmChannelType.message
+        options.channelType = .message
         rtmClient.publish(channelName: channelName, message: message, option: options) { resp, error in
             var callbackError: NSError?
             if let error = error {

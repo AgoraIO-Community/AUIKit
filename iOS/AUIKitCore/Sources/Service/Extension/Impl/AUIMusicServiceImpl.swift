@@ -84,6 +84,13 @@ open class AUIMusicServiceImpl: NSObject {
         listCollection.subscribeAttributesDidChanged {[weak self] channelName, key, value in
             self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
         }
+        
+        listCollection.subscribeAttributesWillSet { channelName, key, valueCmd, value in
+            guard valueCmd == AUIMusicCmd.pingSongCmd.rawValue else { return value }
+            guard let value = value as? [[String: Any]] else { return value }
+            
+            return self._sortChooseSongList(chooseSongList: value)
+        }
     }
 }
 
@@ -248,23 +255,27 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
 
 //MARK: set meta data
 extension AUIMusicServiceImpl {
-    private func _sortChooseSongList(chooseSongList: [AUIChooseMusicModel]) -> [AUIChooseMusicModel] {
+    private func _sortChooseSongList(chooseSongList: [[String: Any]]) -> [[String: Any]] {
         let songList = chooseSongList.sorted(by: { model1, model2 in
             //歌曲播放中优先（只会有一个，多个目前没有，如果有需要修改排序策略）
-            if model1.playStatus == .playing {
+            if model1["status"] as? Int == AUIPlayStatus.playing.rawValue {
                 return true
             }
-            if model2.playStatus == .playing {
+            if model2["status"] as? Int == AUIPlayStatus.playing.rawValue {
                 return false
             }
-                  
+            
+            let pinAt1 = model1["pinAt"] as? Int64 ?? 0
+            let pinAt2 = model2["pinAt"] as? Int64 ?? 0
+            let createAt1 = model1["createAt"] as? Int64 ?? 0
+            let createAt2 = model2["createAt"] as? Int64 ?? 0
             //都没有置顶时间，比较创建时间，创建时间小的在前（即创建早的在前）
-            if model1.pinAt < 1,  model2.pinAt < 1 {
-                return model1.createAt - model2.createAt < 0 ? true : false
+            if pinAt1 < 1,  pinAt2 < 1 {
+                return createAt1 - createAt2 < 0 ? true : false
             }
-                  
+            
             //有一个有置顶时间，置顶时间大的在前（即后置顶的在前）
-            return model1.pinAt - model2.pinAt > 0 ? true : false
+            return pinAt1 - pinAt2 > 0 ? true : false
         })
         
         return songList
@@ -279,7 +290,7 @@ extension AUIMusicServiceImpl {
             }
             
             aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
-            self.chooseSongList = _sortChooseSongList(chooseSongList: chooseSongList)
+            self.chooseSongList = chooseSongList
             self.respDelegates.allObjects.forEach { obj in
                 obj.onUpdateAllChooseSongs(songs: self.chooseSongList)
             }

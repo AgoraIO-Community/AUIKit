@@ -33,7 +33,9 @@ extension AUIListCollection {
         }
         var list = currentList
         list.append(value)
-        
+        if let _list = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, list) as? [[String: Any]] {
+            list = _list
+        }
         guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmAddMetaData fail"))
             return
@@ -73,6 +75,9 @@ extension AUIListCollection {
             }
             list[itemIdx] = tempItem
         }
+        if let _list = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, list) as? [[String: Any]] {
+            list = _list
+        }
         guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
@@ -110,7 +115,9 @@ extension AUIListCollection {
             let tempItem = mergeMap(origMap: item, newMap: value)
             list[itemIdx] = tempItem
         }
-        
+        if let _list = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, list) as? [[String: Any]] {
+            list = _list
+        }
         guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
@@ -144,7 +151,10 @@ extension AUIListCollection {
         }
         
         let filterList = currentList.enumerated().filter { !itemIndexes.contains($0.offset) }
-        let list = filterList.map { $0.element }
+        var list = filterList.map { $0.element }
+        if let _list = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, list) as? [[String: Any]] {
+            list = _list
+        }
         guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmRemoveMetaData fail"))
             return
@@ -198,7 +208,9 @@ extension AUIListCollection {
             }
             list[itemIdx] = tempItem
         }
-        
+        if let _list = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, list) as? [[String: Any]] {
+            list = _list
+        }
         guard let value = encodeToJsonStr(list) else {
             callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))
             return

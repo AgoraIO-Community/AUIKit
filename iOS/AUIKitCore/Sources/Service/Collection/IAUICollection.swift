@@ -21,6 +21,9 @@ public typealias AUICollectionRemoveClosure = (String, String?, [String: Any]) -
 //(publisher uid, valueCmd, old value of item, keys, update value, min, max)
 public typealias AUICollectionCalculateClosure = (String, String?, [String: Any], [String], Int, Int, Int) -> NSError?
 
+//(channelName, key, valueCmd, value[will set metadata])->value[can set metadata]
+public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, Any) -> Any
+
 //(channelName, key, value)
 public typealias AUICollectionAttributesDidChangedClosure = (String, String, Any) -> Void
 
@@ -45,6 +48,10 @@ public typealias AUICollectionAttributesDidChangedClosure = (String, String, Any
     /// 订阅即将计算某个节点的事件回调
     /// - Parameter callback: <#callback description#>
     @objc optional func subscribeWillCalculate(callback: AUICollectionCalculateClosure?)
+    
+    /// 即将写入meta data，上层是否需要修改
+    /// - Parameter callback: <#callback description#>
+    func subscribeAttributesWillSet(callback: AUICollectionAttributesWillSetClosure?)
     
     /// 收到的meta data变化
     /// - Parameter callback: <#callback description#>
