@@ -1308,8 +1308,11 @@ extension KTVApiImpl: AgoraRtcMediaPlayerDelegate {
         if state == .playBackAllLoopsCompleted && singerRole == .coSinger {//可能存在伴唱不返回allloopbackComplete状态 这个状态通过主唱的playerState来同步
             return
         }
-        getEventHander { delegate in
-            delegate.onMusicPlayerStateChanged(state: state, error: .none, isLocal: true)
+        
+        DispatchQueue.main.async {
+            self.getEventHander { delegate in
+                delegate.onMusicPlayerStateChanged(state: state, error: .none, isLocal: true)
+            }
         }
     }
 
