@@ -1,8 +1,6 @@
 package io.agora.auikit.service.imp
 
 import android.util.Log
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
 import io.agora.auikit.model.AUIMicSeatInfo
 import io.agora.auikit.model.AUIMicSeatStatus
 import io.agora.auikit.model.AUIRoomContext
@@ -10,41 +8,44 @@ import io.agora.auikit.model.AUIUserThumbnailInfo
 import io.agora.auikit.service.IAUIMicSeatService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
-import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
-import io.agora.auikit.service.rtm.AUIRtmException
+import io.agora.auikit.service.collection.AUIMapCollection
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMessageRespObserver
-import io.agora.auikit.service.rtm.AUIRtmMicSeatInfo
-import io.agora.auikit.service.rtm.AUIRtmPublishModel
-import io.agora.auikit.service.rtm.AUIRtmReceiptModel
-import io.agora.auikit.service.rtm.kAUISeatEnterInterface
-import io.agora.auikit.service.rtm.kAUISeatKickInterface
-import io.agora.auikit.service.rtm.kAUISeatLeaveInterface
-import io.agora.auikit.service.rtm.kAUISeatLockInterface
-import io.agora.auikit.service.rtm.kAUISeatMuteAudioInterface
-import io.agora.auikit.service.rtm.kAUISeatUnlockInterface
-import io.agora.auikit.service.rtm.kAUISeatUnmuteAudioInterface
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
 
 private const val kSeatAttrKey = "micSeat"
 
+enum class AUIMicSeatCmd {
+    initSeatCmd,
+    leaveSeatCmd,
+    enterSeatCmd,
+    kickSeatCmd,
+    muteAudioCmd,
+    closeSeatCmd
+}
+
 class AUIMicSeatServiceImpl(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIMicSeatService, AUIRtmAttributeRespObserver, AUIRtmMessageRespObserver {
+) : IAUIMicSeatService {
 
     private val observableHelper =
         ObservableHelper<IAUIMicSeatService.AUIMicSeatRespObserver>()
 
     private var micSeats = mutableMapOf<Int, AUIMicSeatInfo>()
 
+    private val mapCollection = AUIMapCollection(channelName, kSeatAttrKey, rtmManager)
+
+
     init {
-        rtmManager.subscribeAttribute(channelName, kSeatAttrKey, this)
-        rtmManager.subscribeMessage(this)
+        mapCollection.subscribeWillMerge(this::metadataWillMerge)
+        mapCollection.subscribeAttributesDidChanged(this::onAttributeChanged)
     }
 
     override fun initService(completion: AUICallback?) {
+        if (!AUIRoomContext.shared().isRoomOwner(channelName)) {
+            return
+        }
         val roomInfo = roomContext.getRoomInfo(channelName) ?: return
         val seatMap = mutableMapOf<String, Any>()
         for (i in 0 until roomInfo.micSeatCount) {
@@ -56,21 +57,18 @@ class AUIMicSeatServiceImpl(
             }
             seatMap.put(i.toString(), seat)
         }
-
-        val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = metadata
+        mapCollection.updateMetaData(
+            AUIMicSeatCmd.initSeatCmd.name,
+            seatMap,
         ) { error ->
-            if (error == null) {
-                completion?.onResult(null)
-            } else {
-                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-            }
+            completion?.onResult(error)
         }
     }
 
     override fun deInitService(completion: AUICallback?) {
+
+        mapCollection.release()
+
         if (roomContext.getArbiter(channelName)?.isArbiter() != true) {
             return
         }
@@ -96,28 +94,19 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun enterSeat(seatIndex: Int, callback: AUICallback?) {
-        if (AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() == true) {
-            rtmEnterSeat(seatIndex, roomContext.currentUserInfo, callback)
-        } else {
-            val seatInfo = AUIRtmMicSeatInfo(
-                channelName,
-                roomContext.currentUserInfo.userId,
-                roomContext.currentUserInfo.userName,
-                roomContext.currentUserInfo.userAvatar,
-                seatIndex
-            )
-            rtmManager.publishAndWaitReceipt(
-                channelName,
-                lockOwnerId,
-                AUIRtmPublishModel(interfaceName = kAUISeatEnterInterface, data = seatInfo, channelName = channelName)
-            ) { error ->
-                if (error == null) {
-                    callback?.onResult(null)
-                } else {
-                    callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-                }
-            }
-        }
+        mapCollection.mergeMetaData(
+            valueCmd = AUIMicSeatCmd.enterSeatCmd.name,
+            value = mapOf(
+                Pair(
+                    seatIndex.toString(),
+                    mapOf(
+                        Pair("owner", GsonTools.beanToMap(roomContext.currentUserInfo)),
+                        Pair("micSeatStatus", AUIMicSeatStatus.used)
+                    )
+                )
+            ),
+            callback = callback
+        )
     }
 
     override fun leaveSeat(callback: AUICallback?) {
@@ -133,29 +122,21 @@ class AUIMicSeatServiceImpl(
             )
             return
         }
+        micSeat.seatIndex
 
-        if (AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() == true) {
-            rtmLeaveSeat(userId, callback)
-        } else {
-            val seatInfo = AUIRtmMicSeatInfo(
-                channelName,
-                userId,
-                roomContext.currentUserInfo.userName,
-                roomContext.currentUserInfo.userAvatar,
-                micSeat.seatIndex
-            )
-            rtmManager.publishAndWaitReceipt(
-                channelName,
-                lockOwnerId,
-                AUIRtmPublishModel(interfaceName = kAUISeatLeaveInterface, data = seatInfo, channelName = channelName)
-            ) { error ->
-                if (error == null) {
-                    callback?.onResult(null)
-                } else {
-                    callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-                }
-            }
-        }
+        mapCollection.mergeMetaData(
+            valueCmd = AUIMicSeatCmd.leaveSeatCmd.name,
+            value = mapOf(
+                Pair(
+                    micSeat.seatIndex.toString(),
+                    mapOf(
+                        Pair("owner", GsonTools.beanToMap(AUIUserThumbnailInfo())),
+                        Pair("micSeatStatus", AUIMicSeatStatus.idle)
+                    )
+                )
+            ),
+            callback = callback
+        )
     }
 
     override fun autoEnterSeat(callback: AUICallback?) {
@@ -179,22 +160,19 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun kickSeat(seatIndex: Int, callback: AUICallback?) {
-        val micSeat = micSeats[seatIndex]
-        if (AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() == true) {
-            rtmKickSeat(seatIndex, callback)
-        } else {
-            rtmManager.publishAndWaitReceipt(
-                channelName,
-                lockOwnerId,
-                AUIRtmPublishModel(interfaceName = kAUISeatKickInterface, data = micSeat, channelName = channelName)
-            ) { error ->
-                if (error == null) {
-                    callback?.onResult(null)
-                } else {
-                    callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-                }
-            }
-        }
+        mapCollection.mergeMetaData(
+            valueCmd = AUIMicSeatCmd.kickSeatCmd.name,
+            value = mapOf(
+                Pair(
+                    seatIndex.toString(),
+                    mapOf(
+                        Pair("owner", GsonTools.beanToMap(AUIUserThumbnailInfo())),
+                        Pair("micSeatStatus", AUIMicSeatStatus.idle)
+                    )
+                )
+            ),
+            callback = callback
+        )
     }
 
 
@@ -205,27 +183,11 @@ class AUIMicSeatServiceImpl(
 
 
     override fun muteAudioSeat(seatIndex: Int, isMute: Boolean, callback: AUICallback?) {
-        val micSeat = micSeats[seatIndex]
-
-        if (AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() == true) {
-            rtmMuteAudioSeat(seatIndex, isMute, callback)
-        } else {
-            rtmManager.publishAndWaitReceipt(
-                channelName,
-                lockOwnerId,
-                AUIRtmPublishModel(
-                    interfaceName = if (isMute) kAUISeatMuteAudioInterface else kAUISeatUnmuteAudioInterface,
-                    data = micSeat,
-                    channelName = channelName
-                )
-            ) { error ->
-                if (error == null) {
-                    callback?.onResult(null)
-                } else {
-                    callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-                }
-            }
-        }
+        mapCollection.mergeMetaData(
+            valueCmd = AUIMicSeatCmd.muteAudioCmd.name,
+            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("isMuteAudio", isMute)))),
+            callback = callback
+        )
     }
 
     override fun muteVideoSeat(seatIndex: Int, isMute: Boolean, callback: AUICallback?) {
@@ -236,25 +198,17 @@ class AUIMicSeatServiceImpl(
     override fun closeSeat(seatIndex: Int, isClose: Boolean, callback: AUICallback?) {
         val micSeat = micSeats[seatIndex]
 
-        if (AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() == true) {
-            rtmCloseSeat(seatIndex, isClose, callback)
-        } else {
-            rtmManager.publishAndWaitReceipt(
-                channelName,
-                lockOwnerId,
-                AUIRtmPublishModel(
-                    interfaceName = if (isClose) kAUISeatLockInterface else kAUISeatUnlockInterface,
-                    data = micSeat,
-                    channelName = channelName
-                )
-            ) { error ->
-                if (error == null) {
-                    callback?.onResult(null)
-                } else {
-                    callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-                }
-            }
+        var status = AUIMicSeatStatus.idle
+        if (isClose) {
+            status = AUIMicSeatStatus.locked
+        } else if (micSeat?.user?.userId?.isNotEmpty() == true) {
+            status = AUIMicSeatStatus.used
         }
+        mapCollection.mergeMetaData(
+            valueCmd = AUIMicSeatCmd.closeSeatCmd.name,
+            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("micSeatStatus", status)))),
+            callback = callback
+        )
     }
 
     override fun onClickInvited(index: Int) {
@@ -283,226 +237,17 @@ class AUIMicSeatServiceImpl(
 
     override fun getChannelName() = channelName
 
-    override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
-        if (publisherId.isEmpty() && channelName != this.channelName) {
-            return
-        }
-
-        val publishModel: AUIRtmPublishModel<JsonObject>? =
-            GsonTools.toBean(message, object : TypeToken<AUIRtmPublishModel<JsonObject>>() {}.type)
-
-        if (publishModel?.uniqueId == null) {
-            return
-        }
-
-        if (publishModel.interfaceName == null) {
-            // receipt message from arbiter
-            val receiptModel = GsonTools.toBean(message, AUIRtmReceiptModel::class.java) ?: return
-            if (receiptModel.code == 0) {
-                // success
-                rtmManager.markReceiptFinished(receiptModel.uniqueId, null)
-            } else {
-                // failure
-                rtmManager.markReceiptFinished(
-                    receiptModel.uniqueId, AUIRtmException(
-                        receiptModel.code,
-                        receiptModel.reason, "receipt message from arbiter"
-                    )
-                )
-            }
-        } else {
-            // publish message from non-arbiter
-            when (publishModel.interfaceName) {
-                kAUISeatEnterInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmEnterSeat(seatInfo.micSeatNo, AUIUserThumbnailInfo().apply {
-                            userId = seatInfo.userId
-                            userName = seatInfo.userName
-                            userAvatar = seatInfo.userAvatar
-                        }) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName,"Gson parse failed!")
-                        )
-                    }
-                }
-
-                kAUISeatLeaveInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmLeaveSeat(seatInfo.userId) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
-                        )
-                    }
-                }
-
-                kAUISeatKickInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmKickSeat(seatInfo.micSeatNo) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
-                        )
-                    }
-                }
-
-                kAUISeatMuteAudioInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmMuteAudioSeat(seatInfo.micSeatNo, true) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
-                        )
-                    }
-                }
-
-                kAUISeatUnmuteAudioInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmMuteAudioSeat(seatInfo.micSeatNo, false) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
-                        )
-                    }
-                }
-
-                kAUISeatLockInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmCloseSeat(seatInfo.micSeatNo, true) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
-                        )
-                    }
-                }
-
-                kAUISeatUnlockInterface -> {
-                    val seatInfo =
-                        GsonTools.toBean(publishModel.data, AUIRtmMicSeatInfo::class.java)
-                    if (seatInfo != null) {
-                        rtmCloseSeat(seatInfo.micSeatNo, false) { error ->
-                            rtmManager.sendReceipt(
-                                channelName,
-                                publisherId,
-                                AUIRtmReceiptModel(
-                                    publishModel.uniqueId,
-                                    error?.code ?: 0,
-                                    channelName,
-                                    error?.message ?: ""
-                                )
-                            )
-                        }
-                    } else {
-                        rtmManager.sendReceipt(
-                            channelName,
-                            publisherId,
-                            AUIRtmReceiptModel(publishModel.uniqueId, -1, channelName, "Gson parse failed!")
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    /** AUiRtmMsgProxyDelegate */
-    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
+    private fun onAttributeChanged(channelName: String, key: String, value: Any) {
         if (key != kSeatAttrKey) {
             return
         }
         Log.d("mic_seat_update", "class: ${value.javaClass}")
         val map: Map<String, Any> = HashMap()
-        val seats = GsonTools.toBean(value as String, map.javaClass)
+        val seats = if (value is Map<*, *>) {
+            value
+        } else {
+            GsonTools.toBean(GsonTools.beanToString(value), map.javaClass)
+        }
         Log.d("mic_seat_update", "seats: $seats")
         seats?.values?.forEach {
             val newSeatInfo =
@@ -549,197 +294,61 @@ class AUIMicSeatServiceImpl(
         }
     }
 
-
-    // set metadata
-    private fun rtmEnterSeat(
-        seatIndex: Int,
-        userInfo: AUIUserThumbnailInfo,
-        callback: AUICallback?
-    ) {
-        if (micSeats.values.find { it.user?.userId == userInfo.userId } != null) {
-            callback?.onResult(
-                AUIException(
-                    AUIException.ERROR_CODE_SEAT_ALREADY_ENTER,
-                    "user already enter seat"
-                )
-            )
-            return
-        }
-        if (micSeats.containsKey(seatIndex) && micSeats[seatIndex]?.seatStatus != AUIMicSeatStatus.idle) {
-            callback?.onResult(
-                AUIException(
-                    AUIException.ERROR_CODE_SEAT_NOT_IDLE,
-                    "mic seat not idle"
-                )
-            )
-            return
-        }
-
-        val seatMap = mutableMapOf<String, Any>()
-        micSeats.forEach { (key, value) ->
-            var seatInfo = value
-            if(key == seatIndex){
-                seatInfo = AUIMicSeatInfo()
-                seatInfo.seatIndex = value.seatIndex
-                seatInfo.muteVideo = value.muteVideo
-                seatInfo.muteAudio = value.muteAudio
-                seatInfo.user = userInfo
-                seatInfo.seatStatus = AUIMicSeatStatus.used
-            }
-            seatMap[key.toString()] = seatInfo
-        }
-
-        val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = metadata
-        ) { error ->
-            if (error == null) {
-                callback?.onResult(null)
-            } else {
-                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-            }
-        }
-    }
-
-    private fun rtmLeaveSeat(userId: String, callback: AUICallback?) {
-        val seatMap = mutableMapOf<String, Any>()
-        micSeats.forEach { (key, value) ->
-            var seatInfo = value
-            if (seatInfo.user?.userId == userId) {
-                seatInfo = AUIMicSeatInfo()
-                seatInfo.seatIndex = value.seatIndex
-                seatInfo.muteAudio = value.muteAudio
-                seatInfo.muteVideo = value.muteVideo
-            }
-            seatMap[key.toString()] = seatInfo
-        }
-
-        val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
-
-        var willError: AUIException? = null
-        observableHelper.notifyEventHandlers {
-            willError = it.onSeatWillLeave(userId, metadata)
-            if (willError != null) {
-                return@notifyEventHandlers
-            }
-        }
-        if (willError != null) {
-            callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
-            return
-        }
-
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = metadata
-        ) { error ->
-            if (error == null) {
-                callback?.onResult(null)
-            } else {
-                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-            }
-        }
-    }
-
-    private fun rtmKickSeat(seatIndex: Int, callback: AUICallback?) {
-        val seatMap = mutableMapOf<String, Any>()
-        var userId = ""
-        micSeats.forEach { (key, value) ->
-            var seatInfo = value
-            if (key == seatIndex) {
-                userId = value.user?.userId ?: ""
-                seatInfo = AUIMicSeatInfo()
-                seatInfo.seatIndex = value.seatIndex
-                seatInfo.muteVideo = value.muteVideo
-                seatInfo.muteAudio = value.muteAudio
-            }
-            seatMap[key.toString()] = seatInfo
-        }
-
-        val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
-        var willError: AUIException? = null
-        observableHelper.notifyEventHandlers {
-            willError = it.onSeatWillLeave(userId, metadata)
-            if (willError != null) {
-                return@notifyEventHandlers
-            }
-        }
-        if (willError != null) {
-            callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
-            return
-        }
-
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = metadata
-        ) { error ->
-            if (error == null) {
-                callback?.onResult(null)
-            } else {
-                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-            }
-        }
-    }
-
-    private fun rtmMuteAudioSeat(seatIndex: Int, isMute: Boolean, callback: AUICallback?) {
-        val seatMap = mutableMapOf<String, Any>()
-        micSeats.forEach { (key, value) ->
-            var seatInfo = value
-            if (key == seatIndex) {
-                seatInfo = AUIMicSeatInfo()
-                seatInfo.seatStatus = value.seatStatus
-                seatInfo.muteVideo = value.muteVideo
-                seatInfo.user = value.user
-                seatInfo.seatIndex = value.seatIndex
-                seatInfo.muteAudio = isMute
-            }
-            seatMap[key.toString()] = seatInfo
-        }
-
-        val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = metadata
-        ) { error ->
-            if (error == null) {
-                callback?.onResult(null)
-            } else {
-                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-            }
-        }
-    }
-
-    private fun rtmCloseSeat(seatIndex: Int, isClose: Boolean, callback: AUICallback?) {
-        val seatMap = mutableMapOf<String, Any>()
-        micSeats.forEach { (key, value) ->
-            var seatInfo = value
-            if (key == seatIndex) {
-                seatInfo = AUIMicSeatInfo()
-                seatInfo.muteVideo = value.muteVideo
-                seatInfo.user = value.user
-                seatInfo.seatIndex = value.seatIndex
-                seatInfo.muteAudio = value.muteAudio
-                if (isClose) {
-                    seatInfo.seatStatus = AUIMicSeatStatus.locked
-                } else if (seatInfo.user != null) {
-                    seatInfo.seatStatus = AUIMicSeatStatus.used
-                } else {
-                    seatInfo.seatStatus = AUIMicSeatStatus.idle
+    private fun metadataWillMerge(
+        publisherId: String,
+        valueCmd: String?,
+        newValue: Map<String, Any>,
+        oldValue: Map<String, Any>
+    ): AUIException? {
+        val seatInfoPair = newValue.toList()[0]
+        val seatIndex = seatInfoPair.first.toInt()
+        val seatInfoMap = seatInfoPair.second as? Map<*, *>
+        var userId = (seatInfoMap?.get("owner") as? Map<*, *>)?.get("userId") as? String
+        when(valueCmd){
+            AUIMicSeatCmd.enterSeatCmd.name -> {
+                if (micSeats.values.any { it.user?.userId == userId }) {
+                    return AUIException(
+                        AUIException.ERROR_CODE_SEAT_ALREADY_ENTER,
+                        ""
+                    )
+                }
+                val seatInfo = micSeats[seatIndex]
+                userId = seatInfo?.user?.userId ?: ""
+                if (seatInfo?.user != null && seatInfo.seatStatus != AUIMicSeatStatus.idle) {
+                    return AUIException(
+                        AUIException.ERROR_CODE_SEAT_NOT_IDLE,
+                        "mic seat not idle"
+                    )
                 }
             }
-            seatMap[key.toString()] = seatInfo
-        }
-
-        val metadata = mapOf(Pair(kSeatAttrKey, GsonTools.beanToString(seatMap) ?: ""))
-        rtmManager.setBatchMetadata(
-            channelName,
-            metadata = metadata
-        ) { error ->
-            if (error == null) {
-                callback?.onResult(null)
-            } else {
-                callback?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
+            AUIMicSeatCmd.leaveSeatCmd.name -> {
+                if(seatIndex == 0){
+                    return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
+                }
+                if(micSeats[seatIndex]?.user?.userId != publisherId || roomContext.isRoomOwner(channelName, publisherId)){
+                    return AUIException(AUIException.ERROR_CODE_SEAT_NOT_ENTER, "")
+                }
+                userId = micSeats[seatIndex]?.user?.userId ?: ""
+                val metadata = mutableMapOf<String, String>()
+                var error : AUIException? = null
+                observableHelper.notifyEventHandlers {
+                    error = it.onSeatWillLeave(userId, metadata)?.let { return@notifyEventHandlers }
+                }
+                return error
+            }
+            AUIMicSeatCmd.kickSeatCmd.name -> {
+                if(seatIndex == 0){
+                    return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
+                }
+                userId = micSeats[seatIndex]?.user?.userId ?: ""
+                val metadata = mutableMapOf<String, String>()
+                var error : AUIException? = null
+                observableHelper.notifyEventHandlers {
+                    error = it.onSeatWillLeave(userId, metadata)?.let { return@notifyEventHandlers }
+                }
+                return error
             }
         }
+        return null
     }
 }
