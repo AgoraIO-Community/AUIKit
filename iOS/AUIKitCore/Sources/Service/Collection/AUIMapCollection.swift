@@ -27,6 +27,7 @@ public class AUIMapCollection: NSObject {
     }
     private var metadataWillUpdateClosure: AUICollectionUpdateClosure?
     private var metadataWillMergeClosure: AUICollectionUpdateClosure?
+    private var metadataWillCalculateClosure: AUICollectionCalculateClosure?
     private var attributesDidChangedClosure: AUICollectionAttributesDidChangedClosure?
     
     deinit {
@@ -62,6 +63,10 @@ extension AUIMapCollection: IAUICollection {
     
     public func subscribeWillMerge(callback: AUICollectionUpdateClosure?) {
         self.metadataWillMergeClosure = callback
+    }
+    
+    public func subscribeWillCalculate(callback: AUICollectionCalculateClosure?) {
+        self.metadataWillCalculateClosure = callback
     }
     
     public func subscribeAttributesDidChanged(callback: AUICollectionAttributesDidChangedClosure?) {
@@ -321,9 +326,17 @@ extension AUIMapCollection {
                                       key: [String],
                                       value: AUICollectionCalcValue,
                                       callback: ((NSError?)->())?) {
-        //TODO: will calculate?
         
-        
+        if let err = self.metadataWillCalculateClosure?(publisherId, 
+                                                        valueCmd,
+                                                        currentMap,
+                                                        key, 
+                                                        value.value,
+                                                        value.min, 
+                                                        value.max) {
+            callback?(err)
+            return
+        }
         
         let map = calculateMap(origMap: currentMap,
                                key: key,

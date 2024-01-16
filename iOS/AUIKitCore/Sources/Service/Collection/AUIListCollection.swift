@@ -28,6 +28,7 @@ public class AUIListCollection: NSObject {
     private var metadataWillUpdateClosure: AUICollectionUpdateClosure?
     private var metadataWillMergeClosure: AUICollectionUpdateClosure?
     private var metadataWillRemoveClosure: AUICollectionRemoveClosure?
+    private var metadataWillCalculateClosure: AUICollectionCalculateClosure?
     private var attributesDidChangedClosure: AUICollectionAttributesDidChangedClosure?
     
     deinit {
@@ -70,6 +71,10 @@ extension AUIListCollection: IAUICollection {
     
     public func subscribeWillRemove(callback: AUICollectionRemoveClosure?) {
         self.metadataWillRemoveClosure = callback
+    }
+    
+    public func subscribeWillCalculate(callback: AUICollectionCalculateClosure?) {
+        self.metadataWillCalculateClosure = callback
     }
     
     public func subscribeAttributesDidChanged(callback: AUICollectionAttributesDidChangedClosure?) {
@@ -473,6 +478,17 @@ extension AUIListCollection {
         var list = currentList
         for itemIdx in itemIndexes {
             let item = currentList[itemIdx]
+            
+            if let err = self.metadataWillCalculateClosure?(publisherId, 
+                                                            valueCmd,
+                                                            item,
+                                                            key,
+                                                            value.value,
+                                                            value.min,
+                                                            value.max) {
+                callback?(err)
+                return
+            }
             
             guard let tempItem = calculateMap(origMap: item,
                                               key: key,
