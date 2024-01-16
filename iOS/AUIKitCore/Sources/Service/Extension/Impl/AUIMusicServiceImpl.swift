@@ -248,7 +248,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
 
 //MARK: set meta data
 extension AUIMusicServiceImpl {
-    private func _sortChooseSongList() -> [AUIChooseMusicModel] {
+    private func _sortChooseSongList(chooseSongList: [AUIChooseMusicModel]) -> [AUIChooseMusicModel] {
         let songList = chooseSongList.sorted(by: { model1, model2 in
             //歌曲播放中优先（只会有一个，多个目前没有，如果有需要修改排序策略）
             if model1.playStatus == .playing {
@@ -279,9 +279,9 @@ extension AUIMusicServiceImpl {
             }
             
             aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
-            self.chooseSongList = chooseSongList
+            self.chooseSongList = _sortChooseSongList(chooseSongList: chooseSongList)
             self.respDelegates.allObjects.forEach { obj in
-                obj.onUpdateAllChooseSongs(songs: chooseSongList)
+                obj.onUpdateAllChooseSongs(songs: self.chooseSongList)
             }
         }
     }
