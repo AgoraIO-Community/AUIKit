@@ -383,7 +383,7 @@ extension AUIMusicServiceImpl {
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
         listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
-                                      filter: [["userId": userId]],
+                                      filter: [["owner": ["userId": userId]]],
                                       callback: completion)
     }
     

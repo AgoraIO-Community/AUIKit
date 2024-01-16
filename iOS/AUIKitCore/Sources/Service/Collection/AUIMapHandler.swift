@@ -54,32 +54,52 @@ func calculateMap(origMap: [String: Any],
     return _origMap
 }
 
+
+/// 根据filter条件过滤出array命中的索引，如果filter为空，则默认选中所有
+/// - Parameters:
+///   - array: <#array description#>
+///   - filter: <#filter description#>
+/// - Returns: <#description#>
 func getItemIndexes(array: [[String: Any]], filter: [[String: Any]]?) -> [Int]? {
-    guard let filter = filter else {
+    guard let filter = filter, filter.count > 0 else {
         let indexes = Array(array.indices)
         return indexes.isEmpty ? nil : indexes
     }
+    
+    func isMatchFilter(key: String, itemValue: [String: Any], filterValue: Any?)-> Bool {
+        let valueV = itemValue[key]
+        //only filter String/Bool/Int
+        if let valueV = valueV as? String, let filterV = filterValue as? String {
+            if valueV == filterV {
+                return true
+            }
+        } else if let valueV = valueV as? Bool, let filterV = filterValue as? Bool {
+            if valueV == filterV {
+                return true
+            }
+        } else if let valueV = valueV as? Int, let filterV = filterValue as? Int {
+            if valueV == filterV {
+                return true
+            }
+        } else if let valueV = valueV as? [String: Any], 
+                    let filterV = filterValue as? [String: Any],
+                    filterV.keys.count == 1,
+                    let filterVKey = filterV.keys.first {
+            //next level match again
+            return isMatchFilter(key: filterVKey, itemValue: valueV, filterValue: filterV[filterVKey])
+        }
+        
+        return false
+    }
+    
     var indexes: [Int] = []
     for (i, value) in array.enumerated() {
         for filterItem in filter {
-            var match = true
+            var match = false
             for (k, v) in filterItem {
-                //only filter String/Bool/Int
-                if let valueV = value[k] as? String, let filterV = v as? String {
-                    if valueV != filterV {
-                        match = false
-                        break
-                    }
-                } else if let valueV = value[k] as? Bool, let filterV = v as? Bool {
-                    if valueV != filterV {
-                        match = false
-                        break
-                    }
-                } else if let valueV = value[k] as? Int, let filterV = v as? Int {
-                    if valueV != filterV {
-                        match = false
-                        break
-                    }
+                if isMatchFilter(key: k, itemValue: value, filterValue: v) {
+                    match = true
+                    break
                 }
             }
             if match {
