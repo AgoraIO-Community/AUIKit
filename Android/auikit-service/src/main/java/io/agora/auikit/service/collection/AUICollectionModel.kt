@@ -38,7 +38,8 @@ annotation class AUICollectionMessageType
 data class AUICollectionMessagePayload(
     @AUICollectionOperationType val type: Int = AUICollectionOperationTypeUpdate,
     val dataCmd: String?,
-    val data: Map<String, Any>?
+    val data: Map<String, Any>?,
+    val filter: Any? = null
 )
 
 data class AUICollectionMessage(

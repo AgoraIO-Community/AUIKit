@@ -47,11 +47,15 @@ public class AUIRoomContext {
     }
 
     public boolean isRoomOwner(String channelName){
+        return isRoomOwner(channelName, currentUserInfo.userId);
+    }
+
+    public boolean isRoomOwner(String channelName, String userId){
         AUIRoomInfo roomInfo = roomInfoMap.get(channelName);
         if(roomInfo == null || roomInfo.owner == null){
             return false;
         }
-        return roomInfo.owner.userId.equals(currentUserInfo.userId);
+        return roomInfo.owner.userId.equals(userId);
     }
 
     public void resetRoomMap(@Nullable List<AUIRoomInfo> roomInfoList) {
