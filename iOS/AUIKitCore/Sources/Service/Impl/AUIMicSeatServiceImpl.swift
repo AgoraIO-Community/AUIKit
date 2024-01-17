@@ -9,9 +9,9 @@
 import Foundation
 import AgoraRtmKit
 
-let kSeatAttrKry = "micSeat"
+private let kSeatAttrKry = "micSeat"
 
-enum AUIMicSeatCmd: String {
+private enum AUIMicSeatCmd: String {
     case leaveSeatCmd = "leaveSeatCmd"
     case enterSeatCmd = "enterSeatCmd"
     case kickSeatCmd = "kickSeatCmd"

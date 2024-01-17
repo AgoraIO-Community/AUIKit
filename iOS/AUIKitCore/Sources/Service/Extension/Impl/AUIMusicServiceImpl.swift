@@ -11,7 +11,7 @@ import YYModel
 
 private let kChooseSongKey = "song"
 
-enum AUIMusicCmd: String {
+private enum AUIMusicCmd: String {
     case chooseSongCmd = "chooseSongCmd"
     case removeSongCmd = "removeSongCmd"
     case pingSongCmd = "pingSongCmd"

@@ -11,7 +11,7 @@ import YYModel
 
 let kChorusKey = "chorus"
 
-enum AUIChorusCMd: String {
+private enum AUIChorusCMd: String {
     case joinCmd = "joinChorusCmd"
     case leaveCmd = "leaveChorusCmd"
 }
@@ -103,7 +103,7 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
     public func leaveChorus(songCode: String, userId: String?, completion: @escaping AUICallback) {
         aui_info("leaveChorus: \(songCode)", tag: "AUIChorusServiceImpl")
 
-        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+        listCollection.removeMetaData(valueCmd: AUIChorusCMd.leaveCmd.rawValue,
                                       filter: [["userId": userId ?? ""]],
                                       callback: completion)
     }
