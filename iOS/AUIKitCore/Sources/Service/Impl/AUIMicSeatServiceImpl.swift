@@ -185,10 +185,10 @@ extension AUIMicSeatServiceImpl {
                                          callback: callback)
     }
     
-    private func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+    private func onAttributesDidChanged(channelName: String, key: String, value: AUIAttributesModel) {
         if key == kSeatAttrKry {
             aui_info("recv seat attr did changed \(value)", tag: "AUIMicSeatServiceImpl")
-            guard let map = value as? [String: [String: Any]] else {return}
+            guard let map = value.getMap() as? [String: [String: Any]] else {return}
             map.values.forEach { element in
                 guard let micSeat = AUIMicSeatInfo.yy_model(with: element) else {return}
                 aui_info(" micSeat.islock \(micSeat.lockSeat) micSeat.Index = \(micSeat.seatIndex)", tag: "AUIMicSeatServiceImpl")

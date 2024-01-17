@@ -85,11 +85,12 @@ open class AUIMusicServiceImpl: NSObject {
             self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
         }
         
-        listCollection.subscribeAttributesWillSet { channelName, key, valueCmd, value in
-            guard valueCmd == AUIMusicCmd.pingSongCmd.rawValue else { return value }
-            guard let value = value as? [[String: Any]] else { return value }
+        listCollection.subscribeAttributesWillSet { channelName, key, valueCmd, attr in
+            guard valueCmd == AUIMusicCmd.pingSongCmd.rawValue else { return attr }
+            guard let value = attr.getList() else { return attr }
             
-            return self._sortChooseSongList(chooseSongList: value)
+            let sortList = self._sortChooseSongList(chooseSongList: value)
+            return AUIAttributesModel(list: sortList)
         }
     }
 }
@@ -280,10 +281,10 @@ extension AUIMusicServiceImpl {
         return songList
     }
     
-    private func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+    private func onAttributesDidChanged(channelName: String, key: String, value: AUIAttributesModel) {
         if key == kChooseSongKey {
             aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
-            guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
+            guard let songArray = (value.getList() as? AnyObject)?.yy_modelToJSONObject(),
                   let chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: songArray) as? [AUIChooseMusicModel] else {
                 return
             }

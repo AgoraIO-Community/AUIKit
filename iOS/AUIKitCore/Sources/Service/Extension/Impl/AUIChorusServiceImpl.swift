@@ -115,10 +115,10 @@ extension AUIChorusServiceImpl: AUIChorusServiceDelegate {
 
 //MARK: set meta data
 extension AUIChorusServiceImpl {
-    private func onAttributesDidChanged(channelName: String, key: String, value: Any) {
+    private func onAttributesDidChanged(channelName: String, key: String, value: AUIAttributesModel) {
         if key == kChorusKey {
             aui_info("recv chorus attr did changed \(value)", tag: "AUIPlayerServiceImpl")
-            guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
+            guard let songArray = (value.getList() as? AnyObject)?.yy_modelToJSONObject(),
                     let chorusList = NSArray.yy_modelArray(with: AUIChoristerModel.self, json: songArray) as? [AUIChoristerModel] else {
                 return
             }

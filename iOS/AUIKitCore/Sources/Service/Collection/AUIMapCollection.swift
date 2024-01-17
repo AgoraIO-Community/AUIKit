@@ -11,7 +11,7 @@ public class AUIMapCollection: AUIBaseCollection {
     private var currentMap: [String: Any] = [:] {
         didSet {
             //TODO: if oldValue == currentMap {return}
-            self.attributesDidChangedClosure?(channelName, observeKey, currentMap)
+            self.attributesDidChangedClosure?(channelName, observeKey, AUIAttributesModel(map: currentMap))
         }
     }
 }
@@ -31,8 +31,12 @@ extension AUIMapCollection {
         value.forEach { (key: String, value: Any) in
             map[key] = value
         }
-        if let _map = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, map) as? [String: Any] {
-            map = _map
+        if let attr = self.attributesWillSetClosure?(channelName,
+                                                     observeKey,
+                                                     valueCmd,
+                                                     AUIAttributesModel(map: map)),
+           let attrMap = attr.getMap() {
+            map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
             callback?(NSError.auiError("rtmSetMetaData fail"))
@@ -58,8 +62,12 @@ extension AUIMapCollection {
         }
         
         var map = mergeMap(origMap: currentMap, newMap: value)
-        if let _map = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, map) as? [String: Any] {
-            map = _map
+        if let attr = self.attributesWillSetClosure?(channelName,
+                                                     observeKey,
+                                                     valueCmd,
+                                                     AUIAttributesModel(map: map)),
+           let attrMap = attr.getMap() {
+            map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
             callback?(NSError.auiError("rtmSetMetaData fail"))
@@ -98,8 +106,12 @@ extension AUIMapCollection {
                                min: value.min,
                                max: value.max)
         if let tmpMap = map,
-           let _map = self.attributesWillSetClosure?(channelName, observeKey, valueCmd, tmpMap) as? [String: Any] {
-            map = _map
+           let attr = self.attributesWillSetClosure?(channelName,
+                                                     observeKey,
+                                                     valueCmd, 
+                                                     AUIAttributesModel(map: tmpMap)),
+           let attrMap = attr.getMap() {
+            map = attrMap
         }
         guard let map = map, let value = encodeToJsonStr(map) else {
             callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))

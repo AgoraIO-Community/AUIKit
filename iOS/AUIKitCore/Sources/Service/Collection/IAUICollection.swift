@@ -22,10 +22,30 @@ public typealias AUICollectionRemoveClosure = (String, String?, [String: Any]) -
 public typealias AUICollectionCalculateClosure = (String, String?, [String: Any], [String], Int, Int, Int) -> NSError?
 
 //(channelName, key, valueCmd, value[will set metadata])->value[can set metadata]
-public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, Any) -> Any
+public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, AUIAttributesModel) -> AUIAttributesModel
 
 //(channelName, key, value)
-public typealias AUICollectionAttributesDidChangedClosure = (String, String, Any) -> Void
+public typealias AUICollectionAttributesDidChangedClosure = (String, String, AUIAttributesModel) -> Void
+
+@objc public class AUIAttributesModel: NSObject {
+    private var attributes: Any?
+    required init(list: [[String: Any]]) {
+        self.attributes = list
+        super.init()
+    }
+    required init(map: [String: Any]) {
+        self.attributes = map
+        super.init()
+    }
+    
+    public func getMap() -> [String: Any]? {
+        return attributes as? [String: Any]
+    }
+    
+    public func getList() -> [[String: Any]]? {
+        return attributes as? [[String: Any]]
+    }
+}
 
 @objc public protocol IAUICollection: NSObjectProtocol {
     
