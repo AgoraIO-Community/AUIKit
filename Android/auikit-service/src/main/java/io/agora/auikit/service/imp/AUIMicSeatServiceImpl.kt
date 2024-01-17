@@ -141,8 +141,10 @@ class AUIMicSeatServiceImpl(
 
     override fun autoEnterSeat(callback: AUICallback?) {
         var toIndex: Int? = null
-        for ((key, value) in micSeats) {
-            if (value.seatStatus == AUIMicSeatStatus.idle) {
+        val sortedKeys = micSeats.keys.sortedBy { key -> key }
+        for (key in sortedKeys) {
+            val value = micSeats[key]
+            if (value?.seatStatus == AUIMicSeatStatus.idle) {
                 toIndex = key
                 break
             }

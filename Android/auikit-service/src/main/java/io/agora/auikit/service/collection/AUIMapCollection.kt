@@ -9,7 +9,6 @@ import io.agora.auikit.service.rtm.AUIRtmException
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMessageRespObserver
 import io.agora.auikit.utils.GsonTools
-import org.json.JSONObject
 import java.util.UUID
 
 class AUIMapCollection(
@@ -396,9 +395,15 @@ class AUIMapCollection(
 
         if (messageModel.messageType == AUICollectionMessageTypeReceipt) {
             // receipt message from arbiter
-            val data = JSONObject(messageModel.payload?.data?.toString() ?: return)
-            val code = data.get("code") as? Int ?: 0
-            val reason = data.get("reason") as? String ?: "success"
+            val data = messageModel.payload?.data as? Map<*, *>
+            if(data == null){
+                rtmManager.markReceiptFinished(uniqueId, AUIRtmException(
+                    -1, "data is not a map", "receipt message"
+                ))
+                return
+            }
+            val code = data["code"] as? Int ?: 0
+            val reason = data["reason"] as? String ?: "success"
             if (code == 0) {
                 // success
                 rtmManager.markReceiptFinished(uniqueId, null)
