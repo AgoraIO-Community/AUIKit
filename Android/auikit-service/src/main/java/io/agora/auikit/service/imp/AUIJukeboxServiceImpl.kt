@@ -30,7 +30,7 @@ class AUIJukeboxServiceImpl constructor(
     private val channelName: String,
     private val rtmManager: AUIRtmManager,
     private val ktvApi: KTVApi
-) : IAUIJukeboxService{
+) : IAUIJukeboxService {
 
     private val TAG: String = "Jukebox_LOG"
 
@@ -46,7 +46,8 @@ class AUIJukeboxServiceImpl constructor(
         listCollection.subscribeWillAdd(this::metadataWillAdd)
         listCollection.subscribeWillRemove(this::metadataWillRemove)
         listCollection.subscribeWillMerge(this::metadataWillMerge)
-        listCollection.subscribeAttributesDidChanged(this::onAttributeChanged)
+        listCollection.subscribeAttributesDidChanged(this::onAttributesChanged)
+        listCollection.subscribeAttributesWillSet(this::onAttributesWillSet)
     }
 
     override fun deInitService(completion: AUICallback?) {
@@ -164,8 +165,6 @@ class AUIJukeboxServiceImpl constructor(
         chooseSong.lrcUrl = song.lrcUrl
 
         val metadata = HashMap(GsonTools.beanToMap(chooseSong))
-        metadata["userId"] = roomContext.currentUserInfo.userId
-
         listCollection.addMetaData(
             AUIJukeboxCmd.chooseSongCmd.name,
             metadata,
@@ -212,7 +211,7 @@ class AUIJukeboxServiceImpl constructor(
         super.cleanUserInfo(userId, completion)
         listCollection.removeMetaData(
             AUIJukeboxCmd.removeSongCmd.name,
-            listOf(mapOf("userId" to userId)),
+            listOf(mapOf("owner" to mapOf("userId" to userId))),
             completion
         )
     }
@@ -220,19 +219,56 @@ class AUIJukeboxServiceImpl constructor(
 
     override fun getChannelName() = channelName
 
+    private fun sortChooseSongList(songList: List<Map<String, Any>>): List<Map<String, Any>> {
+        val sortSongList = songList.sortedWith(Comparator<Map<String, Any>> { o1, o2 ->
+            if (o1["status"] == AUIPlayStatus.playing.toLong()) {
+                return@Comparator -1
+            }
+            if (o2["status"] == AUIPlayStatus.playing.toLong()) {
+                return@Comparator 1
+            }
 
-    private fun onAttributeChanged(channelName: String, observeKey: String, value: Any) {
+            val pinAt1 = o1["pinAt"] as? Long ?: 0
+            val pinAt2 = o2["pinAt"] as? Long ?: 0
+            val createAt1 = o1["createAt"] as? Long ?: 0
+            val createAt2 = o2["createAt"] as? Long ?: 0
+            if (pinAt1 < 1 && pinAt2 < 1) {
+                return@Comparator if((createAt1 - createAt2) > 0) 1 else -1
+            }
+
+            return@Comparator if((pinAt2 - pinAt1) > 0) 1 else -1
+        })
+
+        return sortSongList
+    }
+
+
+    private fun onAttributesChanged(channelName: String, observeKey: String, value: Any) {
         if (observeKey != kChooseSongKey) {
             return
         }
         Log.d(TAG, "channelName:$channelName,key:$observeKey,value:$value")
-        val changedSongs: List<AUIChooseMusicModel> = GsonTools.toList(GsonTools.beanToString(value),AUIChooseMusicModel::class.java )
+        val changedSongs: List<AUIChooseMusicModel> =
+            GsonTools.toList(GsonTools.beanToString(value), AUIChooseMusicModel::class.java)
                 ?: mutableListOf()
         this.chooseMusicList.clear()
         this.chooseMusicList.addAll(changedSongs)
         observableHelper.notifyEventHandlers { delegate: AUIJukeboxRespObserver ->
             delegate.onUpdateAllChooseSongs(this.chooseMusicList)
         }
+    }
+
+    private fun onAttributesWillSet(
+        channelName: String,
+        observeKey: String,
+        valueCmd: String?,
+        value: Any
+    ): Any {
+        if (valueCmd == AUIJukeboxCmd.pingSongCmd.name) {
+            val songList = value as? List<Map<String, Any>> ?: return value
+            return sortChooseSongList(songList)
+        }
+        return value
     }
 
     private fun metadataWillAdd(
@@ -266,8 +302,8 @@ class AUIJukeboxServiceImpl constructor(
         val owner = value["owner"] as? Map<*, *>
         val userId = owner?.get("userId") as? String ?: ""
         val songCode = value["songCode"] as? String
-        if(valueCmd == AUIJukeboxCmd.removeSongCmd.name){
-            if(publisherId != userId && !roomContext.isRoomOwner(channelName, publisherId)){
+        if (valueCmd == AUIJukeboxCmd.removeSongCmd.name) {
+            if (publisherId != userId && !roomContext.isRoomOwner(channelName, publisherId)) {
                 return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
             }
             val metaData = mutableMapOf<String, String>()

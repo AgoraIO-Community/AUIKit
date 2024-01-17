@@ -1,13 +1,10 @@
 package io.agora.auikit.service.collection
 
 import com.google.gson.reflect.TypeToken
-import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
-import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmException
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMessageRespObserver
 import io.agora.auikit.utils.GsonTools
 import java.util.UUID
 
@@ -15,86 +12,13 @@ class AUIListCollection(
     private val channelName: String,
     private val observeKey: String,
     private val rtmManager: AUIRtmManager
-) : IAUICollection {
+) : AUIBaseCollection(channelName, observeKey, rtmManager) {
 
-    private val messageRespObserver = object : AUIRtmMessageRespObserver {
-        override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
-            dealReceiveMessage(publisherId, message)
-        }
-    }
-
-    private val attributeRespObserver = object : AUIRtmAttributeRespObserver {
-        override fun onAttributeChanged(channelName: String, key: String, value: Any) {
-            if (this@AUIListCollection.channelName != channelName || key != observeKey) {
-                return
-            }
-            val strValue = value as? String ?: return
-            val list = GsonTools.toBean<List<Map<String, Any>>>(
-                strValue,
-                object : TypeToken<List<Map<String, Any>>>() {}.type
-            ) ?: return
-            currentList = list
-        }
-    }
-
-    private var metadataWillAddClosure: ((
-        publisherId: String, valueCmd: String?, value: Map<String, Any>
-    ) -> AUIException?)? = null
-
-    private var metadataWillUpdateClosure: ((
-        publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
-
-    private var metadataWillMergeClosure: ((
-        publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
-
-    private var metadataWillRemoveClosure: ((
-        publisherId: String, valueCmd: String?, value: Map<String, Any>
-    ) -> AUIException?)? = null
-
-    private var attributesDidChangedClosure: ((
-        channelName: String, observeKey: String, value: Any
-    ) -> Unit)? = null
-
-    private var currentList: List<Map<String, Any>> = mutableListOf()
+    private var currentList = listOf<Map<String, Any>>()
         set(value) {
             field = value
             attributesDidChangedClosure?.invoke(channelName, observeKey, value)
         }
-
-    init {
-        rtmManager.subscribeMessage(messageRespObserver)
-        rtmManager.subscribeAttribute(channelName, observeKey, attributeRespObserver)
-    }
-
-    override fun release() {
-        rtmManager.unsubscribeMessage(messageRespObserver)
-        rtmManager.unsubscribeAttribute(
-            channelName, observeKey,
-            attributeRespObserver
-        )
-    }
-
-    override fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUIException?)?) {
-        metadataWillAddClosure = closure
-    }
-
-    override fun subscribeWillUpdate(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUIException?)?) {
-        metadataWillUpdateClosure = closure
-    }
-
-    override fun subscribeWillMerge(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUIException?)?) {
-        metadataWillMergeClosure = closure
-    }
-
-    override fun subscribeWillRemove(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUIException?)?) {
-        metadataWillRemoveClosure = closure
-    }
-
-    override fun subscribeAttributesDidChanged(closure: ((channelName: String, observeKey: String, value: Any) -> Unit)?) {
-        attributesDidChangedClosure = closure
-    }
 
     override fun getMetaData(callback: ((error: AUIException?, value: Any?) -> Unit)?) {
         rtmManager.getMetadata(
@@ -355,13 +279,6 @@ class AUIListCollection(
     }
 
 
-    private fun localUid() = AUIRoomContext.shared().currentUserInfo.userId
-
-    private fun arbiterUid() = AUIRoomContext.shared().getArbiter(channelName)?.lockOwnerId() ?: ""
-
-    private fun isArbiter() = AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() ?: false
-
-
     private fun rtmAddMetaData(
         publisherId: String,
         valueCmd: String?,
@@ -388,8 +305,9 @@ class AUIListCollection(
 
         val list = ArrayList(currentList)
         list.add(value)
+        val retList = attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>  ?: list
 
-        val data = GsonTools.beanToString(list)
+        val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmUpdateMetaData fail"))
             return
@@ -444,8 +362,9 @@ class AUIListCollection(
             }
             list[itemIdx] = tempItem
         }
+        val retList = attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>  ?: list
 
-        val data = GsonTools.beanToString(list)
+        val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmUpdateMetaData fail"))
             return
@@ -497,8 +416,8 @@ class AUIListCollection(
             val tempItem = AUICollectionUtils.mergeMap(item, value)
             list[itemIdx] = tempItem
         }
-
-        val data = GsonTools.beanToString(list)
+        val retList = attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>  ?: list
+        val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmMergeMetaData fail"))
             return
@@ -547,10 +466,11 @@ class AUIListCollection(
             }
         }
 
+
         val filterList = list.filter { !itemIndexes.contains(list.indexOf(it)) }
         list = ArrayList(filterList)
-
-        val data = GsonTools.beanToString(list)
+        val retList = attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>  ?: list
+        val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmRemoveMetaData fail"))
             return
@@ -587,7 +507,16 @@ class AUIListCollection(
         )
     }
 
-    private fun dealReceiveMessage(publisherId: String, message: String) {
+    override fun onAttributeChanged(value: Any) {
+        val strValue = value as? String ?: return
+        val list = GsonTools.toBean<List<Map<String, Any>>>(
+            strValue,
+            object : TypeToken<List<Map<String, Any>>>() {}.type
+        ) ?: return
+        currentList = list
+    }
+
+    override fun onMessageReceive(publisherId: String, message: String) {
         val messageModel = GsonTools.toBean(message, AUICollectionMessage::class.java) ?: return
 
         val uniqueId = messageModel.uniqueId
@@ -688,23 +617,5 @@ class AUIListCollection(
         }
     }
 
-    private fun sendReceipt(publisherId: String, uniqueId: String, error: AUIException?) {
-        val data = mapOf(
-            Pair("code", error?.code ?: 0),
-            Pair("reason", error?.message ?: "")
-        )
-        val message = AUICollectionMessage(
-            channelName = channelName,
-            messageType = AUICollectionMessageTypeReceipt,
-            uniqueId = uniqueId,
-            sceneKey = observeKey,
-            payload = AUICollectionMessagePayload(
-                dataCmd = "",
-                data = data,
-            )
-        )
-        val jsonStr = GsonTools.beanToString(message) ?: return
 
-        rtmManager.publish(channelName, publisherId, jsonStr) {}
-    }
 }
