@@ -428,6 +428,7 @@ extension AUIListCollection {
         let data: [String: Any] = encodeModel(calcData) ?? [:]
         let payload = AUICollectionMessagePayload(type: .calculate,
                                                   dataCmd: valueCmd,
+                                                  filter: filter == nil ? nil : AUIAnyType(array: filter!),
                                                   data: AUIAnyType(map: data))
         let message = AUICollectionMessage(channelName: channelName,
                                            messageType: AUIMessageType.normal,
