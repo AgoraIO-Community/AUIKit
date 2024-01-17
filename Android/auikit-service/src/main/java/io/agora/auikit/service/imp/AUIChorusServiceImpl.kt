@@ -7,6 +7,7 @@ import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIChoristerListCallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUISwitchSingerRoleCallback
+import io.agora.auikit.service.collection.AUIAttributesModel
 import io.agora.auikit.service.collection.AUIListCollection
 import io.agora.auikit.service.ktv.ISwitchRoleStateListener
 import io.agora.auikit.service.ktv.KTVApi
@@ -127,13 +128,13 @@ class AUIChorusServiceImpl constructor(
         }
     }
 
-    private fun onAttributeChanged(channelName: String, key: String, value: Any) {
+    private fun onAttributeChanged(channelName: String, key: String, value: AUIAttributesModel) {
         if (key != kChorusKey) {
             return
         }
         Log.d(TAG, "channelName:$channelName,key:$key,value:$value")
 
-        val json = value as? String ?: GsonTools.beanToString(value) ?: return
+        val json = GsonTools.beanToString(value.getList()) ?: return
         var chorusLists: List<AUIChoristerModel> = mutableListOf()
         if (json.contains("[")) {
             chorusLists = GsonTools.toList(json, AUIChoristerModel::class.java) ?: mutableListOf()

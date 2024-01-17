@@ -17,7 +17,7 @@ class AUIMapCollection(
     private var currentMap: Map<String, Any> = mutableMapOf()
         set(value) {
             field = value
-            attributesDidChangedClosure?.invoke(channelName, observeKey, value)
+            attributesDidChangedClosure?.invoke(channelName, observeKey, AUIAttributesModel(value))
         }
 
     override fun getMetaData(callback: ((error: AUIException?, value: Any?) -> Unit)?) {
@@ -284,7 +284,7 @@ class AUIMapCollection(
             map[k] = v
         }
         val retMap =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, map) as? Map<*, *>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(map))?.getMap()
                 ?: map
         val data = GsonTools.beanToString(retMap)
         if (data == null) {
@@ -324,7 +324,7 @@ class AUIMapCollection(
 
         val map = AUICollectionUtils.mergeMap(currentMap, value)
         val retMap =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, map) as? Map<*, *>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(map))?.getMap()
                 ?: map
         val data = GsonTools.beanToString(retMap)
         if (data == null) {
@@ -379,7 +379,7 @@ class AUIMapCollection(
             value.max
         ) ?: mutableMapOf()
         val retMap =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, map) as? Map<*, *>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(map))?.getMap()
                 ?: map
         val data = GsonTools.beanToString(retMap)
         if (data == null) {

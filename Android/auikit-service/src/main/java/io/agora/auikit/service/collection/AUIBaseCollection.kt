@@ -49,12 +49,12 @@ abstract class AUIBaseCollection(
     ) -> AUIException?)? = null
 
     protected var attributesDidChangedClosure: ((
-        channelName: String, observeKey: String, value: Any
+        channelName: String, observeKey: String, value: AUIAttributesModel
     ) -> Unit)? = null
 
     protected var attributesWillSetClosure: ((
-        channelName: String, observeKey: String, valueCmd: String?, value: Any
-    ) -> Any)? = null
+        channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel
+    ) -> AUIAttributesModel)? = null
 
 
     init {
@@ -86,11 +86,11 @@ abstract class AUIBaseCollection(
         metadataWillRemoveClosure = closure
     }
 
-    final override fun subscribeAttributesDidChanged(closure: ((channelName: String, observeKey: String, value: Any) -> Unit)?) {
+    final override fun subscribeAttributesDidChanged(closure: ((channelName: String, observeKey: String, value: AUIAttributesModel) -> Unit)?) {
         attributesDidChangedClosure = closure
     }
 
-    final override fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: Any) -> Any)?) {
+    final override fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel) -> AUIAttributesModel)?) {
         attributesWillSetClosure = closure
     }
 

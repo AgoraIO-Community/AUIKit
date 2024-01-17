@@ -17,7 +17,7 @@ class AUIListCollection(
     private var currentList = listOf<Map<String, Any>>()
         set(value) {
             field = value
-            attributesDidChangedClosure?.invoke(channelName, observeKey, value)
+            attributesDidChangedClosure?.invoke(channelName, observeKey, AUIAttributesModel(value))
         }
 
     override fun getMetaData(callback: ((error: AUIException?, value: Any?) -> Unit)?) {
@@ -368,7 +368,7 @@ class AUIListCollection(
         val list = ArrayList(currentList)
         list.add(value)
         val retList =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(list))?.getList()
                 ?: list
 
         val data = GsonTools.beanToString(retList)
@@ -427,7 +427,7 @@ class AUIListCollection(
             list[itemIdx] = tempItem
         }
         val retList =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(list))?.getList()
                 ?: list
 
         val data = GsonTools.beanToString(retList)
@@ -483,7 +483,7 @@ class AUIListCollection(
             list[itemIdx] = tempItem
         }
         val retList =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(list))?.getList()
                 ?: list
         val data = GsonTools.beanToString(retList)
         if (data == null) {
@@ -538,7 +538,7 @@ class AUIListCollection(
         val filterList = list.filter { !itemIndexes.contains(list.indexOf(it)) }
         list = ArrayList(filterList)
         val retList =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(list))?.getList()
                 ?: list
         val data = GsonTools.beanToString(retList)
         if (data == null) {
@@ -615,7 +615,7 @@ class AUIListCollection(
         }
 
         val retList =
-            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, list) as? List<*>
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, AUIAttributesModel(list))?.getList()
                 ?: list
         val data = GsonTools.beanToString(retList)
         if (data == null) {

@@ -10,6 +10,7 @@ import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIChooseSongListCallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIMusicListCallback
+import io.agora.auikit.service.collection.AUIAttributesModel
 import io.agora.auikit.service.collection.AUIListCollection
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.rtm.AUIRtmManager
@@ -243,13 +244,13 @@ class AUIJukeboxServiceImpl constructor(
     }
 
 
-    private fun onAttributesChanged(channelName: String, observeKey: String, value: Any) {
+    private fun onAttributesChanged(channelName: String, observeKey: String, value: AUIAttributesModel) {
         if (observeKey != kChooseSongKey) {
             return
         }
         Log.d(TAG, "channelName:$channelName,key:$observeKey,value:$value")
         val changedSongs: List<AUIChooseMusicModel> =
-            GsonTools.toList(GsonTools.beanToString(value), AUIChooseMusicModel::class.java)
+            GsonTools.toList(GsonTools.beanToString(value.getList()), AUIChooseMusicModel::class.java)
                 ?: mutableListOf()
         this.chooseMusicList.clear()
         this.chooseMusicList.addAll(changedSongs)
@@ -262,11 +263,11 @@ class AUIJukeboxServiceImpl constructor(
         channelName: String,
         observeKey: String,
         valueCmd: String?,
-        value: Any
-    ): Any {
+        value: AUIAttributesModel
+    ): AUIAttributesModel {
         if (valueCmd == AUIJukeboxCmd.pingSongCmd.name) {
-            val songList = value as? List<Map<String, Any>> ?: return value
-            return sortChooseSongList(songList)
+            val songList = value.getList() ?: return value
+            return AUIAttributesModel(sortChooseSongList(songList))
         }
         return value
     }

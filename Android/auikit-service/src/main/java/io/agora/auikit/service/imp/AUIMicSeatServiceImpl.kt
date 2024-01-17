@@ -8,6 +8,7 @@ import io.agora.auikit.model.AUIUserThumbnailInfo
 import io.agora.auikit.service.IAUIMicSeatService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
+import io.agora.auikit.service.collection.AUIAttributesModel
 import io.agora.auikit.service.collection.AUIMapCollection
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.utils.GsonTools
@@ -239,17 +240,13 @@ class AUIMicSeatServiceImpl(
 
     override fun getChannelName() = channelName
 
-    private fun onAttributeChanged(channelName: String, key: String, value: Any) {
+    private fun onAttributeChanged(channelName: String, key: String, value: AUIAttributesModel) {
         if (key != kSeatAttrKey) {
             return
         }
         Log.d("mic_seat_update", "class: ${value.javaClass}")
         val map: Map<String, Any> = HashMap()
-        val seats = if (value is Map<*, *>) {
-            value
-        } else {
-            GsonTools.toBean(GsonTools.beanToString(value), map.javaClass)
-        }
+        val seats = value.getMap() ?: GsonTools.toBean(GsonTools.beanToString(value), map.javaClass)
         Log.d("mic_seat_update", "seats: $seats")
         seats?.values?.forEach {
             val newSeatInfo =

@@ -3,6 +3,7 @@ package io.agora.auikit.service.collection
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 
+
 /**
  * IAUICollection
  *
@@ -50,14 +51,14 @@ interface IAUICollection {
      *
      * @param closure
      */
-    fun subscribeAttributesDidChanged(closure: ((channelName: String, observeKey: String, value: Any) -> Unit)?)
+    fun subscribeAttributesDidChanged(closure: ((channelName: String, observeKey: String, value: AUIAttributesModel) -> Unit)?)
 
     /**
      * Subscribe attributes will set
      *
      * @param closure
      */
-    fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: Any) -> Any)?)
+    fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel) -> AUIAttributesModel)?)
 
 
     /**

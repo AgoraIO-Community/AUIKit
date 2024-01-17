@@ -63,3 +63,21 @@ data class AUICollectionError(
     val code: Int = 0,
     val reason: String = "",
 )
+
+
+class AUIAttributesModel {
+    private var attributes: Any? = null
+
+    constructor(list: List<Map<String, Any>>){
+        attributes = list
+    }
+
+    constructor(map: Map<String, Any>){
+        attributes = map
+    }
+
+    fun getMap() = attributes as? Map<String, Any>
+
+    fun getList() = attributes as? List<Map<String, Any>>
+
+}
