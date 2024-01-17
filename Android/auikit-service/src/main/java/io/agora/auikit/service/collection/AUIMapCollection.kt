@@ -1,13 +1,10 @@
 package io.agora.auikit.service.collection
 
 import com.google.gson.reflect.TypeToken
-import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
-import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmException
 import io.agora.auikit.service.rtm.AUIRtmManager
-import io.agora.auikit.service.rtm.AUIRtmMessageRespObserver
 import io.agora.auikit.utils.GsonTools
 import java.util.UUID
 
@@ -15,88 +12,13 @@ class AUIMapCollection(
     private val channelName: String,
     private val observeKey: String,
     private val rtmManager: AUIRtmManager
-) : IAUICollection {
-
-    private val messageRespObserver = object : AUIRtmMessageRespObserver {
-        override fun onMessageReceive(channelName: String, publisherId: String, message: String) {
-            dealReceiveMessage(publisherId, message)
-        }
-    }
-
-    private val attributeRespObserver = object : AUIRtmAttributeRespObserver {
-        override fun onAttributeChanged(channelName: String, key: String, value: Any) {
-            if (this@AUIMapCollection.channelName != channelName || key != observeKey) {
-                return
-            }
-            val strValue = value as? String ?: return
-
-            val map = GsonTools.toBean<Map<String, Any>>(
-                strValue,
-                object : TypeToken<Map<String, Any>>() {}.type
-            ) ?: return
-
-            currentMap = map
-        }
-    }
-
-    private var metadataWillUpdateClosure: ((
-        publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
-
-    private var metadataWillMergeClosure: ((
-        publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
-
-    private var attributesDidChangedClosure: ((channelName: String, observeKey: String, value: Any) -> Unit)? =
-        null
+) : AUIBaseCollection(channelName, observeKey, rtmManager) {
 
     private var currentMap: Map<String, Any> = mutableMapOf()
         set(value) {
             field = value
             attributesDidChangedClosure?.invoke(channelName, observeKey, value)
         }
-
-    init {
-        rtmManager.subscribeMessage(messageRespObserver)
-        rtmManager.subscribeAttribute(channelName, observeKey, attributeRespObserver)
-    }
-
-    /**
-     * 释放资源
-     *
-     */
-    override fun release() {
-        rtmManager.unsubscribeMessage(messageRespObserver)
-        rtmManager.unsubscribeAttribute(
-            channelName, observeKey,
-            attributeRespObserver
-        )
-    }
-
-    /**
-     * 订阅metadata在设置给rtm之前的事件，用于提前判断是否满足设置要求
-     *
-     * @param closure 事件回调，当返回null时表示允许设置metadata，当返回AUIException表示有异常，不允许设置metadata
-     */
-    override fun subscribeWillUpdate(
-        closure: ((
-            publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-        ) -> AUIException?)?
-    ) {
-        metadataWillUpdateClosure = closure
-    }
-
-    override fun subscribeWillMerge(
-        closure: ((
-            publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-        ) -> AUIException?)?
-    ) {
-        metadataWillMergeClosure = closure
-    }
-
-    override fun subscribeAttributesDidChanged(closure: ((channelName: String, observeKey: String, value: Any) -> Unit)?) {
-        attributesDidChangedClosure = closure
-    }
 
     override fun getMetaData(callback: ((error: AUIException?, value: Any?) -> Unit)?) {
         rtmManager.getMetadata(
@@ -284,13 +206,6 @@ class AUIMapCollection(
         }
     }
 
-    private fun localUid() = AUIRoomContext.shared().currentUserInfo.userId
-
-    private fun arbiterUid() = AUIRoomContext.shared().getArbiter(channelName)?.lockOwnerId() ?: ""
-
-    private fun isArbiter() = AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() ?: false
-
-
     private fun rtmUpdateMetaData(
         publisherId: String,
         valueCmd: String?,
@@ -308,7 +223,10 @@ class AUIMapCollection(
         value.forEach { (k, v) ->
             map[k] = v
         }
-        val data = GsonTools.beanToString(map)
+        val retMap =
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, map) as? Map<*, *>
+                ?: map
+        val data = GsonTools.beanToString(retMap)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmSetMetaData fail"))
             return
@@ -345,7 +263,10 @@ class AUIMapCollection(
         }
 
         val map = AUICollectionUtils.mergeMap(currentMap, value)
-        val data = GsonTools.beanToString(map)
+        val retMap =
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, map) as? Map<*, *>
+                ?: map
+        val data = GsonTools.beanToString(retMap)
         if (data == null) {
             callback?.onResult(AUIException(-1, "rtmSetMetaData fail"))
             return
@@ -382,7 +303,18 @@ class AUIMapCollection(
         )
     }
 
-    private fun dealReceiveMessage(publisherId: String, message: String) {
+    override fun onAttributeChanged(value: Any) {
+        val strValue = value as? String ?: return
+
+        val map = GsonTools.toBean<Map<String, Any>>(
+            strValue,
+            object : TypeToken<Map<String, Any>>() {}.type
+        ) ?: return
+
+        currentMap = map
+    }
+
+    override fun onMessageReceive(publisherId: String, message: String) {
         val messageModel = GsonTools.toBean(message, AUICollectionMessage::class.java) ?: return
 
         val uniqueId = messageModel.uniqueId
@@ -396,10 +328,12 @@ class AUIMapCollection(
         if (messageModel.messageType == AUICollectionMessageTypeReceipt) {
             // receipt message from arbiter
             val data = messageModel.payload?.data as? Map<*, *>
-            if(data == null){
-                rtmManager.markReceiptFinished(uniqueId, AUIRtmException(
-                    -1, "data is not a map", "receipt message"
-                ))
+            if (data == null) {
+                rtmManager.markReceiptFinished(
+                    uniqueId, AUIRtmException(
+                        -1, "data is not a map", "receipt message"
+                    )
+                )
                 return
             }
             val code = data["code"] as? Int ?: 0
@@ -473,23 +407,4 @@ class AUIMapCollection(
         }
     }
 
-    private fun sendReceipt(publisherId: String, uniqueId: String, error: AUIException?) {
-        val data = mapOf(
-            Pair("code", error?.code ?: 0),
-            Pair("reason", error?.message ?: "")
-        )
-        val message = AUICollectionMessage(
-            channelName = channelName,
-            messageType = AUICollectionMessageTypeReceipt,
-            uniqueId = uniqueId,
-            sceneKey = observeKey,
-            payload = AUICollectionMessagePayload(
-                dataCmd = "",
-                data = data,
-            )
-        )
-        val jsonStr = GsonTools.beanToString(message) ?: return
-
-        rtmManager.publish(channelName, publisherId, jsonStr) {}
-    }
 }
