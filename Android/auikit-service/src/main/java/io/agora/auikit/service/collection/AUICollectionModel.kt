@@ -7,8 +7,7 @@ const val AUICollectionOperationTypeUpdate = 1 //更新，对传递进来的map�
 const val AUICollectionOperationTypeMerge = 2 //合并，对传递进来的map进行每个子节点的替换
 const val AUICollectionOperationTypeRemove = 3 //删除
 const val AUICollectionOperationTypeClean = 4 //清理对应scene的key/value，相当于在rtm metadata里移除这个collection的所有信息
-const val AUICollectionOperationTypeIncrease = 10 //增加
-const val AUICollectionOperationTypeDecrease = 11 //减少
+const val AUICollectionOperationTypeCalculate = 10 //计算属性，增加/减少
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
@@ -18,8 +17,7 @@ const val AUICollectionOperationTypeDecrease = 11 //减少
     AUICollectionOperationTypeMerge,
     AUICollectionOperationTypeRemove,
     AUICollectionOperationTypeClean,
-    AUICollectionOperationTypeIncrease,
-    AUICollectionOperationTypeDecrease
+    AUICollectionOperationTypeCalculate,
 )
 annotation class AUICollectionOperationType
 
@@ -48,4 +46,20 @@ data class AUICollectionMessage(
     val uniqueId: String?,
     val sceneKey: String?,
     val payload: AUICollectionMessagePayload?
+)
+
+data class AUICollectionCalcValue(
+    val value: Int,
+    val min: Int,
+    val max: Int
+)
+
+data class AUICollectionCalcData(
+    val key: List<String>,
+    val value: AUICollectionCalcValue,
+)
+
+data class AUICollectionError(
+    val code: Int = 0,
+    val reason: String = "",
 )

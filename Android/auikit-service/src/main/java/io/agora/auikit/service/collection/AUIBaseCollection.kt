@@ -44,6 +44,10 @@ abstract class AUIBaseCollection(
         publisherId: String, valueCmd: String?, value: Map<String, Any>
     ) -> AUIException?)? = null
 
+    protected var metadataWillCalculateClosure: ((
+        publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int
+    ) -> AUIException?)? = null
+
     protected var attributesDidChangedClosure: ((
         channelName: String, observeKey: String, value: Any
     ) -> Unit)? = null
@@ -51,6 +55,7 @@ abstract class AUIBaseCollection(
     protected var attributesWillSetClosure: ((
         channelName: String, observeKey: String, valueCmd: String?, value: Any
     ) -> Any)? = null
+
 
     init {
         rtmManager.subscribeMessage(messageRespObserver)
@@ -89,6 +94,9 @@ abstract class AUIBaseCollection(
         attributesWillSetClosure = closure
     }
 
+    override fun subscribeWillCalculate(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int) -> AUIException?)?) {
+        metadataWillCalculateClosure = closure
+    }
 
     protected fun localUid() = AUIRoomContext.shared().currentUserInfo.userId
 
@@ -99,10 +107,7 @@ abstract class AUIBaseCollection(
         AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() ?: false
 
     protected fun sendReceipt(publisherId: String, uniqueId: String, error: AUIException?) {
-        val data = mapOf(
-            Pair("code", error?.code ?: 0),
-            Pair("reason", error?.message ?: "")
-        )
+        val collectionError = AUICollectionError(error?.code ?: 0, error?.message ?: "")
         val message = AUICollectionMessage(
             channelName = channelName,
             messageType = AUICollectionMessageTypeReceipt,
@@ -110,7 +115,7 @@ abstract class AUIBaseCollection(
             sceneKey = observeKey,
             payload = AUICollectionMessagePayload(
                 dataCmd = "",
-                data = data,
+                data = GsonTools.beanToMap(collectionError),
             )
         )
         val jsonStr = GsonTools.beanToString(message) ?: return

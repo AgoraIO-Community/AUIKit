@@ -165,6 +165,66 @@ class AUIMapCollection(
         TODO("Not yet implemented")
     }
 
+    override fun calculateMetaData(
+        valueCmd: String?,
+        key: List<String>,
+        value: Int,
+        min: Int,
+        max: Int,
+        filter: List<Map<String, Any>>?,
+        callback: AUICallback?
+    ) {
+        if (isArbiter()) {
+            rtmCalculateMetaData(
+                localUid(),
+                valueCmd,
+                key,
+                AUICollectionCalcValue(value, min, max),
+                callback
+            )
+            return
+        }
+
+        val uniqueId = UUID.randomUUID().toString()
+        val data = AUICollectionMessage(
+            channelName = channelName,
+            uniqueId = uniqueId,
+            sceneKey = observeKey,
+            payload = AUICollectionMessagePayload(
+                type = AUICollectionOperationTypeMerge,
+                dataCmd = valueCmd,
+                data = GsonTools.beanToMap(
+                    AUICollectionCalcData(
+                        key,
+                        AUICollectionCalcValue(value, max, min)
+                    )
+                )
+            )
+        )
+        val jsonStr = GsonTools.beanToString(data)
+        if (jsonStr == null) {
+            callback?.onResult(AUIException(-1, "calculateMetaData fail"))
+            return
+        }
+        rtmManager.publishAndWaitReceipt(
+            channelName = channelName,
+            userId = arbiterUid(),
+            message = jsonStr,
+            uniqueId = uniqueId
+        ) { error ->
+            if (error != null) {
+                callback?.onResult(
+                    AUIException(
+                        AUIException.ERROR_CODE_RTM,
+                        "setBatchMetadata error >> $error"
+                    )
+                )
+            } else {
+                callback?.onResult(null)
+            }
+        }
+    }
+
     override fun cleanMetaData(callback: AUICallback?) {
         if (isArbiter()) {
             rtmCleanMetaData(callback)
@@ -289,6 +349,61 @@ class AUIMapCollection(
         }
     }
 
+    private fun rtmCalculateMetaData(
+        publisherId: String,
+        valueCmd: String?,
+        key: List<String>,
+        value: AUICollectionCalcValue,
+        callback: AUICallback?
+    ) {
+        val currMap = HashMap(currentMap)
+        val err = metadataWillCalculateClosure?.invoke(
+            publisherId,
+            valueCmd,
+            currMap,
+            key,
+            value.value,
+            value.min,
+            value.max
+        )
+        if (err != null) {
+            callback?.onResult(err)
+            return
+        }
+
+        val map = AUICollectionUtils.calculateMap(
+            currMap,
+            key,
+            value.value,
+            value.min,
+            value.max
+        ) ?: mutableMapOf()
+        val retMap =
+            attributesWillSetClosure?.invoke(channelName, observeKey, valueCmd, map) as? Map<*, *>
+                ?: map
+        val data = GsonTools.beanToString(retMap)
+        if (data == null) {
+            callback?.onResult(AUIException(-1, "rtmCalculateMetaData fail"))
+            return
+        }
+
+        rtmManager.setBatchMetadata(
+            channelName,
+            metadata = mapOf(Pair(observeKey, data)),
+        ) { e ->
+            if (e != null) {
+                callback?.onResult(
+                    AUIException(
+                        AUIException.ERROR_CODE_RTM,
+                        "setBatchMetadata error >> $e"
+                    )
+                )
+            } else {
+                callback?.onResult(null)
+            }
+        }
+    }
+
     private fun rtmCleanMetaData(callback: AUICallback?) {
         rtmManager.cleanBatchMetadata(
             channelName = channelName,
@@ -327,8 +442,11 @@ class AUIMapCollection(
 
         if (messageModel.messageType == AUICollectionMessageTypeReceipt) {
             // receipt message from arbiter
-            val data = messageModel.payload?.data as? Map<*, *>
-            if (data == null) {
+            val collectionError = GsonTools.toBean(
+                GsonTools.beanToString(messageModel.payload?.data),
+                AUICollectionError::class.java
+            )
+            if (collectionError == null) {
                 rtmManager.markReceiptFinished(
                     uniqueId, AUIRtmException(
                         -1, "data is not a map", "receipt message"
@@ -336,8 +454,9 @@ class AUIMapCollection(
                 )
                 return
             }
-            val code = data["code"] as? Int ?: 0
-            val reason = data["reason"] as? String ?: "success"
+
+            val code = collectionError.code
+            val reason = collectionError.reason
             if (code == 0) {
                 // success
                 rtmManager.markReceiptFinished(uniqueId, null)
@@ -389,12 +508,23 @@ class AUIMapCollection(
                 error = AUIException(-1, "map collection remove type unsupported")
             }
 
-            AUICollectionOperationTypeIncrease -> {
-                error = AUIException(-1, "map collection increase type unsupported")
-            }
-
-            AUICollectionOperationTypeDecrease -> {
-                error = AUIException(-1, "map collection decrease type unsupported")
+            AUICollectionOperationTypeCalculate -> {
+                val calcData = GsonTools.toBean(
+                    GsonTools.beanToString(messageModel.payload.data),
+                    AUICollectionCalcData::class.java
+                )
+                if (calcData != null) {
+                    rtmCalculateMetaData(
+                        publisherId,
+                        valueCmd,
+                        calcData.key,
+                        calcData.value
+                    ) {
+                        sendReceipt(publisherId, uniqueId, it)
+                    }
+                } else {
+                    error = AUIException(-1, "payload data is not AUICollectionCalcData")
+                }
             }
         }
 
