@@ -76,4 +76,38 @@ object AUICollectionUtils {
         }
         return false
     }
+
+
+    fun calculateMap(
+        origMap: Map<String, Any>,
+        key: List<String>,
+        value: Int,
+        min: Int,
+        max: Int
+    ): Map<String, Any>? {
+        val retMap = HashMap(origMap)
+        if(key.size > 1){
+            val curKey = key.firstOrNull() ?: ""
+            val subKey = key.subList(1, key.size)
+
+            val subValue = retMap[curKey] as? Map<String, Any> ?: return null
+            val newMap = calculateMap(
+                subValue,
+                subKey,
+                value,
+                min,
+                max
+            ) ?: return null
+            retMap[curKey] = newMap
+            return retMap
+        }
+        val curKey = key.firstOrNull() ?: return null
+        val subValue = retMap[curKey] as? Int ?: return null
+        val curValue = subValue + value
+        if(curValue < min || curValue > max){
+            return null
+        }
+        retMap[curKey] = curValue
+        return retMap
+    }
 }
