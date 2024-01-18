@@ -319,7 +319,7 @@ extension AUIMapCollection {
 extension AUIMapCollection {
     public override func onAttributesDidChanged(channelName: String, key: String, value: Any) {
         guard channelName == self.channelName, key == self.observeKey else {return}
-        guard let map = value as? [String: [String: Any]] else {return}
+        guard let map = value as? [String: Any] else {return}
         self.currentMap = map
     }
 }

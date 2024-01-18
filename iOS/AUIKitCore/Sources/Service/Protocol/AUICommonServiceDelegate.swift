@@ -15,6 +15,9 @@ import Foundation
     /// - Parameter completion: <#completion description#>
     @objc optional func initService(completion:  @escaping  ((NSError?) -> ()))
     
+    /// room setup succss
+    @objc optional func sereviceDidLoad()
+    
     /// clean param if scene deinit
     /// - Parameter completion: <#completion description#>
     @objc optional func deinitService(completion:  @escaping  ((NSError?) -> ()))

@@ -9,7 +9,7 @@
 import Foundation
 import AgoraRtmKit
 
-private let kSeatAttrKry = "micSeat"
+private let kSeatAttrKey = "micSeat"
 
 private enum AUIMicSeatCmd: String {
     case leaveSeatCmd = "leaveSeatCmd"
@@ -36,7 +36,7 @@ private enum AUIMicSeatCmd: String {
     public init(channelName: String, rtmManager: AUIRtmManager) {
         self.rtmManager = rtmManager
         self.channelName = channelName
-        self.mapCollection = AUIMapCollection(channelName: channelName, observeKey: kSeatAttrKry, rtmManager: rtmManager)
+        self.mapCollection = AUIMapCollection(channelName: channelName, observeKey: kSeatAttrKey, rtmManager: rtmManager)
         super.init()
         mapCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
             return self?.metadataWillMerge(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
@@ -186,7 +186,7 @@ extension AUIMicSeatServiceImpl {
     }
     
     private func onAttributesDidChanged(channelName: String, key: String, value: AUIAttributesModel) {
-        if key == kSeatAttrKry {
+        if key == kSeatAttrKey {
             aui_info("recv seat attr did changed \(value)", tag: "AUIMicSeatServiceImpl")
             guard let map = value.getMap() as? [String: [String: Any]] else {return}
             map.values.forEach { element in
@@ -317,7 +317,7 @@ extension AUIMicSeatServiceImpl {
         let data = try! JSONSerialization.data(withJSONObject: seatMap, options: .prettyPrinted)
         let str = String(data: data, encoding: .utf8)!
         var metaData = [String: String]()
-        metaData[kSeatAttrKry] = str
+        metaData[kSeatAttrKey] = str
         rtmManager.setBatchMetadata(channelName: channelName,
                                     lockName: "",
                                     metadata: metaData,
