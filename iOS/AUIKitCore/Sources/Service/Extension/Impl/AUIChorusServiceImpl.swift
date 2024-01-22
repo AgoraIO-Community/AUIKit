@@ -168,8 +168,9 @@ extension AUIChorusServiceImpl {
     }
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())){
+        let filter: [[String: Any]]? = userId.isEmpty ? nil : [["userId": userId]]
         listCollection.removeMetaData(valueCmd: AUIChorusCMd.leaveCmd.rawValue,
-                                      filter: nil,
+                                      filter: filter,
                                       callback: completion)
     }
     
