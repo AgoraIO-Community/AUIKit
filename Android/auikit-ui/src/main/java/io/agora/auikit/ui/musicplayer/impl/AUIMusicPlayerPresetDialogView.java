@@ -23,27 +23,28 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
 
     private int currentId;
 
-    public AUIMusicPlayerPresetDialogView(@NonNull Context context) {
-        this(context, null);
+    private IMusicPlayerPresetActionListener actionListener;
+
+    public AUIMusicPlayerPresetDialogView(@NonNull Context context, List<ControllerEffectInfo> list) {
+        this(context, null, list);
     }
 
-    public AUIMusicPlayerPresetDialogView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    public AUIMusicPlayerPresetDialogView(@NonNull Context context, @Nullable AttributeSet attrs, List<ControllerEffectInfo> list) {
+        this(context, attrs, 0, list);
     }
 
-    public AUIMusicPlayerPresetDialogView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+    public AUIMusicPlayerPresetDialogView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, List<ControllerEffectInfo> list) {
+        this(context, attrs, defStyleAttr, 0, list);
     }
 
-    public AUIMusicPlayerPresetDialogView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AUIMusicPlayerPresetDialogView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, List<ControllerEffectInfo> list) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context);
+        initView(context, list);
     }
 
-    private void initView(@NonNull Context context) {
+    private void initView(@NonNull Context context, List<ControllerEffectInfo> presetList) {
         View.inflate(context, R.layout.aui_musicplayer_preset_dialog_view, this);
         AUIRecyclerView rvAudioPreset = findViewById(R.id.rv_audio_preset);
-        List<ControllerEffectInfo> presetList = buildPresetData();
         mMusicPlayerPresetAdapter = new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @NonNull
             @Override
@@ -65,6 +66,9 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
                 itemView.setOnClickListener(v -> {
                     currentId = effectVoiceInfo.getIndex();
                     mMusicPlayerPresetAdapter.notifyDataSetChanged();
+                    if(actionListener!= null){
+                        actionListener.onVoiceConversionChanged(effectVoiceInfo.getEffectId());
+                    }
                 });
             }
 
@@ -76,6 +80,10 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
         rvAudioPreset.setAdapter(mMusicPlayerPresetAdapter);
     }
 
+    public void setActionListener(IMusicPlayerPresetActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
     private List<ControllerEffectInfo> buildPresetData() {
         List<ControllerEffectInfo> list = new ArrayList<>();
         list.add(new ControllerEffectInfo(0, 0, R.drawable.aui_musicplayer_preset_none, R.string.aui_musicplayer_preset_original));
@@ -84,5 +92,9 @@ public class AUIMusicPlayerPresetDialogView extends FrameLayout {
         list.add(new ControllerEffectInfo(3, 3, R.drawable.aui_musicplayer_preset_uncle, R.string.aui_musicplayer_preset_uncle));
         list.add(new ControllerEffectInfo(4, 4, R.drawable.aui_musicplayer_preset_airy, R.string.aui_musicplayer_preset_airy));
         return list;
+    }
+
+    public interface IMusicPlayerPresetActionListener {
+        void onVoiceConversionChanged(int id);
     }
 }
