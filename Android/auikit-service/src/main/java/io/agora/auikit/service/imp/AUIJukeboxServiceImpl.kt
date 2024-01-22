@@ -54,6 +54,7 @@ class AUIJukeboxServiceImpl constructor(
     override fun deInitService(completion: AUICallback?) {
         super.deInitService(completion)
         listCollection.cleanMetaData(completion)
+        listCollection.release()
     }
 
     override fun registerRespObserver(observer: AUIJukeboxRespObserver?) {

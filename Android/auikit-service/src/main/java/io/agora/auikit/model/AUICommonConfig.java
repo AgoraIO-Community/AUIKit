@@ -14,4 +14,8 @@ public class AUICommonConfig {
     public @NonNull String host = "";
     // 用户信息
     public @NonNull AUIUserThumbnailInfo owner;
+
+    public @NonNull String imAppKey = "";
+    public @NonNull String imClientId = "";
+    public @NonNull String imClientSecret = "";
 }

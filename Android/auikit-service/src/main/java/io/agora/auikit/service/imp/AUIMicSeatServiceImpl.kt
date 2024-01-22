@@ -67,23 +67,9 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun deInitService(completion: AUICallback?) {
-
+        super.deInitService(completion)
+        mapCollection.cleanMetaData(completion)
         mapCollection.release()
-
-        if (roomContext.getArbiter(channelName)?.isArbiter() != true) {
-            return
-        }
-
-        rtmManager.cleanBatchMetadata(
-            channelName,
-            remoteKeys = listOf(kSeatAttrKey)
-        ) { error ->
-            if (error == null) {
-                completion?.onResult(null)
-            } else {
-                completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, "error: $error"))
-            }
-        }
     }
 
     override fun registerRespObserver(observer: IAUIMicSeatService.AUIMicSeatRespObserver?) {

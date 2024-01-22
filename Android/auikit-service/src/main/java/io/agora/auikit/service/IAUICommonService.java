@@ -29,6 +29,10 @@ public interface IAUICommonService<Observer> {
 
     default void cleanUserInfo(@NonNull String userId, @Nullable AUICallback completion) {}
 
+    /**
+     * room setup success
+     */
+    default void serviceDidLoad(){}
 
     /** 获取当前房间上下文
      *

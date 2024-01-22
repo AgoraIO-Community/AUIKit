@@ -47,6 +47,8 @@ class AUIChorusServiceImpl constructor(
         super.deInitService(completion)
 
         listCollection.cleanMetaData(completion)
+        listCollection.release()
+
     }
 
     override fun registerRespObserver(observer: IAUIChorusService.AUIChorusRespObserver?) {
