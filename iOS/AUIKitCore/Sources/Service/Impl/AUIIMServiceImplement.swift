@@ -193,7 +193,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
                 let appKey = data["appKey"] as? String {
                 self.userId = self.currentUser.userId //语聊房房间ID
                 self.chatToken = userToken
-                if let chatId = data["chatId"] as? String {
+                if let chatId = data["chatId"] as? String, !chatId.isEmpty {
                     self.mapCollection.addMetaData(valueCmd: nil, value: [kChatIdKey: chatId], filter: nil) { err in
                     }
                     self.currentRoomId = chatId
