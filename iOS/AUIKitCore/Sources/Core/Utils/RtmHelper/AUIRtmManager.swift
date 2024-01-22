@@ -9,6 +9,8 @@ import Foundation
 //import AgoraRtcKit
 import AgoraRtmKit
 
+private let kReceiptTimeout: TimeInterval = 10.0
+
 /// 对RTM相关操作的封装类
 open class AUIRtmManager: NSObject {
     private var rtmChannelType: AgoraRtmChannelType!
@@ -30,17 +32,20 @@ open class AUIRtmManager: NSObject {
                 receiptTimer = nil
                 return
             }
-            self.receiptTimer = Timer(timeInterval: 1, repeats: true, block: {[weak self] timer in
+            
+            guard self.receiptTimer == nil else { return }
+            
+            self.receiptTimer =
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
                 guard let self = self else {return}
-                for receipt in receiptCallbackMap.values {
-                    if receipt.startDate.timeIntervalSinceNow < -10 {
+                for receipt in self.receiptCallbackMap.values {
+                    if abs(receipt.startDate.timeIntervalSinceNow) > kReceiptTimeout {
                         self.receiptCallbackMap.removeValue(forKey: receipt.uniqueId)
                         receipt.closure?(AUICommonError.noResponse.toNSError())
                     }
                 }
-            })
+            }
             
-            guard self.receiptTimer?.isValid ?? false else {return}
             self.receiptTimer?.fire()
         }
     }
