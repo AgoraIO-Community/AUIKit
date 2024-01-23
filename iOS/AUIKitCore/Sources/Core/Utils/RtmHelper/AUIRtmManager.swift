@@ -399,21 +399,34 @@ extension AUIRtmManager {
     }
     
     public func getMetadata(channelName: String, completion: @escaping (NSError?, [String: String]?)->()) {
+        getMetadata(channelName: channelName) { error, data in
+            var map: [String: String] = [:]
+            data?.getItems().forEach({ item in
+                map[item.key] = item.value
+            })
+            completion(error, map)
+        }
+    }
+    
+    public func getMetadata(channelName: String, completion: @escaping (NSError?, AgoraRtmMetadata?)->()) {
         guard let storage = rtmClient.getStorage() else {
             assert(false, "getMetadata fail")
             return
         }
         let date = Date()
-        storage.getChannelMetadata(channelName: channelName, channelType: rtmChannelType, completion: { resp, error in
+        storage.getChannelMetadata(channelName: channelName, channelType: rtmChannelType) { resp, error in
             aui_benchmark("getChannelMetadata[\(channelName)]", cost: -date.timeIntervalSinceNow)
             aui_info("getMetadata[\(channelName)] finished: \(error?.errorCode.rawValue ?? 0) item count: \(resp?.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
-            var map: [String: String] = [:]
-            resp?.data?.getItems().forEach({ item in
-                map[item.key] = item.value
-            })
-            completion(error?.toNSError(), map)
-        })
+            completion(error?.toNSError(), resp?.data)
+        }
         aui_info("getMetadata", tag: "AUIRtmManager")
+    }
+    
+    public func fetchMetaDataSnapshot(channelName: String, completion: @escaping (NSError?) -> ()) {
+        getMetadata(channelName: channelName) {[weak self] error, data in
+            self?.proxy.processMetaData(channelName: channelName, data: data)
+            completion(error)
+        }
     }
 }
 

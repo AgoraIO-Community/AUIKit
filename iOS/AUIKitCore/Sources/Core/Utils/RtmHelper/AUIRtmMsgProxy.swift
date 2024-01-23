@@ -164,6 +164,38 @@ open class AUIRtmMsgProxy: NSObject {
         }
         value.remove(delegate)
     }
+    
+    func processMetaData(channelName: String, data: AgoraRtmMetadata?) {
+        guard let data = data else { return }
+        
+        var cache = self.attributesCacheAttr[channelName] ?? [:]
+        data.getItems().forEach { item in
+//            aui_info("\(item.key): \(item.value)", tag: "AUIRtmMsgProxy")
+            //判断value和缓存里是否一致，这里用string可能会不准，例如不同终端序列化的时候json obj不同kv的位置不一样会造成生成的json string不同
+            if cache[item.key] == item.value {
+                aui_info("there are no changes of [\(item.key)]", tag: "AUIRtmMsgProxy")
+                return
+            }
+            cache[item.key] = item.value
+            guard let itemData = item.value.data(using: .utf8), let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
+                aui_info("parse itemData fail: \(item.key) \(item.value)", tag: "AUIRtmMsgProxy")
+                return
+            }
+            let delegateKey = "\(channelName)__\(item.key)"
+//            aui_info("itemValue: \(item.value)")
+            guard let value = self.attributesDelegates[delegateKey] else { return }
+            for element in value.allObjects {
+                element.onAttributesDidChanged(channelName: channelName, key: item.key, value: itemValue)
+            }
+        }
+        self.attributesCacheAttr[channelName] = cache
+        if data.getItems().count > 0 {
+            return
+        }
+        for element in errorDelegates.allObjects {
+            element.onMsgRecvEmpty?(channelName: channelName)
+        }
+    }
 }
 
 //MARK: AgoraRtmClientDelegate
@@ -202,35 +234,9 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         
         aui_info("didReceiveStorageEvent event: [\(event.target)] channelType: [\(event.channelType.rawValue)] storageType: [\(event.eventType.rawValue)] =======", tag: "AUIRtmMsgProxy")
         //key使用channelType__eventType，保证message channel/stream channel, user storage event/channel storage event共存
-        let cacheKey = event.target//"\(event.channelType.rawValue)__\(event.eventType.rawValue)_\(event.target)"
-        var cache = self.attributesCacheAttr[cacheKey] ?? [:]
-        event.data.getItems().forEach { item in
-//            aui_info("\(item.key): \(item.value)", tag: "AUIRtmMsgProxy")
-            //判断value和缓存里是否一致，这里用string可能会不准，例如不同终端序列化的时候json obj不同kv的位置不一样会造成生成的json string不同
-            if cache[item.key] == item.value {
-                aui_info("there are no changes of [\(item.key)]", tag: "AUIRtmMsgProxy")
-                return
-            }
-            cache[item.key] = item.value
-            guard let itemData = item.value.data(using: .utf8), let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
-                aui_info("parse itemData fail: \(item.key) \(item.value)", tag: "AUIRtmMsgProxy")
-                return
-            }
-            let delegateKey = "\(event.target)__\(item.key)"
-//            aui_info("itemValue: \(item.value)")
-            guard let value = self.attributesDelegates[delegateKey] else { return }
-            for element in value.allObjects {
-                element.onAttributesDidChanged(channelName: event.target, key: item.key, value: itemValue)
-            }
-        }
-        self.attributesCacheAttr[cacheKey] = cache
-        if event.data.getItems().count > 0 {
-            return
-        }
-        for element in errorDelegates.allObjects {
-            element.onMsgRecvEmpty?(channelName: event.target)
-        }
-        aui_info("storage event[\(event.target)] ========", tag: "AUIRtmMsgProxy")
+        let channelName = event.target
+        processMetaData(channelName: channelName, data: event.data)
+        aui_info("storage event[\(channelName)] ========", tag: "AUIRtmMsgProxy")
     }
     
     public func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
