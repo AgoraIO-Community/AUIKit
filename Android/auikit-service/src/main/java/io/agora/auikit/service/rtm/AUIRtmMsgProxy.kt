@@ -1,5 +1,6 @@
 package io.agora.auikit.service.rtm
 
+import android.text.TextUtils
 import android.util.Log
 import io.agora.rtm.LockDetail
 import io.agora.rtm.LockEvent
@@ -267,8 +268,11 @@ class AUIRtmMsgProxy : RtmEventListener {
         }
 
         addLockDetails.forEach { lockDetail ->
-            lockRespObservers.forEach { observer ->
-                observer.onReceiveLock(event.channelName, lockDetail.lockName, lockDetail.lockOwner)
+            val lockOwner = lockDetail.lockOwner
+            if (!TextUtils.isEmpty(lockOwner)) {
+                lockRespObservers.forEach { observer ->
+                    observer.onReceiveLock(event.channelName, lockDetail.lockName, lockOwner)
+                }
             }
         }
         removeLockDetails.forEach { lockDetail ->

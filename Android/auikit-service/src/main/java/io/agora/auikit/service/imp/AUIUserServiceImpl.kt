@@ -30,6 +30,11 @@ class AUIUserServiceImpl constructor(
 
     override fun registerRespObserver(observer: IAUIUserService.AUIUserRespObserver?) {
         observableHelper.subscribeEvent(observer)
+        if(mUserList.isNotEmpty()){
+            this.observableHelper.notifyEventHandlers {
+                it.onRoomUserSnapshot(channelName, mUserList)
+            }
+        }
     }
 
     override fun unRegisterRespObserver(observer: IAUIUserService.AUIUserRespObserver?) {

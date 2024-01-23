@@ -736,7 +736,7 @@ class AUIRtmManager constructor(
         userId: String,
         message: String,
         uniqueId: String,
-        timeout: Long = 2000,
+        timeout: Long = 1000,
         completion: (AUIRtmException?) -> Unit
     ) {
         publish(channelName, userId, message) { error ->

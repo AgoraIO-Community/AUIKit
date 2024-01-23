@@ -1,5 +1,6 @@
 package io.agora.auikit.ui.musicplayer;
 
+import java.util.List;
 import java.util.Map;
 
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerActionListener;
@@ -10,6 +11,8 @@ public interface IMusicPlayerView {
     void setMusicPlayerActionDelegate(ActionDelegate actionDelegate);
 
     void setEffectProperties(Map<Integer,Integer> effectProperties);
+
+    void setVoiceConversionList(List<ControllerEffectInfo> list);
 
     interface ActionDelegate {
         void onClickJoinChorus();
@@ -22,5 +25,6 @@ public interface IMusicPlayerView {
         void onMusicVolume(int volume);
         void onMusicPitch(int pitch);
         void onAudioEffect(int effectId);
+        void onVoiceConversion(int voiceId);
     }
 }

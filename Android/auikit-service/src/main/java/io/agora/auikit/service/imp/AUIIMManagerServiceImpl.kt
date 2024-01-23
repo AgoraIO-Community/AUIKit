@@ -81,6 +81,7 @@ class AUIIMManagerServiceImpl constructor(
             AUILogger.logger().d(message = "loginAndJoinChatRoom >> chatRoomId is empty")
             return
         }
+        chatManager.setChatRoom(chatRoomId)
         login { loginError ->
             if (loginError != null) {
                 AUILogger.logger().e(message = "loginAndJoinChatRoom >> IM login failed! -- $loginError")
@@ -232,8 +233,10 @@ class AUIIMManagerServiceImpl constructor(
                     return
                 }
                 resp.chatId?.let {
-                    mapCollection.addMetaData(null, mapOf(Pair(kChatIdKey, it)), null) {}
-                    chatRoomId = it
+                    if (it.isNotEmpty()) {
+                        mapCollection.addMetaData(null, mapOf(Pair(kChatIdKey, it)), null) {}
+                        chatRoomId = it
+                    }
                 }
 
                 chatUserId = roomContext.currentUserInfo.userId ?: ""
@@ -276,7 +279,6 @@ class AUIIMManagerServiceImpl constructor(
         if (key == kChatAttrKey) {
             val attributes = value.getMap()
             chatRoomId = attributes?.get(kChatIdKey) as? String ?: ""
-
             if(!roomContext.isRoomOwner(channelName)){
                 loginAndJoinChatRoom()
             }

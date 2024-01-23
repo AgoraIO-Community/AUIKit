@@ -11,6 +11,7 @@ import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.collection.AUIAttributesModel
 import io.agora.auikit.service.collection.AUIMapCollection
 import io.agora.auikit.service.rtm.AUIRtmManager
+import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
 
@@ -58,6 +59,7 @@ class AUIMicSeatServiceImpl(
             }
             seatMap.put(i.toString(), seat)
         }
+        AUILogger.logger().d("AUIMicSeatServiceImp", "initService >> currentUid=${roomContext.currentUserInfo.userId} arbiterUid=${roomContext.getArbiter(channelName)?.lockOwnerId()}")
         mapCollection.updateMetaData(
             AUIMicSeatCmd.initSeatCmd.name,
             seatMap,
@@ -149,6 +151,10 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun kickSeat(seatIndex: Int, callback: AUICallback?) {
+        if (!micSeats.containsKey(seatIndex)) {
+            callback?.onResult(AUIException(-1, "The $seatIndex seat is not exist."))
+            return
+        }
         mapCollection.mergeMetaData(
             valueCmd = AUIMicSeatCmd.kickSeatCmd.name,
             value = mapOf(
@@ -172,6 +178,10 @@ class AUIMicSeatServiceImpl(
 
 
     override fun muteAudioSeat(seatIndex: Int, isMute: Boolean, callback: AUICallback?) {
+        if (!micSeats.containsKey(seatIndex)) {
+            callback?.onResult(AUIException(-1, "The $seatIndex seat is not exist."))
+            return
+        }
         mapCollection.mergeMetaData(
             valueCmd = AUIMicSeatCmd.muteAudioCmd.name,
             value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("isMuteAudio", isMute)))),
@@ -185,6 +195,10 @@ class AUIMicSeatServiceImpl(
     }
 
     override fun closeSeat(seatIndex: Int, isClose: Boolean, callback: AUICallback?) {
+        if (!micSeats.containsKey(seatIndex)) {
+            callback?.onResult(AUIException(-1, "The $seatIndex seat is not exist."))
+            return
+        }
         val micSeat = micSeats[seatIndex]
 
         var status = AUIMicSeatStatus.idle
@@ -289,7 +303,7 @@ class AUIMicSeatServiceImpl(
         val seatIndex = seatInfoPair.first.toInt()
         val seatInfoMap = seatInfoPair.second as? Map<*, *>
         var userId = (seatInfoMap?.get("owner") as? Map<*, *>)?.get("userId") as? String
-        when(valueCmd){
+        when (valueCmd) {
             AUIMicSeatCmd.enterSeatCmd.name -> {
                 if (micSeats.values.any { it.user?.userId == userId }) {
                     return AUIException(
@@ -306,28 +320,34 @@ class AUIMicSeatServiceImpl(
                     )
                 }
             }
+
             AUIMicSeatCmd.leaveSeatCmd.name -> {
-                if(seatIndex == 0){
+                if (seatIndex == 0) {
                     return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
                 }
-                if(micSeats[seatIndex]?.user?.userId != publisherId || roomContext.isRoomOwner(channelName, publisherId)){
+                if (micSeats[seatIndex]?.user?.userId != publisherId || roomContext.isRoomOwner(
+                        channelName,
+                        publisherId
+                    )
+                ) {
                     return AUIException(AUIException.ERROR_CODE_SEAT_NOT_ENTER, "")
                 }
                 userId = micSeats[seatIndex]?.user?.userId ?: ""
                 val metadata = mutableMapOf<String, String>()
-                var error : AUIException? = null
+                var error: AUIException? = null
                 observableHelper.notifyEventHandlers {
                     error = it.onSeatWillLeave(userId, metadata)?.let { return@notifyEventHandlers }
                 }
                 return error
             }
+
             AUIMicSeatCmd.kickSeatCmd.name -> {
-                if(seatIndex == 0){
+                if (seatIndex == 0) {
                     return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
                 }
                 userId = micSeats[seatIndex]?.user?.userId ?: ""
                 val metadata = mutableMapOf<String, String>()
-                var error : AUIException? = null
+                var error: AUIException? = null
                 observableHelper.notifyEventHandlers {
                     error = it.onSeatWillLeave(userId, metadata)?.let { return@notifyEventHandlers }
                 }

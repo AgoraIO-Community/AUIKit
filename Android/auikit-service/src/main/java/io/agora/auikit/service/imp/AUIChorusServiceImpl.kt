@@ -81,7 +81,7 @@ class AUIChorusServiceImpl constructor(
         listCollection.addMetaData(
             AUIChorusCmd.joinChorusCmd.name,
             mapOf(
-                "songCode" to (songCode ?: ""),
+                "chorusSongNo" to (songCode ?: ""),
                 "userId" to (userId ?: "")
             ),
             listOf(mapOf("userId" to (userId ?: ""))),
@@ -113,21 +113,16 @@ class AUIChorusServiceImpl constructor(
 
     override fun cleanUserInfo(userId: String, completion: AUICallback?) {
         super.cleanUserInfo(userId, completion)
-        val userList = chorusList.filter { it.userId != userId }
-        if (userList.size != chorusList.size) {
-            val metaData = mutableMapOf<String, String>()
-            metaData[kChorusKey] = GsonTools.beanToString(userId) ?: ""
-            rtmManager.setBatchMetadata(
-                channelName,
-                metadata = metaData
-            ) { error ->
-                if (error != null) {
-                    completion?.onResult(AUIException(AUIException.ERROR_CODE_RTM, ""))
-                } else {
-                    completion?.onResult(null)
-                }
-            }
+        var filter : List<Map<String, Any>> ? = null
+        if(userId.isNotEmpty()){
+            filter = listOf(mapOf("userId" to userId))
         }
+
+        listCollection.removeMetaData(
+            AUIChorusCmd.leaveChorusCmd.name,
+            filter = filter,
+            completion
+        )
     }
 
     private fun onAttributeChanged(channelName: String, key: String, value: AUIAttributesModel) {
