@@ -113,9 +113,14 @@ class AUIChorusServiceImpl constructor(
 
     override fun cleanUserInfo(userId: String, completion: AUICallback?) {
         super.cleanUserInfo(userId, completion)
+        var filter : List<Map<String, Any>> ? = null
+        if(userId.isNotEmpty()){
+            filter = listOf(mapOf("userId" to userId))
+        }
+
         listCollection.removeMetaData(
             AUIChorusCmd.leaveChorusCmd.name,
-            filter =listOf(mapOf("userId" to userId)),
+            filter = filter,
             completion
         )
     }
