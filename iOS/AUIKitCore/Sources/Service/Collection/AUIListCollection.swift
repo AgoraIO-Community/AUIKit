@@ -24,7 +24,7 @@ extension AUIListCollection {
                                 filter: [[String: Any]]?,
                                 callback: ((NSError?)->())?) {
         if let _ = getItemIndexes(array: currentList, filter: filter) {
-            callback?(NSError.auiError("rtmAddMetaData fail, the result was found in the filter: '\(filter ?? [])'"))
+            callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmAddMetaData: '\(filter ?? [])'"))
             return
         }
         if let err = self.metadataWillAddClosure?(publisherId, valueCmd, value) {
@@ -41,7 +41,7 @@ extension AUIListCollection {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
-            callback?(NSError.auiError("rtmAddMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -61,7 +61,7 @@ extension AUIListCollection {
                                 filter: [[String: Any]]?,
                                 callback: ((NSError?)->())?) {
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmSetMetaData fail, the result was not found in the filter: '\(filter ?? [])'"))
+            callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmSetMetaData: '\(filter ?? [])'"))
             return
         }
         var list = currentList
@@ -87,7 +87,7 @@ extension AUIListCollection {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -107,7 +107,7 @@ extension AUIListCollection {
                                   filter: [[String: Any]]?,
                                   callback: ((NSError?)->())?) {
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmMergeMetaData fail, the result was not found in the filter: '\(filter ?? [])'"))
+            callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmMergeMetaData: '\(filter ?? [])'"))
             return
         }
         
@@ -131,7 +131,7 @@ extension AUIListCollection {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -150,7 +150,7 @@ extension AUIListCollection {
                                    filter: [[String: Any]]?,
                                    callback: ((NSError?)->())?) {
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail, the result was not found in the filter: '\(filter ?? [])'"))
+            callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmRemoveMetaData: '\(filter ?? [])'"))
             return
         }
         
@@ -172,7 +172,7 @@ extension AUIListCollection {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
-            callback?(NSError.auiError("rtmRemoveMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -195,7 +195,7 @@ extension AUIListCollection {
         //TODO: will calculate?
         
         guard let itemIndexes = getItemIndexes(array: currentList, filter: filter) else {
-            callback?(NSError.auiError("rtmCalculateMetaData fail, the result was not found in the filter"))
+            callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmCalculateMetaData: '\(filter ?? [])'"))
             return
         }
         
@@ -219,7 +219,7 @@ extension AUIListCollection {
                                               value: value.value,
                                               min: value.min,
                                               max: value.max) else {
-                callback?(NSError.auiError("rtmCalculateMetaData fail! calculate meta data return nil"))
+                callback?(AUICollectionOperationError.calculateMapFail.toNSError())
                 return
             }
             list[itemIdx] = tempItem
@@ -232,7 +232,7 @@ extension AUIListCollection {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
-            callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         aui_collection_log("rtmCalculateMetaData valueCmd: \(valueCmd ?? "") key: \(key), value: \(value)")
@@ -283,7 +283,7 @@ extension AUIListCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("updateMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -320,7 +320,7 @@ extension AUIListCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("mergeMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -357,7 +357,7 @@ extension AUIListCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("addMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -393,7 +393,7 @@ extension AUIListCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("removeMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         
@@ -437,7 +437,7 @@ extension AUIListCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("updateMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
@@ -462,7 +462,7 @@ extension AUIListCollection {
                                            payload: payload)
         
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("removeMetaData fail"))
+            callback?(AUICollectionOperationError.removeMetaDataFail.toNSError())
             return
         }
         let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
@@ -502,7 +502,7 @@ extension AUIListCollection {
                 let error: AUICollectionError? = decodeModel(data)
                 let code = error?.code ?? 0
                 let reason = error?.reason ?? "success"
-                callback(code == 0 ? nil : NSError.auiError(reason))
+                callback(code == 0 ? nil : AUICollectionOperationError.recvErrorReceipt.toNSError("code: \(code), reason: \(reason)"))
             }
             return
         }
@@ -510,7 +510,7 @@ extension AUIListCollection {
         guard let updateType = collectionMessage.payload.type else {
             sendReceipt(publisher: publisher,
                         uniqueId: uniqueId,
-                        error: NSError.auiError("updateType not found"))
+                        error: AUICollectionOperationError.updateTypeNotFound.toNSError())
             return
         }
         
@@ -550,7 +550,7 @@ extension AUIListCollection {
                 }
                 return
             }
-            err = NSError.auiError("payload is not a map")
+            err = AUICollectionOperationError.invalidPayloadType.toNSError()
         case .remove:
             rtmRemoveMetaData(publisherId: publisher, 
                               valueCmd: valueCmd,
@@ -579,7 +579,7 @@ extension AUIListCollection {
                 }
                 return
             }
-            err = NSError.auiError("payload is not a map")
+            err = AUICollectionOperationError.invalidPayloadType.toNSError()
         }
         
         guard let err = err else {return}

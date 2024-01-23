@@ -39,7 +39,7 @@ extension AUIMapCollection {
             map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
-            callback?(NSError.auiError("rtmSetMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         aui_collection_log("rtmSetMetaData valueCmd: \(valueCmd ?? "") value: \(value)")
@@ -70,7 +70,7 @@ extension AUIMapCollection {
             map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
-            callback?(NSError.auiError("rtmSetMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         aui_collection_log("rtmMergeMetaData valueCmd: \(valueCmd ?? "") value: \(value)")
@@ -114,7 +114,7 @@ extension AUIMapCollection {
             map = attrMap
         }
         guard let map = map, let value = encodeToJsonStr(map) else {
-            callback?(NSError.auiError("rtmCalculateMetaData fail! map encode fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         aui_collection_log("rtmCalculateMetaData valueCmd: \(valueCmd ?? "") key: \(key), value: \(value)")
@@ -170,7 +170,7 @@ extension AUIMapCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("updateMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
@@ -210,7 +210,7 @@ extension AUIMapCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("updateMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
@@ -242,7 +242,7 @@ extension AUIMapCollection {
     public override func removeMetaData(valueCmd: String?,
                                         filter: [[String: Any]]?,
                                         callback: ((NSError?)->())?) {
-        callback?(NSError.auiError("unsupport method"))
+        callback?(AUICollectionOperationError.unsupportedAction.toNSError("map removeMetaData fail"))
     }
     
     public override func calculateMetaData(valueCmd: String?,
@@ -275,7 +275,7 @@ extension AUIMapCollection {
                                            payload: payload)
 
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("updateMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
@@ -302,7 +302,7 @@ extension AUIMapCollection {
                                            payload: payload)
         
         guard let jsonStr = encodeModelToJsonStr(message) else {
-            callback?(NSError.auiError("removeMetaData fail"))
+            callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
         let userId = AUIRoomContext.shared.getArbiter(channelName: channelName)?.lockOwnerId ?? ""
@@ -343,7 +343,7 @@ extension AUIMapCollection {
                 let error: AUICollectionError? = decodeModel(data)
                 let code = error?.code ?? 0
                 let reason = error?.reason ?? "success"
-                callback(code == 0 ? nil : NSError.auiError(reason))
+                callback(code == 0 ? nil : AUICollectionOperationError.recvErrorReceipt.toNSError("code: \(code), reason: \(reason)"))
             }
             return
         }
@@ -351,7 +351,7 @@ extension AUIMapCollection {
         guard let updateType = collectionMessage.payload.type else {
             sendReceipt(publisher: publisher,
                         uniqueId: uniqueId,
-                        error: NSError.auiError("updateType not found"))
+                        error: AUICollectionOperationError.updateTypeNotFound.toNSError())
             return
         }
         
@@ -379,7 +379,7 @@ extension AUIMapCollection {
                 }
                 return
             }
-            err = NSError.auiError("payload is not a map")
+            err = AUICollectionOperationError.invalidPayloadType.toNSError()
         case .clean:
             rtmCleanMetaData { [weak self] error in
                 self?.sendReceipt(publisher: publisher,
@@ -387,7 +387,7 @@ extension AUIMapCollection {
                                   error: error)
             }
         case .remove:
-            err = NSError.auiError("map collection remove type unsupported")
+            err = AUICollectionOperationError.unsupportedAction.toNSError("map remove")
             break
         case .calculate:
             if let value = collectionMessage.payload.data?.toJsonObject() as? [String : Any],
@@ -402,7 +402,7 @@ extension AUIMapCollection {
                 }
                 return
             }
-            err = NSError.auiError("payload is not a map")
+            err = AUICollectionOperationError.invalidPayloadType.toNSError()
         }
         
         guard let err = err else {return}
