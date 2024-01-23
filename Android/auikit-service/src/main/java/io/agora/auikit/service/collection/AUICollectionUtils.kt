@@ -63,7 +63,7 @@ object AUICollectionUtils {
 
     private fun isMatchFilter(key:String, itemValue: Map<String, Any>, filterValue: Any?): Boolean {
         val valueV = itemValue[key]
-        if(valueV == filterValue){
+        if(valueV == filterValue || filterValue == null || (filterValue as? String)?.isEmpty() == true){
             return true
         }
 
