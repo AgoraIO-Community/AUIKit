@@ -11,6 +11,7 @@ import io.agora.auikit.service.callback.AUIChooseSongListCallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIMusicListCallback
 import io.agora.auikit.service.collection.AUIAttributesModel
+import io.agora.auikit.service.collection.AUICollectionException
 import io.agora.auikit.service.collection.AUIListCollection
 import io.agora.auikit.service.ktv.KTVApi
 import io.agora.auikit.service.rtm.AUIRtmManager
@@ -53,7 +54,14 @@ class AUIJukeboxServiceImpl constructor(
 
     override fun deInitService(completion: AUICallback?) {
         super.deInitService(completion)
-        listCollection.cleanMetaData(completion)
+        listCollection.cleanMetaData {
+            completion?.onResult(
+                if (it != null) AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                ) else null
+            )
+        }
         listCollection.release()
     }
 
@@ -140,7 +148,10 @@ class AUIJukeboxServiceImpl constructor(
         Log.d(TAG, "getAllChooseSongList call")
         listCollection.getMetaData { error, value ->
             if (error != null) {
-                completion?.onResult(error, null)
+                completion?.onResult(
+                    AUIException(AUIException.ERROR_CODE_RTM_COLLECTION, "$error"),
+                    null
+                )
                 return@getMetaData
             }
             val chooseMusics: List<AUIChooseMusicModel> =
@@ -171,17 +182,29 @@ class AUIJukeboxServiceImpl constructor(
             AUIJukeboxCmd.chooseSongCmd.name,
             metadata,
             listOf(mapOf("songCode" to song.songCode)),
-            completion
-        )
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     // 移除一首自己点的歌
     override fun removeSong(songCode: String, completion: AUICallback?) {
         listCollection.removeMetaData(
             AUIJukeboxCmd.removeSongCmd.name,
-            listOf(mapOf("songCode" to songCode)),
-            completion
-        )
+            listOf(mapOf("songCode" to songCode))
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     // 置顶歌曲
@@ -189,9 +212,15 @@ class AUIJukeboxServiceImpl constructor(
         listCollection.mergeMetaData(
             AUIJukeboxCmd.pingSongCmd.name,
             mapOf("pinAt" to System.currentTimeMillis()),
-            listOf(mapOf("songCode" to songCode, "userId" to roomContext.currentUserInfo.userId)),
-            completion
-        )
+            listOf(mapOf("songCode" to songCode, "userId" to roomContext.currentUserInfo.userId))
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     // 更新播放状态
@@ -204,18 +233,30 @@ class AUIJukeboxServiceImpl constructor(
         listCollection.mergeMetaData(
             AUIJukeboxCmd.updatePlayStatusCmd.name,
             mapOf("status" to playStatus),
-            listOf(mapOf("songCode" to songCode, "userId" to roomContext.currentUserInfo.userId)),
-            completion
-        )
+            listOf(mapOf("songCode" to songCode, "userId" to roomContext.currentUserInfo.userId))
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun cleanUserInfo(userId: String, completion: AUICallback?) {
         super.cleanUserInfo(userId, completion)
         listCollection.removeMetaData(
             AUIJukeboxCmd.removeSongCmd.name,
-            listOf(mapOf("owner" to mapOf("userId" to userId))),
-            completion
-        )
+            listOf(mapOf("owner" to mapOf("userId" to userId)))
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
 
@@ -235,23 +276,30 @@ class AUIJukeboxServiceImpl constructor(
             val createAt1 = o1["createAt"] as? Long ?: 0
             val createAt2 = o2["createAt"] as? Long ?: 0
             if (pinAt1 < 1 && pinAt2 < 1) {
-                return@Comparator if((createAt1 - createAt2) > 0) 1 else -1
+                return@Comparator if ((createAt1 - createAt2) > 0) 1 else -1
             }
 
-            return@Comparator if((pinAt2 - pinAt1) > 0) 1 else -1
+            return@Comparator if ((pinAt2 - pinAt1) > 0) 1 else -1
         })
 
         return sortSongList
     }
 
 
-    private fun onAttributesChanged(channelName: String, observeKey: String, value: AUIAttributesModel) {
+    private fun onAttributesChanged(
+        channelName: String,
+        observeKey: String,
+        value: AUIAttributesModel
+    ) {
         if (observeKey != kChooseSongKey) {
             return
         }
         Log.d(TAG, "channelName:$channelName,key:$observeKey,value:$value")
         val changedSongs: List<AUIChooseMusicModel> =
-            GsonTools.toList(GsonTools.beanToString(value.getList()), AUIChooseMusicModel::class.java)
+            GsonTools.toList(
+                GsonTools.beanToString(value.getList()),
+                AUIChooseMusicModel::class.java
+            )
                 ?: mutableListOf()
         this.chooseMusicList.clear()
         this.chooseMusicList.addAll(changedSongs)
@@ -277,7 +325,7 @@ class AUIJukeboxServiceImpl constructor(
         publisherId: String,
         valueCmd: String?,
         value: Map<String, Any>
-    ): AUIException? {
+    ): AUICollectionException? {
 
         val owner = value["owner"] as? Map<*, *>
         val userId = owner?.get("userId")
@@ -290,7 +338,9 @@ class AUIJukeboxServiceImpl constructor(
             observableHelper.notifyEventHandlers {
                 error = it.onSongWillAdd(publisherId, metaData)?.let { return@notifyEventHandlers }
             }
-            return error
+            return if (error == null) null else AUICollectionException.ErrorCode.unknown.toException(
+                "$error"
+            )
         }
         return null
     }
@@ -299,14 +349,14 @@ class AUIJukeboxServiceImpl constructor(
         publisherId: String,
         valueCmd: String?,
         value: Map<String, Any>
-    ): AUIException? {
+    ): AUICollectionException? {
 
         val owner = value["owner"] as? Map<*, *>
         val userId = owner?.get("userId") as? String ?: ""
         val songCode = value["songCode"] as? String
         if (valueCmd == AUIJukeboxCmd.removeSongCmd.name) {
             if (publisherId != userId && !roomContext.isRoomOwner(channelName, publisherId)) {
-                return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
+                return AUICollectionException.ErrorCode.unknown.toException("ERROR_CODE_PERMISSION_LEAK")
             }
             val metaData = mutableMapOf<String, String>()
             value.entries.forEach {
@@ -316,7 +366,9 @@ class AUIJukeboxServiceImpl constructor(
             observableHelper.notifyEventHandlers {
                 error = it.onSongWillRemove(userId, metaData)?.let { return@notifyEventHandlers }
             }
-            return error
+            return if (error == null) null else AUICollectionException.ErrorCode.unknown.toException(
+                "$error"
+            )
         }
         return null
     }
@@ -326,7 +378,7 @@ class AUIJukeboxServiceImpl constructor(
         valueCmd: String?,
         newValue: Map<String, Any>,
         oldValue: Map<String, Any>
-    ): AUIException? {
+    ): AUICollectionException? {
         return null
     }
 }

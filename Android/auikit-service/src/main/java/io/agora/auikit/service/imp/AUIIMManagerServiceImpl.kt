@@ -59,7 +59,14 @@ class AUIIMManagerServiceImpl constructor(
     override fun deInitService(completion: AUICallback?) {
         super.deInitService(completion)
 
-        mapCollection.cleanMetaData(completion)
+        mapCollection.cleanMetaData {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    " $it"
+                )
+            )
+        }
         mapCollection.release()
     }
 
@@ -84,7 +91,8 @@ class AUIIMManagerServiceImpl constructor(
         chatManager.setChatRoom(chatRoomId)
         login { loginError ->
             if (loginError != null) {
-                AUILogger.logger().e(message = "loginAndJoinChatRoom >> IM login failed! -- $loginError")
+                AUILogger.logger()
+                    .e(message = "loginAndJoinChatRoom >> IM login failed! -- $loginError")
                 return@login
             }
             val userName = chatManager.userName
@@ -257,8 +265,9 @@ class AUIIMManagerServiceImpl constructor(
     }
 
     private fun login(completion: (AUIException?) -> Unit) {
-        if(chatUserId.isEmpty() || chatUserToken.isEmpty()){
-            AUILogger.logger().d(message = "login >> parameters are empty. chatUserId=$chatUserId, chatUserToken=$chatUserToken")
+        if (chatUserId.isEmpty() || chatUserToken.isEmpty()) {
+            AUILogger.logger()
+                .d(message = "login >> parameters are empty. chatUserId=$chatUserId, chatUserToken=$chatUserToken")
             return
         }
         chatManager.userName = chatUserId
@@ -279,7 +288,7 @@ class AUIIMManagerServiceImpl constructor(
         if (key == kChatAttrKey) {
             val attributes = value.getMap()
             chatRoomId = attributes?.get(kChatIdKey) as? String ?: ""
-            if(!roomContext.isRoomOwner(channelName)){
+            if (!roomContext.isRoomOwner(channelName)) {
                 loginAndJoinChatRoom()
             }
         }

@@ -285,6 +285,13 @@ class AUIRtmManager constructor(
         }
     }
 
+    fun fetchMetaDataSnapshot(channelName: String, completion: (AUIRtmException?) -> Unit){
+        getMetadata(channelName){ error, metadata ->
+            proxy.processMetaData(channelName, metadata)
+            completion.invoke(error)
+        }
+    }
+
     fun cleanMetadata(
         channelName: String,
         channelType: RtmChannelType = RtmChannelType.MESSAGE,
@@ -407,7 +414,7 @@ class AUIRtmManager constructor(
     fun getMetadata(
         channelName: String,
         channelType: RtmChannelType = RtmChannelType.MESSAGE,
-        completion: (AUIRtmException?, Map<String, String>?) -> Unit
+        completion: (AUIRtmException?, io.agora.rtm.Metadata?) -> Unit
     ) {
         val storage = rtmClient.storage
         storage.getChannelMetadata(
@@ -415,12 +422,7 @@ class AUIRtmManager constructor(
             channelType,
             object : ResultCallback<io.agora.rtm.Metadata> {
                 override fun onSuccess(responseInfo: io.agora.rtm.Metadata?) {
-                    responseInfo ?: return
-                    val map = mutableMapOf<String, String>()
-                    responseInfo.metadataItems.forEach { item ->
-                        map[item.key] = item.value
-                    }
-                    completion.invoke(null, map)
+                    completion.invoke(null, responseInfo)
                 }
 
                 override fun onFailure(errorInfo: ErrorInfo?) {

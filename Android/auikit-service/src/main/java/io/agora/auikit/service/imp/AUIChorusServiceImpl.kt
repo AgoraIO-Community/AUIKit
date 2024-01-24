@@ -20,8 +20,7 @@ import io.agora.auikit.utils.ObservableHelper
 const val kChorusKey = "chorus"
 
 enum class AUIChorusCmd {
-    joinChorusCmd,
-    leaveChorusCmd
+    joinChorusCmd, leaveChorusCmd
 }
 
 class AUIChorusServiceImpl constructor(
@@ -39,14 +38,20 @@ class AUIChorusServiceImpl constructor(
 
 
     init {
-        listCollection.subscribeWillAdd(this::metadataWillAdd)
         listCollection.subscribeAttributesDidChanged(this::onAttributeChanged)
     }
 
     override fun deInitService(completion: AUICallback?) {
         super.deInitService(completion)
 
-        listCollection.cleanMetaData(completion)
+        listCollection.cleanMetaData {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
         listCollection.release()
 
     }
@@ -64,7 +69,10 @@ class AUIChorusServiceImpl constructor(
     override fun getChoristersList(callback: AUIChoristerListCallback?) {
         listCollection.getMetaData { error, value ->
             if (error != null) {
-                callback?.onResult(error, null)
+                callback?.onResult(
+                    AUIException(AUIException.ERROR_CODE_RTM_COLLECTION, "$error"),
+                    null
+                )
                 return@getMetaData
             }
 
@@ -79,28 +87,35 @@ class AUIChorusServiceImpl constructor(
 
     override fun joinChorus(songCode: String?, userId: String?, callback: AUICallback?) {
         listCollection.addMetaData(
-            AUIChorusCmd.joinChorusCmd.name,
-            mapOf(
-                "chorusSongNo" to (songCode ?: ""),
-                "userId" to (userId ?: "")
-            ),
-            listOf(mapOf("userId" to (userId ?: ""))),
-            callback
-        )
+            AUIChorusCmd.joinChorusCmd.name, mapOf(
+                "chorusSongNo" to (songCode ?: ""), "userId" to (userId ?: "")
+            ), listOf(mapOf("userId" to (userId ?: "")))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun leaveChorus(songCode: String?, userId: String?, callback: AUICallback?) {
         listCollection.removeMetaData(
-            AUIChorusCmd.leaveChorusCmd.name,
-            listOf(mapOf("userId" to (userId ?: ""))),
-            callback
-        )
+            AUIChorusCmd.leaveChorusCmd.name, listOf(mapOf("userId" to (userId ?: "")))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun switchSingerRole(newRole: Int, callback: AUISwitchSingerRoleCallback?) {
         ktvApi.switchSingerRole(KTVSingRole.values().firstOrNull { it.value == newRole }
-            ?: KTVSingRole.Audience, object :
-            ISwitchRoleStateListener {
+            ?: KTVSingRole.Audience, object : ISwitchRoleStateListener {
             override fun onSwitchRoleSuccess() {
                 callback?.onSwitchRoleSuccess()
             }
@@ -113,16 +128,20 @@ class AUIChorusServiceImpl constructor(
 
     override fun cleanUserInfo(userId: String, completion: AUICallback?) {
         super.cleanUserInfo(userId, completion)
-        var filter : List<Map<String, Any>> ? = null
-        if(userId.isNotEmpty()){
+        var filter: List<Map<String, Any>>? = null
+        if (userId.isNotEmpty()) {
             filter = listOf(mapOf("userId" to userId))
         }
 
         listCollection.removeMetaData(
-            AUIChorusCmd.leaveChorusCmd.name,
-            filter = filter,
-            completion
-        )
+            AUIChorusCmd.leaveChorusCmd.name, filter = filter
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION, "$it"
+                )
+            )
+        }
     }
 
     private fun onAttributeChanged(channelName: String, key: String, value: AUIAttributesModel) {
@@ -170,14 +189,6 @@ class AUIChorusServiceImpl constructor(
             //delegate
             delegate.onChoristerDidChanged()
         }
-    }
-
-    private fun metadataWillAdd(
-        publisherId: String,
-        valueCmd: String?,
-        value: Map<String, Any>
-    ): AUIException? {
-        return null
     }
 
 }
