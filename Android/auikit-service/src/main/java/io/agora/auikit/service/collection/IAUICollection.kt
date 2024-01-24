@@ -1,9 +1,5 @@
 package io.agora.auikit.service.collection
 
-import io.agora.auikit.service.callback.AUICallback
-import io.agora.auikit.service.callback.AUIException
-
-
 /**
  * IAUICollection
  *
@@ -16,35 +12,35 @@ interface IAUICollection {
      *
      * @param closure
      */
-    fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUIException?)?)
+    fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUICollectionException?)?)
 
     /**
      * Subscribe will update
      *
      * @param closure
      */
-    fun subscribeWillUpdate(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUIException?)?)
+    fun subscribeWillUpdate(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUICollectionException?)?)
 
     /**
      * Subscribe will merge
      *
      * @param closure
      */
-    fun subscribeWillMerge(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUIException?)?)
+    fun subscribeWillMerge(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUICollectionException?)?)
 
     /**
      * Subscribe will remove
      *
      * @param closure
      */
-    fun subscribeWillRemove(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUIException?)?)
+    fun subscribeWillRemove(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUICollectionException?)?)
 
     /**
      * Subscribe will calculate
      *
      * @param closure
      */
-    fun subscribeWillCalculate(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int) -> AUIException?)?)
+    fun subscribeWillCalculate(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int) -> AUICollectionException?)?)
 
     /**
      * Subscribe attributes did changed
@@ -66,7 +62,7 @@ interface IAUICollection {
      *
      * @param callback
      */
-    fun getMetaData(callback: ((error: AUIException?, value: Any?) -> Unit)?)
+    fun getMetaData(callback: ((error: AUICollectionException?, value: Any?) -> Unit)?)
 
     /**
      * Update meta data
@@ -80,7 +76,7 @@ interface IAUICollection {
         valueCmd: String?,
         value: Map<String, Any>,
         filter: List<Map<String, Any>>? = null,
-        callback: AUICallback?
+        callback: ((error: AUICollectionException?) -> Unit)?
     )
 
     /**
@@ -95,7 +91,7 @@ interface IAUICollection {
         valueCmd: String?,
         value: Map<String, Any>,
         filter: List<Map<String, Any>>? = null,
-        callback: AUICallback?
+        callback: ((error: AUICollectionException?) -> Unit)?
     )
 
     /**
@@ -110,7 +106,7 @@ interface IAUICollection {
         valueCmd: String?,
         value: Map<String, Any>,
         filter: List<Map<String, Any>>? = null,
-        callback: AUICallback?
+        callback: ((error: AUICollectionException?) -> Unit)?
     )
 
     /**
@@ -123,7 +119,7 @@ interface IAUICollection {
     fun removeMetaData(
         valueCmd: String?,
         filter: List<Map<String, Any>>? = null,
-        callback: AUICallback?
+        callback: ((error: AUICollectionException?) -> Unit)?
     )
 
     /**
@@ -144,7 +140,7 @@ interface IAUICollection {
         min: Int,
         max: Int,
         filter: List<Map<String, Any>>? = null,
-        callback: AUICallback?
+        callback: ((error: AUICollectionException?) -> Unit)?
     )
 
     /**
@@ -152,7 +148,7 @@ interface IAUICollection {
      *
      * @param callback
      */
-    fun cleanMetaData(callback: AUICallback?)
+    fun cleanMetaData(callback: ((error: AUICollectionException?) -> Unit)?)
 
     /**
      * Release

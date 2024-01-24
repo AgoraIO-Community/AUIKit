@@ -1,7 +1,6 @@
 package io.agora.auikit.service.collection
 
 import io.agora.auikit.model.AUIRoomContext
-import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmMessageRespObserver
@@ -30,23 +29,23 @@ abstract class AUIBaseCollection(
 
     protected var metadataWillAddClosure: ((
         publisherId: String, valueCmd: String?, value: Map<String, Any>
-    ) -> AUIException?)? = null
+    ) -> AUICollectionException?)? = null
 
     protected var metadataWillUpdateClosure: ((
         publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
+    ) -> AUICollectionException?)? = null
 
     protected var metadataWillMergeClosure: ((
         publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>
-    ) -> AUIException?)? = null
+    ) -> AUICollectionException?)? = null
 
     protected var metadataWillRemoveClosure: ((
         publisherId: String, valueCmd: String?, value: Map<String, Any>
-    ) -> AUIException?)? = null
+    ) -> AUICollectionException?)? = null
 
     protected var metadataWillCalculateClosure: ((
         publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int
-    ) -> AUIException?)? = null
+    ) -> AUICollectionException?)? = null
 
     protected var attributesDidChangedClosure: ((
         channelName: String, observeKey: String, value: AUIAttributesModel
@@ -70,19 +69,19 @@ abstract class AUIBaseCollection(
         )
     }
 
-    final override fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUIException?)?) {
+    final override fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUICollectionException?)?) {
         metadataWillAddClosure = closure
     }
 
-    final override fun subscribeWillUpdate(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUIException?)?) {
+    final override fun subscribeWillUpdate(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUICollectionException?)?) {
         metadataWillUpdateClosure = closure
     }
 
-    final override fun subscribeWillMerge(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUIException?)?) {
+    final override fun subscribeWillMerge(closure: ((publisherId: String, valueCmd: String?, newValue: Map<String, Any>, oldValue: Map<String, Any>) -> AUICollectionException?)?) {
         metadataWillMergeClosure = closure
     }
 
-    final override fun subscribeWillRemove(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUIException?)?) {
+    final override fun subscribeWillRemove(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUICollectionException?)?) {
         metadataWillRemoveClosure = closure
     }
 
@@ -94,7 +93,7 @@ abstract class AUIBaseCollection(
         attributesWillSetClosure = closure
     }
 
-    override fun subscribeWillCalculate(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int) -> AUIException?)?) {
+    override fun subscribeWillCalculate(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int) -> AUICollectionException?)?) {
         metadataWillCalculateClosure = closure
     }
 
@@ -106,7 +105,7 @@ abstract class AUIBaseCollection(
     protected fun isArbiter() =
         AUIRoomContext.shared().getArbiter(channelName)?.isArbiter() ?: false
 
-    protected fun sendReceipt(publisherId: String, uniqueId: String, error: AUIException?) {
+    protected fun sendReceipt(publisherId: String, uniqueId: String, error: AUICollectionException?) {
         val collectionError = AUICollectionError(error?.code ?: 0, error?.message ?: "")
         val message = AUICollectionMessage(
             channelName = channelName,

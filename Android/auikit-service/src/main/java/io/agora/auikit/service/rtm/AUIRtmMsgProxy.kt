@@ -5,6 +5,7 @@ import android.util.Log
 import io.agora.rtm.LockDetail
 import io.agora.rtm.LockEvent
 import io.agora.rtm.MessageEvent
+import io.agora.rtm.Metadata
 import io.agora.rtm.PresenceEvent
 import io.agora.rtm.RtmConstants
 import io.agora.rtm.RtmEventListener
@@ -49,7 +50,8 @@ interface AUIRtmLockRespObserver {
 class AUIRtmMsgProxy : RtmEventListener {
 
     var originEventListeners: RtmEventListener? = null
-    private val attributeRespObservers: MutableMap<String, ArrayList<AUIRtmAttributeRespObserver>> = mutableMapOf()
+    private val attributeRespObservers: MutableMap<String, ArrayList<AUIRtmAttributeRespObserver>> =
+        mutableMapOf()
     private val msgCacheAttr: MutableMap<String, MutableMap<String, String>> = mutableMapOf()
     private val userRespObservers: MutableList<AUIRtmUserRespObserver> = mutableListOf()
     private val errorRespObservers: MutableList<AUIRtmErrorRespObserver> = mutableListOf()
@@ -62,7 +64,7 @@ class AUIRtmMsgProxy : RtmEventListener {
         msgCacheAttr.remove(channelName)
     }
 
-    fun unRegisterAllObservers(){
+    fun unRegisterAllObservers() {
         attributeRespObservers.clear()
         userRespObservers.clear()
         errorRespObservers.clear()
@@ -70,14 +72,22 @@ class AUIRtmMsgProxy : RtmEventListener {
         messageRespObservers.clear()
     }
 
-    fun registerAttributeRespObserver(channelName: String, itemKey: String, observer: AUIRtmAttributeRespObserver) {
+    fun registerAttributeRespObserver(
+        channelName: String,
+        itemKey: String,
+        observer: AUIRtmAttributeRespObserver
+    ) {
         val key = "${channelName}__${itemKey}"
         val observers = attributeRespObservers[key] ?: ArrayList()
         observers.add(observer)
         attributeRespObservers[key] = observers
     }
 
-    fun unRegisterAttributeRespObserver(channelName: String, itemKey: String, observer: AUIRtmAttributeRespObserver) {
+    fun unRegisterAttributeRespObserver(
+        channelName: String,
+        itemKey: String,
+        observer: AUIRtmAttributeRespObserver
+    ) {
         val key = "${channelName}__${itemKey}"
         val observers = attributeRespObservers[key] ?: return
         observers.remove(observer)
@@ -139,59 +149,75 @@ class AUIRtmMsgProxy : RtmEventListener {
         Log.d("rtm_event", "onStorageEvent update: $event")
         originEventListeners?.onStorageEvent(event)
         event ?: return
-        if (event.data.metadataItems.isEmpty()) {
-            if(isMetaEmpty){
+        val channelName = event.target
+        processMetaData(channelName, event.data)
+    }
+
+    fun processMetaData(channelName: String, metadata: Metadata?) {
+        metadata ?: return
+        if (metadata.metadataItems.isEmpty()) {
+            if (isMetaEmpty) {
                 return
             }
             isMetaEmpty = true
             errorRespObservers.forEach { handler ->
-                handler.onMsgReceiveEmpty(event.target)
+                handler.onMsgReceiveEmpty(channelName)
             }
             return
         }
         isMetaEmpty = false
-        val cacheKey = event.target
-        val cache = msgCacheAttr[cacheKey] ?: mutableMapOf()
-        event.data.metadataItems.forEach { item ->
+
+        val cache = msgCacheAttr[channelName] ?: mutableMapOf()
+        metadata.metadataItems.forEach { item ->
             if (cache[item.key] == item.value) {
                 return@forEach
             }
             cache[item.key] = item.value
-            val handlerKey = "${event.target}__${item.key}"
+            val handlerKey = "${channelName}__${item.key}"
             Log.d("rtm_event", "onStorageEvent: key event:  ${item.key} \n value: ${item.value}")
             attributeRespObservers[handlerKey]?.forEach { handler ->
-                handler.onAttributeChanged(event.target, item.key, item.value)
+                handler.onAttributeChanged(channelName, item.key, item.value)
             }
         }
-        msgCacheAttr[cacheKey] = cache
+        msgCacheAttr[channelName] = cache
+        return
     }
 
     override fun onPresenceEvent(event: PresenceEvent?) {
         originEventListeners?.onPresenceEvent(event)
-        Log.d("rtm_presence_event", "onPresenceEvent Type: ${event?.eventType} Publisher: ${event?.publisherId}")
+        Log.d(
+            "rtm_presence_event",
+            "onPresenceEvent Type: ${event?.eventType} Publisher: ${event?.publisherId}"
+        )
         event ?: return
         val map = mutableMapOf<String, String>()
-        event.stateItems.forEach {item ->
+        event.stateItems.forEach { item ->
             map[item.key] = item.value
         }
         Log.d("rtm_presence_event", "onPresenceEvent Map: $map")
-        when(event.eventType){
+        when (event.eventType) {
             RtmConstants.RtmPresenceEventType.REMOTE_JOIN ->
                 userRespObservers.forEach { handler ->
                     handler.onUserDidJoined(event.channelName, event.publisherId ?: "", map)
                 }
+
             RtmConstants.RtmPresenceEventType.REMOTE_LEAVE,
             RtmConstants.RtmPresenceEventType.REMOTE_TIMEOUT ->
                 userRespObservers.forEach { handler ->
                     handler.onUserDidLeaved(event.channelName, event.publisherId ?: "", map)
                 }
+
             RtmConstants.RtmPresenceEventType.REMOTE_STATE_CHANGED ->
                 userRespObservers.forEach { handler ->
                     handler.onUserDidUpdated(event.channelName, event.publisherId ?: "", map)
                 }
+
             RtmConstants.RtmPresenceEventType.SNAPSHOT -> {
                 val userList = arrayListOf<Map<String, String>>()
-                Log.d("rtm_presence_event", "event.snapshot.userStateList: ${event.snapshot.userStateList}")
+                Log.d(
+                    "rtm_presence_event",
+                    "event.snapshot.userStateList: ${event.snapshot.userStateList}"
+                )
                 event.snapshot.userStateList.forEach { user ->
                     Log.d("rtm_presence_event", "----------SNAPSHOT User Start--------")
                     Log.d("rtm_presence_event", "user.states: ${user.states}")
@@ -213,6 +239,7 @@ class AUIRtmMsgProxy : RtmEventListener {
                     handler.onUserSnapshotRecv(event.channelName, event.publisherId ?: "", userList)
                 }
             }
+
             else -> {
                 // do nothing
             }
@@ -246,16 +273,17 @@ class AUIRtmMsgProxy : RtmEventListener {
     override fun onLockEvent(event: LockEvent?) {
         Log.d("rtm_lock_event", "onLockEvent event: $event")
         originEventListeners?.onLockEvent(event)
-        event?: return
+        event ?: return
         val addLockDetails = mutableListOf<LockDetail>()
         val removeLockDetails = mutableListOf<LockDetail>()
-        when(event.eventType){
+        when (event.eventType) {
             RtmConstants.RtmLockEventType.SNAPSHOT, RtmConstants.RtmLockEventType.ACQUIRED -> {
                 val snapshotList = lockDetailCaches[event.channelName] ?: mutableListOf()
                 snapshotList.addAll(event.lockDetailList)
                 lockDetailCaches[event.channelName] = snapshotList
                 addLockDetails.addAll(event.lockDetailList)
             }
+
             RtmConstants.RtmLockEventType.EXPIRED, RtmConstants.RtmLockEventType.REMOVED, RtmConstants.RtmLockEventType.RELEASED -> {
                 lockDetailCaches[event.channelName]?.let { snapshotList ->
                     event.lockDetailList.forEach { lockDetail ->
@@ -264,6 +292,7 @@ class AUIRtmMsgProxy : RtmEventListener {
                 }
                 removeLockDetails.addAll(event.lockDetailList)
             }
+
             else -> {}
         }
 
@@ -291,13 +320,17 @@ class AUIRtmMsgProxy : RtmEventListener {
         Log.d("rtm_event", "rtm -- connect state change: $state, reason: $reason")
 
         errorRespObservers.forEach {
-            it.onConnectionStateChanged(channelName, RtmConstants.RtmConnectionState.getValue(state), RtmConstants.RtmConnectionChangeReason.getValue(reason))
+            it.onConnectionStateChanged(
+                channelName,
+                RtmConstants.RtmConnectionState.getValue(state),
+                RtmConstants.RtmConnectionChangeReason.getValue(reason)
+            )
         }
     }
 
     override fun onTokenPrivilegeWillExpire(channelName: String?) {
         originEventListeners?.onTokenPrivilegeWillExpire(channelName)
-        if(channelName?.isNotEmpty() == true){
+        if (channelName?.isNotEmpty() == true) {
             errorRespObservers.forEach {
                 it.onTokenPrivilegeWillExpire(channelName)
             }

@@ -1,5 +1,7 @@
 package io.agora.auikit.service.callback;
 
+import androidx.annotation.NonNull;
+
 public class AUIException extends Exception{
     public static final int ERROR_CODE_UNKNOWN = -1; //未知错误
     public static final int ERROR_CODE_RTC = -2; //rtc错误
@@ -17,6 +19,7 @@ public class AUIException extends Exception{
     public static final int ERROR_CODE_CHORISTER_NOT_EXIST = -14;
     public static final int ERROR_CODE_PERMISSION_LEAK = -15;
     public static final int ERROR_CODE_ROOM_EXITED = -16;
+    public static final int ERROR_CODE_RTM_COLLECTION = -17;
 
     public final int code;
 
@@ -27,5 +30,12 @@ public class AUIException extends Exception{
     }
 
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return "AUIException{" +
+                "code=" + code +
+                "message=" + getMessage() +
+                "}";
+    }
 }

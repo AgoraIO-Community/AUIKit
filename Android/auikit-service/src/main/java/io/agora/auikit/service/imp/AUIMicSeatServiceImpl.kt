@@ -9,6 +9,7 @@ import io.agora.auikit.service.IAUIMicSeatService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.collection.AUIAttributesModel
+import io.agora.auikit.service.collection.AUICollectionException
 import io.agora.auikit.service.collection.AUIMapCollection
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.utils.AUILogger
@@ -59,18 +60,37 @@ class AUIMicSeatServiceImpl(
             }
             seatMap.put(i.toString(), seat)
         }
-        AUILogger.logger().d("AUIMicSeatServiceImp", "initService >> currentUid=${roomContext.currentUserInfo.userId} arbiterUid=${roomContext.getArbiter(channelName)?.lockOwnerId()}")
+        AUILogger.logger().d(
+            "AUIMicSeatServiceImp",
+            "initService >> currentUid=${roomContext.currentUserInfo.userId} arbiterUid=${
+                roomContext.getArbiter(
+                    channelName
+                )?.lockOwnerId()
+            }"
+        )
         mapCollection.updateMetaData(
             AUIMicSeatCmd.initSeatCmd.name,
             seatMap,
-        ) { error ->
-            completion?.onResult(error)
+        ) {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
         }
     }
 
     override fun deInitService(completion: AUICallback?) {
         super.deInitService(completion)
-        mapCollection.cleanMetaData(completion)
+        mapCollection.cleanMetaData {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
         mapCollection.release()
     }
 
@@ -93,9 +113,15 @@ class AUIMicSeatServiceImpl(
                         Pair("micSeatStatus", AUIMicSeatStatus.used)
                     )
                 )
-            ),
-            callback = callback
-        )
+            )
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun leaveSeat(callback: AUICallback?) {
@@ -123,9 +149,15 @@ class AUIMicSeatServiceImpl(
                         Pair("micSeatStatus", AUIMicSeatStatus.idle)
                     )
                 )
-            ),
-            callback = callback
-        )
+            )
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun autoEnterSeat(callback: AUICallback?) {
@@ -165,9 +197,15 @@ class AUIMicSeatServiceImpl(
                         Pair("micSeatStatus", AUIMicSeatStatus.idle)
                     )
                 )
-            ),
-            callback = callback
-        )
+            )
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
 
@@ -184,9 +222,15 @@ class AUIMicSeatServiceImpl(
         }
         mapCollection.mergeMetaData(
             valueCmd = AUIMicSeatCmd.muteAudioCmd.name,
-            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("isMuteAudio", isMute)))),
-            callback = callback
-        )
+            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("isMuteAudio", isMute))))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun muteVideoSeat(seatIndex: Int, isMute: Boolean, callback: AUICallback?) {
@@ -209,9 +253,15 @@ class AUIMicSeatServiceImpl(
         }
         mapCollection.mergeMetaData(
             valueCmd = AUIMicSeatCmd.closeSeatCmd.name,
-            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("micSeatStatus", status)))),
-            callback = callback
-        )
+            value = mapOf(Pair(seatIndex.toString(), mapOf(Pair("micSeatStatus", status))))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun onClickInvited(index: Int) {
@@ -298,7 +348,7 @@ class AUIMicSeatServiceImpl(
         valueCmd: String?,
         newValue: Map<String, Any>,
         oldValue: Map<String, Any>
-    ): AUIException? {
+    ): AUICollectionException? {
         val seatInfoPair = newValue.toList()[0]
         val seatIndex = seatInfoPair.first.toInt()
         val seatInfoMap = seatInfoPair.second as? Map<*, *>
@@ -306,31 +356,46 @@ class AUIMicSeatServiceImpl(
         when (valueCmd) {
             AUIMicSeatCmd.enterSeatCmd.name -> {
                 if (micSeats.values.any { it.user?.userId == userId }) {
-                    return AUIException(
-                        AUIException.ERROR_CODE_SEAT_ALREADY_ENTER,
-                        ""
-                    )
+                    return AUICollectionException.ErrorCode.unknown.toException("code: ${AUIException.ERROR_CODE_SEAT_ALREADY_ENTER}")
                 }
                 val seatInfo = micSeats[seatIndex]
                 userId = seatInfo?.user?.userId ?: ""
                 if (seatInfo?.user != null && seatInfo.seatStatus != AUIMicSeatStatus.idle) {
-                    return AUIException(
-                        AUIException.ERROR_CODE_SEAT_NOT_IDLE,
-                        "mic seat not idle"
+                    return AUICollectionException.ErrorCode.unknown.toException(
+                        "${
+                            AUIException(
+                                AUIException.ERROR_CODE_SEAT_NOT_IDLE,
+                                "mic seat not idle"
+                            )
+                        }"
                     )
                 }
             }
 
             AUIMicSeatCmd.leaveSeatCmd.name -> {
                 if (seatIndex == 0) {
-                    return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
+                    return AUICollectionException.ErrorCode.unknown.toException(
+                        "${
+                            AUIException(
+                                AUIException.ERROR_CODE_PERMISSION_LEAK,
+                                ""
+                            )
+                        }"
+                    )
                 }
                 if (micSeats[seatIndex]?.user?.userId != publisherId || roomContext.isRoomOwner(
                         channelName,
                         publisherId
                     )
                 ) {
-                    return AUIException(AUIException.ERROR_CODE_SEAT_NOT_ENTER, "")
+                    return AUICollectionException.ErrorCode.unknown.toException(
+                        "${
+                            AUIException(
+                                AUIException.ERROR_CODE_SEAT_NOT_ENTER,
+                                ""
+                            )
+                        }"
+                    )
                 }
                 userId = micSeats[seatIndex]?.user?.userId ?: ""
                 val metadata = mutableMapOf<String, String>()
@@ -338,12 +403,14 @@ class AUIMicSeatServiceImpl(
                 observableHelper.notifyEventHandlers {
                     error = it.onSeatWillLeave(userId, metadata)?.let { return@notifyEventHandlers }
                 }
-                return error
+                return if (error == null) null else AUICollectionException.ErrorCode.unknown.toException(
+                    "$error"
+                )
             }
 
             AUIMicSeatCmd.kickSeatCmd.name -> {
                 if (seatIndex == 0) {
-                    return AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")
+                    return AUICollectionException.ErrorCode.unknown.toException("${AUIException(AUIException.ERROR_CODE_PERMISSION_LEAK, "")}")
                 }
                 userId = micSeats[seatIndex]?.user?.userId ?: ""
                 val metadata = mutableMapOf<String, String>()
@@ -351,7 +418,9 @@ class AUIMicSeatServiceImpl(
                 observableHelper.notifyEventHandlers {
                     error = it.onSeatWillLeave(userId, metadata)?.let { return@notifyEventHandlers }
                 }
-                return error
+                return if (error == null) null else AUICollectionException.ErrorCode.unknown.toException(
+                    "$error"
+                )
             }
         }
         return null

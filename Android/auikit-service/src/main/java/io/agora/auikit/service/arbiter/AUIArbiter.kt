@@ -12,7 +12,14 @@ class AUIArbiter(
     private var lockOwnerId = ""
     private val rtmLockRespObserver = object : AUIRtmLockRespObserver {
         override fun onReceiveLock(channelName: String, lockName: String, lockOwner: String) {
-            lockOwnerId = lockOwner
+            if (lockOwnerId.isNotEmpty() && lockOwner == currentUserId) {
+                rtmManager.fetchMetaDataSnapshot(channelName) {
+                    //TODO: error handler, retry?
+                    lockOwnerId = lockOwner
+                }
+            } else {
+                lockOwnerId = lockOwner
+            }
         }
 
         override fun onReleaseLock(channelName: String, lockName: String, lockOwner: String) {
