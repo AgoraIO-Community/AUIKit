@@ -29,8 +29,8 @@ public class AUIChatRoomConfig: NSObject {
 
 @objcMembers
 public class AUIChatConfig: NSObject {
-    private var orgName: String = ""
-    private var appName: String = ""
+    public var orgName: String = ""
+    public var appName: String = ""
     public var appKey: String? {
         didSet {
             self.orgName = appKey?.components(separatedBy: "#").first ?? ""

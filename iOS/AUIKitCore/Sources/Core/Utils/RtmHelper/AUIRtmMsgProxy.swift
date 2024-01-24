@@ -177,7 +177,8 @@ open class AUIRtmMsgProxy: NSObject {
                 return
             }
             cache[item.key] = item.value
-            guard let itemData = item.value.data(using: .utf8), let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
+            guard let itemData = item.value.data(using: .utf8),
+                  let itemValue = try? JSONSerialization.jsonObject(with: itemData) else {
                 aui_info("parse itemData fail: \(item.key) \(item.value)", tag: "AUIRtmMsgProxy")
                 return
             }

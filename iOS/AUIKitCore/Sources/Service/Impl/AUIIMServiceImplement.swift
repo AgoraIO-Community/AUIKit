@@ -179,6 +179,7 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
             imConfig.appKey = config.imAppKey
             imConfig.clientId = config.imClientId
             imConfig.clientSecret = config.imClientSecret
+            model.imConfig = imConfig
         }
         let chatUser = AUIChatUser()
         chatUser.username = currentUser.userId
@@ -194,7 +195,8 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
                 self.userId = self.currentUser.userId //语聊房房间ID
                 self.chatToken = userToken
                 if let chatId = data["chatId"] as? String, !chatId.isEmpty {
-                    self.mapCollection.addMetaData(valueCmd: nil, value: [kChatIdKey: chatId], filter: nil) { err in
+                    self.mapCollection.addMetaData(valueCmd: nil, 
+                                                   value: [kChatIdKey: chatId], filter: nil) { err in
                     }
                     self.currentRoomId = chatId
                 }
