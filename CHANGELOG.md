@@ -1,6 +1,11 @@
 
 English | [中文](CHANGELOG.zh.md)
 
+## [1.0.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.0.0)
+- We have implemented a client-side localized read-write cloud storage data solution, ensuring consistency in data read-write across multiple devices.
+- An independent room management module has been added, which utilizes backend microservices to provide functionalities such as room creation, deletion, modification, and retrieval.
+- The KTVAPI has been upgraded to the latest version.
+
 ## [0.5.3](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.3)
 - [iOS]Compatible with Objective-C
 
