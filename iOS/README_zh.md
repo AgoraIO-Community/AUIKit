@@ -4,32 +4,45 @@
 
 <!-- TOC START -->
 
+- [AUIKit组件介绍](#auikit组件介绍)
 - [AUIKit基础组件](#auikit基础组件)
-- [Service](#service)
-  * [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
-  * [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
-  * [AUIUserServiceDelegate](#auiuserservicedelegate)
-  * [AUIUserRespDelegate](#auiuserrespdelegate)
-  * [AUIChorusServiceDelegate](#auichorusservicedelegate)
-  * [AUIChorusRespDelegate](#auichorusrespdelegate)
-  * [AUIMusicServiceDelegate](#auimusicservicedelegate)
-  * [AUIMusicRespDelegate](#auimusicrespdelegate)
-  * [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
-  * [AUIPlayerRespDelegate](#auiplayerrespdelegate)
-  * [AUIRoomManagerDelegate](#auiroommanagerdelegate)
-  * [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
-- [Widget](#widget)
-  * [AUIActionSheet](#auiactionsheet)
-    * [主容器配置](#主容器配置) 
-    * [列表Item配置](#列表Item配置)
-  * [AUIAlertView](#auialertview)
-  * [AUIButton](#auibutton)
-  * [AUISlider](#auislider)
-  * [AUITableViewCell](#auitableviewcell)
-  * [AUITabs](#auitabs)
-  * [AUITextField](#auitextfield)
-  * [AUIToast](#auitoast)
-  <!-- TOC END -->
+- [API参考](#api参考)
+  - [Service](#service)
+    - [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
+      - [麦位管理协议](#麦位管理协议)
+    - [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
+      - [麦位管理回调](#麦位管理回调)
+    - [AUIUserServiceDelegate](#auiuserservicedelegate)
+      - [用户管理协议](#用户管理协议)
+    - [AUIUserRespDelegate](#auiuserrespdelegate)
+      - [用户管理回调](#用户管理回调)
+    - [AUIChorusServiceDelegate](#auichorusservicedelegate)
+      - [合唱管理协议](#合唱管理协议)
+    - [AUIChorusRespDelegate](#auichorusrespdelegate)
+      - [合唱管理回调](#合唱管理回调)
+    - [AUIMusicServiceDelegate](#auimusicservicedelegate)
+      - [音乐管理协议](#音乐管理协议)
+    - [AUIMusicRespDelegate](#auimusicrespdelegate)
+      - [音乐管理回调](#音乐管理回调)
+    - [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
+      - [k歌播放管理协议](#k歌播放管理协议)
+    - [AUIPlayerRespDelegate](#auiplayerrespdelegate)
+      - [k歌播放管理回调](#k歌播放管理回调)
+    - [AUIRoomManagerDelegate](#auiroommanagerdelegate)
+      - [房间管理协议](#房间管理协议)
+    - [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
+      - [房间管理回调](#房间管理回调)
+  - [Widget](#widget)
+    - [AUIActionSheet](#auiactionsheet)
+      - [主容器配置](#主容器配置)
+      - [列表Item配置](#列表item配置)
+    - [AUIAlertView](#auialertview)
+    - [AUIButton](#auibutton)
+    - [AUISlider](#auislider)
+    - [AUITableViewCell](#auitableviewcell)
+    - [AUITabs](#auitabs)
+    - [AUITextField](#auitextfield)
+    - [AUIToast](#auitoast)
 
 # AUIKit基础组件
 ```
@@ -64,16 +77,13 @@ AUIKit
 │  ├─ AUITextField                      // 编辑框
 │  └─ AUIToast                          // 提示框
 │
-└─ Component                           // 包含具体业务的UI模块
+└─ Component                            // 包含具体业务的UI模块
+   ├─ IM                                // 聊天组件 
+   ├─ Gifts                             // 礼物组件 
+   ├─ Invitation                        // 邀请申请组件 
    ├─ JukeBox                           // 点歌器组件 
-   │  ├─ AUIJukeBoxView                 // 点歌器View，不包含逻辑
-   │  └─ AUIJukeBoxViewBinder           // 点歌器View与Service绑定类
    ├─ MicSeat                           // 麦位组件
-   │  ├─ AUIMicSeatView                 // 麦位View，不包含逻辑
-   │  └─ AUIMicSeatViewBinder           // 麦位View与Service绑定类
    └─ Player                            // KTV歌曲播放器组件
-      ├─ AUIPlayerView                  // KTV歌曲播放器View，不包含逻辑
-      └─ AUIPlayerViewBinder            // KTV歌曲播放器View与Service绑定类
    
 ```
 # API参考
