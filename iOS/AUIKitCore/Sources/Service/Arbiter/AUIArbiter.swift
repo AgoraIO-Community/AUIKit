@@ -59,8 +59,8 @@ extension AUIArbiter: AUIRtmLockProxyDelegate {
         aui_info("onReceiveLockDetail[\(channelName)]: \(lockDetail.owner)/\(currentUserInfo.userId)")
         guard channelName == self.channelName else {return}
         
-        //如果lockOwnerId是自己，并且是切换了仲裁者，需要刷新下
-        if lockDetail.owner == currentUserInfo.userId {
+        //如果lockOwnerId是自己，并且是切换了仲裁者(非首次获取，否则第一次roomService里onReceiveLockDetail拿到的是空)，需要刷新下
+        if lockOwnerId.isEmpty == false, lockDetail.owner == currentUserInfo.userId {
             rtmManager.fetchMetaDataSnapshot(channelName: channelName) {[weak self] error in
                 //TODO: error handler, retry?
                 self?.lockOwnerId = lockDetail.owner
