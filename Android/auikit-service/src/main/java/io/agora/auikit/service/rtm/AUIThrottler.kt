@@ -13,8 +13,8 @@ class AUIThrottler() {
             runnable = null
         }
         runnable = Runnable {
-            execute.invoke()
             runnable = null
+            execute.invoke()
         }
         runnable?.let {
             handler.postDelayed(it, delay)
@@ -34,6 +34,10 @@ class AUIThrottler() {
     }
 
     fun clean() {
+        runnable?.let {
+            runnable = null
+            it.run()
+        }
         handler.removeCallbacksAndMessages(null)
     }
 }
