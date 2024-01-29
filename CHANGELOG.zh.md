@@ -6,6 +6,9 @@
 - 新增了独立的房间管理模块，通过后端微服务提供对房间的增删改查等功能。
 - 升级KTVAPI到最新版本
 
+## [0.5.4](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.4)
+- [iOS]Upgrade SDWebImage to 5.x.
+
 ## [0.5.3](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.3)
 - [iOS]适配Objective-C。
 

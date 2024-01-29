@@ -14,16 +14,16 @@ PODS:
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
-    - SDWebImage (~> 4.4.8)
+    - SDWebImage (~> 5.0.0)
     - SwiftTheme
     - SwiftyBeaver (~> 1.9.5)
     - YYModel
     - Zip
   - MJRefresh (3.7.5)
   - ScoreEffectUI (1.0.2)
-  - SDWebImage (4.4.8):
-    - SDWebImage/Core (= 4.4.8)
-  - SDWebImage/Core (4.4.8)
+  - SDWebImage (5.0.6):
+    - SDWebImage/Core (= 5.0.6)
+  - SDWebImage/Core (5.0.6)
   - SwiftTheme (0.6.4)
   - SwiftyBeaver (1.9.5)
   - YYModel (1.0.4)
@@ -63,7 +63,7 @@ SPEC CHECKSUMS:
   AUIKitCore: 1c20e5372d08cb7a1ac53d384a23be05d3b68802
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   ScoreEffectUI: bf1195b4d41a73d43c236450b5d7f958989844aa
-  SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
+  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
