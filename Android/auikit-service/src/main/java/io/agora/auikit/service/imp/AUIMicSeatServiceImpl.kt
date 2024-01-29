@@ -16,7 +16,7 @@ import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
 
-private const val kSeatAttrKey = "micSeat"
+const val kSeatAttrKey = "micSeat"
 
 enum class AUIMicSeatCmd {
     initSeatCmd,
@@ -57,6 +57,8 @@ class AUIMicSeatServiceImpl(
             if (i == 0) {
                 seat.user = roomContext.currentUserInfo
                 seat.seatStatus = AUIMicSeatStatus.used
+            }else{
+                seat.user = AUIUserThumbnailInfo()
             }
             seatMap.put(i.toString(), seat)
         }

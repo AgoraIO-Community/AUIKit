@@ -1,5 +1,6 @@
 package io.agora.auikit.service.arbiter
 
+import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.rtm.AUIRtmLockRespObserver
 import io.agora.auikit.service.rtm.AUIRtmManager
 
@@ -45,8 +46,10 @@ class AUIArbiter(
         rtmManager.removeLock(channelName){}
     }
 
-    fun acquire() {
-        rtmManager.acquireLock(channelName){}
+    fun acquire(callback: ((AUIException?)->Unit)? = null) {
+        rtmManager.acquireLock(channelName){
+            callback?.invoke(if(it == null) null else AUIException(AUIException.ERROR_CODE_RTM, "$it"))
+        }
     }
 
     fun release() {

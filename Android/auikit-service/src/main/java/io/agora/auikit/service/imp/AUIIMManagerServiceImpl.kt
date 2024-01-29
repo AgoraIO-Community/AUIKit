@@ -29,7 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val kChatAttrKey = "chatRoom"
+const val kChatAttrKey = "chatRoom"
 private const val kChatIdKey = "chatRoomId"
 
 class AUIIMManagerServiceImpl constructor(
