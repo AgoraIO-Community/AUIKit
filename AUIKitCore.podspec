@@ -89,6 +89,7 @@ Pod::Spec.new do |s|
     'iOS/AUIKitCore/Sources/Components/**/*',
     'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
     'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
+    'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel+Coder.swift',
     'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
     'iOS/AUIKitCore/Sources/Service/Extension/Protocol/AUIUserCellUserDataProtocol.swift',
     ]
