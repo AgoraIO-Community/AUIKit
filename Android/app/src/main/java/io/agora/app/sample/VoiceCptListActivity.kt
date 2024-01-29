@@ -13,6 +13,7 @@ import io.agora.app.sample.dialog.VoiceMoreItemBean
 import io.agora.app.sample.dialog.VoiceRoomMoreDialog
 import io.agora.auikit.model.AUICommonConfig
 import io.agora.auikit.model.AUIRoomContext
+import io.agora.auikit.model.AUIUserThumbnailInfo
 import io.agora.auikit.ui.action.AUIActionUserInfo
 import io.agora.auikit.ui.action.AUIActionUserInfoList
 import io.agora.auikit.ui.action.impI.AUIApplyDialog
@@ -33,8 +34,7 @@ import io.agora.auikit.ui.member.impl.AUIRoomMemberListView
 import io.agora.auikit.utils.FastClickTools
 import io.agora.auikit.utils.GsonTools
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Random
 
 class VoiceCptListActivity : AppCompatActivity() {
     private var themeId = R.style.Theme_Sample_Voice
@@ -142,10 +142,11 @@ class VoiceCptListActivity : AppCompatActivity() {
     private fun loadLocalData(){
         val config = AUICommonConfig()
         config.context = applicationContext
-        config.userId = randomId()
-        config.userName = randomUserName()
-        config.userAvatar = randomAvatar()
-        AUIRoomContext.shared().commonConfig = config
+        config.owner = AUIUserThumbnailInfo()
+        config.owner.userId = randomId()
+        config.owner.userName = randomUserName()
+        config.owner.userAvatar = randomAvatar()
+        AUIRoomContext.shared().setCommonConfig(config)
 
         val jsonFileName = "gift.json" // 指定要读取的文件名
         val json: String
