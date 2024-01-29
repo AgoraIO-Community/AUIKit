@@ -1,43 +1,53 @@
 package io.agora.auikit.service.imp
 
-import android.util.Log
-import io.agora.auikit.model.AUIRoomContext
+import android.os.Handler
+import android.os.Looper
+import io.agora.auikit.model.AUIInvitationInfo
 import io.agora.auikit.model.AUIUserInfo
 import io.agora.auikit.service.IAUIInvitationService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
-import io.agora.auikit.service.http.CommonResp
-import io.agora.auikit.service.http.HttpManager
-import io.agora.auikit.service.http.apply.ApplyAcceptReq
-import io.agora.auikit.service.http.apply.ApplyCancelReq
-import io.agora.auikit.service.http.apply.ApplyCreateReq
-import io.agora.auikit.service.http.apply.ApplyInterface
-import io.agora.auikit.service.http.invitation.InvitationAcceptReq
-import io.agora.auikit.service.http.invitation.InvitationCreateReq
-import io.agora.auikit.service.http.invitation.InvitationInterface
-import io.agora.auikit.service.http.invitation.InvitationPayload
-import io.agora.auikit.service.http.invitation.RejectInvitationAccept
-import io.agora.auikit.service.rtm.AUIRtmAttributeRespObserver
+import io.agora.auikit.service.collection.AUIAttributesModel
+import io.agora.auikit.service.collection.AUIListCollection
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
-import io.agora.auikit.utils.ThreadManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-private const val RoomApplyKey = "application"
-private const val RoomInvitationKey = "invitation"
+const val kInvitationKey = "invitation"
+
+enum class AUIInvitationCmd {
+    sendApply,
+    cancelApply,
+    acceptApply,
+    rejectApply,
+}
+
 class AUIInvitationServiceImpl(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
-) : IAUIInvitationService, AUIRtmAttributeRespObserver {
-    private val roomContext:AUIRoomContext
+) : IAUIInvitationService {
+
+    private val invitationCollection = AUIListCollection(channelName, kInvitationKey, rtmManager)
+
+    private var invitationList = mutableListOf<AUIInvitationInfo>()
 
     init {
-        rtmManager.subscribeAttribute(channelName, RoomApplyKey,this)
-        rtmManager.subscribeAttribute(channelName, RoomInvitationKey,this)
-        this.roomContext = AUIRoomContext.shared()
+        invitationCollection.subscribeAttributesDidChanged(this::onAttributeChanged)
+    }
+
+    override fun deInitService(completion: AUICallback?) {
+        super.deInitService(completion)
+        timerHandler.removeCallbacksAndMessages(null)
+        timeRunnableList.clear()
+        invitationCollection.cleanMetaData {
+            completion?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    " $it"
+                )
+            )
+        }
+        invitationCollection.release()
     }
 
     private val observableHelper =
@@ -52,255 +62,291 @@ class AUIInvitationServiceImpl(
     }
 
     override fun sendInvitation(userId: String, seatIndex: Int, callback: AUICallback?) {
-        HttpManager.getService(InvitationInterface::class.java)
-            .initiateCreate(
-                InvitationCreateReq(
-                    channelName,
-                    roomContext.currentUserInfo.userId,
-                    userId,
-                    InvitationPayload("",seatIndex)
+        val info = AUIInvitationInfo()
+        info.seatNo = seatIndex
+        info.userId = userId
+        info.type = AUIInvitationInfo.AUIInvitationType.Invite
+
+        invitationCollection.addMetaData(
+            AUIInvitationCmd.sendApply.name,
+            GsonTools.beanToMap(info),
+            listOf(mapOf("userId" to roomContext.currentUserInfo.userId, "type" to info.type))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
                 )
             )
-            .enqueue(object : Callback<CommonResp<Any>> {
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread{
-                            callback?.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback?.onResult(AUIException(-1, t.message))
-                }
-            })
+        }
     }
 
     override fun acceptInvitation(userId: String, seatIndex: Int, callback: AUICallback?) {
-        HttpManager.getService(InvitationInterface::class.java)
-            .acceptInitiate(
-                InvitationAcceptReq(
-                    channelName,
-                    userId)
+        invitationCollection.mergeMetaData(
+            AUIInvitationCmd.acceptApply.name,
+            mapOf("status" to AUIInvitationInfo.AUIInvitationStatus.Accept),
+            listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Invite))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
             )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread {
-                            callback?.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback?.onResult(AUIException(-1, t.message))
-                }
-            })
+        }
     }
 
     override fun rejectInvitation(userId: String, callback: AUICallback?) {
-        HttpManager.getService(InvitationInterface::class.java)
-            .acceptCancel(
-                RejectInvitationAccept(
-                    channelName,
-                    userId,
-                    ""
+        invitationCollection.mergeMetaData(
+            AUIInvitationCmd.acceptApply.name,
+            mapOf("status" to AUIInvitationInfo.AUIInvitationStatus.Reject),
+            listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Invite))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
                 )
             )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread {
-                            callback?.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback?.onResult(AUIException(-1, t.message))
-                }
-            })
+        }
     }
 
     override fun cancelInvitation(userId: String, callback: AUICallback?) {
-        HttpManager.getService(InvitationInterface::class.java)
-            .acceptCancel(
-                RejectInvitationAccept(
-                    channelName,
-                    roomContext.currentUserInfo.userId,
-                    userId
+        invitationCollection.removeMetaData(
+            AUIInvitationCmd.cancelApply.name,
+            listOf(mapOf("userId" to userId))
+        ) {
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
                 )
             )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread {
-                            callback?.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback?.onResult(AUIException(-1, t.message))
-                }
-            })
+        }
     }
 
     override fun sendApply(seatIndex: Int, callback: AUICallback) {
-        HttpManager.getService(ApplyInterface::class.java)
-            .applyCreate(
-                ApplyCreateReq(
-                    channelName,
-                    roomContext.currentUserInfo.userId,
-                    InvitationPayload("",seatIndex))
-            )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread{
-                            callback.onResult(null)
-                        }
-                    }
-                }
+        val info = AUIInvitationInfo()
+        info.seatNo = seatIndex
+        info.userId = roomContext.currentUserInfo.userId
+        info.type = AUIInvitationInfo.AUIInvitationType.Apply
 
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback.onResult(AUIException(-1, t.message))
-                }
-            })
+        invitationCollection.addMetaData(
+            AUIInvitationCmd.sendApply.name,
+            GsonTools.beanToMap(info),
+            listOf(mapOf("userId" to info.userId, "type" to info.type))
+        ) {
+            callback.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun cancelApply(callback: AUICallback) {
-        HttpManager.getService(ApplyInterface::class.java)
-            .applyCancel(
-                ApplyCancelReq(
-                    channelName,
-                    roomContext.currentUserInfo.userId,
-                    roomContext.currentUserInfo.userId)
+        invitationCollection.removeMetaData(
+            AUIInvitationCmd.cancelApply.name,
+            listOf(
+                mapOf(
+                    "userId" to roomContext.currentUserInfo.userId,
+                    "type" to AUIInvitationInfo.AUIInvitationType.Apply
+                )
             )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread{
-                            callback.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback.onResult(AUIException(-1, t.message))
-                }
-            })
+        ) {
+            callback.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
     override fun acceptApply(userId: String, seatIndex: Int, callback: AUICallback) {
-        HttpManager.getService(ApplyInterface::class.java)
-            .applyAccept(
-                ApplyAcceptReq(
-                    channelName,
-                    roomContext.currentUserInfo.userId,
-                    userId)
+        invitationCollection.mergeMetaData(
+            AUIInvitationCmd.acceptApply.name,
+            mapOf("status" to AUIInvitationInfo.AUIInvitationStatus.Accept),
+            listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Apply))
+        ) {
+            callback.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
             )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread {
-                            callback.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback.onResult(AUIException(-1, t.message))
-                }
-            })
+        }
     }
 
     override fun rejectApply(userId: String, callback: AUICallback) {
-        HttpManager.getService(ApplyInterface::class.java)
-            .applyCancel(
-                ApplyCancelReq(
-                    channelName,
-                    roomContext.currentUserInfo.userId,
-                    userId)
+        invitationCollection.mergeMetaData(
+            AUIInvitationCmd.rejectApply.name,
+            mapOf("status" to AUIInvitationInfo.AUIInvitationStatus.Reject),
+            listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Apply))
+        ) {
+            callback.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
             )
-            .enqueue(object : Callback<CommonResp<Any>>{
-                override fun onResponse(
-                    call: Call<CommonResp<Any>>,
-                    response: Response<CommonResp<Any>>
-                ) {
-                    if (response.body()?.code == 0 && response.body()?.message == "Success"){
-                        ThreadManager.getInstance().runOnMainThread {
-                            callback.onResult(null)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CommonResp<Any>>, t: Throwable) {
-                    callback.onResult(AUIException(-1, t.message))
-                }
-            })
+        }
     }
 
 
     override fun getChannelName() = channelName
 
-    override fun getRoomContext() = roomContext
 
-    override fun onAttributeChanged(channelName: String, key: String, value: Any) {
-        Log.e("apex","AUiServiceImpl key: $key")
-        if (key == RoomApplyKey){ //申请
-            observableHelper.notifyEventHandlers {
-                val list = paresData(value)
-                if (list.size > 0){
-                    it.onApplyListUpdate(paresData(value))
+    private fun onAttributeChanged(channelName: String, key: String, value: AUIAttributesModel) {
+        val list =
+            GsonTools.toList(GsonTools.beanToString(value.getList()), AUIInvitationInfo::class.java)
+                ?: return
+
+        // 申请列表
+        val newApplyList = list.filter { it.type == AUIInvitationInfo.AUIInvitationType.Apply }
+        val oldApplyList =
+            invitationList.filter { it.type == AUIInvitationInfo.AUIInvitationType.Apply }
+
+        // 邀请列表
+        val newInviteList = list.filter { it.type == AUIInvitationInfo.AUIInvitationType.Invite }
+        val oldInviteList =
+            invitationList.filter { it.type == AUIInvitationInfo.AUIInvitationType.Invite }
+
+        invitationList = ArrayList(list)
+
+        // 处理申请差异列表
+        var applyListChanged = false
+        newApplyList.forEach { newApply ->
+            val oldApply = oldApplyList.find { it.userId == newApply.userId }
+            if (oldApply?.status != newApply.status) {
+                applyListChanged = true
+                when (newApply.status) {
+                    AUIInvitationInfo.AUIInvitationStatus.Accept -> {
+                        observableHelper.notifyEventHandlers {
+                            it.onApplyAccepted(newApply.userId, newApply.seatNo)
+                        }
+                        removeInvitation(newApply.userId, newApply.type)
+                    }
+
+                    AUIInvitationInfo.AUIInvitationStatus.Reject -> {
+                        observableHelper.notifyEventHandlers {
+                            it.onApplyRejected(newApply.userId)
+                        }
+                        removeInvitation(newApply.userId, newApply.type)
+                    }
+
+                    AUIInvitationInfo.AUIInvitationStatus.Timeout -> {
+                        removeInvitation(newApply.userId, newApply.type)
+                    }
+
+                    AUIInvitationInfo.AUIInvitationStatus.Waiting -> {
+                        observableHelper.notifyEventHandlers {
+                            it.onReceiveNewApply(newApply.userId, newApply.seatNo)
+                        }
+                        startInvitationTimer(userId = newApply.userId, type = newApply.type)
+                    }
                 }
             }
-        }else if (key == RoomInvitationKey){//邀请
-            observableHelper.notifyEventHandlers {
-                val list = paresData(value)
-                if (list.size > 0 && list[list.lastIndex].userId == roomContext.currentUserInfo.userId){
-                    it.onReceiveInvitation(list[list.lastIndex].userId,list[list.lastIndex].micIndex)
+        }
+        oldApplyList.forEach { oldApply ->
+            val newApply = newApplyList.find { it.userId == oldApply.userId }
+            if (newApply == null ) {
+                if(oldApply.status == AUIInvitationInfo.AUIInvitationStatus.Waiting){
+                    observableHelper.notifyEventHandlers {
+                        it.onApplyCanceled(oldApply.userId)
+                    }
                 }
+                applyListChanged = true
+                return@forEach
+            }
+        }
+        if (applyListChanged) {
+            observableHelper.notifyEventHandlers {
+                it.onApplyListUpdate(newApplyList.map {
+                    AUIUserInfo().apply {
+                        userId = it.userId
+                        micIndex = it.seatNo
+                    }
+                })
+            }
+        }
+
+        // 处理邀请差异列表
+        newInviteList.forEach { newInvite ->
+            val oldInvite = oldApplyList.find { it.userId == newInvite.userId }
+            if (oldInvite?.status != newInvite.status) {
+                when (newInvite.status) {
+                    AUIInvitationInfo.AUIInvitationStatus.Accept -> {
+                        observableHelper.notifyEventHandlers {
+                            it.onInviteeAccepted(newInvite.userId, newInvite.seatNo)
+                        }
+                        removeInvitation(newInvite.userId, newInvite.type)
+                    }
+
+                    AUIInvitationInfo.AUIInvitationStatus.Reject -> {
+                        observableHelper.notifyEventHandlers {
+                            it.onInviteeRejected(newInvite.userId)
+                        }
+                        removeInvitation(newInvite.userId, newInvite.type)
+                    }
+
+                    AUIInvitationInfo.AUIInvitationStatus.Timeout -> {
+                        removeInvitation(newInvite.userId, newInvite.type)
+                    }
+
+                    AUIInvitationInfo.AUIInvitationStatus.Waiting -> {
+                        observableHelper.notifyEventHandlers {
+                            it.onReceiveInvitation(newInvite.userId, newInvite.seatNo)
+                        }
+                        startInvitationTimer(userId = newInvite.userId, type = newInvite.type)
+                    }
+                }
+            }
+        }
+        oldInviteList.forEach { oldInvite ->
+            val newInvite = newApplyList.find { it.userId == oldInvite.userId }
+            if (newInvite == null && oldInvite.status == AUIInvitationInfo.AUIInvitationStatus.Waiting) {
+                observableHelper.notifyEventHandlers {
+                    it.onInvitationCancelled(oldInvite.userId)
+                }
+                return@forEach
             }
         }
     }
 
-    private fun paresData(value: Any):ArrayList<AUIUserInfo>{
-        val userList = ArrayList<AUIUserInfo>()
-        val map: Map<String, Any> = HashMap()
-        val micSeat = GsonTools.toBean(value as String, map.javaClass)
-        val s = micSeat?.get("micSeat") as Map<String,Any>
-        val queue = s["queue"] as ArrayList<Map<String,Any>>
-        queue.forEach {
-            val payload = it["payload"] as Map<String,Any>
-            val seatNo = payload["seatNo"] as Long
-            val applyBean = AUIUserInfo()
-            applyBean.userId = it["userId"].toString()
-            applyBean.micIndex = seatNo.toInt()
-            Log.d("apex","${it["userId"]} - ${seatNo.toInt()} -- $it")
-            userList.add(applyBean)
+    private val timerHandler = Handler(Looper.getMainLooper())
+    private val timeRunnableList = mutableListOf<InvitationTimerRun>()
+
+    private fun removeInvitation(userId: String, type: Int) {
+        if (roomContext.getArbiter(channelName)?.isArbiter() == true) {
+            invitationCollection.removeMetaData(
+                AUIInvitationCmd.cancelApply.name,
+                listOf(mapOf("userId" to userId, "type" to type))
+            ) {}
+            timeRunnableList.filter { it.userId == userId && it.type == type }.forEach {
+                timerHandler.removeCallbacks(it)
+            }
         }
-        return userList
     }
+
+    private fun startInvitationTimer(timeout: Long = 10000, userId: String, type: Int) {
+        if (roomContext.getArbiter(channelName)?.isArbiter() == true) {
+            timerHandler.postDelayed(InvitationTimerRun(userId, type), timeout)
+        }
+    }
+
+    inner class InvitationTimerRun(
+        val userId: String,
+        val type: Int,
+    ) : Runnable {
+        override fun run() {
+            invitationCollection.mergeMetaData(
+                AUIInvitationCmd.cancelApply.name,
+                mapOf("status" to AUIInvitationInfo.AUIInvitationStatus.Timeout),
+                listOf(mapOf("userId" to userId, "type" to type))
+            ) {}
+        }
+    }
+
 }

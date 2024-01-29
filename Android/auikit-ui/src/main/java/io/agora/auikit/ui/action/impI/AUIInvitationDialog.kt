@@ -134,7 +134,7 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
         }
     }
 
-    override fun refreshInvitationData(userList:MutableList<AUIActionUserInfo?>) {
+    override fun refreshInvitationData(userList:List<AUIActionUserInfo>) {
         adapter?.refreshData(userList)
     }
 
@@ -159,7 +159,7 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
         init {
             this.listener = event
             with(fragments) {
-                put(PAGE_INDEX0, VoiceRoomInvitedListFragment.getInstance(fragmentActivity,roomBean))
+                put(PAGE_INDEX0, VoiceRoomInvitedListFragment.getInstance(roomBean))
             }
         }
 
@@ -179,7 +179,7 @@ class AUIInvitationDialog : AUISheetFragmentDialog<AuiInvitationLayoutBinding>()
             listener?.onInvitedItemClick(view,invitedIndex,user)
         }
 
-        fun refreshData(userList:MutableList<AUIActionUserInfo?>) {
+        fun refreshData(userList:List<AUIActionUserInfo>) {
             fragments.forEach { key, value ->
                 if (key == PAGE_INDEX0){
                     val fragment = value as VoiceRoomInvitedListFragment

@@ -331,7 +331,7 @@ class AUIListCollection(
         val itemIndexes = AUICollectionUtils.getItemIndexes(currentList, filter)
         if (itemIndexes?.isNotEmpty() == true) {
             callback?.invoke(
-                AUICollectionException.ErrorCode.encodeToJsonStringFail.toException()
+                AUICollectionException.ErrorCode.filterNotFound.toException()
             )
             return
         }

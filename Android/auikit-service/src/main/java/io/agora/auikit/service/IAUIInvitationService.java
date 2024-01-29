@@ -3,7 +3,7 @@ package io.agora.auikit.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.agora.auikit.model.AUIUserInfo;
 import io.agora.auikit.service.callback.AUICallback;
@@ -69,19 +69,11 @@ public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationS
     interface AUIInvitationRespObserver {
 
         /**
-         * 收到新的邀请请求
-         *
-         * @param userId 邀请id
-         * @param seatIndex 麦位号
-         */
-        default void onReceiveNewInvitation(@NonNull String userId, int seatIndex){}
-
-        /**
          * 被邀请者接受邀请
          *
          * @param userId 被邀请者id
          */
-        default void onInviteeAccepted(@NonNull String userId){}
+        default void onInviteeAccepted(@NonNull String userId, int seatIndex){}
 
         /**
          * 被邀请者拒绝邀请
@@ -107,7 +99,7 @@ public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationS
          * 房主接受申请
          * @param userId 申请者id
          */
-        default void onApplyAccepted(@NonNull String userId){}
+        default void onApplyAccepted(@NonNull String userId, int seatIndex){}
 
         /**
          * 房主拒接申请
@@ -132,6 +124,6 @@ public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationS
          * 申请列表变更
          * @param userList
          */
-        default void onApplyListUpdate(ArrayList<AUIUserInfo> userList){}
+        default void onApplyListUpdate(List<AUIUserInfo> userList){}
     }
 }

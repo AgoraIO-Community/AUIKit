@@ -3,14 +3,13 @@ package io.agora.auikit.ui.action.impI
 import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.util.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,26 +23,31 @@ import io.agora.auikit.ui.basic.AUISheetFragmentDialog
 import io.agora.auikit.ui.databinding.AuiApplyLayoutBinding
 import io.agora.auikit.utils.ResourcesTools
 
-class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListViewBinderRefresh{
+class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(), IAUIListViewBinderRefresh {
 
-    companion object {
-        const val KEY_ROOM_APPLY_BEAN = "room_apply_bean"
-        const val KEY_CURRENT_ITEM = "current_Item"
+    private var mEvnetListener: AUIApplyDialogEventListener? = null
+    private var mTabSelectedColor: Int = 0
+    private var mTabUnSelectedColor: Int = 0
+    private val mUserLiveData = MutableLiveData(AUIActionUserInfoList(emptyList(), 0))
+    private val mPageList by lazy {
+        listOf<Pair<String, () -> Fragment>>(
+            getString(R.string.aui_room_apply_list) to {
+                VoiceRoomApplyListFragment(mUserLiveData).apply {
+                    setApplyEventListener(object : VoiceRoomApplyListFragment.ApplyEventListener{
+                        override fun onApplyItemClick(
+                            view: View,
+                            applyIndex: Int?,
+                            user: AUIActionUserInfo?,
+                            position: Int
+                        ) {
+                            super.onApplyItemClick(view, applyIndex, user, position)
+                            mEvnetListener?.onApplyItemClick(view, applyIndex, user, position)
+                        }
+                    })
+                }
+            }
+        )
     }
-
-    private val roomBean: AUIActionUserInfoList by lazy {
-        arguments?.getSerializable(KEY_ROOM_APPLY_BEAN) as AUIActionUserInfoList
-    }
-
-    private val currentItem: Int by lazy {
-        arguments?.getInt(KEY_CURRENT_ITEM, 0) ?: 0
-    }
-
-    private var adapter: RoomApplyFragmentAdapter?=null
-    private var listener: AUIApplyDialogEventListener?=null
-    private var appearanceId:Int = 0
-    private var mTabSelectedColor:Int = 0
-    private var mTabUnSelectedColor:Int = 0
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -54,71 +58,75 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // 获取自定义样式的ID
-        activity?.let {
-            val themeTa: TypedArray = it.theme.obtainStyledAttributes(R.styleable.AUIAction)
-            appearanceId = themeTa.getResourceId(R.styleable.AUIAction_aui_action_appearance, 0)
-            themeTa.recycle()
-        }
-
+        initTheme()
         initFragmentAdapter()
     }
 
-    override fun setApplyDialogListener(listener:AUIApplyDialogEventListener){
-        this.listener = listener
+    private fun initTheme() {
+        val context = activity ?: return
+        val themeTa: TypedArray = context.theme.obtainStyledAttributes(R.styleable.AUIAction)
+        val appearanceId = themeTa.getResourceId(R.styleable.AUIAction_aui_action_appearance, 0)
+        themeTa.recycle()
+
+        val typedArray = context.obtainStyledAttributes(appearanceId, R.styleable.AUIAction)
+        mTabSelectedColor = typedArray.getResourceId(
+            R.styleable.AUIAction_aui_tabLayout_selected_textColor,
+            R.color.aui_color_040925
+        )
+        mTabUnSelectedColor = typedArray.getResourceId(
+            R.styleable.AUIAction_aui_tabLayout_unselected_textColor,
+            R.color.aui_color_6c7192
+        )
+        typedArray.recycle()
+    }
+
+    override fun setApplyDialogListener(listener: AUIApplyDialogEventListener) {
+        this.mEvnetListener = listener
     }
 
     private fun initFragmentAdapter() {
-        activity?.let { fragmentActivity->
-            val typedArray = fragmentActivity.obtainStyledAttributes(appearanceId, R.styleable.AUIAction)
-            mTabSelectedColor = typedArray.getResourceId(
-                R.styleable.AUIAction_aui_tabLayout_selected_textColor,
-                R.color.aui_color_040925
-            )
-            mTabUnSelectedColor = typedArray.getResourceId(
-                R.styleable.AUIAction_aui_tabLayout_unselected_textColor,
-                R.color.aui_color_6c7192
-            )
-            typedArray.recycle()
+        val context = activity ?: return
+        val binding = binding ?: return
+        val currentItem = 0
 
-            adapter = RoomApplyFragmentAdapter(fragmentActivity,roomBean,listener)
-            binding?.apply {
-                setOnApplyWindowInsets(root)
-                vpApplyLayout.adapter = adapter
-                val tabMediator = TabLayoutMediator(tabApplyLayout, vpApplyLayout) { tab, position ->
-                    val customView =
-                        LayoutInflater.from(root.context).inflate(R.layout.aui_action_tab_item_layout, tab.view, false)
-                    val tabText = customView.findViewById<TextView>(R.id.mtTabText)
-                    tab.customView = customView
-                    if (position == RoomApplyFragmentAdapter.PAGE_INDEX0) {
-                        tabText.text = getString(R.string.aui_room_apply_list)
-                        onTabLayoutSelected(tab)
-                    } else {
-                        onTabLayoutUnselected(tab)
-                    }
-
+        setOnApplyWindowInsets(binding.root)
+        binding.vpApplyLayout.adapter = RoomApplyFragmentAdapter(context)
+        val tabMediator =
+            TabLayoutMediator(binding.tabApplyLayout, binding.vpApplyLayout) { tab, position ->
+                val customView =
+                    LayoutInflater.from(binding.root.context)
+                        .inflate(R.layout.aui_action_tab_item_layout, tab.view, false)
+                val tabText = customView.findViewById<TextView>(R.id.mtTabText)
+                tab.customView = customView
+                tabText.text = mPageList[position].first
+                if (position == currentItem) {
+                    onTabLayoutSelected(tab)
+                } else {
+                    onTabLayoutUnselected(tab)
                 }
-                tabMediator.attach()
-                tabApplyLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        onTabLayoutSelected(tab)
-                    }
-
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-                        onTabLayoutUnselected(tab)
-                    }
-
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-                    }
-                })
-                vpApplyLayout.setCurrentItem(currentItem, false)
             }
+        tabMediator.attach()
+        binding.tabApplyLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                onTabLayoutSelected(tab)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                onTabLayoutUnselected(tab)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+        binding.vpApplyLayout.setCurrentItem(currentItem, false)
+
+        mUserLiveData.value?.let {
+            mUserLiveData.value = AUIActionUserInfoList(it.userList, it.invitedIndex)
         }
     }
 
-    override fun refreshApplyData(userList: MutableList<AUIActionUserInfo?>){
-        adapter?.refreshData(userList)
+    override fun refreshApplyData(userList: List<AUIActionUserInfo>) {
+        mUserLiveData.value = AUIActionUserInfoList(userList, -1)
     }
 
     private fun onTabLayoutSelected(tab: TabLayout.Tab?) {
@@ -141,50 +149,16 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(),IAUIListV
         }
     }
 
-    class RoomApplyFragmentAdapter constructor(
-        fragmentActivity: FragmentActivity,
-        roomBean: AUIActionUserInfoList,
-        event:AUIApplyDialogEventListener?
-    ) : FragmentStateAdapter(fragmentActivity), VoiceRoomApplyListFragment.ApplyEventListener {
-
-        companion object {
-            const val PAGE_INDEX0 = 0
-            const val PAGE_INDEX1 = 1
-        }
-
-        private val fragments: SparseArray<Fragment> = SparseArray()
-        private var listener:AUIApplyDialogEventListener?=null
-
-        init {
-            this.listener = event
-            with(fragments) {
-                put(PAGE_INDEX0, VoiceRoomApplyListFragment.getInstance(fragmentActivity,roomBean))
-            }
-        }
+    inner class RoomApplyFragmentAdapter constructor(
+        fragment: FragmentActivity,
+    ) : FragmentStateAdapter(fragment) {
 
         override fun createFragment(position: Int): Fragment {
-            val fragment = fragments[position]
-            if (PAGE_INDEX0 == position){
-                (fragment as VoiceRoomApplyListFragment).setApplyEventListener(this)
-            }
-            return fragment
+            return mPageList[position].second.invoke()
         }
 
         override fun getItemCount(): Int {
-            return fragments.size()
-        }
-
-        fun refreshData(userList:MutableList<AUIActionUserInfo?>){
-            fragments.forEach { key, value ->
-                if (key == PAGE_INDEX0){
-                    val fragment = value as VoiceRoomApplyListFragment
-                    fragment.refreshData(userList)
-                }
-            }
-        }
-
-        override fun onApplyItemClick(view: View, applyIndex: Int?, user: AUIActionUserInfo?, position: Int) {
-            this.listener?.onApplyItemClick(view, applyIndex, user,position)
+            return mPageList.size
         }
     }
 

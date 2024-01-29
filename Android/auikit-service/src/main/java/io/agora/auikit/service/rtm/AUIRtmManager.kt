@@ -738,7 +738,7 @@ class AUIRtmManager constructor(
         userId: String,
         message: String,
         uniqueId: String,
-        timeout: Long = 1000,
+        timeout: Long = 5000,
         completion: (AUIRtmException?) -> Unit
     ) {
         publish(channelName, userId, message) { error ->
@@ -750,8 +750,7 @@ class AUIRtmManager constructor(
                 uniqueId,
                 completion
             ) {
-                receiptTimeoutRun.remove(uniqueId)
-                completion.invoke(
+                receiptTimeoutRun.remove(uniqueId)?.closure?.invoke(
                     AUIRtmException(
                         -1,
                         "timeout. uniqueId=$uniqueId",

@@ -4,8 +4,8 @@ import io.agora.auikit.ui.action.listener.AUIApplyDialogEventListener
 import io.agora.auikit.ui.action.listener.AUIInvitationDialogEventListener
 
 interface IAUIListViewBinderRefresh {
-    fun refreshApplyData(userList:MutableList<AUIActionUserInfo?>){}
+    fun refreshApplyData(userList:List<AUIActionUserInfo>){}
     fun setApplyDialogListener(listener: AUIApplyDialogEventListener){}
-    fun refreshInvitationData(userList:MutableList<AUIActionUserInfo?>){}
+    fun refreshInvitationData(userList:List<AUIActionUserInfo>){}
     fun setInvitationDialogListener(listener: AUIInvitationDialogEventListener){}
 }

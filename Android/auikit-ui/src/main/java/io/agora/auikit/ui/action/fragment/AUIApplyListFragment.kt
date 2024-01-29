@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,29 +23,17 @@ import io.agora.auikit.ui.basic.AUIImageView
 import io.agora.auikit.ui.databinding.AuiApplyListLayoutBinding
 import io.agora.auikit.utils.ResourcesTools
 
-class VoiceRoomApplyListFragment : Fragment(),
-    SwipeRefreshLayout.OnRefreshListener, VoiceApplyAdapter.ApplyEventListener {
+class VoiceRoomApplyListFragment(
+    private val userListLiveData: LiveData<AUIActionUserInfoList>
+) : Fragment(),
+    SwipeRefreshLayout.OnRefreshListener,
+    VoiceApplyAdapter.ApplyEventListener {
 
-    private var mRoomViewBinding = AuiApplyListLayoutBinding.inflate(LayoutInflater.from(act))
-
-    companion object {
-
-        private const val KEY_ROOM_INFO = "room_info"
-        private var act: FragmentActivity?=null
-
-        fun getInstance(fragmentActivity: FragmentActivity, roomBean: AUIActionUserInfoList): VoiceRoomApplyListFragment {
-            act = fragmentActivity
-            return VoiceRoomApplyListFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(KEY_ROOM_INFO, roomBean)
-                }
-            }
-        }
+    private val mRoomViewBinding by lazy {
+        AuiApplyListLayoutBinding.inflate(LayoutInflater.from(requireContext()))
     }
 
-    private var roomBean: AUIActionUserInfoList? = null
-    private var listener: ApplyEventListener?=null
-    private var invitedIndex:Int? = -1
+    private var listener: ApplyEventListener? = null
 
     private var total = 0
         set(value) {
@@ -54,7 +42,7 @@ class VoiceRoomApplyListFragment : Fragment(),
         }
     private var members = mutableListOf<AUIActionUserInfo?>()
 
-    private var applyAdapter: VoiceApplyAdapter?=null
+    private var applyAdapter: VoiceApplyAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,26 +55,17 @@ class VoiceRoomApplyListFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        roomBean = arguments?.getSerializable(KEY_ROOM_INFO) as AUIActionUserInfoList?
-        invitedIndex = roomBean?.invitedIndex
+        initAdapter(mRoomViewBinding.rvApplyList)
+        mRoomViewBinding.slApplyList.setOnRefreshListener(this@VoiceRoomApplyListFragment)
 
-
-        val userList = roomBean?.userList
-        if (userList != null) {
-            members = userList
-        }
-        userList?.let {
-            total = it.size
+        userListLiveData.observe(requireActivity()) {
+            members = ArrayList(it.userList)
+            total = members.size
             checkEmpty()
-            applyAdapter?.refresh(it)
+            applyAdapter?.refresh(it.userList)
         }
-
-        mRoomViewBinding.apply {
-            initAdapter(rvApplyList)
-            slApplyList.setOnRefreshListener(this@VoiceRoomApplyListFragment)
-        }
-
     }
+
 
     private fun checkEmpty() {
         mRoomViewBinding.apply {
@@ -101,21 +80,27 @@ class VoiceRoomApplyListFragment : Fragment(),
     }
 
     private fun initAdapter(recyclerView: RecyclerView) {
-        act?.let {
-            applyAdapter = VoiceApplyAdapter(it,members)
-            recyclerView.layoutManager = LinearLayoutManager(it)
-            recyclerView.addItemDecoration(
-                DividerItemDecoration(it, DividerItemDecoration.VERTICAL).apply {
-                    // dividerThickness = 1.dp.toInt()
-                    // dividerInsetStart = 15.dp.toInt()
-                    // dividerInsetEnd = 15.dp.toInt()
-                    // dividerColor = ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)
-                    setDrawable(ColorDrawable(ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)))
-                }
-            )
-            recyclerView.adapter = applyAdapter
-            applyAdapter?.setInvitedEventListener(this)
-        }
+        val context = requireContext()
+        applyAdapter = VoiceApplyAdapter(context, members)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                // dividerThickness = 1.dp.toInt()
+                // dividerInsetStart = 15.dp.toInt()
+                // dividerInsetEnd = 15.dp.toInt()
+                // dividerColor = ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)
+                setDrawable(
+                    ColorDrawable(
+                        ResourcesTools.getColor(
+                            context.resources,
+                            R.color.aui_color_1f979797
+                        )
+                    )
+                )
+            }
+        )
+        recyclerView.adapter = applyAdapter
+        applyAdapter?.setInvitedEventListener(this)
     }
 
     override fun onRefresh() {
@@ -123,7 +108,10 @@ class VoiceRoomApplyListFragment : Fragment(),
         mRoomViewBinding.slApplyList.isRefreshing = false
     }
 
-    fun refreshData(userList:MutableList<AUIActionUserInfo?>){
+    fun refreshData(userList: List<AUIActionUserInfo>) {
+        if (context == null) {
+            return
+        }
         mRoomViewBinding.root.post {
             userList.let {
                 total = it.size
@@ -133,28 +121,35 @@ class VoiceRoomApplyListFragment : Fragment(),
         }
     }
 
-    interface ApplyEventListener{
-        fun onApplyItemClick(view:View, applyIndex:Int?, user: AUIActionUserInfo?, position: Int){}
+    interface ApplyEventListener {
+        fun onApplyItemClick(
+            view: View,
+            applyIndex: Int?,
+            user: AUIActionUserInfo?,
+            position: Int
+        ) {
+        }
     }
 
-    fun setApplyEventListener(listener: ApplyEventListener){
+    fun setApplyEventListener(listener: ApplyEventListener) {
         this.listener = listener
     }
 
     override fun onApplyClickListener(view: View, user: AUIActionUserInfo?, position: Int) {
-        this.listener?.onApplyItemClick(view, user?.micIndex, user,position)
+        this.listener?.onApplyItemClick(view, user?.micIndex, user, position)
     }
 
 }
 
 class VoiceApplyAdapter constructor(
     context: Context,
-    dataList:MutableList<AUIActionUserInfo?>
-): RecyclerView.Adapter<ApplyViewHolder>()   {
-    var dataList:MutableList<AUIActionUserInfo?> = mutableListOf()
-    private var listener: ApplyEventListener?=null
+    dataList: MutableList<AUIActionUserInfo?>
+) : RecyclerView.Adapter<ApplyViewHolder>() {
+    var dataList: MutableList<AUIActionUserInfo?> = mutableListOf()
+    private var listener: ApplyEventListener? = null
 
-    private var mContext:Context?=null
+    private var mContext: Context? = null
+
     init {
         this.mContext = context
         if (dataList != null) {
@@ -171,18 +166,18 @@ class VoiceApplyAdapter constructor(
 
     override fun onBindViewHolder(holder: ApplyViewHolder, position: Int) {
         val userInfo = dataList[position]
-        if (userInfo?.userName.isNullOrEmpty()){
+        if (userInfo?.userName.isNullOrEmpty()) {
             holder.name.text = userInfo?.userId
-        }else{
+        } else {
             holder.name.text = userInfo?.userName
         }
         holder.action.text = mContext?.getString(R.string.aui_room_apply_accept)
         holder.action.alpha = 1.0f
         mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
-        holder.action.setOnClickListener{
-            userInfo.let { index->
-                if (index?.micIndex != -1){
-                    listener?.onApplyClickListener(it,userInfo,position)
+        holder.action.setOnClickListener {
+            userInfo.let { index ->
+                if (index?.micIndex != -1) {
+                    listener?.onApplyClickListener(it, userInfo, position)
                 }
                 holder.action.alpha = 0.2f
             }
@@ -190,24 +185,23 @@ class VoiceApplyAdapter constructor(
     }
 
     override fun getItemCount(): Int {
-        if (dataList.size > 0){
+        if (dataList.size > 0) {
             return dataList.size
         }
         return 0
     }
 
-    fun refresh(data:MutableList<AUIActionUserInfo?>){
-        val list: MutableList<AUIActionUserInfo?> = data
-        Log.e("apex","apply refresh ${list.size}")
-        dataList = list
+    fun refresh(data: List<AUIActionUserInfo>) {
+        Log.e("apex", "apply refresh ${data.size}")
+        dataList = ArrayList(data)
         notifyDataSetChanged()
     }
 
-    interface ApplyEventListener{
-        fun onApplyClickListener(view:View, user: AUIActionUserInfo?, position:Int)
+    interface ApplyEventListener {
+        fun onApplyClickListener(view: View, user: AUIActionUserInfo?, position: Int)
     }
 
-    fun setInvitedEventListener(listener: ApplyEventListener){
+    fun setInvitedEventListener(listener: ApplyEventListener) {
         this.listener = listener
     }
 }
