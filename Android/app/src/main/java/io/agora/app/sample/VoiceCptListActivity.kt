@@ -49,8 +49,8 @@ class VoiceCptListActivity : AppCompatActivity() {
 
     private var memberList:MutableList<MemberInfo?> = mutableListOf()
     private var seatMap: MutableMap<Int, String?> = mutableMapOf()
-    private var inviteList: MutableList<AUIActionUserInfo?> = mutableListOf()
-    private var applyList: MutableList<AUIActionUserInfo?> = mutableListOf()
+    private var inviteList: MutableList<AUIActionUserInfo> = mutableListOf()
+    private var applyList: MutableList<AUIActionUserInfo> = mutableListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -286,15 +286,9 @@ class VoiceCptListActivity : AppCompatActivity() {
     }
 
     private fun showApplyDialog(){
-        val applyInfo = AUIActionUserInfoList()
-        applyInfo.userList = applyList
-
         applyDialog = AUIApplyDialog()
+        applyDialog.refreshApplyData(applyList)
         applyDialog.apply {
-            arguments = Bundle().apply {
-                putSerializable(AUIApplyDialog.KEY_ROOM_APPLY_BEAN, applyInfo)
-                putInt(AUIApplyDialog.KEY_CURRENT_ITEM, 0)
-            }
             setApplyDialogListener(object : AUIApplyDialogEventListener {
                 override fun onApplyItemClick(
                     view: View,
@@ -310,10 +304,9 @@ class VoiceCptListActivity : AppCompatActivity() {
     }
 
     private fun showInvitationDialog(){
-        val invitationInfo = AUIActionUserInfoList()
-        invitationInfo.userList = inviteList
-        invitationInfo.invitedIndex = 2
-
+        val invitationInfo = AUIActionUserInfoList(
+            inviteList, 2
+        )
         invitationDialog = AUIInvitationDialog()
         invitationDialog.apply {
             arguments = Bundle().apply {
