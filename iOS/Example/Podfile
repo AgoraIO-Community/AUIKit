@@ -4,8 +4,7 @@ platform :ios, '13.0'
 
 target 'AUIKit_Example' do
   pod 'AUIKitCore', :path => '../../'
-  pod 'AgoraRtcEngine_Special_iOS', '4.1.1.17'
-  pod 'SDWebImage', '4.4.8'
+  pod 'AgoraRtcEngine_Special_iOS', '4.1.1.20'
   pod 'AgoraLyricsScore', '1.1.4'
   
   post_install do |installer|
