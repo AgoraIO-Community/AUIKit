@@ -3,10 +3,10 @@ use_frameworks!
 platform :ios, '13.0'
 
 target 'AUIKit_Example' do
-pod 'AUIKitCore', :path => '../../'
-#pod 'AUIKitCore/UI', :path => '../../'
-  pod 'AgoraLyricsScore', '1.1.2'
-  pod 'libpag'
+  pod 'AUIKitCore', :path => '../../'
+  pod 'AgoraRtcEngine_Special_iOS', '4.1.1.20'
+  pod 'AgoraLyricsScore', '1.1.4'
+  
   post_install do |installer|
     installer.generated_projects.each do |project|
       project.targets.each do |target|

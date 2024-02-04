@@ -1,16 +1,16 @@
 PODS:
   - Agora_Chat_iOS (1.2.0)
-  - AgoraLyricsScore (1.1.2)
-  - AgoraRtcEngine_Special_iOS (4.1.1.247)
-  - AgoraRtm_iOS (2.1.4)
+  - AgoraLyricsScore (1.1.4)
+  - AgoraRtcEngine_Special_iOS (4.1.1.20)
+  - AgoraRtm_iOS (2.1.8)
   - Alamofire (5.8.1)
-  - AUIKitCore (0.5.4):
-    - AUIKitCore/All (= 0.5.4)
-  - AUIKitCore/All (0.5.4):
+  - AUIKitCore (1.0.0):
+    - AUIKitCore/All (= 1.0.0)
+  - AUIKitCore/All (1.0.0):
     - Agora_Chat_iOS
     - AgoraLyricsScore
-    - AgoraRtcEngine_Special_iOS (~> 4.1.1.1)
-    - AgoraRtm_iOS (= 2.1.4)
+    - AgoraRtcEngine_Special_iOS (< 4.1.1.100, > 4.1.1.19)
+    - AgoraRtm_iOS (= 2.1.8)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
@@ -19,7 +19,6 @@ PODS:
     - SwiftyBeaver (~> 1.9.5)
     - YYModel
     - Zip
-  - libpag (4.3.33)
   - MJRefresh (3.7.6)
   - ScoreEffectUI (1.0.2)
   - SDWebImage (5.0.6):
@@ -31,9 +30,9 @@ PODS:
   - Zip (2.1.2)
 
 DEPENDENCIES:
-  - AgoraLyricsScore (= 1.1.2)
+  - AgoraLyricsScore (= 1.1.4)
+  - AgoraRtcEngine_Special_iOS (= 4.1.1.20)
   - AUIKitCore (from `../../`)
-  - libpag
 
 SPEC REPOS:
   trunk:
@@ -42,7 +41,6 @@ SPEC REPOS:
     - AgoraRtcEngine_Special_iOS
     - AgoraRtm_iOS
     - Alamofire
-    - libpag
     - MJRefresh
     - ScoreEffectUI
     - SDWebImage
@@ -57,12 +55,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: e11aa75b290e5e8a6b90c1c73642ac1172a71b97
-  AgoraLyricsScore: 0c3e6b701dfe036ba26ba208fc65c3b65ecaeb06
-  AgoraRtcEngine_Special_iOS: 1da915f9ea50947b0c01f3a7f9674df4e3c90820
-  AgoraRtm_iOS: 11b767ee81a7202dcf09e045cd2d359b5abbc965
+  AgoraLyricsScore: 8103638e50f0c878d9188ea76262008bfa68f8ba
+  AgoraRtcEngine_Special_iOS: b4c357c188d6af620f272f0d7b664d99e760a86e
+  AgoraRtm_iOS: 9fb76b5f71900d012aaed6c033e235d6fd201ed9
   Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
-  AUIKitCore: 2b733d274d370ce1535093d1585d5ac5e63b4209
-  libpag: 1283c103338f3185a8efa1dd904bc18054a62c24
+  AUIKitCore: f11c9280ce878c200582ab09ef329e2c88ee446d
   MJRefresh: 2fe7fb43a5167ceda20bb7e63f130c04fd1814a5
   ScoreEffectUI: bf1195b4d41a73d43c236450b5d7f958989844aa
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
@@ -71,6 +68,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 88ed866c67b73bca5c415b209b8d487276b3ef5a
+PODFILE CHECKSUM: 983083f26863386607f9a71cbaac5d0735ff0378
 
 COCOAPODS: 1.12.1

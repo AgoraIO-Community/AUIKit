@@ -11,15 +11,21 @@ import YYModel
 
 private let kChooseSongKey = "song"
 
+private enum AUIMusicCmd: String {
+    case chooseSongCmd = "chooseSongCmd"
+    case removeSongCmd = "removeSongCmd"
+    case pingSongCmd = "pingSongCmd"
+    case updatePlayStatusCmd = "updatePlayStatusCmd"
+}
+
 class AUIMusicLoadingInfo: NSObject {
     var songCode: String?
     var lrcMsgId: String?
     var preloadStatus: AgoraMusicContentCenterPreloadStatus?
     var lrcUrl: String?
     var callback: AUILoadSongCompletion?
-    
+
     func makeCallbackIfNeed() -> Bool {
-        
         if let lrcUrl = lrcUrl, lrcUrl.count == 0 {
             //TODO: error
             //callback?()
@@ -30,7 +36,7 @@ class AUIMusicLoadingInfo: NSObject {
             //callback?()
             return true
         }
-        
+
         return false
     }
 }
@@ -38,13 +44,14 @@ class AUIMusicLoadingInfo: NSObject {
 open class AUIMusicServiceImpl: NSObject {
     //选歌列表
     private var chooseSongList: [AUIChooseMusicModel] = []
-    private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    private var respDelegates: NSHashTable<AUIMusicRespDelegate> = NSHashTable<AUIMusicRespDelegate>.weakObjects()
     private var rtmManager: AUIRtmManager!
     private var channelName: String!
     private var ktvApi: KTVApiDelegate!
     
+    private var listCollection: AUIListCollection!
+        
     deinit {
-        rtmManager.unsubscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
         aui_info("deinit AUIMusicServiceImpl", tag: "AUIMusicServiceImpl")
     }
     
@@ -54,87 +61,38 @@ open class AUIMusicServiceImpl: NSObject {
         self.rtmManager = rtmManager
         self.channelName = channelName
         self.ktvApi = ktvApi
-        rtmManager.subscribeAttributes(channelName: getChannelName(), itemKey: kChooseSongKey, delegate: self)
-    }
-}
-
-//MARK: AUIRtmMsgProxyDelegate
-extension AUIMusicServiceImpl: AUIRtmAttributesProxyDelegate {
-    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
-        if key == kChooseSongKey {
-            aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
-            guard let songArray = (value as AnyObject).yy_modelToJSONObject(),
-                    let chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: songArray) as? [AUIChooseMusicModel] else {
-                return
-            }
+        self.listCollection = AUIListCollection(channelName: channelName, observeKey: kChooseSongKey, rtmManager: rtmManager)
+        
+        listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem in
+            return self?.metadataWillAdd(publiserId: publisherId, 
+                                         dataCmd: dataCmd,
+                                         newItem: newItem)
+        }
+        listCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
+            return self?.metadataWillMerge(publiserId: publisherId, 
+                                           dataCmd: dataCmd,
+                                           updateMap: updateMap, 
+                                           currentMap: currentMap)
+        }
+        
+        listCollection.subscribeWillRemove {[weak self] publisherId, dataCmd, item in
+            return self?.metadataWillRemove(publiserId: publisherId,
+                                            dataCmd: dataCmd,
+                                            currentMap: item)
+        }
+        
+        listCollection.subscribeAttributesDidChanged {[weak self] channelName, key, value in
+            self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
+        }
+        
+        listCollection.subscribeAttributesWillSet { channelName, key, valueCmd, attr in
+            guard valueCmd == AUIMusicCmd.pingSongCmd.rawValue else { return attr }
+            guard let value = attr.getList() else { return attr }
             
-            //TODO: optimize
-            if #available(iOS 13.0, *) {
-                let difference =
-                chooseSongList.difference(from: self.chooseSongList) { song1, song2 in
-                    return song1 == song2
-                }
-            }else{
-                
-            }
-            var ifDiff = false
-//            if difference.count == 1 {
-//                for change in difference {
-//                    switch change {
-//                    case let .remove(offset, oldElement, _):
-//                        aui_info("remove \(oldElement.name) idx: \(offset)", tag: "AUIMusicServiceImpl")
-//                        self.respDelegates.allObjects.forEach { obj in
-//                            guard let delegate = obj as? AUIMusicRespDelegate else {return}
-//                            delegate.onRemoveChooseSong(song: oldElement)
-//                        }
-//                        ifDiff = true
-//                    case let .insert(offset, newElement, _):
-//                        aui_info("insert \(newElement.name) idx: \(offset)", tag: "AUIMusicServiceImpl")
-//                        self.respDelegates.allObjects.forEach { obj in
-//                            guard let delegate = obj as? AUIMusicRespDelegate else {return}
-//                            delegate.onAddChooseSong(song: newElement)
-//                        }
-//                        ifDiff = true
-//                    }
-//                }
-//            } else if difference.removals.count == 1, difference.insertions.count == 1 {
-//                if let remove =  difference.removals.first,
-//                    let insert = difference.insertions.first {
-//                    switch remove {
-//                    case let .remove(oldOffset, oldElement, _):
-//                        switch insert {
-//                        case let .insert(newOffset, newElement, _):
-//                            if oldOffset == newOffset, oldElement.songCode == newElement.songCode {
-//                                aui_info("update \(newElement.name) idx: \(newOffset)", tag: "AUIMusicServiceImpl")
-//                                self.respDelegates.allObjects.forEach { obj in
-//                                    guard let delegate = obj as? AUIMusicRespDelegate else {return}
-//                                    delegate.onUpdateChooseSong(song:newElement)
-//                                }
-//                                ifDiff = true
-//                            }
-//                        default:
-//                            break
-//                        }
-//                    default:
-//                        break
-//                    }
-//                }
-//            }
-            
-            if ifDiff == false {
-                aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
-                self.respDelegates.allObjects.forEach { obj in
-                    guard let delegate = obj as? AUIMusicRespDelegate else {return}
-                    delegate.onUpdateAllChooseSongs(songs: chooseSongList)
-                }
-            }
-            
-            aui_info("song update: \(self.chooseSongList.count)->\(chooseSongList.count)", tag: "AUIMusicServiceImpl")
-            self.chooseSongList = chooseSongList
+            let sortList = self._sortChooseSongList(chooseSongList: value)
+            return AUIAttributesModel(list: sortList)
         }
     }
-    
-    
 }
 
 let jsonOption = "{\"needLyric\":true,\"pitchType\":1}"
@@ -182,7 +140,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
                 model.name = music.name
                 model.singer = music.singer
                 model.poster = music.poster
-                model.releaseTime = music.releaseTime
+//                model.releaseTime = music.releaseTime
                 model.duration = music.durationS
                 musicList.append(model)
             }
@@ -218,7 +176,7 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
                 model.name = music.name
                 model.singer = music.singer
                 model.poster = music.poster
-                model.releaseTime = music.releaseTime
+//                model.releaseTime = music.releaseTime
                 model.duration = music.durationS
                 musicList.append(model)
             }
@@ -231,21 +189,20 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
     
     public func getAllChooseSongList(completion: AUIChooseSongListCompletion?) {
         aui_info("getAllChooseSongList", tag: "AUIMusicServiceImpl")
-        self.rtmManager.getMetadata(channelName: self.channelName) { error, map in
+        
+        listCollection.getMetaData {[weak self] error, obj in
+            guard let self = self else {return}
             aui_info("getAllChooseSongList error: \(error?.localizedDescription ?? "success")", tag: "AUIMusicServiceImpl")
             if let error = error {
                 //TODO: error
                 completion?(error, nil)
                 return
             }
-            
-            guard let jsonStr = map?[kChooseSongKey] else {
-                //TODO: error
-                completion?(nil, nil)
+            guard let obj = obj as? [[String: Any]] else {
+                completion?(NSError.auiError("getAllChooseSongList fail not a array"), nil)
                 return
             }
-            
-            self.chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: jsonStr) as? [AUIChooseMusicModel] ?? []
+            self.chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: obj) as? [AUIChooseMusicModel] ?? []
             completion?(nil, self.chooseSongList)
         }
     }
@@ -253,63 +210,189 @@ extension AUIMusicServiceImpl: AUIMusicServiceDelegate {
     public func chooseSong(songModel:AUIMusicModel, completion: AUICallback?) {
         aui_info("chooseSong: \(songModel.songCode)", tag: "AUIMusicServiceImpl")
         guard let dic = songModel.yy_modelToJSONObject() as? [String: Any] else {
-            //TODO: error
-            completion?(nil)
+            completion?(AUICommonError.chooseSongIsFail.toNSError())
             return
         }
-        
-        let networkModel = AUISongAddNetworkModel.yy_model(with: dic)!
-        networkModel.userId = getRoomContext().currentUserInfo.userId
-        let chooseModel = AUIChooseMusicModel.yy_model(with: dic)!
-        networkModel.roomId = channelName
-        let owner = getRoomContext().currentUserInfo
-        networkModel.owner = owner
-        chooseModel.owner = owner
-        networkModel.request(completion: { err, _ in
-            completion?(err as? NSError)
-        })
+        let model = AUIChooseMusicModel.yy_model(with: dic)!
+        model.owner = getRoomContext().currentUserInfo
+        guard let value = model.yy_modelToJSONObject() as? [String: Any] else {
+            completion?(NSError.auiError("convert to json fail"))
+            return
+        }
+        listCollection.addMetaData(valueCmd: AUIMusicCmd.chooseSongCmd.rawValue,
+                                   value: value,
+                                   filter: [["songCode": model.songCode]],
+                                   callback: completion)
     }
     
     public func removeSong(songCode: String, completion: AUICallback?) {
         aui_info("removeSong: \(songCode)", tag: "AUIMusicServiceImpl")
-        let model = AUISongRemoveNetworkModel()
-        model.userId = getRoomContext().currentUserInfo.userId
-        model.songCode = songCode
-        model.roomId = channelName
-        model.request { err, _ in
-            completion?(err as? NSError)
-        }
+        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+                                      filter: [["songCode": songCode]],
+                                      callback: completion)
     }
     
     public func pinSong(songCode: String, completion: AUICallback?) {
         aui_info("pinSong: \(songCode)", tag: "AUIMusicServiceImpl")
-        let model = AUISongPinNetworkModel()
-        model.userId = getRoomContext().currentUserInfo.userId
-        model.songCode = songCode
-        model.roomId = channelName
-        model.request { err, _ in
-            completion?(err as? NSError)
+        let value = ["pinAt": Int64(Date().timeIntervalSince1970 * 1000)]
+        listCollection.mergeMetaData(valueCmd: AUIMusicCmd.pingSongCmd.rawValue,
+                                     value: value,
+                                     filter: [["songCode": songCode]],
+                                     callback: completion)
+    }
+    
+    public func updatePlayStatus(songCode: String, 
+                                 playStatus: AUIPlayStatus,
+                                 completion: AUICallback?) {
+        aui_info("updatePlayStatus: \(songCode)", tag: "AUIMusicServiceImpl")
+        let value = ["status": playStatus.rawValue]
+        listCollection.mergeMetaData(valueCmd: AUIMusicCmd.updatePlayStatusCmd.rawValue,
+                                      value: value,
+                                      filter: [["songCode": songCode]],
+                                      callback: completion)
+    }
+}
+
+//MARK: set meta data
+extension AUIMusicServiceImpl {
+    private func _sortChooseSongList(chooseSongList: [[String: Any]]) -> [[String: Any]] {
+        let songList = chooseSongList.sorted(by: { model1, model2 in
+            //歌曲播放中优先（只会有一个，多个目前没有，如果有需要修改排序策略）
+            if model1["status"] as? Int == AUIPlayStatus.playing.rawValue {
+                return true
+            }
+            if model2["status"] as? Int == AUIPlayStatus.playing.rawValue {
+                return false
+            }
+            
+            let pinAt1 = model1["pinAt"] as? Int64 ?? 0
+            let pinAt2 = model2["pinAt"] as? Int64 ?? 0
+            let createAt1 = model1["createAt"] as? Int64 ?? 0
+            let createAt2 = model2["createAt"] as? Int64 ?? 0
+            //都没有置顶时间，比较创建时间，创建时间小的在前（即创建早的在前）
+            if pinAt1 < 1,  pinAt2 < 1 {
+                return createAt1 - createAt2 < 0 ? true : false
+            }
+            
+            //有一个有置顶时间，置顶时间大的在前（即后置顶的在前）
+            return pinAt1 - pinAt2 > 0 ? true : false
+        })
+        
+        return songList
+    }
+    
+    private func onAttributesDidChanged(channelName: String, key: String, value: AUIAttributesModel) {
+        if key == kChooseSongKey {
+            aui_info("recv choose song attr did changed \(value)", tag: "AUIMusicServiceImpl")
+            guard let songArray = (value.getList() as? AnyObject)?.yy_modelToJSONObject(),
+                  let chooseSongList = NSArray.yy_modelArray(with: AUIChooseMusicModel.self, json: songArray) as? [AUIChooseMusicModel] else {
+                return
+            }
+            
+            aui_info("update \(chooseSongList.count)", tag: "AUIMusicServiceImpl")
+            self.chooseSongList = chooseSongList
+            self.respDelegates.allObjects.forEach { obj in
+                obj.onUpdateAllChooseSongs(songs: self.chooseSongList)
+            }
         }
     }
     
-    public func updatePlayStatus(songCode: String, playStatus: AUIPlayStatus, completion: AUICallback?) {
-        aui_info("updatePlayStatus: \(songCode)", tag: "AUIMusicServiceImpl")
-        if playStatus == .playing {
-            let model = AUISongPlayNetworkModel()
-            model.userId = getRoomContext().currentUserInfo.userId
-            model.songCode = songCode
-            model.roomId = channelName
-            model.request { err, _ in
-                completion?(err as? NSError)
-            }
-        } else {
-            let model = AUISongStopNetworkModel()
-            model.userId = getRoomContext().currentUserInfo.userId
-            model.songCode = songCode
-            model.roomId = channelName
-            model.request { err, _ in
-                completion?(err as? NSError)
-            }
+    private func metadataWillAdd(publiserId: String,
+                                 dataCmd: String?,
+                                 newItem: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMusicCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
         }
+        
+        let owner = newItem["owner"] as? [String: Any]
+        let userId = owner?["userId"] as? String ?? ""
+        switch dataCmd {
+        case .chooseSongCmd:
+//            if self.chooseSongList.contains(where: { $0.songCode == songCode }) {
+//                return AUICommonError.chooseSongAlreadyExist.toNSError()
+//            }
+            //过滤条件在filter里包含
+    
+            let metaData = NSMutableDictionary(dictionary: newItem)
+            var err: NSError? = nil
+            for obj in self.respDelegates.allObjects {
+                err = obj.onSongWillAdd?(userId: userId, metaData: metaData)
+                if let err = err {
+                    return err
+                }
+            }
+            return nil
+        default:
+            break
+        }
+        
+        return NSError.auiError("add music cmd incorrect")
+    }
+            
+    private func metadataWillMerge(publiserId: String,
+                                   dataCmd: String?,
+                                   updateMap: [String: Any],
+                                   currentMap: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMusicCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
+        }
+        
+        switch dataCmd {
+        case .pingSongCmd:
+            //过滤条件在filter里包含
+            return nil
+        case .updatePlayStatusCmd:
+            //过滤条件在filter里包含
+            return nil
+        default:
+            break
+        }
+        
+        return NSError.auiError("merge music cmd incorrect")
+    }
+            
+    private func metadataWillRemove(publiserId: String,
+                                    dataCmd: String?,
+                                    currentMap: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIMusicCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
+        }
+        
+        let owner = currentMap["owner"] as? [String: Any]
+        let userId = owner?["userId"] as? String ?? ""
+        let songCode = currentMap["songCode"] as? String ?? ""
+        switch dataCmd {
+        case .removeSongCmd:
+            //点歌本人/房主可操作
+            guard publiserId == userId || getRoomContext().isRoomOwner(channelName: channelName, userId: publiserId) else {
+                return AUICommonError.noPermission.toNSError()
+            }
+            let metaData = NSMutableDictionary()
+            for obj in respDelegates.allObjects {
+                let err = obj.onSongWillRemove?(songCode: songCode, metaData: metaData)
+                if let err = err {
+                    return err
+                }
+            }
+            return nil
+        default:
+            break
+        }
+        
+        return NSError.auiError("remove music cmd incorrect")
+    }
+    
+    public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
+        listCollection.removeMetaData(valueCmd: AUIMusicCmd.removeSongCmd.rawValue,
+                                      filter: [["owner": ["userId": userId]]],
+                                      callback: completion)
+    }
+    
+    public func deinitService(completion:  @escaping  ((NSError?) -> ())) {
+//        rtmManager.cleanBatchMetadata(channelName: channelName,
+//                                      lockName: kRTM_Referee_LockName,
+//                                      removeKeys: [kChooseSongKey],
+//                                      completion: completion)
+        listCollection.cleanMetaData(callback: completion)
     }
 }

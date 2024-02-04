@@ -53,6 +53,10 @@ extension AUIChooseMusicModel: AUIJukeBoxItemSelectedDataProtocol {
         }
     }
     
+    static func modelPropertyBlacklist() -> [Any] {
+        return ["switchEnable"]
+    }
+    
     public var userId: String? {
         return self.owner?.userId
     }

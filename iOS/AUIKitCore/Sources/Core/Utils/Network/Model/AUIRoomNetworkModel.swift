@@ -7,19 +7,20 @@
 
 import Foundation
 import YYModel
+import Alamofire
 
 @objcMembers
 open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/room/create"
+        interfaceName = "/v2/room/create"
     }
+    public var roomInfo: AUIRoomInfo?
     
-    public var roomName: String?
-    public var userName: String?
-    public var userAvatar: String?
-    public var micSeatCount: UInt = 8
-    public var micSeatStyle: String = "8"
+    public override func getParameters() -> Parameters? {
+        let payloadParam = roomInfo?.yy_modelToJSONObject() as? Parameters ?? [:]
+        return payloadParam
+    }
     
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil
@@ -34,9 +35,6 @@ open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
             throw AUICommonError.networkParseFail.toNSError()
         }
         
-        roomInfo.memberCount = micSeatCount
-        roomInfo.owner = AUIRoomContext.shared.currentUserInfo
-        
         return roomInfo
     }
 }
@@ -44,7 +42,7 @@ open class AUIRoomCreateNetworkModel: AUICommonNetworkModel {
 open class AUIRoomDestroyNetworkModel: AUICommonNetworkModel {
     public override init() {
         super.init()
-        interfaceName = "/v1/room/destroy"
+        interfaceName = "/v2/room/destroy"
     }
     
     public var roomId: String?

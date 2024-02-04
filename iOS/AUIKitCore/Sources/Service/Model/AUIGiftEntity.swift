@@ -38,7 +38,7 @@ import YYModel
         user.userId = self.sendUser.userId
         user.userName = self.sendUser.userName
         user.userAvatar = self.sendUser.userAvatar
-        user.seatIndex = self.sendUser.seatIndex
+//        user.seatIndex = self.sendUser.seatIndex
         model.sendUser = user
         return model
     }

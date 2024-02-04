@@ -29,6 +29,9 @@ object GsonTools {
 
     @JvmStatic
     fun beanToString(obj: Any?): String? {
+        if(obj is String){
+            return obj
+        }
         return try {
             gson.toJson(obj)
         } catch (e: Exception) {

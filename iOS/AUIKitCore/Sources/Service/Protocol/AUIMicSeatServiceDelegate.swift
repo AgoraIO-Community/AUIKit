@@ -68,6 +68,11 @@ import Foundation
     ///   - isClose: 锁定麦位情况 true: 锁定麦位 false: 解锁麦位
     ///   - callback: 操作完成回调
     func closeSeat(seatIndex: Int, isClose: Bool, callback: @escaping AUICallback)
+    
+    
+    @objc optional func isOnMicSeat(userId: String) -> Bool
+    
+    @objc optional func getMicSeatIndex(userId: String) -> Int
 }
 
 /// 麦位相关操作的响应
@@ -106,4 +111,7 @@ import Foundation
     ///   - seatIndex: 麦位索引
     ///   - isClose: 麦位锁定状态
     func onSeatClose(seatIndex: Int, isClose: Bool)
+    
+    
+    @objc optional func onSeatWillLeave(userId: String, metaData: NSMutableDictionary) -> NSError?
 }

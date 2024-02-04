@@ -13,6 +13,31 @@ class AUIGiftNetworkModel: AUINetworkModel {
         super.init()
         interfaceName = "/v1/gifts/list"
     }
+    
+    public override func request(completion: ((Error?, Any?)->())?) {
+        DispatchQueue.global().async {
+            guard let folderPath = Bundle.main.path(forResource: "Gift", ofType: "bundle"),
+                  let data = try? Data(contentsOf: URL(fileURLWithPath: "\(folderPath)/gift.json")) else {
+                DispatchQueue.main.async {
+                    completion?(AUICommonError.unknown.toNSError(), nil)
+                }
+                return
+            }
+            
+            var value: Any?
+            do {
+                value = try JSONSerialization.jsonObject(with: data)
+            } catch {
+                DispatchQueue.main.async {
+                    completion?(error, nil)
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                completion?(nil, value)
+            }
+        }                 
+    }
             
     public override func parse(data: Data?) throws -> Any {
         var dic: Any? = nil

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '0.5.4'
+  s.version          = '1.0.0'
   s.summary          = 'A short description of AUIKit.'
   
   # This description is used to generate tags and improve search results.
@@ -47,8 +47,8 @@ Pod::Spec.new do |s|
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore'
-    ss.dependency 'AgoraRtm_iOS', '2.1.4'
-    ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.1'
+    ss.dependency 'AgoraRtm_iOS', '2.1.8'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
     ss.dependency 'Agora_Chat_iOS'
@@ -67,8 +67,8 @@ Pod::Spec.new do |s|
     'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
     'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
     ]
-    ss.dependency 'AgoraRtm_iOS', '2.1.4'
-    ss.dependency 'AgoraRtcEngine_Special_iOS','~> 4.1.1.1'
+    ss.dependency 'AgoraRtm_iOS', '2.1.8'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
     ss.dependency 'Agora_Chat_iOS'
@@ -89,6 +89,7 @@ Pod::Spec.new do |s|
     'iOS/AUIKitCore/Sources/Components/**/*',
     'iOS/AUIKitCore/Sources/Service/Extension/Model/*',
     'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel.swift',
+    'iOS/AUIKitCore/Sources/Service/Model/AUIKitModel+Coder.swift',
     'iOS/AUIKitCore/Sources/Service/Model/AUIGiftEntity.swift',
     'iOS/AUIKitCore/Sources/Service/Extension/Protocol/AUIUserCellUserDataProtocol.swift',
     ]

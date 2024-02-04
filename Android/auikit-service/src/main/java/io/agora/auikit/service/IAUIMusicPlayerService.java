@@ -96,6 +96,12 @@ public interface IAUIMusicPlayerService extends IAUICommonService<IAUIMusicPlaye
     void setAudioEffectPreset(int audioEffectId);
 
     /**
+     * 变声
+     * @param voiceConversionPreset
+     */
+    void setVoiceConversionPreset(int voiceConversionPreset);
+
+    /**
      * 音效映射 key index,value effectId
      */
     Map<Integer,Integer> effectProperties();

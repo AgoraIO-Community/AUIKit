@@ -13,7 +13,7 @@ public class AUIRoomListNetworkModel: AUINetworkModel {
     public var pageSize: Int = 10
     public override init() {
         super.init()
-        interfaceName = "/v1/room/list"
+        interfaceName = "/v2/room/list"
     }
     
     public override func parse(data: Data?) throws -> Any {
@@ -29,7 +29,6 @@ public class AUIRoomListNetworkModel: AUINetworkModel {
               let roomInfo = NSArray.yy_modelArray(with: AUIRoomInfo.self, json: list) else {
             throw AUICommonError.networkParseFail.toNSError()
         }
-        
         
         return roomInfo
     }

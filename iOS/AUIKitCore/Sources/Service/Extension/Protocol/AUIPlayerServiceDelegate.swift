@@ -80,7 +80,7 @@ public protocol AUIPlayerServiceDelegate: AUICommonServiceDelegate {
     
     /// 获取播放器实例
     /// - Returns: <#description#>
-    func getMusicPlayer() -> AgoraMusicPlayerProtocol?
+    func getMusicPlayer() -> AgoraRtcMediaPlayerProtocol?
     
     /// 升降调
     /// - Parameter pitch: <#pitch description#>
@@ -106,12 +106,6 @@ public protocol AUIPlayerServiceDelegate: AUICommonServiceDelegate {
     /// 取消订阅KTVApi事件
     /// - Parameter ktvApiEventHandler: <#ktvApiEventHandler description#>
     func removeEventHandler(ktvApiEventHandler: KTVApiEventHandlerDelegate)
-    
-    func didKTVAPIReceiveStreamMessageFrom(uid: NSInteger, streamId: NSInteger, data: Data)
-    
-    func didKTVAPIReceiveAudioVolumeIndication(with speakers: [AgoraRtcAudioVolumeInfo], totalVolume: NSInteger)
-    
-    func didKTVAPILocalAudioStats(stats: AgoraRtcLocalAudioStats)
     
     func sendStreamMsg(with dict:[String: Any])
     

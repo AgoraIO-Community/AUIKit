@@ -5,34 +5,45 @@
 
 <!-- TOC START -->
 
+- [AUIKit-iOS](#auikit-ios)
 - [AUIKit Basic Components](#auikit-basic-components)
-- [Service](#service)
-  * [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
-  * [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
-  * [AUIUserServiceDelegate](#auiuserservicedelegate)
-  * [AUIUserRespDelegate](#auiuserrespdelegate)
-  * [AUIChorusServiceDelegate](#auichorusservicedelegate)
-  * [AUIChorusRespDelegate](#auichorusrespdelegate)
-  * [AUIMusicServiceDelegate](#auimusicservicedelegate)
-  * [AUIMusicRespDelegate](#auimusicrespdelegate)
-  * [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
-  * [AUIPlayerRespDelegate](#auiplayerrespdelegate)
-  * [AUIRoomManagerDelegate](#auiroommanagerdelegate)
-  * [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
-- [Widget](#widget)
-  * [AUIActionSheet](#auiactionsheet)
-    * [Main container configuration](#main-container-configuration)
-    * [List Item Configuration](#list-item-configuration)
-  * [AUIAlertView](#auialertview)
-  * [AUIButton](#auibutton)
-  * [AUISlider](#auislider)
-  * [AUITableViewCell](#auitableviewcell)
-  * [AUITabs](#auitabs)
-  * [AUITextField](#auitextfield)
-  * [AUIToast](#auitoast)
-  
-  
-  <!-- TOC END -->
+- [API reference](#api-reference)
+  - [Service](#service)
+    - [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
+      - [MicSeat management protocol](#micseat-management-protocol)
+    - [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
+      - [MicSeat management response protocol](#micseat-management-response-protocol)
+    - [AUIUserServiceDelegate](#auiuserservicedelegate)
+      - [User management protocol](#user-management-protocol)
+    - [AUIUserRespDelegate](#auiuserrespdelegate)
+      - [User management response protocol](#user-management-response-protocol)
+    - [AUIChorusServiceDelegate](#auichorusservicedelegate)
+      - [Chorus management protocol](#chorus-management-protocol)
+    - [AUIChorusRespDelegate](#auichorusrespdelegate)
+      - [Chorus management response protocol](#chorus-management-response-protocol)
+    - [AUIMusicServiceDelegate](#auimusicservicedelegate)
+      - [Music management protocol](#music-management-protocol)
+    - [AUIMusicRespDelegate](#auimusicrespdelegate)
+      - [Music management response protocol](#music-management-response-protocol)
+    - [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
+      - [Karaoke music player protocol](#karaoke-music-player-protocol)
+    - [AUIPlayerRespDelegate](#auiplayerrespdelegate)
+      - [Karaoke music player response protocol](#karaoke-music-player-response-protocol)
+    - [AUIRoomManagerDelegate](#auiroommanagerdelegate)
+      - [Room management protocol](#room-management-protocol)
+    - [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
+      - [Room management response protocol](#room-management-response-protocol)
+  - [Widget](#widget)
+    - [AUIActionSheet](#auiactionsheet)
+      - [Main container configuration](#main-container-configuration)
+      - [List Item Configuration](#list-item-configuration)
+    - [AUIAlertView](#auialertview)
+    - [AUIButton](#auibutton)
+    - [AUISlider](#auislider)
+    - [AUITableViewCell](#auitableviewcell)
+    - [AUITabs](#auitabs)
+    - [AUITextField](#auitextfield)
+    - [AUIToast](#auitoast)
 
 # AUIKit Basic Components
 ```
@@ -69,16 +80,12 @@ AUIKit
 │  └─ AUIToast                          // Toast
 │
 └─ Component                            // UI module containing specific business
-   ├─ JukeBox                           // Jukebox component
-   │  ├─ AUIJukeBoxView                 // Jukebox view，without business
-   │  └─ AUIJukeBoxViewBinder           // View and Service binding class for Jukebox
+   ├─ IM                                // IM component
+   ├─ Gifts                             // Gift component 
+   ├─ Invitation                        // Invitation component 
+   ├─ JukeBox                           // Jukebox component 
    ├─ MicSeat                           // MicSeat component
-   │  ├─ AUIMicSeatView                 // MicSeat view，without business
-   │  └─ AUIMicSeatViewBinder           // View and Service binding class for MicSeat
    └─ Player                            // Karaoke player component
-      ├─ AUIPlayerView                  // Player view，without business
-      └─ AUIPlayerViewBinder            // View and Service binding class for Player
-   
 ```
 # API reference
 

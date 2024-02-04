@@ -1,4 +1,3 @@
-//
 //  AUIUserServiceImpl.swift
 //  AUIKit
 //
@@ -6,32 +5,37 @@
 //
 
 import Foundation
-import AgoraRtcKit
+import AgoraRtmKit
 
 @objc open class AUIUserServiceImpl: NSObject {
     public var userList: [AUIUserInfo] = []
     private var respDelegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     private var channelName: String!
     private let rtmManager: AUIRtmManager!
-    private let roomManager: AUIRoomManagerDelegate!
     
     deinit {
         aui_info("deinit AUIUserServiceImpl", tag: "AUIUserServiceImpl")
         rtmManager.unsubscribeUser(channelName: channelName, delegate: self)
     }
     
-    public init(channelName: String, rtmManager: AUIRtmManager, roomManager: AUIRoomManagerDelegate) {
+    public init(channelName: String, rtmManager: AUIRtmManager) {
         self.rtmManager = rtmManager
         self.channelName = channelName
-        self.roomManager = roomManager
         super.init()
         self.rtmManager.subscribeUser(channelName: channelName, delegate: self)
         aui_info("init AUIUserServiceImpl", tag: "AUIUserServiceImpl")
     }
 }
 
-
+//MARK: AUIRtmUserProxyDelegate
 extension AUIUserServiceImpl: AUIRtmUserProxyDelegate {
+    public func onCurrentUserJoined(channelName: String) {
+        guard channelName == self.channelName else {return}
+        _setupUserAttr(roomId: channelName) { error in
+            //TODO: retry if fail
+        }
+    }
+    
     public func onUserDidUpdated(channelName: String, userId: String, userInfo: [String : Any]) {
         aui_info("onUserDidUpdated: \(userId)", tag: "AUIUserServiceImpl")
         let user = AUIUserInfo.yy_model(withJSON: userInfo)!
@@ -75,11 +79,6 @@ extension AUIUserServiceImpl: AUIRtmUserProxyDelegate {
             guard let obj = obj as? AUIUserRespDelegate else {return}
             self.userList = users
             obj.onRoomUserSnapshot(roomId: channelName, userList: users)
-        }
-        
-        //对于2.1.0版本。我们推荐在join之后收到snapshot之后再去设置state
-        _setupUserAttr(roomId: channelName) { error in
-            //TODO: retry if fail
         }
     }
     
@@ -239,5 +238,4 @@ extension AUIUserServiceImpl {
         }
     }
 }
-
 

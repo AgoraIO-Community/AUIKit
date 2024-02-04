@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,17 +24,19 @@ import io.agora.auikit.utils.ResourcesTools
 class VoiceRoomInvitedListFragment : Fragment(),
     SwipeRefreshLayout.OnRefreshListener, VoiceInvitedAdapter.InvitedEventListener {
 
-    private var mRoomViewBinding =  AuiInvitationListLayoutBinding.inflate(LayoutInflater.from(
-        Companion.activity
-    ))
+    private val mRoomViewBinding by lazy {
+        AuiInvitationListLayoutBinding.inflate(
+            LayoutInflater.from(
+                requireContext()
+            )
+        )
+    }
 
     companion object {
 
         private const val KEY_ROOM_INFO = "room_info"
-        private var activity: FragmentActivity?=null
 
-        fun getInstance(fragmentActivity: FragmentActivity, roomBean: AUIActionUserInfoList): VoiceRoomInvitedListFragment {
-            activity = fragmentActivity
+        fun getInstance(roomBean: AUIActionUserInfoList): VoiceRoomInvitedListFragment {
             return VoiceRoomInvitedListFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(KEY_ROOM_INFO, roomBean)
@@ -45,8 +46,8 @@ class VoiceRoomInvitedListFragment : Fragment(),
     }
 
     private var roomBean: AUIActionUserInfoList? = null
-    private var invitedIndex:Int? = -1
-    private var listener: InviteEventListener?=null
+    private var invitedIndex: Int? = -1
+    private var listener: InviteEventListener? = null
 
     private var total = 0
         set(value) {
@@ -55,7 +56,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
         }
     private var members = mutableListOf<AUIActionUserInfo?>()
 
-    private var invitedAdapter: VoiceInvitedAdapter?=null
+    private var invitedAdapter: VoiceInvitedAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +76,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
         userList?.let {
             total = it.size
             checkEmpty()
-            members = it
+            members = ArrayList(it)
         }
 
         mRoomViewBinding.apply {
@@ -99,7 +100,7 @@ class VoiceRoomInvitedListFragment : Fragment(),
 
     private fun initAdapter(recyclerView: RecyclerView) {
         activity?.let {
-            invitedAdapter = VoiceInvitedAdapter(it,invitedIndex,members)
+            invitedAdapter = VoiceInvitedAdapter(it, invitedIndex, members)
             recyclerView.layoutManager = LinearLayoutManager(it)
             recyclerView.addItemDecoration(
                 DividerItemDecoration(it, DividerItemDecoration.VERTICAL).apply {
@@ -107,7 +108,14 @@ class VoiceRoomInvitedListFragment : Fragment(),
                     // dividerInsetStart = 15.dp.toInt()
                     // dividerInsetEnd = 15.dp.toInt()
                     // dividerColor = ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)
-                    setDrawable(ColorDrawable(ResourcesTools.getColor(it.resources, R.color.aui_color_1f979797)))
+                    setDrawable(
+                        ColorDrawable(
+                            ResourcesTools.getColor(
+                                it.resources,
+                                R.color.aui_color_1f979797
+                            )
+                        )
+                    )
                 }
             )
             recyclerView.adapter = invitedAdapter
@@ -120,7 +128,10 @@ class VoiceRoomInvitedListFragment : Fragment(),
         mRoomViewBinding.slInvitedList.isRefreshing = false
     }
 
-    fun refreshData(userList:MutableList<AUIActionUserInfo?>){
+    fun refreshData(userList: List<AUIActionUserInfo>) {
+        if (context == null) {
+            return
+        }
         mRoomViewBinding.root.post {
             userList.let {
                 total = it.size
@@ -131,14 +142,14 @@ class VoiceRoomInvitedListFragment : Fragment(),
     }
 
     override fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIActionUserInfo?) {
-        this.listener?.onInviteItemClick(view,invitedIndex,user)
+        this.listener?.onInviteItemClick(view, invitedIndex, user)
     }
 
-    interface InviteEventListener{
-        fun onInviteItemClick(view:View,invitedIndex:Int,user: AUIActionUserInfo?){}
+    interface InviteEventListener {
+        fun onInviteItemClick(view: View, invitedIndex: Int, user: AUIActionUserInfo?) {}
     }
 
-    fun setInviteEventListener(listener: InviteEventListener){
+    fun setInviteEventListener(listener: InviteEventListener) {
         this.listener = listener
     }
 
@@ -147,13 +158,14 @@ class VoiceRoomInvitedListFragment : Fragment(),
 class VoiceInvitedAdapter constructor(
     context: Context,
     index: Int?,
-    dataList:MutableList<AUIActionUserInfo?>
-): RecyclerView.Adapter<InvitedViewHolder>()   {
-    var dataList:MutableList<AUIActionUserInfo?> = mutableListOf()
-    private var listener: InvitedEventListener?=null
-    private var invitedIndex:Int?
+    dataList: MutableList<AUIActionUserInfo?>
+) : RecyclerView.Adapter<InvitedViewHolder>() {
+    var dataList: MutableList<AUIActionUserInfo?> = mutableListOf()
+    private var listener: InvitedEventListener? = null
+    private var invitedIndex: Int?
 
-    private var mContext:Context?=null
+    private var mContext: Context? = null
+
     init {
         this.mContext = context
         this.invitedIndex = index
@@ -175,10 +187,10 @@ class VoiceInvitedAdapter constructor(
         holder.action.text = mContext?.getString(R.string.aui_room_invited_action)
         holder.action.alpha = 1.0f
         mContext?.let { Glide.with(it).load(userInfo?.userAvatar).into(holder.avatar) }
-        holder.action.setOnClickListener{
-            invitedIndex?.let { index->
-                if (index != -1){
-                    listener?.onInvitedClickListener(it,index,userInfo)
+        holder.action.setOnClickListener {
+            invitedIndex?.let { index ->
+                if (index != -1) {
+                    listener?.onInvitedClickListener(it, index, userInfo)
                 }
             }
             holder.action.alpha = 0.2f
@@ -186,26 +198,25 @@ class VoiceInvitedAdapter constructor(
     }
 
     override fun getItemCount(): Int {
-        if (dataList.size > 0){
+        if (dataList.size > 0) {
             return dataList.size
         }
         return 0
     }
 
 
-    fun refresh(data:MutableList<AUIActionUserInfo?>){
+    fun refresh(data: List<AUIActionUserInfo>) {
         data.let {
-            dataList = data
+            dataList = ArrayList(it)
         }
-
         notifyDataSetChanged()
     }
 
-    interface InvitedEventListener{
-        fun onInvitedClickListener(view:View,invitedIndex:Int,user: AUIActionUserInfo?)
+    interface InvitedEventListener {
+        fun onInvitedClickListener(view: View, invitedIndex: Int, user: AUIActionUserInfo?)
     }
 
-    fun setInvitedEventListener(listener: InvitedEventListener){
+    fun setInvitedEventListener(listener: InvitedEventListener) {
         this.listener = listener
     }
 }

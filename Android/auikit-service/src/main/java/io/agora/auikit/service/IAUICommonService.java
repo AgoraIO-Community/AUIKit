@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import io.agora.auikit.model.AUIRoomContext;
+import io.agora.auikit.service.arbiter.AUIArbiter;
+import io.agora.auikit.service.callback.AUICallback;
 
 public interface IAUICommonService<Observer> {
 
@@ -21,6 +23,17 @@ public interface IAUICommonService<Observer> {
      */
     void unRegisterRespObserver(@Nullable Observer observer);
 
+    default void deInitService(@Nullable AUICallback completion) {}
+
+    default void initService(@Nullable AUICallback completion) {}
+
+    default void cleanUserInfo(@NonNull String userId, @Nullable AUICallback completion) {}
+
+    /**
+     * room setup success
+     */
+    default void serviceDidLoad(){}
+
     /** 获取当前房间上下文
      *
      * @return
@@ -29,4 +42,11 @@ public interface IAUICommonService<Observer> {
 
     @NonNull String getChannelName();
 
+    default @NonNull String getLockOwnerId() {
+        AUIArbiter arbiter = AUIRoomContext.shared().getArbiter(getChannelName());
+        if(arbiter == null){
+            return "";
+        }
+        return arbiter.lockOwnerId();
+    }
 }

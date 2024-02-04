@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.Group;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.Map;
 import io.agora.auikit.ui.R;
 import io.agora.auikit.ui.basic.AUIAlertDialog;
 import io.agora.auikit.ui.basic.AUIBottomDialog;
+import io.agora.auikit.ui.musicplayer.ControllerEffectInfo;
 import io.agora.auikit.ui.musicplayer.IMusicPlayerView;
 import io.agora.auikit.ui.musicplayer.MusicSettingInfo;
 import io.agora.auikit.ui.musicplayer.listener.IMusicPlayerActionListener;
@@ -78,6 +80,8 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private final Map<Integer,Integer> effectProperties =  new HashMap<>();
+
+    private final List<ControllerEffectInfo> voiceConversionList = new ArrayList<>();
 
     private MusicSettingInfo musicSettingInfo = new MusicSettingInfo();
 
@@ -207,6 +211,12 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     public void setEffectProperties(Map<Integer, Integer> effectProperties) {
         this.effectProperties.clear();
         this.effectProperties.putAll(effectProperties);
+    }
+
+    @Override
+    public void setVoiceConversionList(List<ControllerEffectInfo> list) {
+        this.voiceConversionList.clear();
+        this.voiceConversionList.addAll(list);
     }
 
     public void setMusicSettingInfo(MusicSettingInfo musicSettingInfo){
@@ -377,11 +387,14 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     }
 
     // 离开合唱
-    public void onLeaveChorus() {
+    public void onLeaveChorus(boolean isRoomOwner) {
         mainHandler.post(() -> {
             mJoinChorusView.setVisibility(View.VISIBLE);
             mLeaveChorus.setVisibility(View.GONE);
             mMusicControllerGroup.setVisibility(View.GONE);
+            if(isRoomOwner){
+                mSwitchSongBtn.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -524,7 +537,12 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     // ----------------- 变声 ----------------
     private void showPresetDialog() {
         AUIBottomDialog presetDialog = new AUIBottomDialog(getContext());
-        AUIMusicPlayerPresetDialogView contentView = new AUIMusicPlayerPresetDialogView(getContext());
+        AUIMusicPlayerPresetDialogView contentView = new AUIMusicPlayerPresetDialogView(getContext(), voiceConversionList);
+        contentView.setActionListener(id -> {
+            if (mActionDelegate != null) {
+                mActionDelegate.onVoiceConversion(id);
+            }
+        });
         presetDialog.setCustomView(contentView);
         presetDialog.show();
     }

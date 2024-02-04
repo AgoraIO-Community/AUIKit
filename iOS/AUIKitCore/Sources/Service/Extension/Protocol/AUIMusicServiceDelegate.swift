@@ -86,4 +86,10 @@ import Foundation
     /// 更新所有歌曲回调（例如pin）
     /// - Parameter song: <#song description#>
     func onUpdateAllChooseSongs(songs: [AUIChooseMusicModel])
+    
+    
+    @objc optional func onSongWillAdd(userId: String, metaData: NSMutableDictionary) -> NSError?
+    
+    @objc optional func onSongWillRemove(songCode: String, metaData: NSMutableDictionary) -> NSError?
+
 }

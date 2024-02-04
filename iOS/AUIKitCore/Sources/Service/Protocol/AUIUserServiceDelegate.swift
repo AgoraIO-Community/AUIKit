@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol AUIUserServiceDelegate: AUICommonServiceDelegate {
+@objc public protocol AUIUserServiceDelegate: AUICommonServiceDelegate {
     
     /// 绑定响应
     /// - Parameter delegate: 需要回调的对象
@@ -48,7 +48,7 @@ public protocol AUIUserServiceDelegate: AUICommonServiceDelegate {
     func kickUser(roomId: String ,userId: String, callback: @escaping AUICallback)
 }
 
-public protocol AUIUserRespDelegate: NSObjectProtocol {
+@objc public protocol AUIUserRespDelegate: NSObjectProtocol {
     
     /// 用户进入房间后获取到的所有用户信息
     /// - Parameters:

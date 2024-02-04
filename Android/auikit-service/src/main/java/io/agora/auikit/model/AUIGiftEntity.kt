@@ -14,7 +14,7 @@ data class AUIGiftEntity constructor(
     // 每个app启动后加载场景之前预先去下载礼物资源缓存到磁盘供UIKit取用
     @SerializedName("giftEffect")var giftEffect:String?="",
     @SerializedName("effectMD5")var effectMD5:String?="",
-    @SerializedName("sendUser")var sendUser: AUIUserThumbnailInfo?,
+    @SerializedName("sendUser")var sendUser: AUIUserThumbnailInfo? = null,
     var selected:Boolean=false,
     var giftCount:Int = 1,
 ): Serializable

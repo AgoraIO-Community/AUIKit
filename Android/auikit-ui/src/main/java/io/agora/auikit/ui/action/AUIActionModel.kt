@@ -10,7 +10,7 @@ data class AUIActionUserInfo constructor(
 ): Serializable
 
 data class AUIActionUserInfoList constructor(
-    var userList: MutableList<AUIActionUserInfo?> = mutableListOf(),
+    var userList: List<AUIActionUserInfo>,
     var invitedIndex:Int? = -1
 ): Serializable
 

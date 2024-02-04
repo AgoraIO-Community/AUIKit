@@ -9,20 +9,19 @@ import Foundation
 
 open class AUIRoomContext: NSObject {
     public static let shared: AUIRoomContext = AUIRoomContext()
-    /// appid
-    public var appId: String = ""
     public let currentUserInfo: AUIUserThumbnailInfo = AUIUserThumbnailInfo()
     public var commonConfig: AUICommonConfig? {
         didSet {
-            guard let config = commonConfig else {return}
-            currentUserInfo.userName = config.userName
-            currentUserInfo.userId = config.userId
-            currentUserInfo.userAvatar = config.userAvatar
+            guard let userInfo = commonConfig?.owner else {return}
+            currentUserInfo.userName = userInfo.userName
+            currentUserInfo.userId = userInfo.userId
+            currentUserInfo.userAvatar = userInfo.userAvatar
         }
     }
     
     public var roomInfoMap: [String: AUIRoomInfo] = [:]
     public var roomConfigMap: [String: AUIRoomConfig] = [:]
+    public var roomArbiterMap: [String: AUIArbiter] = [:]
     
     public var seatType: AUIMicSeatViewLayoutType = .eight {
         willSet {
@@ -38,12 +37,27 @@ open class AUIRoomContext: NSObject {
     public var seatCount: UInt = 8
     
     public func isRoomOwner(channelName: String) ->Bool {
-        return roomInfoMap[channelName]?.owner?.userId == currentUserInfo.userId
+        return isRoomOwner(channelName: channelName, userId: currentUserInfo.userId)
+    }
+    
+    public func isRoomOwner(channelName: String, userId: String) ->Bool {
+        return roomInfoMap[channelName]?.owner?.userId == userId
+    }
+    
+    public func getArbiter(channelName: String) -> AUIArbiter? {
+//        guard let _ = roomInfoMap[channelName] else {return nil}
+        if let handler = roomArbiterMap[channelName] {
+            return handler
+        }
+        
+//        assert(false, "arbiter == nil!")
+        return nil
     }
     
     public func clean(channelName: String) {
-//        roomConfig = nil
+        roomConfigMap[channelName] = nil
         roomInfoMap[channelName] = nil
+        roomArbiterMap[channelName] = nil
     }
     
     public private(set) var currentThemeName: String?

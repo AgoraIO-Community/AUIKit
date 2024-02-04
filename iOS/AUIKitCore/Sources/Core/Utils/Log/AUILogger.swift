@@ -10,6 +10,15 @@ import SwiftyBeaver
 
 
 let logger = AUILog.createLog(config: AUILogConfig())
+
+/// <#Description#>
+/// - Parameters:
+///   - text: <#text description#>
+///   - cost: seconds
+///   - tag: <#tag description#>
+public func aui_benchmark(_ text: String, cost: Double, tag: String = "AUIKit") {
+    logger.info("[Benchmark]\(text): \(Int64(cost * 1000)) ms", context: tag)
+}
 public func aui_info(_ text: String, tag: String = "AUIKit") {
     logger.info(text, context: tag)
 }
@@ -47,7 +56,7 @@ public func aui_error(_ text: String, tag: String = "AUIKit") {
         file.logFileURL = URL(fileURLWithPath: "\(logDir)/auikit_ios_\(dateString)_log.txt")
         
         // use custom format and set console output to short time, log level & message
-        console.format = "[AUIKit][$L][$X]$Dyyyy-MM-dd HH:mm:ss.SSS$d $M"
+        console.format = "$Dyyyy-MM-dd HH:mm:ss.SSS[AUIKit][$L][$X]$d$M"
         file.format = console.format
         file.logFileMaxSize = config.logFileMaxSize
         file.logFileAmount = 4

@@ -5,3 +5,10 @@ data class CommonResp<Data>(
     val message: String?,
     val data: Data?
 )
+
+data class PayloadResp<Payload>(
+    val roomId: String,
+    val createTime: Long,
+    val updateTime: Long,
+    val payload: Payload?
+)

@@ -169,6 +169,10 @@ class AUIMusicPlayerServiceImpl constructor(
         rtcEngine.setAudioEffectPreset(audioEffectId)
     }
 
+    override fun setVoiceConversionPreset(voiceConversionPreset: Int) {
+        rtcEngine.setVoiceConversionPreset(voiceConversionPreset)
+    }
+
     override fun effectProperties(): MutableMap<Int, Int> {
         return rtcEffectProperties
     }

@@ -11,8 +11,8 @@ import Foundation
 /// 合唱者模型
 @objcMembers open class AUIChoristerModel: NSObject {
     @objc public var userId: String = ""
-    public var chorusSongNo: String?          //合唱者演唱歌曲
-    public var owner: AUIUserThumbnailInfo?   //合唱者信息
+    @objc public var chorusSongNo: String?          //合唱者演唱歌曲
+//    public var owner: AUIUserThumbnailInfo?   //合唱者信息
 }
 
 /// 合唱Service
@@ -27,7 +27,7 @@ import Foundation
     
     /// 获取合唱者列表
     /// - Parameter completion: 需要回调的对象
-    func getChoristersList(completion: (Error?, [AUIChoristerModel]?)->())
+    func getChoristersList(completion: @escaping (Error?, [AUIChoristerModel]?)->())
     
     /// 加入合唱
     /// - Parameters:
@@ -50,4 +50,6 @@ import Foundation
     /// 合唱者离开
     /// - Parameter chorister: 离开的合唱者
     func onChoristerDidLeave(chorister: AUIChoristerModel)
+    
+    @objc optional func onWillJoinChours(songCode: String, userId: String, metaData: NSMutableDictionary) -> NSError?
 }
