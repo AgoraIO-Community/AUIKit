@@ -7,7 +7,7 @@ English | [中文](CHANGELOG.zh.md)
 - The KTVAPI has been upgraded to the latest version.
 
 ## [0.5.4](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.4)
-- [iOS]升级SDWebImage至5.x。
+- [iOS]Upgrade SDWebImage to 5.x.
 
 ## [0.5.3](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.3)
 - [iOS]Compatible with Objective-C
