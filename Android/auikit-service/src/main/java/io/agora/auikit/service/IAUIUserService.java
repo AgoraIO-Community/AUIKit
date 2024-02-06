@@ -78,6 +78,12 @@ public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUs
         default void onRoomUserLeave(@NonNull String roomId, @NonNull AUIUserInfo userInfo) {}
 
         /**
+         * 自己被踢出房间回调
+         * @param roomId 房间唯一id
+         */
+        default void onLocalUserKickedOut(@NonNull String roomId){}
+
+        /**
          * 用户信息修改
          *
          * @param roomId   房间唯一id
