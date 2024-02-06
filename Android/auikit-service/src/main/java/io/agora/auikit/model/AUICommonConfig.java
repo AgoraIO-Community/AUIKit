@@ -10,6 +10,7 @@ public class AUICommonConfig {
     public @NonNull String appId = "";
     // 声网App证书(可选，如果没有用到后端token生成服务可以不设置)
     public @NonNull String appCert = "";
+    public @NonNull String basicAuth = "";
     // 域名(可选，如果没有用到后端服务可以不设置)
     public @NonNull String host = "";
     // 用户信息

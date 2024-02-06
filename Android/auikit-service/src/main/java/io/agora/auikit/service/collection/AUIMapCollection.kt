@@ -181,7 +181,7 @@ class AUIMapCollection(
             uniqueId = uniqueId,
             sceneKey = observeKey,
             payload = AUICollectionMessagePayload(
-                type = AUICollectionOperationTypeMerge,
+                type = AUICollectionOperationTypeCalculate,
                 dataCmd = valueCmd,
                 data = GsonTools.beanToMap(
                     AUICollectionCalcData(

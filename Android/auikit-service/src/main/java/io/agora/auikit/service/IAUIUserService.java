@@ -45,6 +45,13 @@ public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUs
      */
     void muteUserVideo(boolean isMute, @Nullable AUICallback callback);
 
+    /**
+     * 踢人
+     * @param userId
+     * @param callback
+     */
+    void kickUser(@NonNull String userId, @Nullable AUICallback callback);
+
     interface AUIUserRespObserver {
         /**
          * 用户进入房间后获取到的所有用户信息

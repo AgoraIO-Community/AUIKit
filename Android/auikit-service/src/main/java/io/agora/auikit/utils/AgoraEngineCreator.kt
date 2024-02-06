@@ -37,6 +37,11 @@ object AgoraEngineCreator {
                 super.onError(err)
                 AUILogger.logger().e("createRtcEngine", "mEventHandler onError $err")
             }
+
+            override fun onConnectionStateChanged(state: Int, reason: Int) {
+                super.onConnectionStateChanged(state, reason)
+                AUILogger.logger().d("createRtcEngine", "onConnectionStateChanged state=$state, reason=$reason")
+            }
         }
         config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
         config.mAudioScenario = Constants.AUDIO_SCENARIO_CHORUS

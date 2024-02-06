@@ -6,11 +6,20 @@ import io.agora.auikit.service.IAUIUserService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIUserListCallback
+import io.agora.auikit.service.http.CommonResp
+import io.agora.auikit.service.http.HttpManager
+import io.agora.auikit.service.http.Utils
+import io.agora.auikit.service.http.user.UserInterface
+import io.agora.auikit.service.http.user.UserKickOutReq
+import io.agora.auikit.service.http.user.UserKickOutResp
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmUserRespObserver
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AUIUserServiceImpl constructor(
     private val channelName: String,
@@ -121,6 +130,35 @@ class AUIUserServiceImpl constructor(
                 callback?.onResult(null)
             }
         }
+    }
+
+    override fun kickUser(userId: String, callback: AUICallback?) {
+        // 调用 http 接口踢人
+        HttpManager.getService(UserInterface::class.java).kickOut(
+            UserKickOutReq(
+                roomContext.mCommonConfig?.appId ?: "",
+                roomContext.mCommonConfig?.basicAuth ?: "",
+                channelName,
+                userId.toLong()
+            )
+        ).enqueue(object: Callback<CommonResp<UserKickOutResp>>{
+            override fun onResponse(
+                call: Call<CommonResp<UserKickOutResp>>,
+                response: Response<CommonResp<UserKickOutResp>>
+            ) {
+                val rsp = response.body()?.data
+                if (response.body()?.code == 0 && rsp != null) {
+                    // success
+                    callback?.onResult(null)
+                } else {
+                    callback?.onResult(Utils.errorFromResponse(response))
+                }
+            }
+
+            override fun onFailure(call: Call<CommonResp<UserKickOutResp>>, t: Throwable) {
+                callback?.onResult(AUIException(-1, t.message))
+            }
+        })
     }
 
     override fun getUserInfo(userId: String): AUIUserInfo? {

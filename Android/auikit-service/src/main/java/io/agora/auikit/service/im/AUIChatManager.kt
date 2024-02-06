@@ -13,15 +13,8 @@ import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.model.AUIUserThumbnailInfo
 import io.agora.auikit.model.AgoraChatMessage
-import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIChatMsgCallback
 import io.agora.auikit.service.callback.AUIException
-import io.agora.auikit.service.http.CommonResp
-import io.agora.auikit.service.http.HttpManager
-import io.agora.auikit.service.http.Utils
-import io.agora.auikit.service.http.user.CreateUserReq
-import io.agora.auikit.service.http.user.CreateUserRsp
-import io.agora.auikit.service.http.user.UserInterface
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ThreadManager
 import io.agora.chat.ChatClient
@@ -31,8 +24,6 @@ import io.agora.chat.CustomMessageBody
 import io.agora.chat.TextMessageBody
 import io.agora.chat.adapter.EMAChatRoomManagerListener
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Response
 
 class AUIChatManager(
     channelName: String,
@@ -326,32 +317,6 @@ class AUIChatManager(
 
     fun getMsgList(): ArrayList<AUIChatEntity>{
         return currentMsgList
-    }
-
-    fun getChatUser(user:String,callback:AUICallback){
-        HttpManager.getService(UserInterface::class.java)
-            .createUser(CreateUserReq(user))
-            .enqueue(object : retrofit2.Callback<CommonResp<CreateUserRsp>> {
-                override fun onResponse(call: Call<CommonResp<CreateUserRsp>>, response: Response<CommonResp<CreateUserRsp>>) {
-                    val rsp = response.body()?.data
-                    if (response.body()?.code == 0 && rsp != null) {
-                        userId = rsp.userUuid
-                        userName = rsp.userName
-                        accessToken = rsp.accessToken
-                        appKey = rsp.appKey
-                        ThreadManager.getInstance().runOnMainThread{
-                            callback.onResult(null)
-                        }
-                    } else {
-                        callback.onResult(AUIException(-1,"getChatUser not ready"))
-                        Log.e("UserInterface","onFailure" + Utils.errorFromResponse(response))
-                    }
-                }
-                override fun onFailure(call: Call<CommonResp<CreateUserRsp>>, t: Throwable) {
-                    Log.e("UserInterface","onFailure" + AUIException(-1, t.message))
-                    callback.onResult(AUIException(-1,t.message))
-                }
-            })
     }
 
     /**

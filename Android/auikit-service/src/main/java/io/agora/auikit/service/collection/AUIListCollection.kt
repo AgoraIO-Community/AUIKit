@@ -250,7 +250,7 @@ class AUIListCollection(
             uniqueId = uniqueId,
             sceneKey = observeKey,
             payload = AUICollectionMessagePayload(
-                type = AUICollectionOperationTypeMerge,
+                type = AUICollectionOperationTypeCalculate,
                 dataCmd = valueCmd,
                 filter = filter,
                 data = GsonTools.beanToMap(
