@@ -31,11 +31,12 @@ extension AUIMapCollection {
         value.forEach { (key: String, value: Any) in
             map[key] = value
         }
-        if let attr = self.attributesWillSetClosure?(channelName,
-                                                     observeKey,
-                                                     valueCmd,
-                                                     AUIAttributesModel(map: map)),
-           let attrMap = attr.getMap() {
+        let attr = AUIAttributesModel(map: map)
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrMap = attr.getMap() {
             map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
@@ -62,11 +63,12 @@ extension AUIMapCollection {
         }
         
         var map = mergeMap(origMap: currentMap, newMap: value)
-        if let attr = self.attributesWillSetClosure?(channelName,
-                                                     observeKey,
-                                                     valueCmd,
-                                                     AUIAttributesModel(map: map)),
-           let attrMap = attr.getMap() {
+        let attr = AUIAttributesModel(map: map)
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrMap = attr.getMap() {
             map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
@@ -105,13 +107,16 @@ extension AUIMapCollection {
                                value: value.value,
                                min: value.min,
                                max: value.max)
-        if let tmpMap = map,
-           let attr = self.attributesWillSetClosure?(channelName,
-                                                     observeKey,
-                                                     valueCmd, 
-                                                     AUIAttributesModel(map: tmpMap)),
-           let attrMap = attr.getMap() {
-            map = attrMap
+        
+        if let tmpMap = map {
+            let attr = AUIAttributesModel(map: tmpMap)
+            self.attributesWillSetClosure?(channelName,
+                                           observeKey,
+                                           valueCmd,
+                                           attr)
+            if let attrMap = attr.getMap() {
+                map = attrMap
+            }
         }
         guard let map = map, let value = encodeToJsonStr(map) else {
             callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())

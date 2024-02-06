@@ -24,6 +24,8 @@ public enum AUICommonError {
     case choristerNotExist    //合唱用户不存在
     case noPermission   //无权限
     case chooseSongIsFail   //选择歌曲失败
+    case invitAlready   //已经发起过邀请
+    case applyAlready   //已经发起过申请
     case noResponse    //无响应
     
     public func toNSError() -> NSError {
@@ -64,6 +66,10 @@ public enum AUICommonError {
             return createError(msg: "no permission")
         case .chooseSongIsFail:
             return createError(msg: "choost song model fail")
+        case .invitAlready:
+            return createError(msg: "invite already")
+        case .applyAlready:
+            return createError(msg: "apply already")
         case .noResponse:
             return createError(msg: "no response")
         default:

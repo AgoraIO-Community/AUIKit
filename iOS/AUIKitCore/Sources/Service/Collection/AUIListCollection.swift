@@ -27,17 +27,21 @@ extension AUIListCollection {
             callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmAddMetaData: '\(filter ?? [])'"))
             return
         }
-        if let err = self.metadataWillAddClosure?(publisherId, valueCmd, value) {
+        var list = currentList
+        let attr = AUIAttributesModel(list: list)
+        if let err = self.metadataWillAddClosure?(publisherId, valueCmd, value, attr) {
             callback?(err)
             return
         }
-        var list = currentList
+        if let attrList = attr.getList() {
+            list = attrList
+        }
         list.append(value)
-        if let attr = self.attributesWillSetClosure?(channelName, 
-                                                     observeKey,
-                                                     valueCmd,
-                                                     AUIAttributesModel(list: list)),
-           let attrList = attr.getList() {
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrList = attr.getList() {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
@@ -79,11 +83,12 @@ extension AUIListCollection {
             }
             list[itemIdx] = tempItem
         }
-        if let attr = self.attributesWillSetClosure?(channelName,
-                                                      observeKey,
-                                                      valueCmd,
-                                                      AUIAttributesModel(list: list)),
-           let attrList = attr.getList() {
+        let attr = AUIAttributesModel(list: list)
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrList = attr.getList() {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
@@ -123,11 +128,13 @@ extension AUIListCollection {
             let tempItem = mergeMap(origMap: item, newMap: value)
             list[itemIdx] = tempItem
         }
-        if let attr = self.attributesWillSetClosure?(channelName,
-                                                      observeKey,
-                                                      valueCmd,
-                                                      AUIAttributesModel(list: list)),
-           let attrList = attr.getList() {
+        
+        let attr = AUIAttributesModel(list: list)
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrList = attr.getList() {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
@@ -164,11 +171,13 @@ extension AUIListCollection {
         
         let filterList = currentList.enumerated().filter { !itemIndexes.contains($0.offset) }
         var list = filterList.map { $0.element }
-        if let attr = self.attributesWillSetClosure?(channelName,
-                                                      observeKey,
-                                                      valueCmd,
-                                                      AUIAttributesModel(list: list)),
-           let attrList = attr.getList() {
+        
+        let attr = AUIAttributesModel(list: list)
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrList = attr.getList() {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
@@ -224,11 +233,12 @@ extension AUIListCollection {
             }
             list[itemIdx] = tempItem
         }
-        if let attr = self.attributesWillSetClosure?(channelName,
-                                                      observeKey,
-                                                      valueCmd,
-                                                      AUIAttributesModel(list: list)),
-           let attrList = attr.getList() {
+        let attr = AUIAttributesModel(list: list)
+        self.attributesWillSetClosure?(channelName,
+                                       observeKey,
+                                       valueCmd,
+                                       attr)
+        if let attrList = attr.getList() {
             list = attrList
         }
         guard let value = encodeToJsonStr(list) else {
