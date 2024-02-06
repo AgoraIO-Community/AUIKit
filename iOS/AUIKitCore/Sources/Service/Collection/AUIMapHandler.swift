@@ -58,7 +58,7 @@ func calculateMap(origMap: [String: Any],
 /// 根据filter条件过滤出array命中的索引，如果filter为空，则默认选中所有
 /// - Parameters:
 ///   - array: <#array description#>
-///   - filter: <#filter description#>
+///   - filter: 过滤条件，满足filter array里多个filter item之间是或的关系，单个filter item里是与的关系，需要全部满足
 /// - Returns: <#description#>
 func getItemIndexes(array: [[String: Any]], filter: [[String: Any]]?) -> [Int]? {
     guard let filter = filter, filter.count > 0 else {
@@ -95,10 +95,10 @@ func getItemIndexes(array: [[String: Any]], filter: [[String: Any]]?) -> [Int]? 
     var indexes: [Int] = []
     for (i, value) in array.enumerated() {
         for filterItem in filter {
-            var match = false
+            var match = true
             for (k, v) in filterItem {
-                if isMatchFilter(key: k, itemValue: value, filterValue: v) {
-                    match = true
+                if isMatchFilter(key: k, itemValue: value, filterValue: v) == false {
+                    match = false
                     break
                 }
             }

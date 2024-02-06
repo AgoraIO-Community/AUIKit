@@ -87,7 +87,17 @@ extension AUIMicSeatServiceImpl: AUIMicSeatServiceDelegate {
         leaveSeat(userId: getRoomContext().currentUserInfo.userId, callback: callback)
     }
     
-    public func pickSeat(seatIndex: Int, userId: String, callback: @escaping (NSError?) -> ()) {
+    public func pickSeat(seatIndex: Int, user: AUIUserThumbnailInfo, callback: @escaping (NSError?) -> ()) {
+        let value = [
+            "\(seatIndex)": [
+                "owner": user.yy_modelToJSONObject(),
+                "micSeatStatus": AUILockSeatStatus.user.rawValue
+            ]
+        ]
+        self.mapCollection.mergeMetaData(valueCmd: AUIMicSeatCmd.enterSeatCmd.rawValue,
+                                         value: value,
+                                         filter: nil,
+                                         callback: callback)
     }
     
     public func kickSeat(seatIndex: Int, callback: @escaping (NSError?) -> ()) {

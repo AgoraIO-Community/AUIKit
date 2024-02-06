@@ -12,7 +12,6 @@ import Foundation
     var userId: String {get}
     var userName: String {get}
     var seatIndex: Int {set get}
-
 }
 
 
@@ -85,15 +84,11 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     ///   - seatIndex: <#cmd description#>
     func onReceiveNewInvitation(userId: String, seatIndex: Int)
     
-    
-    /// 被邀请者接受邀请且上麦成功
+    /// 被邀请者接受邀请
     /// - Parameters:
     ///   - userId: 用户id
+    ///   - seatIndex: <#cmd description#>
     func onInviteeAccepted(userId: String)
-    
-    /// 被邀请者接受邀请但是上麦失败
-    /// - Parameter userId: 用户id
-    func onInviteeAcceptedButFailed(userId: String)
     
     /// 被邀请者拒绝邀请
     /// - Parameters:
@@ -101,40 +96,30 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     ///   - invitee: <#invitee description#>
     func onInviteeRejected(userId: String)
     
-    
     /// 邀请人取消邀请
     /// - Parameters:
     ///   - id: <#id description#>
     ///   - inviter: <#inviter description#>
     func onInvitationCancelled(userId: String)
     
-    
     /// Description 邀请列表数据更新
     /// - Parameter inviteeList: 邀请列表
-    func onInviteeListUpdate(inviteeList: [String:AUIInvitationCallbackModel])
+    func onInviteeListUpdate(inviteeList: [String: AUIInvitationInfo])
 
-    
-    
     /// 收到新的申请信息
     /// - Parameters:
     ///   - userId: <#userId description#>
     ///   - seatIndex: <#seatIndex description#>
     func onReceiveNewApply(userId: String, seatIndex: Int)
     
-    
-    /// 房主接受申请且上麦成功
+    /// 房主接受申请
     /// - Parameter userId: 用户id
+    ///   - seatIndex: <#cmd description#>
     func onApplyAccepted(userId: String)
-    
-    /// Description 房主接受上麦申请但是上麦失败
-    /// - Parameter userId: 用户id
-    func onApplyAcceptedButFailed(userId: String)
-    
     
     /// 房主拒接申请
     /// - Parameter userId: <#userId description#>
     func onApplyRejected(userId: String)
-    
     
     /// 取消申请
     /// - Parameter userId: <#userId description#>
@@ -142,7 +127,14 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// Description 收到申请用户全量变更
     /// - Parameter users info: users key is userId,value is apply index
-    func onReceiveApplyUsersUpdate(users: [String:AUIInvitationCallbackModel])
-
-
+    func onReceiveApplyUsersUpdate(users: [String: AUIInvitationInfo])
+    
+    
+    @objc optional func onInviteWillAccept(userId: String,
+                                           seatIndex: Int,
+                                           metaData: NSMutableDictionary) -> NSError?
+    
+    @objc optional func onApplyWillAccept(userId: String, 
+                                          seatIndex: Int,
+                                          metaData: NSMutableDictionary) -> NSError?
 }

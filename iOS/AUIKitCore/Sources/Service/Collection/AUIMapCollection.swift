@@ -23,6 +23,7 @@ extension AUIMapCollection {
                                 value: [String: Any],
                                 callback: ((NSError?)->())?) {
         if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, value, currentMap) {
+            aui_collection_warn("rtmSetMetaData fail! closure error:\(err.localizedDescription)")
             callback?(err)
             return
         }
@@ -40,6 +41,7 @@ extension AUIMapCollection {
             map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
+            aui_collection_warn("rtmSetMetaData fail! encode to json fail")
             callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
@@ -58,6 +60,7 @@ extension AUIMapCollection {
                                   value: [String: Any],
                                   callback: ((NSError?)->())?) {
         if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, value, currentMap) {
+            aui_collection_warn("rtmMergeMetaData fail! closure error:\(err.localizedDescription)")
             callback?(err)
             return
         }
@@ -72,6 +75,7 @@ extension AUIMapCollection {
             map = attrMap
         }
         guard let value = encodeToJsonStr(map) else {
+            aui_collection_warn("rtmMergeMetaData fail! encode to json fail")
             callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
@@ -98,6 +102,7 @@ extension AUIMapCollection {
                                                         value.value,
                                                         value.min,
                                                         value.max) {
+            aui_collection_warn("rtmCalculateMetaData fail! closure error:\(err.localizedDescription)")
             callback?(err)
             return
         }
@@ -119,6 +124,7 @@ extension AUIMapCollection {
             }
         }
         guard let map = map, let value = encodeToJsonStr(map) else {
+            aui_collection_warn("rtmCalculateMetaData fail! encode to json fail")
             callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
