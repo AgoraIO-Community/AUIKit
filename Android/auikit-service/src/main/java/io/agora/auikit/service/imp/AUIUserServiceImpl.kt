@@ -6,15 +6,29 @@ import io.agora.auikit.service.IAUIUserService
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIUserListCallback
+import io.agora.auikit.service.http.CommonResp
+import io.agora.auikit.service.http.HttpManager
+import io.agora.auikit.service.http.Utils
+import io.agora.auikit.service.http.user.UserInterface
+import io.agora.auikit.service.http.user.UserKickOutReq
+import io.agora.auikit.service.http.user.UserKickOutResp
 import io.agora.auikit.service.rtm.AUIRtmManager
 import io.agora.auikit.service.rtm.AUIRtmUserRespObserver
 import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
 import io.agora.auikit.utils.ObservableHelper
+import io.agora.rtc2.Constants
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcEngine
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AUIUserServiceImpl constructor(
     private val channelName: String,
-    private val rtmManager: AUIRtmManager
+    private val rtmManager: AUIRtmManager,
+    // TODO rtm踢人在2.1.9版本尚不完成，暂时使用rtcEngine代替，如果不传将无法收到被踢回调
+    private val rtcEngine: RtcEngine? = null,
 ) : IAUIUserService, AUIRtmUserRespObserver {
 
     private val TAG = "AUiUserServiceImpl"
@@ -24,15 +38,35 @@ class AUIUserServiceImpl constructor(
     private val observableHelper =
         ObservableHelper<IAUIUserService.AUIUserRespObserver>()
 
+    private var isLocalUserKickedOut = false
+
+    private val rtcEventHandler = object: IRtcEngineEventHandler(){
+        override fun onConnectionStateChanged(state: Int, reason: Int) {
+            super.onConnectionStateChanged(state, reason)
+            if (state == Constants.CONNECTION_STATE_FAILED && reason == Constants.CONNECTION_CHANGED_BANNED_BY_SERVER) {
+                isLocalUserKickedOut = true
+                observableHelper.notifyEventHandlers {
+                    it.onLocalUserKickedOut(channelName)
+                }
+            }
+        }
+    }
+
     init {
+        rtcEngine?.addHandler(rtcEventHandler)
         rtmManager.subscribeUser(this)
     }
 
     override fun registerRespObserver(observer: IAUIUserService.AUIUserRespObserver?) {
         observableHelper.subscribeEvent(observer)
-        if(mUserList.isNotEmpty()){
+        if (mUserList.isNotEmpty()) {
             this.observableHelper.notifyEventHandlers {
                 it.onRoomUserSnapshot(channelName, mUserList)
+            }
+        }
+        if (isLocalUserKickedOut) {
+            observableHelper.notifyEventHandlers {
+                it.onLocalUserKickedOut(channelName)
             }
         }
     }
@@ -121,6 +155,35 @@ class AUIUserServiceImpl constructor(
                 callback?.onResult(null)
             }
         }
+    }
+
+    override fun kickUser(userId: String, callback: AUICallback?) {
+        // 调用 http 接口踢人
+        HttpManager.getService(UserInterface::class.java).kickOut(
+            UserKickOutReq(
+                roomContext.mCommonConfig?.appId ?: "",
+                roomContext.mCommonConfig?.basicAuth ?: "",
+                channelName,
+                userId.toLong()
+            )
+        ).enqueue(object: Callback<CommonResp<UserKickOutResp>>{
+            override fun onResponse(
+                call: Call<CommonResp<UserKickOutResp>>,
+                response: Response<CommonResp<UserKickOutResp>>
+            ) {
+                val rsp = response.body()?.data
+                if (response.body()?.code == 0 && rsp != null) {
+                    // success
+                    callback?.onResult(null)
+                } else {
+                    callback?.onResult(Utils.errorFromResponse(response))
+                }
+            }
+
+            override fun onFailure(call: Call<CommonResp<UserKickOutResp>>, t: Throwable) {
+                callback?.onResult(AUIException(-1, t.message))
+            }
+        })
     }
 
     override fun getUserInfo(userId: String): AUIUserInfo? {
