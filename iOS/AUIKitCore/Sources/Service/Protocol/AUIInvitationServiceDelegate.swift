@@ -104,7 +104,7 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// Description 邀请列表数据更新
     /// - Parameter inviteeList: 邀请列表
-    func onInviteeListUpdate(inviteeList: [String: AUIInvitationInfo])
+    func onInviteeListUpdate(inviteeList: [AUIInvitationInfo])
 
     /// 收到新的申请信息
     /// - Parameters:
@@ -127,7 +127,7 @@ public protocol AUIInvitationServiceDelegate: AUICommonServiceDelegate {
     
     /// Description 收到申请用户全量变更
     /// - Parameter users info: users key is userId,value is apply index
-    func onReceiveApplyUsersUpdate(users: [String: AUIInvitationInfo])
+    func onReceiveApplyUsersUpdate(applyList: [AUIInvitationInfo])
     
     
     @objc optional func onInviteWillAccept(userId: String,

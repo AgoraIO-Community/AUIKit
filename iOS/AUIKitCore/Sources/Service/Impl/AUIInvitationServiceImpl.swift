@@ -187,32 +187,44 @@ extension AUIInvitationServiceImpl {
         let oldMap = self.invitationMap
         let newMap = Dictionary(uniqueKeysWithValues: invitationList.map { ($0.userId, $0) })
         self.invitationMap = newMap
+        var applyList: [AUIInvitationInfo] = []
+        var invitList: [AUIInvitationInfo] = []
         newMap.forEach { userId, newInfo in
             let oldInfo = oldMap[userId]
-            guard newInfo.userId == getRoomContext().currentUserInfo.userId else {return}
+            let isTargetUser = newInfo.userId == getRoomContext().currentUserInfo.userId
             if oldInfo?.type == newInfo.type || oldInfo == nil {
                 if newInfo.type == .invite {
+                    if newInfo.status == .waiting {
+                        invitList.append(newInfo)
+                    }
                     if oldInfo?.status != newInfo.status {
-                        switch newInfo.status {
-                        case .waiting:
-                            self.respDelegates.allObjects.forEach {
-                                $0.onReceiveNewInvitation(userId: userId, seatIndex: newInfo.seatNo)
-                            }
-                        case .cancel, .timeout:
-                            self.respDelegates.allObjects.forEach {
-                                $0.onInvitationCancelled(userId: userId)
-                            }
-                        case .reject:
-                            self.respDelegates.allObjects.forEach {
-                                $0.onInviteeRejected(userId: userId)
-                            }
-                        case .accept:
-                            self.respDelegates.allObjects.forEach {
-                                $0.onInviteeAccepted(userId: userId)
+                        if isTargetUser {
+                            switch newInfo.status {
+                            case .waiting:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onReceiveNewInvitation(userId: userId, seatIndex: newInfo.seatNo)
+                                }
+                            case .cancel, .timeout:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onInvitationCancelled(userId: userId)
+                                }
+                            case .reject:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onInviteeRejected(userId: userId)
+                                }
+                            case .accept:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onInviteeAccepted(userId: userId)
+                                }
                             }
                         }
-                    } else if newInfo.type == .apply {
-                        if oldInfo?.status != newInfo.status {
+                    }
+                } else if newInfo.type == .apply {
+                    if newInfo.status == .waiting {
+                        applyList.append(newInfo)
+                    }
+                    if oldInfo?.status != newInfo.status {
+                        if isTargetUser {
                             switch newInfo.status {
                             case .waiting:
                                 self.respDelegates.allObjects.forEach {
@@ -237,6 +249,13 @@ extension AUIInvitationServiceImpl {
             } else {
                 aui_warn("invitation type changed \(oldInfo?.type.rawValue ?? -1) -> \(newInfo.type.rawValue)", tag: "AUIInvitationServiceImpl")
             }
+        }
+        
+        self.respDelegates.allObjects.forEach {
+            $0.onReceiveApplyUsersUpdate(applyList: applyList)
+        }
+        self.respDelegates.allObjects.forEach {
+            $0.onInviteeListUpdate(inviteeList: invitList)
         }
         
         checkThrottler.triggerLastEvent(after: 0.3) {
