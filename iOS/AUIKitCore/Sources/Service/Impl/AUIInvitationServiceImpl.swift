@@ -11,17 +11,6 @@ import YYModel
 
 fileprivate let AUIInvitationKey = "invitation"
 
-//fileprivate let AUIApplyKey = "application"
-//
-//
-//fileprivate let AUIRemoved = "removed"
-//
-//fileprivate let AUIActionType = "actionType"
-//
-//fileprivate let AUIQueue = "queue"
-
-//fileprivate let AUIMicSeat = "micSeat"
-
 private enum AUIInvitationCmd: String {
     case sendApply = "sendApply"
     case cancelApply = "cancelApply"
@@ -34,30 +23,6 @@ private enum AUIInvitationCmd: String {
     case rejectInvit = "rejectInvit"
 }
 
-/**
- 邀请
- 1：被邀请人同意
- 2：被邀请人拒绝
- 3：邀请人人取消
- 4：超时
- 5：并发上麦失败 别人先上了
- 申请
- 被移除原因：
- 1：房主同意
- 2：房主拒绝
- 3：申请人取消
- 4：超时
- 5：并发上麦失败 别人先上了
- */
-@objc public enum AUIActionOperation: Int {
-    case agree = 1
-    case refuse
-    case cancel
-    case timeout
-    case failed
-}
-
-
 //邀请Service实现
 @objc open class AUIInvitationServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AUIInvitationRespDelegate> = NSHashTable<AUIInvitationRespDelegate>.weakObjects()
@@ -65,6 +30,14 @@ private enum AUIInvitationCmd: String {
     private var rtmManager: AUIRtmManager!
     private var invitationCollection:AUIListCollection!
     private var invitationMap: [String: AUIInvitationInfo] = [:]
+    
+    lazy var checkThrottler: AUIThrottler = AUIThrottler()
+    private var observerList: [AUIInvitationInfo] = []
+    private var timer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+        }
+    }
     
     deinit {
         aui_info("deinit AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
@@ -94,18 +67,16 @@ private enum AUIInvitationCmd: String {
             let currentTime = self.getRoomContext().getNtpTime()
             let filterList = value.filter { attr in
                 let editTime = attr["editTime"] as? Int64 ?? 0
+                let invalidTs = attr["invalidTs"] as? Int64 ?? kInvitationInvalidTs
                 let status = attr["status"] as? Int
                 if status == AUIInvitationStatus.waiting.rawValue {
                     return true
                 }
-                //过滤超过60s的非waitting数据
-                guard currentTime - editTime < 60 * 1000 else { return false }
-                
-                return true
+                //过滤超时的无效(非waitting)数据
+                if currentTime - editTime < invalidTs { return true }
+                return false
             }
-            if filterList.count != value.count {
-                aui_info("filter list: \(filterList.count) / \(value.count)", tag: "AUIInvitationServiceImpl")
-            }
+            aui_info("invitation will set filter list: \(filterList.count) / \(value.count)", tag: "AUIInvitationServiceImpl")
             attr.setList(filterList)
         }
         
@@ -118,6 +89,36 @@ private enum AUIInvitationCmd: String {
 }
 
 extension AUIInvitationServiceImpl {
+    //检查是否需要开启定时器：1.邀请申请列表变更， 2.仲裁者切换
+    private func checkWaittingTimeout() {
+        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
+        let observerList = invitationMap.compactMap({$1.status == .waiting ? $1 : nil})
+        if observerList.isEmpty {
+            timer = nil
+            return
+        }
+        self.observerList = observerList
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {[weak self] t in
+            guard let self = self else {return}
+            let currentTs = self.getRoomContext().getNtpTime()
+            let observerList = self.observerList
+            self.observerList.removeAll()
+            observerList.forEach { info in
+                if currentTs - info.createTime > info.timeoutTs {
+                    if info.type == .apply {
+                        aui_info("apply checkWaittingTimeout: \(info.userId)", tag: "AUIInvitationServiceImpl")
+                        self.cancelApply { err in }
+                    } else {
+                        aui_info("invit checkWaittingTimeout: \(info.userId)", tag: "AUIInvitationServiceImpl")
+                        self.cancelInvitation(userId: info.userId) { err in }
+                    }
+                } else {
+                    self.observerList.append(info)
+                }
+            }
+        })
+        timer?.fire()
+    }
     private func metadataWillAdd(publiserId: String,
                                  dataCmd: String?,
                                  newItem: [String: Any],
@@ -160,16 +161,10 @@ extension AUIInvitationServiceImpl {
         case .acceptApply:
             for obj in respDelegates.allObjects {
                 err = obj.onApplyWillAccept?(userId: userId, seatIndex: seatIndex, metaData: metaData)
-                if let err = err {
-                    break
-                }
             }
         case .acceptInvit:
             for obj in respDelegates.allObjects {
                 err = obj.onInviteWillAccept?(userId: userId, seatIndex: seatIndex, metaData: metaData)
-                if let err = err {
-                    break
-                }
             }
         default:
             break
@@ -239,6 +234,10 @@ extension AUIInvitationServiceImpl {
             } else {
                 aui_warn("invitation type changed \(oldInfo?.type.rawValue ?? -1) -> \(newInfo.type.rawValue)", tag: "AUIInvitationServiceImpl")
             }
+        }
+        
+        checkThrottler.triggerLastEvent(after: 0.3) {
+            self.checkWaittingTimeout()
         }
     }
 }
