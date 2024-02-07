@@ -164,7 +164,6 @@ extension AUIIMManagerServiceImplement: AUIMManagerServiceDelegate {
     
     public func configIM(channelName: String, completion: @escaping (NSError?) -> Void) {
         let model = AUIChatCreateNetworkModel()
-        model.appId = getRoomContext().commonConfig?.appId ?? ""
         let isRoomOwner = AUIRoomContext.shared.isRoomOwner(channelName: channelName)
         if isRoomOwner {
             model.type = .userAndRoom
