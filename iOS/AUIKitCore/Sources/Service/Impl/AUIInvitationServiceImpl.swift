@@ -116,6 +116,9 @@ extension AUIInvitationServiceImpl {
                     self.observerList.append(info)
                 }
             }
+            if self.observerList.isEmpty {
+                self.timer = nil
+            }
         })
         timer?.fire()
     }
