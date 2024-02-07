@@ -14,6 +14,9 @@ open class AUICommonConfig: NSObject {
     /// 声网App证书(可选，如果没有用到后端token生成服务可以不设置)
     public var appCert: String = ""
     
+    /// 声网basicAuth(可选，如果没有用到后端踢人服务可以不设置)
+    public var basicAuth: String = ""
+    
     /// 环信AppKey(可选，如果没有用到后端IM服务可以不设置)
     public var imAppKey: String = ""
     /// 环信ClientId(可选，如果没有用到后端IM服务可以不设置)
