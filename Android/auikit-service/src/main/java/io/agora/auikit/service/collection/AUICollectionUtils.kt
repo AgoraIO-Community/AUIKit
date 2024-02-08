@@ -69,7 +69,9 @@ object AUICollectionUtils {
 
         val valueMap = valueV as? Map<String, Any>
         val filterMap = filterValue as? Map<String, Any>
-        if(valueMap != null && filterMap != null){
+        if(valueMap != null
+            && filterMap != null
+            && filterMap.size == 1){
             filterMap.keys.firstOrNull()?.let { filterVKey ->
                 return isMatchFilter(filterVKey, valueMap, filterMap[filterVKey])
             }

@@ -336,22 +336,28 @@ class AUIListCollection(
             return
         }
 
-        val error = metadataWillAddClosure?.invoke(publisherId, valueCmd, value)
+        val newValue = valueWillChangeClosure?.invoke(publisherId, valueCmd, value) ?: value
+
+        val attrs = AUIAttributesModel(ArrayList(currentList))
+        val error = metadataWillAddClosure?.invoke(publisherId, valueCmd, newValue, attrs)
         if (error != null) {
             callback?.invoke(error)
             return
         }
 
-        val list = ArrayList(currentList)
-        list.add(value)
-        val retList =
-            attributesWillSetClosure?.invoke(
+        val list = ArrayList<Map<String, Any>>()
+        attrs.getList()?.let {
+            list.addAll(it)
+        }
+        list.add(newValue)
+        val outAttrs = AUIAttributesModel(list)
+        attributesWillSetClosure?.invoke(
                 channelName,
                 observeKey,
                 valueCmd,
-                AUIAttributesModel(list)
-            )?.getList()
-                ?: list
+                outAttrs
+            )
+        val retList = outAttrs.getList()
 
         val data = GsonTools.beanToString(retList)
         if (data == null) {
@@ -387,29 +393,33 @@ class AUIListCollection(
             )
             return
         }
+
+        val newValue = valueWillChangeClosure?.invoke(publisherId, valueCmd, value) ?: value
+
         val list = ArrayList(currentList)
         itemIndexes.forEach { itemIdx ->
             val item = list[itemIdx]
-            val error = metadataWillUpdateClosure?.invoke(publisherId, valueCmd, value, item)
+            val error = metadataWillUpdateClosure?.invoke(publisherId, valueCmd, newValue, item)
             if (error != null) {
                 callback?.invoke(error)
                 return
             }
 
             val tempItem = HashMap(item)
-            value.forEach { key, value ->
+            newValue.forEach { key, value ->
                 tempItem[key] = value
             }
             list[itemIdx] = tempItem
         }
-        val retList =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(list)
-            )?.getList()
-                ?: list
+
+        val outAttrs = AUIAttributesModel(list)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttrs
+        )
+        val retList = outAttrs.getList()
 
         val data = GsonTools.beanToString(retList)
         if (data == null) {
@@ -445,26 +455,27 @@ class AUIListCollection(
             )
             return
         }
+        val newValue = valueWillChangeClosure?.invoke(publisherId, valueCmd, value) ?: value
         val list = ArrayList(currentList)
         itemIndexes.forEach { itemIdx ->
             val item = list[itemIdx]
-            val error = metadataWillMergeClosure?.invoke(publisherId, valueCmd, value, item)
+            val error = metadataWillMergeClosure?.invoke(publisherId, valueCmd, newValue, item)
             if (error != null) {
                 callback?.invoke(error)
                 return
             }
 
-            val tempItem = AUICollectionUtils.mergeMap(item, value)
+            val tempItem = AUICollectionUtils.mergeMap(item, newValue)
             list[itemIdx] = tempItem
         }
-        val retList =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(list)
-            )?.getList()
-                ?: list
+        val outAttr = AUIAttributesModel(list)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttr
+        )
+        val retList = outAttr.getList()
         val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.invoke(AUICollectionException.ErrorCode.encodeToJsonStringFail.toException())
@@ -511,14 +522,14 @@ class AUIListCollection(
 
         val filterList = list.filter { !itemIndexes.contains(list.indexOf(it)) }
         list = ArrayList(filterList)
-        val retList =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(list)
-            )?.getList()
-                ?: list
+        val outAttr = AUIAttributesModel(list)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttr
+        )
+        val retList = outAttr.getList()
         val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.invoke(AUICollectionException.ErrorCode.encodeToJsonStringFail.toException())
@@ -553,7 +564,6 @@ class AUIListCollection(
             callback?.invoke(AUICollectionException.ErrorCode.filterNotFound.toException())
             return
         }
-
         val list = ArrayList(currentList)
         itemIndexes.forEach { itemIdx ->
             val item = list[itemIdx]
@@ -582,14 +592,14 @@ class AUIListCollection(
             list[itemIdx] = calcItem
         }
 
-        val retList =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(list)
-            )?.getList()
-                ?: list
+        val outAttr = AUIAttributesModel(list)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttr
+        )
+        val retList = outAttr.getList()
         val data = GsonTools.beanToString(retList)
         if (data == null) {
             callback?.invoke(AUICollectionException.ErrorCode.encodeToJsonStringFail.toException())

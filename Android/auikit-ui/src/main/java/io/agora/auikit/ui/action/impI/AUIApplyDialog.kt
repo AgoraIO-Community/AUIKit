@@ -126,7 +126,7 @@ class AUIApplyDialog : AUISheetFragmentDialog<AuiApplyLayoutBinding>(), IAUIList
     }
 
     override fun refreshApplyData(userList: List<AUIActionUserInfo>) {
-        mUserLiveData.value = AUIActionUserInfoList(userList, -1)
+        mUserLiveData.postValue(AUIActionUserInfoList(userList, -1))
     }
 
     private fun onTabLayoutSelected(tab: TabLayout.Tab?) {

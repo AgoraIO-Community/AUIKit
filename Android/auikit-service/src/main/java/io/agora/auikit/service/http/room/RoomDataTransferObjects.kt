@@ -16,6 +16,8 @@ data class CreateRoomResp(
     val updateTime: Long
 )
 data class RoomUserReq(
+    val appId: String,
+    val sceneId: String,
     val roomId: String
 )
 data class DestroyRoomResp(
@@ -36,10 +38,14 @@ data class QueryRoomResp(
     val updateTime: Long
 )
 data class UpdateRoomReq(
+    val appId: String,
+    val sceneId: String,
     val roomId: String,
     val payload: AUIRoomInfo
 )
 data class QueryRoomReq(
+    val appId: String,
+    val sceneId: String,
     val roomId: String
 )
 data class RoomListResp(
