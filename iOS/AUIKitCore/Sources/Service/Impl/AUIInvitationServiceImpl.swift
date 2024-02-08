@@ -7,169 +7,261 @@
 
 import Foundation
 import AgoraRtcKit
-
+import YYModel
 
 fileprivate let AUIInvitationKey = "invitation"
 
-fileprivate let AUIApplyKey = "application"
-
-
-fileprivate let AUIRemoved = "removed"
-
-fileprivate let AUIActionType = "actionType"
-
-fileprivate let AUIQueue = "queue"
-
-fileprivate let AUIMicSeat = "micSeat"
-
-/**
- 邀请
- 1：被邀请人同意
- 2：被邀请人拒绝
- 3：邀请人人取消
- 4：超时
- 5：并发上麦失败 别人先上了
- 申请
- 被移除原因：
- 1：房主同意
- 2：房主拒绝
- 3：申请人取消
- 4：超时
- 5：并发上麦失败 别人先上了
- */
-@objc public enum AUIActionOperation: Int {
-    case agree = 1
-    case refuse
-    case cancel
-    case timeout
-    case failed
+private enum AUIInvitationCmd: String {
+    case sendApply = "sendApply"
+    case cancelApply = "cancelApply"
+    case acceptApply = "acceptApply"
+    case rejectApply = "rejectApply"
+    
+    case sendInvit = "sendInvit"
+    case cancelInvit = "cancelInvit"
+    case acceptInvit = "acceptInvit"
+    case rejectInvit = "rejectInvit"
 }
-
 
 //邀请Service实现
 @objc open class AUIInvitationServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AUIInvitationRespDelegate> = NSHashTable<AUIInvitationRespDelegate>.weakObjects()
     private var channelName: String!
     private var rtmManager: AUIRtmManager!
+    private var invitationCollection:AUIListCollection!
+    private var invitationMap: [String: AUIInvitationInfo] = [:]
+    
+    lazy var checkThrottler: AUIThrottler = AUIThrottler()
+    private var observerList: [AUIInvitationInfo] = []
+    private var timer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+        }
+    }
     
     deinit {
         aui_info("deinit AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
-        rtmManager.unsubscribeAttributes(channelName: channelName, itemKey: AUIInvitationKey, delegate: self)
-        rtmManager.unsubscribeAttributes(channelName: channelName, itemKey: AUIApplyKey, delegate: self)
     }
     
     public init(channelName: String, rtmManager: AUIRtmManager) {
         self.channelName = channelName
         self.rtmManager = rtmManager
+        self.invitationCollection = AUIListCollection(channelName: channelName,
+                                                      observeKey: AUIInvitationKey,
+                                                      rtmManager: rtmManager)
         super.init()
-        rtmManager.subscribeAttributes(channelName: channelName, itemKey: AUIInvitationKey, delegate: self)
-        rtmManager.subscribeAttributes(channelName: channelName, itemKey: AUIApplyKey, delegate: self)
+        invitationCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem, attr in
+            return self?.metadataWillAdd(publiserId: publisherId,
+                                         dataCmd: dataCmd,
+                                         newItem: newItem,
+                                         attr: attr)
+        }
+        
+        invitationCollection.subscribeWillMerge {[weak self] publisherId, dataCmd, updateMap, currentMap in
+            return self?.metadataWillMerge(publiserId: publisherId, dataCmd: dataCmd, updateMap: updateMap, currentMap: currentMap)
+        }
+        
+        invitationCollection.subscribeAttributesWillSet {[weak self] channelName, key, valueCmd, attr in
+            guard let self = self else { return }
+            guard let value = attr.getList() else { return }
+            let currentTime = self.getRoomContext().getNtpTime()
+            let filterList = value.filter { attr in
+                let editTime = attr["editTime"] as? Int64 ?? 0
+                let invalidTs = attr["invalidTs"] as? Int64 ?? kInvitationInvalidTs
+                let status = attr["status"] as? Int
+                if status == AUIInvitationStatus.waiting.rawValue {
+                    return true
+                }
+                //过滤超时的无效(非waitting)数据
+                if currentTime - editTime < invalidTs { return true }
+                return false
+            }
+            aui_info("invitation will set filter list: \(filterList.count) / \(value.count)", tag: "AUIInvitationServiceImpl")
+            attr.setList(filterList)
+        }
+        
+        invitationCollection.subscribeAttributesDidChanged {[weak self] channelName, key, value in
+            self?.onAttributesDidChanged(channelName: channelName, key: key, value: value)
+        }
 
         aui_info("init AUIInvitationServiceImpl", tag: "AUIInvitationServiceImpl")
     }
 }
 
-extension AUIInvitationServiceImpl: AUIRtmAttributesProxyDelegate {
-    public func onAttributesDidChanged(channelName: String, key: String, value: Any) {
-        aui_info("recv invitation list attr did changed \(value)", tag: "AUIInvitationServiceImpl")
-        if AUIInvitationKey == key {
-            //TODO: - 根据返回数据判断邀请的是否是自己
-            guard let object = value as? [String:Any],let seat = object[AUIMicSeat] as? [String:Any] else { return }
-            guard let queue = seat[AUIQueue] as? [Dictionary<String,Any>], let inviteList = NSArray.yy_modelArray(with: AUIInvitationCallbackModel.self, json: queue) as? [AUIInvitationCallbackModel] else {
-                return
-            }
-            self.respDelegates.allObjects.forEach {
-                if let userId = inviteList.first?.userId,userId == AUIRoomContext.shared.currentUserInfo.userId {
-                    $0.onReceiveNewInvitation(userId: inviteList.first?.userId ?? "", seatIndex: inviteList.first?.payload?.seatNo ?? 1)
+extension AUIInvitationServiceImpl {
+    //检查是否需要开启定时器：1.邀请申请列表变更， 2.仲裁者切换
+    private func checkWaittingTimeout() {
+        guard getRoomContext().getArbiter(channelName: channelName)?.isArbiter() ?? false else { return }
+        let observerList = invitationMap.compactMap({$1.status == .waiting ? $1 : nil})
+        if observerList.isEmpty {
+            timer = nil
+            return
+        }
+        self.observerList = observerList
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {[weak self] t in
+            guard let self = self else {return}
+            let currentTs = self.getRoomContext().getNtpTime()
+            let observerList = self.observerList
+            self.observerList.removeAll()
+            observerList.forEach { info in
+                if currentTs - info.createTime > info.timeoutTs {
+                    if info.type == .apply {
+                        aui_info("apply checkWaittingTimeout: \(info.userId)", tag: "AUIInvitationServiceImpl")
+                        self.cancelApply { err in }
+                    } else {
+                        aui_info("invit checkWaittingTimeout: \(info.userId)", tag: "AUIInvitationServiceImpl")
+                        self.cancelInvitation(userId: info.userId) { err in }
+                    }
+                } else {
+                    self.observerList.append(info)
                 }
             }
-            guard let actionList = seat[AUIRemoved] as? [Dictionary<String,Any>],let actions = NSArray.yy_modelArray(with: AUIInvitationCallbackModel.self, json: actionList) as? [AUIInvitationCallbackModel] else { return }
-            if let actionType = actionList.first?[AUIActionType] as? Int {
-                if let action = AUIActionOperation(rawValue: actionType) {
-                    switch action {
-                    case .agree:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onInviteeAccepted(userId: userId)
+            if self.observerList.isEmpty {
+                self.timer = nil
+            }
+        })
+        timer?.fire()
+    }
+    private func metadataWillAdd(publiserId: String,
+                                 dataCmd: String?,
+                                 newItem: [String: Any],
+                                 attr: AUIAttributesModel) -> NSError? {
+        guard let dataCmd = AUIInvitationCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
+        }
+        
+        guard let model = AUIInvitationInfo.yy_model(with: newItem) else {
+            return AUICommonError.unknown.toNSError()
+        }
+        switch dataCmd {
+        case .sendApply, .sendInvit:
+            //能走到这里，如果有老的userId的数据，需要清理掉，防止重复，因为add请求的时候过滤了status为waitting/accept的，剩余状态的无效数据需要清理
+            if var list = attr.getList() {
+                list = list.filter { $0["userId"] as? String != model.userId }
+                attr.setList(list)
+            }
+            return nil
+        default:
+            break
+        }
+        
+        return NSError.auiError("add invitation cmd incorrect")
+    }
+    
+    private func metadataWillMerge(publiserId: String,
+                                   dataCmd: String?,
+                                   updateMap: [String: Any],
+                                   currentMap: [String: Any]) -> NSError? {
+        guard let dataCmd = AUIInvitationCmd(rawValue: dataCmd ?? "") else {
+            return AUICommonError.unknown.toNSError()
+        }
+        
+        let userId: String = currentMap["userId"] as? String ?? ""
+        let seatIndex: Int = currentMap["seatNo"] as? Int ?? 0
+        let metaData = NSMutableDictionary()
+        var err: NSError? = nil
+        switch dataCmd {
+        case .acceptApply:
+            for obj in respDelegates.allObjects {
+                err = obj.onApplyWillAccept?(userId: userId, seatIndex: seatIndex, metaData: metaData)
+            }
+        case .acceptInvit:
+            for obj in respDelegates.allObjects {
+                err = obj.onInviteWillAccept?(userId: userId, seatIndex: seatIndex, metaData: metaData)
+            }
+        default:
+            break
+        }
+        
+        return err
+    }
+    
+    private func onAttributesDidChanged(channelName: String, key: String, value: AUIAttributesModel) {
+        guard AUIInvitationKey == key else { return}
+        aui_info("recv chorus attr did changed \(value)", tag: "AUIInvitationServiceImpl")
+        guard let invitationArray = value.getList(),
+              let invitationList = NSArray.yy_modelArray(with: AUIInvitationInfo.self, json: invitationArray) as? [AUIInvitationInfo] else {
+            return
+        }
+        
+        let oldMap = self.invitationMap
+        let newMap = Dictionary(uniqueKeysWithValues: invitationList.map { ($0.userId, $0) })
+        self.invitationMap = newMap
+        var applyList: [AUIInvitationInfo] = []
+        var invitList: [AUIInvitationInfo] = []
+        newMap.forEach { userId, newInfo in
+            let oldInfo = oldMap[userId]
+            let isTargetUser = newInfo.userId == getRoomContext().currentUserInfo.userId
+            if oldInfo?.type == newInfo.type || oldInfo == nil {
+                if newInfo.type == .invite {
+                    if newInfo.status == .waiting {
+                        invitList.append(newInfo)
+                    }
+                    if oldInfo?.status != newInfo.status {
+                        if isTargetUser {
+                            switch newInfo.status {
+                            case .waiting:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onReceiveNewInvitation(userId: userId, seatIndex: newInfo.seatNo)
+                                }
+                            case .cancel, .timeout:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onInvitationCancelled(userId: userId)
+                                }
+                            case .reject:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onInviteeRejected(userId: userId)
+                                }
+                            case .accept:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onInviteeAccepted(userId: userId)
+                                }
                             }
-
                         }
-                    case .refuse:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onInviteeRejected(userId: userId)
+                    }
+                } else if newInfo.type == .apply {
+                    if newInfo.status == .waiting {
+                        applyList.append(newInfo)
+                    }
+                    if oldInfo?.status != newInfo.status {
+                        if isTargetUser {
+                            switch newInfo.status {
+                            case .waiting:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onReceiveNewApply(userId: userId, seatIndex: newInfo.seatNo)
+                                }
+                            case .cancel, .timeout:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onApplyCanceled(userId: userId)
+                                }
+                            case .reject:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onApplyRejected(userId: userId)
+                                }
+                            case .accept:
+                                self.respDelegates.allObjects.forEach {
+                                    $0.onApplyAccepted(userId: userId)
+                                }
                             }
                         }
-                    case .cancel:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onInvitationCancelled(userId: userId)
-                            }
-                        }
-                    case .failed:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onInviteeAcceptedButFailed(userId: userId)
-                            }
-                        }
-                    default:
-                        break
                     }
                 }
+            } else {
+                aui_warn("invitation type changed \(oldInfo?.type.rawValue ?? -1) -> \(newInfo.type.rawValue)", tag: "AUIInvitationServiceImpl")
             }
-        } else if AUIApplyKey == key {
-            guard let object = value as? [String:Any],let seat = object[AUIMicSeat] as? [String:Any] else { return }
-            guard let queue = seat[AUIQueue] as? [Dictionary<String,Any>], let inviteList = NSArray.yy_modelArray(with: AUIInvitationCallbackModel.self, json: queue) as? [AUIInvitationCallbackModel] else {
-                return
-            }
-            var userAttributes = [String:AUIInvitationCallbackModel]()
-            for item in inviteList {
-                if let userId = item.userId {
-                    userAttributes[userId] = item
-                }
-            }
-            self.respDelegates.allObjects.forEach {//全量回调
-                $0.onReceiveApplyUsersUpdate(users: userAttributes)
-            }
-            guard let actionList = seat[AUIRemoved] as? [Dictionary<String,Any>],let actions = NSArray.yy_modelArray(with: AUIInvitationCallbackModel.self, json: actionList) as? [AUIInvitationCallbackModel] else { return }
-            if let actionType = actionList.first?[AUIActionType] as? Int {
-                if let action = AUIActionOperation(rawValue: actionType) {
-                    switch action {
-                    case .agree:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onApplyAccepted(userId: userId)
-                            }
-                        }
-                    case .refuse:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onApplyRejected(userId: userId)
-                            }
-                        }
-                    case .cancel:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onApplyCanceled(userId: userId)
-                            }
-                        }
-                    case .failed:
-                        self.respDelegates.allObjects.forEach {
-                            if let userId = actions.first?.fromUserId {
-                                $0.onApplyAcceptedButFailed(userId: userId)
-                            }
-                        }
-                    
-                    default:
-                        break
-                    }
-                }
-            }
-
+        }
+        
+        self.respDelegates.allObjects.forEach {
+            $0.onReceiveApplyUsersUpdate(applyList: applyList)
+        }
+        self.respDelegates.allObjects.forEach {
+            $0.onInviteeListUpdate(inviteeList: invitList)
+        }
+        
+        checkThrottler.triggerLastEvent(after: 0.3) {
+            self.checkWaittingTimeout()
         }
     }
-
-    
 }
 
 extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
@@ -191,81 +283,129 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     }
     
     public func sendInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationNetworkModel()
-        model.roomId = channelName
-        model.toUserId = userId
-        model.fromUserId = getRoomContext().currentUserInfo.userId
-        model.payload = AUIPayloadModel()
-        model.payload?.seatNo = seatIndex ?? 1
-        model.request { error, _ in
-            callback(error as? NSError)
+        let model = AUIInvitationInfo()
+        model.createTime = getRoomContext().getNtpTime()
+        model.editTime = model.createTime
+        model.type = .invite
+        model.seatNo = seatIndex ?? 0
+        model.userId = userId
+        guard let value = model.yy_modelToJSONObject() as? [String: Any] else {
+            callback(NSError.auiError("convert to json fail"))
+            return
         }
+        //当当前状态是waitting和accept时不允许写入，无论邀请申请
+        let filter = [
+            ["userId": model.userId, "status": AUIInvitationStatus.waiting.rawValue],
+            ["userId": model.userId, "status": AUIInvitationStatus.accept.rawValue]
+        ]
+        invitationCollection.addMetaData(valueCmd: AUIInvitationCmd.sendInvit.rawValue,
+                                         value: value, 
+                                         filter: filter,
+                                         callback: callback)
     }
     
     public func acceptInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationAcceptNetworkModel()
-        model.roomId = channelName
-        model.fromUserId = userId
-        model.request { error, _ in
-            callback(error as? NSError)
-        }
+        let value: [String: Any] = [
+            "status": AUIInvitationStatus.accept.rawValue,
+            "editTime": getRoomContext().getNtpTime()
+        ]
+        invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.acceptInvit.rawValue,
+                                           value: value,
+                                           filter: [["userId": userId, "type": AUIInvitationType.invite.rawValue]],
+                                           callback: callback)
     }
     
     public func rejectInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationAcceptRejectNetworkModel()
-        model.roomId = channelName
-        model.fromUserId = userId
-        model.request { error, _ in
-            callback(error as? NSError)
-        }
+        let value: [String: Any] = [
+            "status": AUIInvitationStatus.reject.rawValue,
+            "editTime": getRoomContext().getNtpTime()
+        ]
+        invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.rejectInvit.rawValue,
+                                           value: value,
+                                           filter: [["userId": userId, "type": AUIInvitationType.invite.rawValue]],
+                                           callback: callback)
     }
     
     public func cancelInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
-        let model = AUIInvitationAcceptCancelNetworkModel()
-        model.roomId = channelName
-        model.userId = userId
-        model.request { error, _ in
-            callback(error as? NSError)
-        }
+        let value: [String: Any] = [
+            "status": AUIInvitationStatus.cancel.rawValue,
+            "editTime": getRoomContext().getNtpTime()
+        ]
+        invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.cancelInvit.rawValue,
+                                           value: value,
+                                           filter: [["userId": userId, "type": AUIInvitationType.invite.rawValue]],
+                                           callback: callback)
     }
     
     public func sendApply(seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyNetworkModel()
-        model.roomId = channelName
-        model.fromUserId = getRoomContext().currentUserInfo.userId
-        model.payload = AUIPayloadModel()
-        model.payload?.seatNo = seatIndex ?? 1
-        model.request { error, _ in
-            callback(error as? NSError)
+        let model = AUIInvitationInfo()
+        model.createTime = getRoomContext().getNtpTime()
+        model.editTime = model.createTime
+        model.type = .apply
+        model.seatNo = seatIndex ?? 0
+        model.userId = getRoomContext().currentUserInfo.userId
+        guard let value = model.yy_modelToJSONObject() as? [String: Any] else {
+            callback(NSError.auiError("convert to json fail"))
+            return
         }
+        //当当前状态是waitting和accept时不允许写入，无论邀请申请
+        let filter = [
+            ["userId": model.userId, "status": AUIInvitationStatus.waiting.rawValue],
+            ["userId": model.userId, "status": AUIInvitationStatus.accept.rawValue]
+        ]
+        invitationCollection.addMetaData(valueCmd: AUIInvitationCmd.sendApply.rawValue,
+                                         value: value,
+                                         filter: filter,
+                                         callback: callback)
     }
     
     public func cancelApply(callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyAcceptCancelNetworkModel()
-        model.roomId = channelName
-        model.fromUserId = getRoomContext().currentUserInfo.userId
-        model.request { error, _ in
-            callback(error as? NSError)
-        }
+        let value: [String: Any] = [
+            "status": AUIInvitationStatus.cancel.rawValue,
+            "editTime": getRoomContext().getNtpTime()
+        ]
+        let userId = getRoomContext().currentUserInfo.userId
+        invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.cancelApply.rawValue,
+                                           value: value,
+                                           filter: [["userId": userId, "type": AUIInvitationType.apply.rawValue]],
+                                           callback: callback)
     }
     
     public func acceptApply(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyAcceptNetworkModel()
-        model.roomId = channelName
-        model.fromUserId = AUIRoomContext.shared.currentUserInfo.userId
-        model.toUserId = userId
-        model.request { error, _ in
-            callback(error as? NSError)
-        }
+        let value: [String: Any] = [
+            "status": AUIInvitationStatus.accept.rawValue,
+            "editTime": getRoomContext().getNtpTime()
+        ]
+        
+        invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.acceptApply.rawValue,
+                                           value: value,
+                                           filter: [["userId": userId, "type": AUIInvitationType.apply.rawValue]],
+                                           callback: callback)
     }
     
     public func rejectApply(userId: String, callback: @escaping (NSError?) -> ()) {
-        let model = AUIApplyAcceptRejectNetworkModel()
-        model.roomId = channelName
-        model.userId = userId
-        model.request { error, _ in
-            callback(error as? NSError)
-        }
+        let value: [String: Any] = [
+            "status": AUIInvitationStatus.reject.rawValue,
+            "editTime": getRoomContext().getNtpTime()
+        ]
+        invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.rejectApply.rawValue,
+                                           value: value,
+                                           filter: [["userId": userId, "type": AUIInvitationType.apply.rawValue]],
+                                           callback: callback)
+    }
+}
+
+extension AUIInvitationServiceImpl {
+    public func initService(completion: @escaping ((NSError?) -> ())){
     }
     
+    public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
+        invitationCollection.removeMetaData(valueCmd: nil,
+                                            filter: [["userId": userId]],
+                                            callback: completion)
+    }
+    
+    public func deinitService(completion: @escaping ((NSError?) -> ())) {
+        invitationCollection.cleanMetaData(callback: completion)
+    }
 }

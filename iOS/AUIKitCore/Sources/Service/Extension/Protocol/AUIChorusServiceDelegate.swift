@@ -50,6 +50,4 @@ import Foundation
     /// 合唱者离开
     /// - Parameter chorister: 离开的合唱者
     func onChoristerDidLeave(chorister: AUIChoristerModel)
-    
-    @objc optional func onWillJoinChours(songCode: String, userId: String, metaData: NSMutableDictionary) -> NSError?
 }

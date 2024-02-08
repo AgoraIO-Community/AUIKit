@@ -57,7 +57,7 @@ public class AUIChatCreateNetworkModel: AUINetworkModel {
         interfaceName = "/v2/chatRoom/create"
     }
     
-    public var appId: String?
+    public var appId: String? = AUIRoomContext.shared.commonConfig?.appId ?? ""
     public var chatRoomConfig: AUIChatRoomConfig?
     public var type: AUIChatCreateType = .userAndRoom
     public var imConfig: AUIChatConfig?

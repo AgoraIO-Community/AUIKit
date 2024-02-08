@@ -39,7 +39,7 @@ import SDWebImage
     
     public var placeHolder: UIImage? = UIImage.aui_Image(named: "hands")
     
-    public var operationName: String = "申请列表"
+    public var operationName: String = aui_localized("Application List")//"申请列表"
     
     public var showRedDot: Bool = true
     

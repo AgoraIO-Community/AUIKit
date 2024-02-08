@@ -9,20 +9,20 @@ import Foundation
 
 public typealias AUICollectionGetClosure = (NSError?, Any?)-> Void
 
-//(publisher uid, valueCmd, new value)
-public typealias AUICollectionAddClosure = (String, String?, [String: Any]) -> NSError?
+//(publisher uid, valueCmd, new value of item,  old value of all items)
+public typealias AUICollectionAddClosure = (String, String?, [String: Any], AUIAttributesModel) -> NSError?
 
-//(publisher uid, valueCmd, new value, old value of item)
+//(publisher uid, valueCmd, new value of item, old value of item)
 public typealias AUICollectionUpdateClosure = (String, String?, [String: Any], [String: Any]) -> NSError?
 
-//(publisher uid, valueCmd, oldValue)
+//(publisher uid, valueCmd, old value of item)
 public typealias AUICollectionRemoveClosure = (String, String?, [String: Any]) -> NSError?
 
 //(publisher uid, valueCmd, old value of item, keys, update value, min, max)
 public typealias AUICollectionCalculateClosure = (String, String?, [String: Any], [String], Int, Int, Int) -> NSError?
 
 //(channelName, key, valueCmd, value[will set metadata])->value[can set metadata]
-public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, AUIAttributesModel) -> AUIAttributesModel
+public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, AUIAttributesModel) -> Void
 
 //(channelName, key, value)
 public typealias AUICollectionAttributesDidChangedClosure = (String, String, AUIAttributesModel) -> Void
@@ -36,6 +36,18 @@ public typealias AUICollectionAttributesDidChangedClosure = (String, String, AUI
     required init(map: [String: Any]) {
         self.attributes = map
         super.init()
+    }
+    
+    public func setMap(_ attributes: [String: Any]?) {
+        if self.attributes is [String: Any] {
+            self.attributes = attributes
+        }
+    }
+    
+    public func setList(_ attributes: [[String: Any]]?) {
+        if self.attributes is [[String: Any]] {
+            self.attributes = attributes
+        }
     }
     
     public func getMap() -> [String: Any]? {

@@ -36,6 +36,16 @@ open class AUIRoomContext: NSObject {
     
     public var seatCount: UInt = 8
     
+    private var ntpTimeClosure: (()-> Int64)?
+    
+    public func setNtpTime(callback: @escaping ()-> Int64) {
+        self.ntpTimeClosure = callback
+    }
+    
+    public func getNtpTime() -> Int64 {
+        return ntpTimeClosure?() ?? Int64(Date().timeIntervalSince1970 * 1000)
+    }
+    
     public func isRoomOwner(channelName: String) ->Bool {
         return isRoomOwner(channelName: channelName, userId: currentUserInfo.userId)
     }
