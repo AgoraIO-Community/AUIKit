@@ -23,6 +23,11 @@ private enum AUIInvitationCmd: String {
     case rejectInvit = "rejectInvit"
 }
 
+private let kEditTimeKey = "editTime"
+private let kStatusKey = "status"
+private let kUserIdKey = "userId"
+private let kTypeKey = "type"
+
 //邀请Service实现
 @objc open class AUIInvitationServiceImpl: NSObject {
     private var respDelegates: NSHashTable<AUIInvitationRespDelegate> = NSHashTable<AUIInvitationRespDelegate>.weakObjects()
@@ -50,6 +55,11 @@ private enum AUIInvitationCmd: String {
                                                       observeKey: AUIInvitationKey,
                                                       rtmManager: rtmManager)
         super.init()
+        invitationCollection.subsceibeValueWillChange {[weak self] publisherId, dataCmd, newItem in
+            return self?.valueWillChange(publiserId: publisherId,
+                                         dataCmd: dataCmd,
+                                         newItem: newItem)
+        }
         invitationCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem, attr in
             return self?.metadataWillAdd(publiserId: publisherId,
                                          dataCmd: dataCmd,
@@ -66,9 +76,9 @@ private enum AUIInvitationCmd: String {
             guard let value = attr.getList() else { return }
             let currentTime = self.getRoomContext().getNtpTime()
             let filterList = value.filter { attr in
-                let editTime = attr["editTime"] as? Int64 ?? 0
+                let editTime = attr[kEditTimeKey] as? Int64 ?? 0
                 let invalidTs = attr["invalidTs"] as? Int64 ?? kInvitationInvalidTs
-                let status = attr["status"] as? Int
+                let status = attr[kStatusKey] as? Int
                 if status == AUIInvitationStatus.waiting.rawValue {
                     return true
                 }
@@ -122,6 +132,27 @@ extension AUIInvitationServiceImpl {
         })
         timer?.fire()
     }
+    
+    private func valueWillChange(publiserId: String,
+                                 dataCmd: String?,
+                                 newItem: [String: Any]) -> [String: Any]? {
+        guard let dataCmd = AUIInvitationCmd(rawValue: dataCmd ?? "") else {
+            return newItem
+        }
+        var tempItem = newItem
+        let currentTime = self.getRoomContext().getNtpTime()
+        tempItem[kEditTimeKey] = currentTime
+        switch dataCmd {
+        case .sendApply, .sendInvit:
+            tempItem["createTime"] = currentTime
+            break
+        default:
+            break
+        }
+        
+        return tempItem
+    }
+    
     private func metadataWillAdd(publiserId: String,
                                  dataCmd: String?,
                                  newItem: [String: Any],
@@ -137,7 +168,7 @@ extension AUIInvitationServiceImpl {
         case .sendApply, .sendInvit:
             //能走到这里，如果有老的userId的数据，需要清理掉，防止重复，因为add请求的时候过滤了status为waitting/accept的，剩余状态的无效数据需要清理
             if var list = attr.getList() {
-                list = list.filter { $0["userId"] as? String != model.userId }
+                list = list.filter { $0[kUserIdKey] as? String != model.userId }
                 attr.setList(list)
             }
             return nil
@@ -156,7 +187,7 @@ extension AUIInvitationServiceImpl {
             return AUICommonError.unknown.toNSError()
         }
         
-        let userId: String = currentMap["userId"] as? String ?? ""
+        let userId: String = currentMap[kUserIdKey] as? String ?? ""
         let seatIndex: Int = currentMap["seatNo"] as? Int ?? 0
         let metaData = NSMutableDictionary()
         var err: NSError? = nil
@@ -284,8 +315,6 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     
     public func sendInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationInfo()
-        model.createTime = getRoomContext().getNtpTime()
-        model.editTime = model.createTime
         model.type = .invite
         model.seatNo = seatIndex ?? 0
         model.userId = userId
@@ -295,8 +324,8 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
         }
         //当当前状态是waitting和accept时不允许写入，无论邀请申请
         let filter = [
-            ["userId": model.userId, "status": AUIInvitationStatus.waiting.rawValue],
-            ["userId": model.userId, "status": AUIInvitationStatus.accept.rawValue]
+            [kUserIdKey: model.userId, kStatusKey: AUIInvitationStatus.waiting.rawValue],
+            [kUserIdKey: model.userId, kStatusKey: AUIInvitationStatus.accept.rawValue]
         ]
         invitationCollection.addMetaData(valueCmd: AUIInvitationCmd.sendInvit.rawValue,
                                          value: value, 
@@ -305,42 +334,31 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     }
     
     public func acceptInvitation(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let value: [String: Any] = [
-            "status": AUIInvitationStatus.accept.rawValue,
-            "editTime": getRoomContext().getNtpTime()
-        ]
+        let value: [String: Any] = [kStatusKey: AUIInvitationStatus.accept.rawValue]
         invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.acceptInvit.rawValue,
                                            value: value,
-                                           filter: [["userId": userId, "type": AUIInvitationType.invite.rawValue]],
+                                           filter: [[kUserIdKey: userId, kTypeKey: AUIInvitationType.invite.rawValue]],
                                            callback: callback)
     }
     
     public func rejectInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
-        let value: [String: Any] = [
-            "status": AUIInvitationStatus.reject.rawValue,
-            "editTime": getRoomContext().getNtpTime()
-        ]
+        let value: [String: Any] = [kStatusKey: AUIInvitationStatus.reject.rawValue]
         invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.rejectInvit.rawValue,
                                            value: value,
-                                           filter: [["userId": userId, "type": AUIInvitationType.invite.rawValue]],
+                                           filter: [[kUserIdKey: userId, kTypeKey: AUIInvitationType.invite.rawValue]],
                                            callback: callback)
     }
     
     public func cancelInvitation(userId: String, callback: @escaping (NSError?) -> ()) {
-        let value: [String: Any] = [
-            "status": AUIInvitationStatus.cancel.rawValue,
-            "editTime": getRoomContext().getNtpTime()
-        ]
+        let value: [String: Any] = [kStatusKey: AUIInvitationStatus.cancel.rawValue]
         invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.cancelInvit.rawValue,
                                            value: value,
-                                           filter: [["userId": userId, "type": AUIInvitationType.invite.rawValue]],
+                                           filter: [[kUserIdKey: userId, kTypeKey: AUIInvitationType.invite.rawValue]],
                                            callback: callback)
     }
     
     public func sendApply(seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
         let model = AUIInvitationInfo()
-        model.createTime = getRoomContext().getNtpTime()
-        model.editTime = model.createTime
         model.type = .apply
         model.seatNo = seatIndex ?? 0
         model.userId = getRoomContext().currentUserInfo.userId
@@ -350,8 +368,8 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
         }
         //当当前状态是waitting和accept时不允许写入，无论邀请申请
         let filter = [
-            ["userId": model.userId, "status": AUIInvitationStatus.waiting.rawValue],
-            ["userId": model.userId, "status": AUIInvitationStatus.accept.rawValue]
+            [kUserIdKey: model.userId, kStatusKey: AUIInvitationStatus.waiting.rawValue],
+            [kUserIdKey: model.userId, kStatusKey: AUIInvitationStatus.accept.rawValue]
         ]
         invitationCollection.addMetaData(valueCmd: AUIInvitationCmd.sendApply.rawValue,
                                          value: value,
@@ -360,37 +378,28 @@ extension AUIInvitationServiceImpl: AUIInvitationServiceDelegate {
     }
     
     public func cancelApply(callback: @escaping (NSError?) -> ()) {
-        let value: [String: Any] = [
-            "status": AUIInvitationStatus.cancel.rawValue,
-            "editTime": getRoomContext().getNtpTime()
-        ]
+        let value: [String: Any] = [kStatusKey: AUIInvitationStatus.cancel.rawValue]
         let userId = getRoomContext().currentUserInfo.userId
         invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.cancelApply.rawValue,
                                            value: value,
-                                           filter: [["userId": userId, "type": AUIInvitationType.apply.rawValue]],
+                                           filter: [[kUserIdKey: userId, kTypeKey: AUIInvitationType.apply.rawValue]],
                                            callback: callback)
     }
     
     public func acceptApply(userId: String, seatIndex: Int?, callback: @escaping (NSError?) -> ()) {
-        let value: [String: Any] = [
-            "status": AUIInvitationStatus.accept.rawValue,
-            "editTime": getRoomContext().getNtpTime()
-        ]
+        let value: [String: Any] = [kStatusKey: AUIInvitationStatus.accept.rawValue]
         
         invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.acceptApply.rawValue,
                                            value: value,
-                                           filter: [["userId": userId, "type": AUIInvitationType.apply.rawValue]],
+                                           filter: [[kUserIdKey: userId, kTypeKey: AUIInvitationType.apply.rawValue]],
                                            callback: callback)
     }
     
     public func rejectApply(userId: String, callback: @escaping (NSError?) -> ()) {
-        let value: [String: Any] = [
-            "status": AUIInvitationStatus.reject.rawValue,
-            "editTime": getRoomContext().getNtpTime()
-        ]
+        let value: [String: Any] = [kStatusKey: AUIInvitationStatus.reject.rawValue]
         invitationCollection.mergeMetaData(valueCmd: AUIInvitationCmd.rejectApply.rawValue,
                                            value: value,
-                                           filter: [["userId": userId, "type": AUIInvitationType.apply.rawValue]],
+                                           filter: [[kUserIdKey: userId, kTypeKey: AUIInvitationType.apply.rawValue]],
                                            callback: callback)
     }
 }
@@ -401,7 +410,7 @@ extension AUIInvitationServiceImpl {
     
     public func cleanUserInfo(userId: String, completion: @escaping ((NSError?) -> ())) {
         invitationCollection.removeMetaData(valueCmd: nil,
-                                            filter: [["userId": userId]],
+                                            filter: [[kUserIdKey: userId]],
                                             callback: completion)
     }
     

@@ -28,10 +28,12 @@ extension AUIListCollection {
             callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmAddMetaData: '\(filter ?? [])'"))
             return
         }
-        var list = currentList
         
+        let newValue = self.valueWillChangeClosure?(publisherId, valueCmd, value) ?? value
+        
+        var list = currentList
         let attr = AUIAttributesModel(list: list)
-        if let err = self.metadataWillAddClosure?(publisherId, valueCmd, value, attr) {
+        if let err = self.metadataWillAddClosure?(publisherId, valueCmd, newValue, attr) {
             aui_collection_warn("rtmAddMetaData fail! closure error:\(err.localizedDescription)")
             callback?(err)
             return
@@ -39,7 +41,7 @@ extension AUIListCollection {
         if let attrList = attr.getList() {
             list = attrList
         }
-        list.append(value)
+        list.append(newValue)
         
         attr.setList(list)
         self.attributesWillSetClosure?(channelName,
@@ -75,18 +77,21 @@ extension AUIListCollection {
             callback?(AUICollectionOperationError.filterNotFound.toNSError("list rtmSetMetaData: '\(filter ?? [])'"))
             return
         }
+        
+        let newValue = self.valueWillChangeClosure?(publisherId, valueCmd, value) ?? value
+        
         var list = currentList
         for itemIdx in itemIndexes {
             let item = list[itemIdx]
             //once break, always break
-            if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, value, item) {
+            if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, newValue, item) {
                 aui_collection_warn("rtmSetMetaData fail! closure error:\(err.localizedDescription)")
                 callback?(err)
                 return
             }
             
             var tempItem = item
-            value.forEach { (key, value) in
+            newValue.forEach { (key, value) in
                 tempItem[key] = value
             }
             list[itemIdx] = tempItem
@@ -126,17 +131,19 @@ extension AUIListCollection {
             return
         }
         
+        let newValue = self.valueWillChangeClosure?(publisherId, valueCmd, value) ?? value
+        
         var list = currentList
         for itemIdx in itemIndexes {
             let item = list[itemIdx]
             //once break, always break
-            if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, value, item) {
+            if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, newValue, item) {
                 aui_collection_warn("rtmMergeMetaData fail! closure error:\(err.localizedDescription)")
                 callback?(err)
                 return
             }
             
-            let tempItem = mergeMap(origMap: item, newMap: value)
+            let tempItem = mergeMap(origMap: item, newMap: newValue)
             list[itemIdx] = tempItem
         }
         

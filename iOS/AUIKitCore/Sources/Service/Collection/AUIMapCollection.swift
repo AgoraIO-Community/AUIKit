@@ -22,14 +22,16 @@ extension AUIMapCollection {
                                 valueCmd: String?,
                                 value: [String: Any],
                                 callback: ((NSError?)->())?) {
-        if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, value, currentMap) {
+        let newValue = self.valueWillChangeClosure?(publisherId, valueCmd, value) ?? value
+        
+        if let err = self.metadataWillUpdateClosure?(publisherId, valueCmd, newValue, currentMap) {
             aui_collection_warn("rtmSetMetaData fail! closure error:\(err.localizedDescription)")
             callback?(err)
             return
         }
         
         var map = currentMap
-        value.forEach { (key: String, value: Any) in
+        newValue.forEach { (key: String, value: Any) in
             map[key] = value
         }
         let attr = AUIAttributesModel(map: map)
@@ -59,13 +61,15 @@ extension AUIMapCollection {
                                   valueCmd: String?,
                                   value: [String: Any],
                                   callback: ((NSError?)->())?) {
-        if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, value, currentMap) {
+        let newValue = self.valueWillChangeClosure?(publisherId, valueCmd, value) ?? value
+        
+        if let err = self.metadataWillMergeClosure?(publisherId, valueCmd, newValue, currentMap) {
             aui_collection_warn("rtmMergeMetaData fail! closure error:\(err.localizedDescription)")
             callback?(err)
             return
         }
         
-        var map = mergeMap(origMap: currentMap, newMap: value)
+        var map = mergeMap(origMap: currentMap, newMap: newValue)
         let attr = AUIAttributesModel(map: map)
         self.attributesWillSetClosure?(channelName,
                                        observeKey,
@@ -74,15 +78,15 @@ extension AUIMapCollection {
         if let attrMap = attr.getMap() {
             map = attrMap
         }
-        guard let value = encodeToJsonStr(map) else {
+        guard let valueStr = encodeToJsonStr(map) else {
             aui_collection_warn("rtmMergeMetaData fail! encode to json fail")
             callback?(AUICollectionOperationError.encodeToJsonStringFail.toNSError())
             return
         }
-        aui_collection_log("rtmMergeMetaData valueCmd: \(valueCmd ?? "") value: \(value)")
+        aui_collection_log("rtmMergeMetaData valueCmd: \(valueCmd ?? "") value: \(valueStr)")
         self.rtmManager.setBatchMetadata(channelName: channelName,
                                          lockName: kRTM_Referee_LockName,
-                                         metadata: [observeKey: value]) { error in
+                                         metadata: [observeKey: valueStr]) { error in
             aui_collection_log("rtmMergeMetaData completion: \(error?.localizedDescription ?? "success")")
             callback?(error)
         }
@@ -94,7 +98,6 @@ extension AUIMapCollection {
                                       key: [String],
                                       value: AUICollectionCalcValue,
                                       callback: ((NSError?)->())?) {
-        
         if let err = self.metadataWillCalculateClosure?(publisherId,
                                                         valueCmd,
                                                         currentMap,
