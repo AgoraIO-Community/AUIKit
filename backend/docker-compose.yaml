@@ -1,0 +1,58 @@
+version: "3.7"
+
+networks:
+  uikit-network:
+    driver: bridge
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uikit-api
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://dev:test@uikit-mongo:27017/test
+      - SPRING_REDIS_HOST=uikit-redis
+      - SPRING_REDIS_PASSWORD=test
+      - SPRING_REDIS_PORT=6379
+      - SPRING_REDIS_DATABASE=2
+      - WHITELIST_TOKEN_APP_ID=${WHITELIST_TOKEN_APP_ID}
+      - WHITELIST_TOKEN_APP_CERT=${WHITELIST_TOKEN_APP_CERT}
+      - WHITELIST_CHAT_ROOM_APP_ID=${WHITELIST_CHAT_ROOM_APP_ID}
+      - WHITELIST_CHAT_ROOM_ORG_NAME=${WHITELIST_CHAT_ROOM_ORG_NAME}
+      - WHITELIST_CHAT_ROOM_APP_NAME=${WHITELIST_CHAT_ROOM_APP_NAME}
+      - WHITELIST_CHAT_ROOM_CLIENT_ID=${WHITELIST_CHAT_ROOM_CLIENT_ID}
+      - WHITELIST_RTC_KICK_OUT_AUTH_APP_ID=${WHITELIST_RTC_KICK_OUT_AUTH_APP_ID}
+      - WHITELIST_RTC_KICK_OUT_AUTH_BASIC_AUTH=${WHITELIST_RTC_KICK_OUT_AUTH_BASIC_AUTH}
+    networks:
+      - uikit-network
+    depends_on:
+      - redis
+      - mongo
+  redis:
+    image: redis:6.0
+    platform: linux/amd64
+    container_name: uikit-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: >
+      --requirepass test
+    networks:
+      - uikit-network
+  mongo:
+    image: mongo:6.0
+    container_name: uikit-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - uikit-network

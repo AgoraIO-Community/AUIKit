@@ -1,0 +1,14 @@
+.idea
+logs
+target
+.vscode
+.env
+
+# RTM
+agora_cache.db
+agoradns.dat
+agorareport.dat
+core
+crash_context_v1
+hs_err*
+xdump_config
