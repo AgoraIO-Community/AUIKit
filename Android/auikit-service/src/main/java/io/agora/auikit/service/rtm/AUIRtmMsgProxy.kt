@@ -5,7 +5,6 @@ import android.util.Log
 import io.agora.rtm.LockDetail
 import io.agora.rtm.LockEvent
 import io.agora.rtm.MessageEvent
-import io.agora.rtm.Metadata
 import io.agora.rtm.PresenceEvent
 import io.agora.rtm.RtmConstants
 import io.agora.rtm.RtmEventListener
@@ -150,12 +149,16 @@ class AUIRtmMsgProxy : RtmEventListener {
         originEventListeners?.onStorageEvent(event)
         event ?: return
         val channelName = event.target
-        processMetaData(channelName, event.data)
+        val metadata = mutableMapOf<String, String>()
+        event.data.metadataItems.forEach {
+            metadata[it.key] = it.value
+        }
+        processMetaData(channelName, metadata)
     }
 
-    fun processMetaData(channelName: String, metadata: Metadata?) {
+    fun processMetaData(channelName: String, metadata: Map<String, String>) {
         metadata ?: return
-        if (metadata.metadataItems.isEmpty()) {
+        if (metadata.isEmpty()) {
             if (isMetaEmpty) {
                 return
             }
@@ -168,7 +171,7 @@ class AUIRtmMsgProxy : RtmEventListener {
         isMetaEmpty = false
 
         val cache = msgCacheAttr[channelName] ?: mutableMapOf()
-        metadata.metadataItems.forEach { item ->
+        metadata.entries.forEach { item ->
             if (cache[item.key] == item.value) {
                 return@forEach
             }

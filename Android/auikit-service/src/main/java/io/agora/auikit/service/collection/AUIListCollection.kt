@@ -26,14 +26,14 @@ class AUIListCollection(
                     callback?.invoke(AUICollectionException.ErrorCode.unknown.toException("rtm getMetadata error: $error"), null)
                     return@getMetadata
                 }
-                val data = metaData?.metadataItems?.find { it.key == observeKey }
+                val data = metaData?.get(observeKey)
                 if (data == null) {
                     callback?.invoke(null, null)
                     return@getMetadata
                 }
 
                 val list = GsonTools.toBean<List<Map<String, Any>>>(
-                    data.value,
+                    data,
                     object : TypeToken<List<Map<String, Any>>>() {}.type
                 )
                 if (list == null) {
@@ -256,7 +256,7 @@ class AUIListCollection(
                 data = GsonTools.beanToMap(
                     AUICollectionCalcData(
                         key,
-                        AUICollectionCalcValue(value, max, min)
+                        AUICollectionCalcValue(value, min, max)
                     )
                 )
             )

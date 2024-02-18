@@ -26,14 +26,14 @@ class AUIMapCollection(
                     callback?.invoke(AUICollectionException.ErrorCode.unknown.toException(), null)
                     return@getMetadata
                 }
-                val data = metaData?.metadataItems?.find { it.key == observeKey }
+                val data = metaData?.get(observeKey)
                 if (data == null) {
                     callback?.invoke(null, null)
                     return@getMetadata
                 }
 
                 val map = GsonTools.toBean<Map<String, Any>>(
-                    data.value,
+                    data,
                     object : TypeToken<Map<String, Any>>() {}.type
                 )
                 if (map == null) {

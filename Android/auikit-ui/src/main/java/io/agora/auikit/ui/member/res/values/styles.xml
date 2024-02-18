@@ -18,8 +18,8 @@
         <item name="aui_upperRight_member3_Visibility">visible</item>
         <item name="aui_upperRight_member_item_width">26dp</item>
         <item name="aui_upperRight_member_item_height">26dp</item>
-        <item name="aui_upperRight_member_count_width">wrap_content</item>
-        <item name="aui_upperRight_member_count_height">wrap_content</item>
+        <item name="aui_upperRight_member_count_width">26dp</item>
+        <item name="aui_upperRight_member_count_height">26dp</item>
         <item name="aui_upperRight_member_spacing">2dp</item>
         <item name="aui_upperRight_default_member_bg">@drawable/aui_member_item_light_bg</item>
 
@@ -30,11 +30,11 @@
         <item name="aui_upperRight_count_color">#FFFFFF</item>
         <item name="aui_upperRight_count_style">bold</item>
         <item name="aui_upperRight_count_spacing">4dp</item>
-        <item name="aui_upperRight_count_Visibility">gone</item>
+        <item name="aui_upperRight_count_Visibility">visible</item>
         <item name="aui_upperRight_count_paddingHorizontal">4dp</item>
         <item name="aui_upperRight_count_paddingVertical">6dp</item>
 
-        <item name="aui_upperRight_count_background">@drawable/aui_member_count_light_bg</item>
+        <item name="aui_upperRight_count_background">@drawable/aui_member_count_dark_bg</item>
 
         <!-- 更多用户 -->
         <item name="aui_roomMoreUser_drawable">@mipmap/aui_member_icon_arrow</item>

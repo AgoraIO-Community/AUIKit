@@ -109,8 +109,8 @@ class AUIInvitationServiceImpl(
             AUIInvitationCmd.sendInvit.name,
             GsonTools.beanToMap(info),
             listOf(
-                mapOf("userId" to roomContext.currentUserInfo.userId, "status" to AUIInvitationInfo.AUIInvitationStatus.Waiting),
-                mapOf("userId" to roomContext.currentUserInfo.userId, "status" to AUIInvitationInfo.AUIInvitationStatus.Accept),
+                mapOf("userId" to userId, "status" to AUIInvitationInfo.AUIInvitationStatus.Waiting),
+                mapOf("userId" to userId, "status" to AUIInvitationInfo.AUIInvitationStatus.Accept),
             )
         ) {
             callback?.onResult(
