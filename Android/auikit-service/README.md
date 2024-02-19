@@ -1,7 +1,5 @@
 # AUIKit Service
 
-*[English](AUIKit-Service.md) | 中文*
-
 AUIKit Service提供一套通用的服务接口，可用于数据交互。这套接口可以结合rtm2.0或者其他serverless云服务实现一套完整的服务
 
 
@@ -52,25 +50,14 @@ auikit-service/src/main/java/io/agora/auikit/model
 | getChannelName | 获取当前频道名 |
 
 
-* **房间管理**
-
-房间管理抽象类 -> [IAUIRoomManager](../auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
-Agora房间管理类 -> [AUIRoomManagerImpl](../auikit-service/src/main/java/io/agora/auikit/service/imp/AUIRoomServiceImpl.kt)
+* **房间管理**  -> [AUIRoomManager](../auikit-service/src/main/java/io/agora/auikit/service/room/AUIRoomManager.kt)
 
 | 方法 | 注释 |
 | :- | :- |
 | createRoom | 创建房间（房主调用），若房间不存在，系统将自动创建一个新房间 |
 | destroyRoom | 销毁房间（房主调用） |
-| enterRoom | 进入房间（听众调用） |
-| exitRoom | 退出房间（听众调用） |
+| getRoomInfo | 获取指定房间信息 |
 | getRoomInfoList | 获取指定房间id列表的详细信息，如果房间id列表为空，则获取所有房间的信息 |
-
-房间信息回调接口 -> [IAUIRoomManager.AUIRoomRespObserver](../auikit-service/src/main/java/io/agora/auikit/service/IAUIRoomManager.java)
-
-| 方法 | 注释 |
-| :- | :- |
-| onRoomDestroy | 房间被销毁的回调 |
-| onRoomInfoChange | 房间信息变更回调 |
 
 * **用户管理**
 
