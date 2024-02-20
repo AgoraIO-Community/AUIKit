@@ -9,6 +9,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 public class AUIInvitationInfo {
+
+    private static final long kInvitationTimeoutTs = 10 * 1000;
+    private static final long kInvitationInvalidTs = 20 * 1000;
+
     @IntDef({
             AUIInvitationType.Apply,
             AUIInvitationType.Invite,
@@ -25,6 +29,7 @@ public class AUIInvitationInfo {
             AUIInvitationStatus.Accept,
             AUIInvitationStatus.Reject,
             AUIInvitationStatus.Timeout,
+            AUIInvitationStatus.Cancel,
     })
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
@@ -33,6 +38,8 @@ public class AUIInvitationInfo {
         int Accept = 2; // 同意
         int Reject = 3; // 拒绝
         int Timeout = 4; // 超时
+
+        int Cancel = 5; // 取消
     }
 
     // 申请观众userId，被邀请观众userId
@@ -46,4 +53,11 @@ public class AUIInvitationInfo {
 
     public @AUIInvitationStatus int status = AUIInvitationStatus.Waiting;
 
+    public long createTime = System.currentTimeMillis();
+
+    public long editTime = System.currentTimeMillis();
+
+    public long timeoutTs = kInvitationTimeoutTs;
+
+    public long invalidTs = kInvitationInvalidTs;
 }

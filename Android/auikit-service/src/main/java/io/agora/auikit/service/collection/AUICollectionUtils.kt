@@ -43,12 +43,12 @@ object AUICollectionUtils {
         }
         array.forEachIndexed { index, value ->
             filter.forEach { filterItem ->
-                var match = false
+                var match = true
                 for (entry in filterItem) {
                     val k = entry.key
                     val v = entry.value
-                    if(isMatchFilter(k, value, v)){
-                        match = true
+                    if(!isMatchFilter(k, value, v)){
+                        match = false
                         break
                     }
                 }
@@ -63,13 +63,17 @@ object AUICollectionUtils {
 
     private fun isMatchFilter(key:String, itemValue: Map<String, Any>, filterValue: Any?): Boolean {
         val valueV = itemValue[key]
-        if(valueV == filterValue){
+        if (valueV == filterValue) {
             return true
+        } else if (valueV is Long && filterValue is Int) {
+            return filterValue.toLong() == valueV
         }
 
         val valueMap = valueV as? Map<String, Any>
         val filterMap = filterValue as? Map<String, Any>
-        if(valueMap != null && filterMap != null){
+        if(valueMap != null
+            && filterMap != null
+            && filterMap.size == 1){
             filterMap.keys.firstOrNull()?.let { filterVKey ->
                 return isMatchFilter(filterVKey, valueMap, filterMap[filterVKey])
             }
@@ -102,7 +106,7 @@ object AUICollectionUtils {
             return retMap
         }
         val curKey = key.firstOrNull() ?: return null
-        val subValue = retMap[curKey] as? Int ?: return null
+        val subValue = retMap[curKey] as? Long ?: return null
         val curValue = subValue + value
         if(curValue < min || curValue > max){
             return null

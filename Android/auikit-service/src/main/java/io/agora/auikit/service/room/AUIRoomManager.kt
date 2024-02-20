@@ -35,19 +35,19 @@ class AUIRoomManager {
     ) {
         val roomId = roomInfo.roomId
         roomInterface.createRoom(CreateRoomReq(
-                appId,
-                sceneId,
-                roomId,
-                AUIRoomInfo().apply {
-                    roomName = roomInfo.roomName
-                    memberCount = 1
-                    owner = AUIRoomContext.shared().currentUserInfo
-                    thumbnail = roomInfo.thumbnail
-                    micSeatCount = roomInfo.micSeatCount
-                    micSeatStyle = roomInfo.micSeatStyle
-                    password = roomInfo.password
-                }
-            ))
+            appId,
+            sceneId,
+            roomId,
+            AUIRoomInfo().apply {
+                roomName = roomInfo.roomName
+                memberCount = 1
+                owner = AUIRoomContext.shared().currentUserInfo
+                thumbnail = roomInfo.thumbnail
+                micSeatCount = roomInfo.micSeatCount
+                micSeatStyle = roomInfo.micSeatStyle
+                password = roomInfo.password
+            }
+        ))
             .enqueue(object : retrofit2.Callback<CommonResp<CreateRoomResp>> {
                 override fun onResponse(
                     call: Call<CommonResp<CreateRoomResp>>,
@@ -70,10 +70,12 @@ class AUIRoomManager {
     }
 
     fun destroyRoom(
+        appId: String,
+        sceneId: String,
         roomId: String,
         callback: AUICallback?
     ) {
-        roomInterface.destroyRoom(RoomUserReq(roomId))
+        roomInterface.destroyRoom(RoomUserReq(appId, sceneId, roomId))
             .enqueue(object : retrofit2.Callback<CommonResp<DestroyRoomResp>> {
                 override fun onResponse(
                     call: Call<CommonResp<DestroyRoomResp>>,
@@ -131,8 +133,13 @@ class AUIRoomManager {
             })
     }
 
-    fun getRoomInfo(roomId: String, callback: AUIRoomCallback?){
-        roomInterface.queryRoomInfo(QueryRoomReq(roomId))
+    fun getRoomInfo(
+        appId: String,
+        sceneId: String,
+        roomId: String,
+        callback: AUIRoomCallback?
+    ) {
+        roomInterface.queryRoomInfo(QueryRoomReq(appId, sceneId, roomId))
             .enqueue(object : retrofit2.Callback<CommonResp<QueryRoomResp>> {
                 override fun onResponse(
                     call: Call<CommonResp<QueryRoomResp>>,

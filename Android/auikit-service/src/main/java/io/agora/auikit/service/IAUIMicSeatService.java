@@ -46,7 +46,7 @@ public interface IAUIMicSeatService extends IAUICommonService<IAUIMicSeatService
      * @param userId    用户id
      * @param callback  成功/失败回调
      */
-    void pickSeat(int seatIndex, @NonNull String userId, @Nullable AUICallback callback);
+    void pickSeat(int seatIndex, @NonNull AUIUserThumbnailInfo user, @Nullable AUICallback callback);
 
     /**
      * 踢人下麦（房主调用）

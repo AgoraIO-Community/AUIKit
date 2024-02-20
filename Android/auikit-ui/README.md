@@ -1,7 +1,5 @@
 # AUIKit UI
 
-*[English](AUIKit-UI.md) | 中文*
-
 AUIKit UI提供了基础ui组件和功能ui组件，基于这两套ui组件，开发者可以快速搭建一个统一ui风格的场景化应用。
 
 ## 目录结构

@@ -12,7 +12,7 @@ interface IAUICollection {
      *
      * @param closure
      */
-    fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUICollectionException?)?)
+    fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, attrs: AUIAttributesModel) -> AUICollectionException?)?)
 
     /**
      * Subscribe will update
@@ -54,8 +54,9 @@ interface IAUICollection {
      *
      * @param closure
      */
-    fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel) -> AUIAttributesModel)?)
+    fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel) -> Unit)?)
 
+    fun subscribeValueWillChange(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> Map<String, Any>?)?)
 
     /**
      * Get meta data

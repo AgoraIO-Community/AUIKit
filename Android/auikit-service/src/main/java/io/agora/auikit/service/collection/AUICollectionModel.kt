@@ -76,6 +76,18 @@ class AUIAttributesModel {
         attributes = map
     }
 
+    fun setMap(map: Map<String, Any>?){
+        if (attributes is Map<*, *>) {
+            attributes = map
+        }
+    }
+
+    fun setList(list: List<Map<String, Any>>?) {
+        if (attributes is List<*>) {
+            attributes = list
+        }
+    }
+
     fun getMap() = attributes as? Map<String, Any>
 
     fun getList() = attributes as? List<Map<String, Any>>

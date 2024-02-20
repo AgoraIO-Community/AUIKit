@@ -86,7 +86,7 @@
 
         <!-- 用户名 -->
         <item name="aui_micSeatDialog_userNameTextSize">13sp</item>
-        <item name="aui_micSeatDialog_userNameTextColor">@android:color/white</item>
+        <item name="aui_micSeatDialog_userNameTextColor">@android:color/black</item>
         <item name="aui_micSeatDialog_userNameMarginTop">0dp</item>
 
         <!-- 用户描述 -->
