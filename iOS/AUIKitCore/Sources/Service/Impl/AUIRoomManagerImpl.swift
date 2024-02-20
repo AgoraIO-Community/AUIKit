@@ -8,19 +8,20 @@
 import Foundation
 
 @objc open class AUIRoomManagerImpl: NSObject {
+    private var sceneId: String
     deinit {
         aui_info("deinit AUIRoomManagerImpl", tag: "AUIRoomManagerImpl")
     }
     
-    public override init() {
+    public required init(sceneId: String) {
+        self.sceneId = sceneId
         super.init()
         aui_info("init AUIRoomManagerImpl", tag: "AUIRoomManagerImpl")
     }
 }
 
 extension AUIRoomManagerImpl {
-    public func createRoom(sceneId: String,
-                           room: AUIRoomInfo,
+    public func createRoom(room: AUIRoomInfo,
                            callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
         aui_info("enterRoom: \(room.roomName) ", tag: "AUIRoomManagerImpl")
         
@@ -38,8 +39,7 @@ extension AUIRoomManagerImpl {
         }
     }
     
-    public func updateRoom(sceneId: String,
-                           room: AUIRoomInfo,
+    public func updateRoom(room: AUIRoomInfo,
                            callback: @escaping (NSError?, AUIRoomInfo?) -> ()) {
         aui_info("updateRoom: \(room.roomName) ", tag: "AUIRoomManagerImpl")
         
@@ -57,8 +57,7 @@ extension AUIRoomManagerImpl {
         }
     }
     
-    public func destroyRoom(sceneId: String,
-                            roomId: String,
+    public func destroyRoom(roomId: String,
                             callback: @escaping (NSError?) -> ()) {
         let model = AUIRoomDestroyNetworkModel()
         model.sceneId = sceneId
@@ -69,8 +68,7 @@ extension AUIRoomManagerImpl {
         }
     }
     
-    public func getRoomInfoList(sceneId :String,
-                                lastCreateTime: Int64,
+    public func getRoomInfoList(lastCreateTime: Int64,
                                 pageSize: Int,
                                 callback: @escaping AUIRoomListCallback) {
         let model = AUIRoomListNetworkModel()

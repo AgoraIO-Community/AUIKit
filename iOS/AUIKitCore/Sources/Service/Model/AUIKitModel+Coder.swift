@@ -28,7 +28,8 @@ extension AUIRoomInfo {
             "muteAudio": "payload.isMuteAudio",
             "muteVideo": "payload.isMuteVideo",
             "owner": "payload.roomOwner",
-            "memberCount": "payload.onlineUsers"
+            "memberCount": "payload.onlineUsers",
+            "customPayload": "payload.customPayload"
         ]
         superMap.addEntries(from: map)
         return superMap
