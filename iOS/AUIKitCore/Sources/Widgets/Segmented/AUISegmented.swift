@@ -442,9 +442,9 @@ import SwiftTheme
     private func updateSegmentViewTraits() {
         accessibilityElements = selectedSegmentViews
         
-        for (index, _) in selectedSegmentViews.enumerated() {
+//        for (index, _) in selectedSegmentViews.enumerated() {
 //            selectedSegmentViews[index].accessibilityTraits = (index == self.index ? [.button, .selected] : [.button])
-        }
+//        }
     }
     
     private func frameForElement(atIndex index: Int) -> CGRect {

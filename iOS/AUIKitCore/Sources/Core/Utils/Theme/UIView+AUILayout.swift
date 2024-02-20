@@ -79,7 +79,7 @@ public func aui_setThemePicker(
     
     var theme_edges: AUIEdges {
         get {
-            var edges = AUIEdges()
+            let edges = AUIEdges()
             edges.top = 0
             edges.left = 0
             edges.bottom = 0
