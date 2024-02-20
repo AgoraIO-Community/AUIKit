@@ -8,8 +8,6 @@
 import UIKit
 import SwiftTheme
 
-private let headImageWidth: CGFloat = 26
-
 @objc public protocol IAUIRoomMembersView: NSObjectProtocol {
     func updateMembers(members: [AUIUserCellUserDataProtocol],channelName: String)
     func appendMember(member: AUIUserCellUserDataProtocol)
@@ -17,15 +15,6 @@ private let headImageWidth: CGFloat = 26
     func removeMember(userId: String)
     func updateSeatInfo(userId: String,seatIndex: Int)
 }
-
-//@objc public protocol AUIUserCellUserDataProtocol: NSObjectProtocol {
-//    var userAvatar: String {set get}
-//    var userId: String {set get}
-//    var userName: String {set get}
-//    var seatIndex: Int {set get}
-//    var isOwner: Bool {set get}
-//
-//}
 
 public typealias AUIRoomMembersViewMoreBtnAction = (_ members: [AUIUserCellUserDataProtocol])->()
 
@@ -58,28 +47,13 @@ public class AUIRoomMembersView: UIView {
         return button
     }()
     
-    private lazy var leftImgView: UIImageView = {
-        let imgview = UIImageView()
-        imgview.layer.cornerRadius = headImageWidth * 0.5
-        imgview.layer.masksToBounds = true
-        imgview.contentMode = .scaleAspectFill
-        imgview.isHidden = true
-        return imgview
-    }()
-    
-    private lazy var rightImgView: UIImageView = {
-        let imgview = UIImageView()
-        imgview.layer.cornerRadius = headImageWidth * 0.5
-        imgview.layer.masksToBounds = true
-        imgview.contentMode = .scaleAspectFill
-        imgview.isHidden = true
-        return imgview
-    }()
+    private lazy var imageViews: [UIImageView] = []
     
     private lazy var countLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .white
+        label.backgroundColor = .black.withAlphaComponent(0.5)
         label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         label.text = ""
@@ -95,20 +69,36 @@ public class AUIRoomMembersView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func _createImageView() -> UIImageView {
+        let imgview = UIImageView()
+        imgview.layer.cornerRadius = moreButton.aui_height * 0.5
+        imgview.layer.masksToBounds = true
+        imgview.contentMode = .scaleAspectFill
+        imgview.isHidden = true
+        return imgview
+    }
+    
     private func _createSubviews(){
         addSubview(moreButton)
-        addSubview(rightImgView)
-        addSubview(leftImgView)
  
-        let views = [leftImgView,rightImgView,moreButton]
-        for (i, view) in views.enumerated() {
-            view.frame = CGRect(x: CGFloat(i) * (headImageWidth + 6) , y: 0, width: headImageWidth, height: headImageWidth)
+        for _ in 0...2 {
+            let view = _createImageView()
+            addSubview(view)
+            imageViews.append(view)
         }
-        self.bounds = CGRect(x: 0, y: 0, width: CGFloat(views.count) * headImageWidth + CGFloat(views.count - 1) * 8, height: headImageWidth)
+        let views = imageViews + [moreButton]
+        var right = 0.0
+        let padding = 2.0
+        views.forEach { view in
+            view.frame = CGRect(x: right, y: 0, width: moreButton.aui_height, height: moreButton.aui_height)
+            right += moreButton.aui_height + padding
+        }
+        self.bounds = CGRect(x: 0, y: 0, width: right, height: moreButton.aui_height)
         
-        rightImgView.addSubview(countLabel)
-        countLabel.frame = rightImgView.bounds
-        
+        if let rightImgView = imageViews.last {
+            rightImgView.addSubview(countLabel)
+            countLabel.frame = rightImgView.bounds
+        }
     }
     
     public func updateWithMemberImgs(_ imgs: [String]) {
@@ -117,7 +107,7 @@ public class AUIRoomMembersView: UIView {
             return
         }
         
-        for (i, imgView) in [rightImgView, leftImgView].enumerated() {
+        for (i, imgView) in imageViews.reversed().enumerated() {
             imgView.isHidden = false
             if imgs.count > i {
                 imgView.sd_setImage(with: URL(string: imgs[i]), placeholderImage: UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle"))
@@ -125,8 +115,8 @@ public class AUIRoomMembersView: UIView {
                 imgView.isHidden = true
             }
         }
-        if imgs.count > 2 {
-            countLabel.text = "\(imgs.count)"
+        if imgs.count > 3 {
+            countLabel.text = "\(imgs.count - 2)"
         }
     }
 }
