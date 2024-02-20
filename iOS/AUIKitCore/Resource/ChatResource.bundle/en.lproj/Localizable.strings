@@ -5,26 +5,26 @@
   Created by 朱继超 on 2022/9/19.
   
 */
-"Sent "="Sent ";
-"Joined"="Joined";
+"Send"="发送";
+"Joined"="进入直播间";
 
 
-"Post Success" = "Post Success";
-"Post Failed" = "Post Failed";
+"Post Success" = "发布成功";
+"Post Failed" = "发布失败";
 "Lau" = "CN";
 
 
-"host" = "host";
+"host" = "房主";
 
-"Welcome to" = "Welcome to";
+"Welcome to " = "欢迎来到";
 
-"Joined successful!" = "Joined successful!";
-"join IM failed!" = "join IM failed!";
+"Joined successful!" = "加入成功";
+"join IM failed!" = "加入聊天室失败";
 
-"Notice Posted"="Notice Posted";
+"Notice Posted"="公告已发布";
 
-"Joined" = "Joined";
+"Joined" = "已加入";
 
-"Content prohibited" = "Content prohibited";
-
-"Let's Chat!" = "Let's Chat!";
+"Content prohibited" = "内容禁止发送";
+"You were kicked out of the chatroom" = "您已经被踢出聊天室";
+"Let's Chat!" = "说点什么";
