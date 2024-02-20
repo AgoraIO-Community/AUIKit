@@ -39,7 +39,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     
     private lazy var avatarView: UIImageView = {
         let view = UIImageView()
-        view.theme_backgroundColor = "SeatItem.backgroundColor"
+        view.theme_backgroundColor = AUIColor("SeatItem.backgroundColor")
         view.theme_image = "SeatItem.backgroundImage"
         return view
     }()
@@ -60,7 +60,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
     private lazy var seatLabel: UILabel = {
         let label = UILabel()
         label.theme_font = "SeatItem.labelFont"
-        label.theme_textColor = "SeatItem.labelTextColor"
+        label.theme_textColor = AUIColor("SeatItem.labelTextColor")
         label.textAlignment = .center
 //        label.theme_attributedText = "SeatItem.seatLabelText"
         return label
@@ -88,8 +88,8 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let button = AUIButton()
         button.textImageAlignment = .imageLeftTextRight
         button.style = theme
-        button.setTitle("主唱", for: .normal)
-        button.setTitle("副唱", for: .selected)
+        button.setTitle(aui_localized("mainSinger"), for: .normal)
+        button.setTitle(aui_localized("coSinger"), for: .selected)
         return button
     }()
     
@@ -111,7 +111,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
-        button.setTitle("房主", for: .normal)
+        button.setTitle(aui_localized("roomOwner"), for: .normal)
         return button
     }()
     
