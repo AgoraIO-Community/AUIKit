@@ -185,6 +185,8 @@ public class AUIChatInputBar: UIView, UITextViewDelegate {
         if self.emoji == nil {
             let emoji = AUIEmojiView(frame: CGRect(x: 0, y: self.inputField.frame.maxY, width: AScreenWidth, height: self.keyboardHeight)).tag(124).theme_backgroundColor(color: "InputBar.backgroundColor")
             self.emoji = emoji
+        }
+        if let emoji = self.emoji {
             addSubview(emoji)
         }
         self.emoji?.emojiClosure = { [weak self] in
