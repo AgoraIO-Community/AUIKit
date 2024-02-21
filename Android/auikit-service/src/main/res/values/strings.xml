@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aui_gift_group_name">Gift</string>
+    <string name="aui_gift_sweet_heart">Sweet Heart</string>
+    <string name="aui_gift_flower">Flower</string>
+    <string name="aui_gift_super_agora">Super Agora</string>
+    <string name="aui_gift_star">Star</string>
+    <string name="aui_gift_lollipop">Lollipop</string>
+    <string name="aui_gift_diamond">Diamond</string>
+    <string name="aui_gift_crown">Crown</string>
+    <string name="aui_gift_mic">Mic</string>
+    <string name="aui_gift_balloon">Balloon</string>
+    <string name="aui_gift_plant">Plant</string>
+    <string name="aui_gift_rocket">Rocket</string>
+</resources>
