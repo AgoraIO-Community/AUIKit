@@ -21,15 +21,16 @@ import io.agora.auikit.service.http.room.RoomUserReq
 import retrofit2.Call
 import retrofit2.Response
 
-class AUIRoomManager {
+class AUIRoomManager(
+    private val appId: String = AUIRoomContext.shared().mCommonConfig?.appId ?: "",
+    private val sceneId: String
+) {
 
     private val roomInterface by lazy {
         HttpManager.getService(RoomInterface::class.java)
     }
 
     fun createRoom(
-        appId: String,
-        sceneId: String,
         roomInfo: AUIRoomInfo,
         callback: AUIRoomCallback?
     ) {
@@ -38,17 +39,8 @@ class AUIRoomManager {
             appId,
             sceneId,
             roomId,
-            AUIRoomInfo().apply {
-                roomName = roomInfo.roomName
-                memberCount = 1
-                owner = AUIRoomContext.shared().currentUserInfo
-                thumbnail = roomInfo.thumbnail
-                micSeatCount = roomInfo.micSeatCount
-                micSeatStyle = roomInfo.micSeatStyle
-                password = roomInfo.password
-            }
-        ))
-            .enqueue(object : retrofit2.Callback<CommonResp<CreateRoomResp>> {
+            roomInfo
+        )).enqueue(object : retrofit2.Callback<CommonResp<CreateRoomResp>> {
                 override fun onResponse(
                     call: Call<CommonResp<CreateRoomResp>>,
                     response: Response<CommonResp<CreateRoomResp>>
@@ -70,8 +62,6 @@ class AUIRoomManager {
     }
 
     fun destroyRoom(
-        appId: String,
-        sceneId: String,
         roomId: String,
         callback: AUICallback?
     ) {
@@ -101,8 +91,6 @@ class AUIRoomManager {
     }
 
     fun getRoomInfoList(
-        appId: String,
-        sceneId: String,
         lastCreateTime: Long?,
         pageSize: Int,
         callback: AUIRoomListCallback?
@@ -134,8 +122,6 @@ class AUIRoomManager {
     }
 
     fun getRoomInfo(
-        appId: String,
-        sceneId: String,
         roomId: String,
         callback: AUIRoomCallback?
     ) {

@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.agora.auikit.ui.R
+import io.agora.auikit.ui.basic.AUIBottomDialog
 import io.agora.auikit.ui.micseats.IMicSeatItemView
 import io.agora.auikit.ui.micseats.IMicSeatsView
 import io.agora.auikit.ui.micseats.MicSeatItem
@@ -272,8 +272,7 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
     private fun showMicSeatDialog(view: View) {
         val index = view.tag as Int
         Log.e("apex","showMicSeatDialog: $index")
-        val bottomSheetDialog =
-            BottomSheetDialog(context, R.style.Theme_AppCompat_Dialog_Transparent)
+        val bottomSheetDialog = AUIBottomDialog(context)
         val contentView = AUIMicSeatDialogView(context)
         contentView.setEnterSeatClickListener { v: View? ->
             if (actionDelegate != null) {
@@ -322,7 +321,7 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
                 return
             }
         }
-        bottomSheetDialog.setContentView(contentView)
+        bottomSheetDialog.setCustomView(contentView)
         bottomSheetDialog.show()
     }
 
