@@ -107,16 +107,22 @@ public class AUIRoomMembersView: UIView {
             return
         }
         
-        for (i, imgView) in imageViews.reversed().enumerated() {
+        let startIdx = max(imageViews.count - imgs.count, 0)
+        let placeholder = UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle")
+        for (i, imgView) in imageViews.enumerated() {
             imgView.isHidden = false
-            if imgs.count > i {
-                imgView.sd_setImage(with: URL(string: imgs[i]), placeholderImage: UIImage.aui_Image(named: "aui_micseat_dialog_avatar_idle"))
-            }else{
+            if i >= startIdx {
+                imgView.sd_setImage(with: URL(string: imgs[i - startIdx]),
+                                    placeholderImage: placeholder)
+            } else {
                 imgView.isHidden = true
             }
         }
         if imgs.count > 3 {
             countLabel.text = "\(imgs.count - 2)"
+            countLabel.isHidden = false
+        } else {
+            countLabel.isHidden = true
         }
     }
 }
