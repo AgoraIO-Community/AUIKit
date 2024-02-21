@@ -17,4 +17,5 @@ public protocol AUIMicSeatCellDataProtocol: NSObjectProtocol {
     var avatarUrl: String? {get}
     var role: MicRole {get}
     var micSeat: UInt {get}
+    var isEmptySeat: Bool {get}
 }

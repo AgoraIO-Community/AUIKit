@@ -4,25 +4,49 @@ import io.agora.auikit.model.AUIRoomInfo
 import io.agora.auikit.service.http.PayloadResp
 
 data class CreateRoomReq(
+    val appId: String,
+    val sceneId: String,
     val roomId: String,
     val payload: AUIRoomInfo
 )
 data class CreateRoomResp(
     val roomId: String,
-    val roomName: String
+    val payload: AUIRoomInfo,
+    val createTime: Long,
+    val updateTime: Long
 )
 data class RoomUserReq(
+    val appId: String,
+    val sceneId: String,
     val roomId: String
 )
 data class DestroyRoomResp(
     val roomId: String
 )
-data class RoomReq(
-    val channelName: String
-)
 data class RoomListReq(
+    val appId: String,
+    val sceneId: String,
     val pageSize: Int,
     val lastCreateTime: Long?
+)
+data class QueryRoomResp(
+    val appId: String,
+    val sceneId: String,
+    val roomId: String,
+    val payload: AUIRoomInfo,
+    val createTime: Long,
+    val updateTime: Long
+)
+data class UpdateRoomReq(
+    val appId: String,
+    val sceneId: String,
+    val roomId: String,
+    val payload: AUIRoomInfo
+)
+data class QueryRoomReq(
+    val appId: String,
+    val sceneId: String,
+    val roomId: String
 )
 data class RoomListResp(
     val pageSize: Int,
@@ -44,16 +68,3 @@ data class RoomListResp(
         return list
     }
 }
-
-data class CreateChatRoomReq(
-    val roomId : String,
-    val userId : String,
-    val userName: String,
-    val description:String,
-    val custom : String
-)
-
-data class CreateChatRoomRsp(
-    val chatRoomId : String,
-)
-

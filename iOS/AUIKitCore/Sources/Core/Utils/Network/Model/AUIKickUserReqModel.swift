@@ -11,12 +11,14 @@ import UIKit
     
     public override init() {
         super.init()
-        interfaceName = "/v1/users/kickOut"
+        interfaceName = "/v2/users/kickOut"
     }
     
     /// Description 当前api 调用者
     public var operatorId: String?
     
+    public var appId: String? = AUIRoomContext.shared.commonConfig?.appId ?? ""
+    public var basicAuth: String? = AUIRoomContext.shared.commonConfig?.basicAuth
     public var roomId: String?
     
     /// Description 被踢用户id

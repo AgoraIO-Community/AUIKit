@@ -28,11 +28,11 @@ extension AUIMicSeatInfo: AUIMicSeatCellDataProtocol {
         //TODO: remove it
         return true
         
-        var userMuteVideo: Bool = kUserMuteVideoInitStatus
-        if let fullUser = user as? AUIUserInfo {
-            userMuteVideo = fullUser.muteVideo
-        }
-        return muteVideo || userMuteVideo
+//        var userMuteVideo: Bool = kUserMuteVideoInitStatus
+//        if let fullUser = user as? AUIUserInfo {
+//            userMuteVideo = fullUser.muteVideo
+//        }
+//        return muteVideo || userMuteVideo
     }
     
     public var isLock: Bool {
@@ -54,5 +54,9 @@ extension AUIMicSeatInfo: AUIMicSeatCellDataProtocol {
     
     public var micSeat: UInt {
         return self.seatIndex
+    }
+    
+    public var isEmptySeat: Bool {
+        return self.user?.userId.isEmpty ?? true
     }
 }

@@ -6,9 +6,8 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UserInterface {
-    @POST("chatRoom/users/create")
-    fun createUser(@Body req: CreateUserReq): Call<CommonResp<CreateUserRsp>>
 
     @POST("users/kickOut")
-    fun kickOut(@Body req: KickUserReq): Call<CommonResp<KickUserRsp>>
+    fun kickOut(@Body req: UserKickOutReq): Call<CommonResp<UserKickOutResp>>
+
 }

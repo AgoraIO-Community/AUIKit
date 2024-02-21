@@ -12,4 +12,5 @@ import Foundation
     var userId: String {set get}
     var userName: String {set get}
     var seatIndex: Int {set get}
+    var isOwner: Bool {get}
 }

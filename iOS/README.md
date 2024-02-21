@@ -1,42 +1,43 @@
-# AUIKit-iOS
+# AUIKit组件介绍
 
-*English | [中文](README_zh.md)*
+AUIKit是一套场景化应用的脚手架，提供Ui组件以及Service组件，方便开发者快速搭建起自己的场景化应用。
 
+---
 
 <!-- TOC START -->
 
-- [AUIKit-iOS](#auikit-ios)
-- [AUIKit Basic Components](#auikit-basic-components)
-- [API reference](#api-reference)
+- [AUIKit组件介绍](#auikit组件介绍)
+- [AUIKit基础组件](#auikit基础组件)
+- [API参考](#api参考)
   - [Service](#service)
     - [AUIMicSeatServiceDelegate](#auimicseatservicedelegate)
-      - [MicSeat management protocol](#micseat-management-protocol)
+      - [麦位管理协议](#麦位管理协议)
     - [AUIMicSeatRespDelegate](#auimicseatrespdelegate)
-      - [MicSeat management response protocol](#micseat-management-response-protocol)
+      - [麦位管理回调](#麦位管理回调)
     - [AUIUserServiceDelegate](#auiuserservicedelegate)
-      - [User management protocol](#user-management-protocol)
+      - [用户管理协议](#用户管理协议)
     - [AUIUserRespDelegate](#auiuserrespdelegate)
-      - [User management response protocol](#user-management-response-protocol)
+      - [用户管理回调](#用户管理回调)
     - [AUIChorusServiceDelegate](#auichorusservicedelegate)
-      - [Chorus management protocol](#chorus-management-protocol)
+      - [合唱管理协议](#合唱管理协议)
     - [AUIChorusRespDelegate](#auichorusrespdelegate)
-      - [Chorus management response protocol](#chorus-management-response-protocol)
+      - [合唱管理回调](#合唱管理回调)
     - [AUIMusicServiceDelegate](#auimusicservicedelegate)
-      - [Music management protocol](#music-management-protocol)
+      - [音乐管理协议](#音乐管理协议)
     - [AUIMusicRespDelegate](#auimusicrespdelegate)
-      - [Music management response protocol](#music-management-response-protocol)
+      - [音乐管理回调](#音乐管理回调)
     - [AUIPlayerServiceDelegate](#auiplayerservicedelegate)
-      - [Karaoke music player protocol](#karaoke-music-player-protocol)
+      - [k歌播放管理协议](#k歌播放管理协议)
     - [AUIPlayerRespDelegate](#auiplayerrespdelegate)
-      - [Karaoke music player response protocol](#karaoke-music-player-response-protocol)
+      - [k歌播放管理回调](#k歌播放管理回调)
     - [AUIRoomManagerDelegate](#auiroommanagerdelegate)
-      - [Room management protocol](#room-management-protocol)
+      - [房间管理协议](#房间管理协议)
     - [AUIRoomManagerRespDelegate](#auiroommanagerrespdelegate)
-      - [Room management response protocol](#room-management-response-protocol)
+      - [房间管理回调](#房间管理回调)
   - [Widget](#widget)
     - [AUIActionSheet](#auiactionsheet)
-      - [Main container configuration](#main-container-configuration)
-      - [List Item Configuration](#list-item-configuration)
+      - [主容器配置](#主容器配置)
+      - [列表Item配置](#列表item配置)
     - [AUIAlertView](#auialertview)
     - [AUIButton](#auibutton)
     - [AUISlider](#auislider)
@@ -45,377 +46,378 @@
     - [AUITextField](#auitextfield)
     - [AUIToast](#auitoast)
 
-# AUIKit Basic Components
+# AUIKit基础组件
 ```
 AUIKit  
-├─ Service                              // Basic service components
-│  ├─ AUIMicSeatServiceDelegate         // MicSeat management protocol
-│  ├─ AUIMicSeatRespDelegate            // MicSeat management response protocol
-│  ├─ AUIMicSeatServiceImpl             // MicSeat management implementation
-│  ├─ AUIUserServiceDelegate            // User management protocol      
-│  ├─ AUIUserRespDelegate               // User management response protocol
-│  ├─ AUIUserServiceImpl                // User management implementation
-│  ├─ AUIChorusServiceDelegate          // Chorus management protocol 
-│  ├─ AUIChorusRespDelegate             // Chorus management response protocol 
-│  ├─ AUIChorusServiceImpl              // Chorus management implementation
-│  ├─ AUIMusicServiceDelegate           // Music management protocol      
-│  ├─ AUIMusicRespDelegate              // User management response protocol      
-│  ├─ AUIMusicServiceImpl               // User management implementation
-│  ├─ AUIPlayerServiceDelegate          // Karaoke music player protocol      
-│  ├─ AUIPlayerRespDelegate             // Karaoke music player response protocol      
-│  ├─ AUIPlayerServiceImpl              // Karaoke music player implementation
-│  ├─ AUIRoomManagerDelegate            // Room management protocol 
-│  ├─ AUIRoomManagerRespDelegate        // Room management response protocol 
-│  └─ AUIRoomManagerImpl                // Room management implementation
+├─ Service                              // 基础服务组件
+│  ├─ AUIMicSeatServiceDelegate         // 麦位管理协议
+│  ├─ AUIMicSeatRespDelegate            // 麦位管理回调
+│  ├─ AUIMicSeatServiceImpl             // 麦位管理实现类         
+│  ├─ AUIUserServiceDelegate            // 用户管理协议       
+│  ├─ AUIUserRespDelegate               // 用户管理回调
+│  ├─ AUIUserServiceImpl                // 用户管理实现类
+│  ├─ AUIChorusServiceDelegate          // 合唱管理协议
+│  ├─ AUIChorusRespDelegate             // 合唱管理回调
+│  ├─ AUIChorusServiceImpl              // 合唱管理实现类
+│  ├─ AUIMusicServiceDelegate           // 音乐管理协议
+│  ├─ AUIMusicRespDelegate              // 音乐管理回调
+│  ├─ AUIMusicServiceImpl               // 音乐管理实现类
+│  ├─ AUIPlayerServiceDelegate          // k歌播放管理协议
+│  ├─ AUIPlayerRespDelegate             // k歌播放管理回调
+│  ├─ AUIPlayerServiceImpl              // K歌播放管理实现类
+│  ├─ AUIRoomManagerDelegate            // 房间管理协议
+│  ├─ AUIRoomManagerRespDelegate        // 房间管理回调
+│  └─ AUIRoomManagerImpl                // 房间管理实现类
 │
-├─ Widget                               // Basic UI components without business
-│  ├─ AUIActionSheet                    // Action sheet
-│  ├─ AUIAlert                          // Alert
-│  ├─ AUIButton                         // Button
-│  ├─ AUISegmented                      // Segmented
-│  ├─ AUISlider                         // Slider
-│  ├─ AUITableView                      // TableView
-│  ├─ AUITabs                           // Tabs
-│  ├─ AUITextField                      // TextField
-│  └─ AUIToast                          // Toast
+├─ Widget                               // 无业务的基础UI组件
+│  ├─ AUIActionSheet                    // 动作面板
+│  ├─ AUIAlertView                      // 对话框
+│  ├─ AUIButton                         // 按钮
+│  ├─ AUISlider                         // 滑动条
+│  ├─ AUITableViewCell                  // 表格视图单元格 
+│  ├─ AUITabs                           // 选项卡
+│  ├─ AUITextField                      // 编辑框
+│  └─ AUIToast                          // 提示框
 │
-└─ Component                            // UI module containing specific business
-   ├─ IM                                // IM component
-   ├─ Gifts                             // Gift component 
-   ├─ Invitation                        // Invitation component 
-   ├─ JukeBox                           // Jukebox component 
-   ├─ MicSeat                           // MicSeat component
-   └─ Player                            // Karaoke player component
+└─ Component                            // 包含具体业务的UI模块
+   ├─ IM                                // 聊天组件 
+   ├─ Gifts                             // 礼物组件 
+   ├─ Invitation                        // 邀请申请组件 
+   ├─ JukeBox                           // 点歌器组件 
+   ├─ MicSeat                           // 麦位组件
+   └─ Player                            // KTV歌曲播放器组件
+   
 ```
-# API reference
-
+# API参考
 ## Service
+Service是基于声网的实时音视频(RTC)和即时通信服务(RTM)组合而成的组件
 
 ### AUIMicSeatServiceDelegate 
-#### MicSeat management protocol
-| API                | Describe                              |
+#### 麦位管理协议
+
+| API                | 描述                              |
 | ------------------ | --------------------------------- |
-| bindRespDelegate   | Bind response delegate           |
-| unbindRespDelegate | Unbind response delegate        |
-| enterSeat          | Enter seat（Invoked by audience and owner）  |
-| leaveSeat          | Leave seat（Invoked by owner）     |
-| pickSeat           | Select a member to enter seat（Invoked by owner）|
-| kickSeat           | Kick a member to leave seat（Invoked by owner）|
-| muteAudioSeat      | Turn off/on the microphone for a seat（Invoked by owner） |
-| muteVideoSeat      | Turn off/on the camera for a seat（Invoked by owner）   |
-| closeSeat          | Disable/enable a seat（Invoked by owner）     |
+| bindRespDelegate   | 绑定回调                      |
+| unbindRespDelegate | 解除绑定回调                  |
+| enterSeat          | 主动上麦（听众端和房主均可调用）  |
+| leaveSeat          | 主动下麦（主播调用）              |
+| pickSeat           | 抱人上麦（房主调用）              |
+| kickSeat           | 踢人下麦（房主调用）              |
+| muteAudioSeat      | 静音/解除静音某个麦位（房主调用） |
+| muteVideoSeat      | 关闭/打开麦位摄像头（房主调用）   |
+| closeSeat          | 封禁/解禁某个麦位（房主调用）     |
 
 ### AUIMicSeatRespDelegate
-#### MicSeat management response protocol
-| API               | Describe                                |
+#### 麦位管理回调
+
+| API               | 描述                                |
 | ----------------- | ----------------------------------- |
-| onAnchorEnterSeat | Member did enter seat |
-| onAnchorLeaveSeat | Member did leave seat |
-| onSeatAudioMute   | Microphone did off/on for a seat        |
-| onSeatVideoMute   | Camera did turn off/on for a seat     |
-| onSeatClose       | The micSeat has been disabled/enable        |
+| onAnchorEnterSeat | 有成员上麦（主动上麦/房主抱人上麦） |
+| onAnchorLeaveSeat | 有成员下麦（主动下麦/房主踢人下麦） |
+| onSeatAudioMute   | 房主对麦位进行了静音/解禁           |
+| onSeatVideoMute   | 房主对麦位摄像头进行禁用/启用       |
+| onSeatClose       | 房主对麦位进行了封麦/解封           |
 
 ### AUIUserServiceDelegate
-#### User management protocol 
-| API                | Describe                       |
+#### 用户管理协议
+| API                | 描述                       |
 | ------------------ | -------------------------- |
-| bindRespDelegate   | Bind response delegate      |
-| unbindRespDelegate | Unbind response delegate    |
-| getUserInfoList    | Obtain user list  |
-| muteUserAudio      | Disable/enable the microphone for oneself  |
-| muteUserVideo      | Disable/enable the camera for oneself  |
+| bindRespDelegate   | 绑定回调               |
+| unbindRespDelegate | 解除绑定回调           |
+| getUserInfoList    | 获取用户列表信息           |
+| muteUserAudio      | 对自己静音/解除静音        |
+| muteUserVideo      | 对自己禁用/解禁摄像头  |
 
 ### AUIUserRespDelegate
-#### User management response protocol
-| API                | Describe                               |
+#### 用户管理回调
+| API                | 描述                               |
 | ------------------ | ---------------------------------- |
-| onRoomUserSnapshot | All user information obtained after the user enters the room |
-| onRoomUserEnter    | Callback when the user enters the room |
-| onRoomUserLeave    | Callback when the user leaves the room |
-| onRoomUserUpdate   | Callback when user information is modified |
-| onUserAudioMute    | Callback when the user turns off/on the microphone |
-| onUserVideoMute    | Callback when the user turns off/on the camera |
+| onRoomUserSnapshot | 用户进入房间后获取到的所有用户信息 |
+| onRoomUserEnter    | 用户进入房间时的回调                   |
+| onRoomUserLeave    | 用户离开房间时的回调                   |
+| onRoomUserUpdate   | 用户的信息被修改时的回调               |
+| onUserAudioMute    | 用户关闭/开启了麦克风时的回调            |
+| onUserVideoMute    | 用户关闭/开启了摄像头时的回调            |
 
 ### AUIChorusServiceDelegate
-#### Chorus management protocol
-| API                | Describe             |
+#### 合唱管理协议
+| API                | 描述             |
 | ------------------ | ---------------- |
-| bindRespDelegate   | Bind response delegate |
-| unbindRespDelegate | Unbind response delegate |
-| getChoristersList  | Obtain chorus singer list |
-| joinChorus         | join chorus         |
-| leaveChorus        | leave chorus         |
+| bindRespDelegate   | 绑定回调     |
+| unbindRespDelegate | 解除绑定回调 |
+| getChoristersList  | 获取合唱者列表   |
+| joinChorus         | 加入合唱         |
+| leaveChorus        | 退出合唱         |
 
 ### AUIChorusRespDelegate
-#### Chorus management response protocol 
-| API                 | Describe       |
+#### 合唱管理回调
+| API                 | 描述       |
 | ------------------- | ---------- |
-| onChoristerDidEnter | chorus singer did enter |
-| onChoristerDidLeave | chorus singer did leave |
+| onChoristerDidEnter | 合唱者加入 |
+| onChoristerDidLeave | 合唱者离开 |
 
 ### AUIMusicServiceDelegate
-#### Music management protocol
-| API                  | Describe               |
+#### 音乐管理协议
+| API                  | 描述               |
 | -------------------- | ------------------ |
-| bindRespDelegate     | Bind Response Delegate  |
-| unbindRespDelegate   | Unbind Response Delegate |
-| getMusicList         | Obtain music list by charts       |
-| searchMusic          | Obtain music list by key           |
-| getAllChooseSongList | Obtain the current song request list |
-| chooseSong           | choose a song|
-| removeSong           | Remove a song  |
-| pinSong              | Put the song at the top            |
-| updatePlayStatus     | Update song playback status    |
+| bindRespDelegate     | 绑定回调       |
+| unbindRespDelegate   | 解除绑定回调   |
+| getMusicList         | 获取歌曲列表       |
+| searchMusic          | 搜索歌曲           |
+| getAllChooseSongList | 获取当前点歌列表   |
+| chooseSong           | 点一首歌           |
+| removeSong           | 移除一首自己点的歌 |
+| pinSong              | 置顶歌曲           |
+| updatePlayStatus     | 更新歌曲播放状态   |
 
 ### AUIMusicRespDelegate
-#### Music management response protocol
-| API                    | Describe                                    |
+#### 音乐管理回调
+| API                    | 描述                                    |
 | ---------------------- | --------------------------------------- |
-| onAddChooseSong        | Callback when adding a song     |
-| onRemoveChooseSong     | Callback when deleting a song    |
-| onUpdateChooseSong     | Callback when updating a song（For example, modifying the play status） |
-| onUpdateAllChooseSongs | Callback when updating all songs（For example, pin song）             |
+| onAddChooseSong        | 新增一首歌曲时的回调                        |
+| onRemoveChooseSong     | 删除一首歌曲时的回调                      |
+| onUpdateChooseSong     | 更新一首歌曲时的回调（例如修改play status） |
+| onUpdateAllChooseSongs | 更新所有歌曲时的回调（例如pin）             |
 
 ### AUIPlayerServiceDelegate
-#### Karaoke music player protocol 
-
-| API                            | Describe                               |
+#### k歌播放管理协议
+| API                            | 描述                               |
 | ------------------------------ | ---------------------------------- |
-| bindRespDelegate               | Bind Response Delegate            |
-| unbindRespDelegate             | Unbind Response Delegate          |
-| loadMusic                      | Load music                      |
-| switchSingerRole               | Switch singer role              |
-| startSing                      | Play music playback              |
-| stopSing                       | Stop music playback             |
-| resumeSing                     | Resume music playback             |
-| pauseSing                      | Pause music playback           |
-| seekSing                       | Adjust playback progress      |
-| adjustMusicPlayerPlayoutVolume | Adjusting the sound for local music playback  |
-| adjustRecordingSignalVolume    | Adjusts the recording volume |
-| adjustMusicPlayerPublishVolume | Adjust publish signal volume |
-| adjustPlaybackVolume           | Adjusts the playback volume  |
-| selectMusicPlayerTrackMode     | Switch the audio track to original and accompaniment |
-| getPlayerDuration              | Obtain playback duration         | 
-| getMusicPlayer                 | Get player instance             |
-| setAudioPitch                  | Set audio pitch                  |
-| setAudioEffectPreset           | Set audio effect                 |
-| setVoiceConversionPreset       | Set voice conversion             |
-| enableEarMonitoring            | Enables in-ear monitoring        |
+| bindRespDelegate               | 绑定回调                       |
+| unbindRespDelegate             | 解除绑定回调                   |
+| loadMusic                      | 加载歌曲                           |
+| switchSingerRole               | 切换角色                           |
+| startSing                      | 播放歌曲                           |
+| stopSing                       | 停止播放歌曲                       |
+| resumeSing                     | 恢复播放                           |
+| pauseSing                      | 暂停播放                           |
+| seekSing                       | 调整进度                           |
+| adjustMusicPlayerPlayoutVolume | 调整音乐本地播放的声音             |
+| adjustRecordingSignalVolume    | 调整采集音量                       |
+| adjustMusicPlayerPublishVolume | 调整音乐推送到远端的声音大小       |
+| adjustPlaybackVolume           | 调整本地播放远端伴唱人声音量的大小 |
+| selectMusicPlayerTrackMode     | 选择音轨，原唱、伴唱               |
+| getPlayerDuration              | 获取播放时长                       |
+| getMusicPlayer                 | 获取播放器实例                     |
+| setAudioPitch                  | 升降调                             |
+| setAudioEffectPreset           | 音效                               |
+| setVoiceConversionPreset       | 变声                               |
+| enableEarMonitoring            | 耳返                               |
 
 ### AUIPlayerRespDelegate
-#### Karaoke music player response protocol
-| API                       | Describe             |
+#### k歌播放管理回调
+| API                       | 描述             |
 | ------------------------- | ---------------- |
-| onPreludeDidAppear        | Prelude start loading |
-| onPreludeDidDisappear     | Prelude end load |
-| onPostludeDidAppear       | Postlude start loading  |
-| onPostludeDidDisappear    | Postlude end load |
-| onPlayerPositionDidChange | Callback when playback progress changes |
-| onPlayerStateChanged      | Callback when playback status changes   |
+| onPreludeDidAppear        | 前奏开始加载     |
+| onPreludeDidDisappear     | 前奏结束加载     |
+| onPostludeDidAppear       | 尾奏开始加载     |
+| onPostludeDidDisappear    | 尾奏结束加载     |
+| onPlayerPositionDidChange | 获取时间进度回调 |
+| onPlayerStateChanged      | 播放状态变化回调 |
 
 ### AUIRoomManagerDelegate
-#### Room management protocol
-| API                | Describe                 |
+#### 房间管理协议
+| API                | 描述                 |
 | ------------------ | -------------------- |
-| bindRespDelegate   | Bind Response Delegate    |
-| unbindRespDelegate | Unbind Response Delegate  |
-| createRoom         | Create a room（Invoked by owner） |
-| destroyRoom        | Destory the room（Invoked by owner） |
-| enterRoom          | Join room（Invoked by audience） |
-| exitRoom           | Exit the room（Invoked by audience） |
-| getRoomInfoList    | Get room list         |
+| bindRespDelegate   | 绑定回调         |
+| unbindRespDelegate | 解除绑定回调     |
+| createRoom         | 创建房间（房主调用） |
+| destroyRoom        | 销毁房间（房主调用） |
+| enterRoom          | 进入房间（听众调用） |
+| exitRoom           | 退出房间（听众调用） |
+| getRoomInfoList    | 获取房间列表         |
 
 ### AUIRoomManagerRespDelegate
-#### Room management response protocol 
-| API              | Describe             |
+#### 房间管理回调
+| API              | 描述             |
 | ---------------- | ---------------- |
-| onRoomDestroy    | Callback when the room is destroyed  |
-| onRoomInfoChange | Callback when room information changes  |
+| onRoomDestroy    | 房间被销毁的回调 |
+| onRoomInfoChange | 房间信息变更回调 |
 
 ## Widget
 ### AUIActionSheet
-#### Main container configuration
-| Attribute                 | Describe       |
+#### 主容器配置
+| 属性                 | 描述       |
 | ------------------- | ---------- |
-| collectionViewTopEdge | The distance between the displayed list content and the space above |
-| itemType | List style, sliding up and down or left and right |
-| itemHeight | List item height |
-| titleLabelFont | Main title font |
-| titleLabelTextColor | Main title font color |
-| nameLabelFont | User main title font |
-| nameLabelTextColor | User main title font |
-| seatLabelFont | User subtitle font |
-| seatLabelTextColor | User subtitle font color |
-| avatarWidth | Avatar image width |
-| avatarHeight | Avatar image height |
+| collectionViewTopEdge | 展示的列表内容距离上面空间的间距 |
+| itemType | 列表样式，上下滑动还是左右滑动 |
+| itemHeight | 列表Item高度 |
+| titleLabelFont | 主标题字体 |
+| titleLabelTextColor | 主标题字体颜色 |
+| nameLabelFont | 用户主标题字体 |
+| nameLabelTextColor | 用户主标题字体颜色 |
+| seatLabelFont | 用户副标题字体 |
+| seatLabelTextColor | 用户副标题字体颜色 |
+| avatarWidth | 头像宽度 |
+| avatarHeight | 头像高度 |
 
-#### List Item Configuration
-| Attribute                 | Describe       |
+#### 列表Item配置
+| 属性                 | 描述       |
 | ------------------- | ---------- |
-| icon | Item icon |
-| backgroundIcon | Item background icon |
-| titleColor | Title color |
-| imageWidth | Image width |
-| imageHeight | Image height |
-| backgroundImageWidth | Background image width |
-| backgroundImageHeight | Background image height |
-| padding | padding between text and image |
-| selectedBorderColor | Selected border color |
-| selectedBorderWidth | Selected border color |
-| selectedBorderRadius | Selected border radius |
+| icon | item图标 |
+| backgroundIcon | item背景图标 |
+| titleColor | 标题颜色 |
+| imageWidth | 图片宽度 |
+| imageHeight | 图片高度 |
+| backgroundImageWidth | 背景图片宽度 |
+| backgroundImageHeight | 背景图片高度 |
+| padding | 文字图片内容的间隔 |
+| selectedBorderColor | 选中框颜色 |
+| selectedBorderWidth | 选中框宽度 |
+| selectedBorderRadius | 选中框圆角 |
 
 
 ### AUIAlertView
-| Attribute                 | Describe       |
+| 属性                 | 描述       |
 | ------------------- | ---------- |
-| background(color: UIColor?) | Background color |
-| isShowCloseButton(isShow: Bool) | Show close button or not |
-| title(title: String?) | Main title content |
-| titleColor(color: UIColor?) | Main title text color |
-| titleFont(font: UIFont?) | Main title font |
-| content(content: String?) | Content |
-| contentTextAligment(textAlignment: NSTextAlignment) | Message alignment |
-| contentColor(color: UIColor?) | Message text color |
-| contentFont(font: UIFont?) | Message text font |
-| textField(text: String?) | Set the content |
-| textField(color: UIColor?) | Set the text color |
-| textField(font: UIFont?) | Set the text font |
-| textField(cornerRadius: CGFloat) | Set the corner radius |
-| textField(showBottomDivider: Bool) | Set whether the bottom division is displayed |
-| textField(bottomDividerColor: UIColor?)  | Set the bottom division color |
-| textFieldBackground(color: UIColor?)  | Set text field background color |
-| textFieldPlaceholder(placeholder: String?)  | Set the placeholder content |
-| textFieldPlaceholder(color: UIColor?)   | Set the placeholder text color |
-| textFieldPlaceholder(font: UIFont?)  | Set the placeholder font size |
-| leftButton(title: String?)  | Left button text content |
-| leftButton(color: UIColor?)  | Left button text color |
-| leftButton(font: UIFont?)  | Left button text font size |
-| leftButton(cornerRadius: CGFloat)  | Left button fillet size |
-| leftButtonBackground(color: UIColor?)  | Left button background color |
-| leftButtonBorder(color: UIColor?)   | Left button border color |
-| leftButtonBorder(width: CGFloat)   | Left button border width |
-| leftButtonTapClosure(onTap: @escaping () -> Void)   | Callback when the left button is clicked |
-| rightButton(title: String?)   | Right button text content |
-| rightButton(color: UIColor?)   | Right button text color |
-| rightButton(font: UIFont?)   | Right button text font size |
-| rightButton(cornerRadius: CGFloat)   | Right button fillet size  |
-| rightButtonBackground(color: UIColor?)   | Right button background color  |
-| rightButtonBorder(color: UIColor?)   | Right button border color  |
-| rightButtonBorder(width: CGFloat)   | Right button border width  |
-| rightButtonTapClosure(onTap: @escaping (String?) -> Void)   | Callback when the right button is clicked (with text field content) |
-| rightButtonTapClosure(onTap: @escaping () -> Void)   | Callback when the right button is clicked (without text field content) |
+| background(color: UIColor?) | 背景色 |
+| isShowCloseButton(isShow: Bool) | 是否显示关闭按钮 |
+| title(title: String?) | 主标题 |
+| titleColor(color: UIColor?) | 主标题文字颜色 |
+| titleFont(font: UIFont?) | 主标题字体 |
+| content(content: String?) | 内容 |
+| contentTextAligment(textAlignment: NSTextAlignment) | 内容文字对齐方式 |
+| contentColor(color: UIColor?) | 内容文字颜色 |
+| contentFont(font: UIFont?) | 内容字体 |
+| textField(text: String?) | 输入框内容 |
+| textField(color: UIColor?) | 输入框文字颜色 |
+| textField(font: UIFont?) | 内容字体 |
+| textField(cornerRadius: CGFloat) | 输入框圆角大小 |
+| textField(showBottomDivider: Bool) | 输入框底部分割是否显示 |
+| textField(bottomDividerColor: UIColor?)  | 输入框底部分割颜色 |
+| textFieldBackground(color: UIColor?)  | 输入框背景色 |
+| textFieldPlaceholder(placeholder: String?)  | 输入框文字占位符 |
+| textFieldPlaceholder(color: UIColor?)   | 输入框文字占位符文字颜色 |
+| textFieldPlaceholder(font: UIFont?)  | 输入框文字占位符字体 |
+| leftButton(title: String?)  | 左边按钮文字内容 |
+| leftButton(color: UIColor?)  | 左边按钮文字颜色 |
+| leftButton(font: UIFont?)  | 左边按钮文字字体大小 |
+| leftButton(cornerRadius: CGFloat)  | 左边按钮圆角大小 |
+| leftButtonBackground(color: UIColor?)  | 左边按钮背景色 |
+| leftButtonBorder(color: UIColor?)   | 左边按钮边框颜色 |
+| leftButtonBorder(width: CGFloat)   | 左边按钮边框宽度 |
+| leftButtonTapClosure(onTap: @escaping () -> Void)   | 左边按钮点击回调 |
+| rightButton(title: String?)   | 右边按钮文字内容 |
+| rightButton(color: UIColor?)   | 右边按钮文字颜色 |
+| rightButton(font: UIFont?)   | 右边按钮文字字体大小 |
+| rightButton(cornerRadius: CGFloat)   | 右边按钮圆角大小 |
+| rightButtonBackground(color: UIColor?)   | 右边按钮背景色 |
+| rightButtonBorder(color: UIColor?)   | 右边按钮边框颜色 |
+| rightButtonBorder(width: CGFloat)   | 右边按钮边框宽度 |
+| rightButtonTapClosure(onTap: @escaping (String?) -> Void)   | 右边按钮点击回调(带输入框内容) |
+| rightButtonTapClosure(onTap: @escaping () -> Void)   | 右边按钮点击回调(不带输入框内容) |
 
 ### AUIButton
-| API              | Describe             |
+| API              | 描述             |
 | ---------------- | ---------------- |
-| backgroundColor | Background color |
-| icon    | Button icon |
-| selectedIcon | Select icon |
-| iconWidth | Button icon width |
-| iconHeight | Button icon height |
-| buttonWidth | Button width |
-| buttonHeight | Button height |
-| titleFont | Button text font  |
-| titleColor | Button Text Color |
-| selectedTitleColor | Select Text Color |
-| cornerRadius | The  corner radius of the button|
-| textAlpha | Transparency of button text |
-| padding | Icon and text spacing |
-| highlightedBackgroundColor | Background color when pressed |
-| selectedBackgroundColor | Background color when selected |
-| disabledBackgroundColor | Background color when disabled |
-| borderColor | Border color |
-| highlightedBorderColor | Border color when pressed |
-| selectedBorderColor | Border color when selected |
-| disabledBorderColor | Border color when disabled |
-| highlightedTitleColor | Text color when pressed |
-| disabledTitleColor | Text color when disabled |
-| highlightedIcon | Icon when pressed |
-| disabledIcon | Icon when disabled |
+| backgroundColor | 背景色 |
+| icon    | 按钮图标 |
+| selectedIcon | 选中图标 |
+| iconWidth | 按钮图标宽度 |
+| iconHeight | 按钮图标高度 |
+| buttonWitdth | 按钮宽度 |
+| buttonHeight | 宽度高度 |
+| titleFont | 按钮文字字体  |
+| titleColor | 按钮文字颜色 |
+| selectedTitleColor | 选中文字颜色 |
+| cornerRadius | 按钮圆角 |
+| textAlpha | 按钮文字透明度 |
+| padding | 图标和文字间距 |
+| highlightedBackgroundColor | 按下时背景色 |
+| selectedBackgroundColor | 选中时的背景色 |
+| disabledBackgroundColor | 不可点击时的背景色 |
+| borderColor | 边框颜色 |
+| highlightedBorderColor | 按下时边框颜色 |
+| selectedBorderColor | 选中时边框颜色 |
+| disabledBorderColor | 不可点击时的边框颜色 |
+| highlightedTitleColor | 按下时文字颜色 |
+| disabledTitleColor | 不可点击时文字颜色 |
+| highlightedIcon | 按下时图标 |
+| disabledIcon | 不可点击时图标 |
 
 
 ### AUISlider
-| API              | Describe             |
+| API              | 描述             |
 | ---------------- | ---------------- |
-| backgroundColor    | Background color |
-| minimumTrackColor | Color of the left part of the thumb |
-| maximumTrackColor | Color of the right part of the thumb |
-| thumbColor | Thumb color |
-| thumbBorderColor | Thumb border color |
-| trackBigLabelFont | Font for numerical description (when text description is centered to the left and right) |
-| trackSmallLabelFont | Font for numerical description (when text description is at the bottom) |
-| trackLabelColor | Text color for numerical descriptions |
-| titleLabelFont | Title Font |
-| titleLabelColor | Title Color |
+| backgroundColor    | 背景色 |
+| minimumTrackColor | 滑块左边部分颜色 |
+| maximumTrackColor | 滑块右边部分颜色 |
+| thumbColor | 滑块颜色 |
+| thumbBorderColor | 滑块边框颜色 |
+| trackBigLabelFont | 数值描述的字体(文字描述居于左右时) |
+| trackSmallLabelFont | 数值描述的字体(文字描述居于底部时) |
+| trackLabelColor | 数值描述颜色 |
+| titleLabelFont | 标题字体 |
+| titleLabelColor | 标题颜色 |
 
 ### AUITableViewCell
 
-| API              | Describe             |
+| API              | 描述             |
 | ---------------- | ---------------- |
-| titleFont    | Font size of the main title |
-| titleColor    | Font color of the main title |
-| subTitleFont    | Font size of subtitles |
-| subTitleColor    | Font color of subtitles |
-| detailFont    | Font size for details |
-| detailColor    | Font color for details |
-| highlightColor    | The color of the asterisk |
-| badgeFont    | Font size of badge |
-| badgeColor    | Font color of badge |
-| badgeBackgroundColor    | Background color of badge|
-| switchTintColor    | Background color of the switch |
-| switchThumbColor    | Color of thumb |
-| arrow    | Arrow icon |
+| titleFont    | 主标题字体 |
+| titleColor    | 主标题字体颜色 |
+| subTitleFont    | 副标题字体 |
+| subTitleColor | 副标题字体颜色 |
+| detailFont    | 详情字体 |
+| detailColor    | 详情字体颜色 |
+| highlightColor    | 必填项星号 |
+| badgeFont    | 角标字体 |
+| badgeColor    | 角标文字颜色 |
+| badgeBackgroundColor    | 角标背景色 |
+| switchTintColor    | 开关背景色 |
+| switchThumbColor    | 开关滑块颜色 |
+| arrow    | 箭头图标 |
 
 ### AUITabs
 
-| API              | Describe             |
+| API              | 描述             |
 | ---------------- | ---------------- |
-| titleFont    | Font size of label text |
-| indicatorColor    | Select the color of the label indicator |
-| titleMargin    | Spacing of labels |
-| titlePendingHorizontal    | Horizontal spacing |
-| titlePendingVertical    | Vertical spacing |
-| minimumWidth    | Minimum width of label |
-| normalTitleColor    | Text color when label is not selected |
-| normalBorderColor    | Border color when label is not selected |
-| selectedTitleColor    | Text color when label is selected |
-| selectedBorderColor    | Border color when label is selected |
-| indicatorWidth    | Indicates the width of the bar when selecting a label |
+| titleFont    | 标签文字字体 |
+| indicatorColor    | 选中标签指示条颜色 |
+| titleMargin    | 标签间距 |
+| titlePendingHorizontal    | 水平方向左右间距 |
+| titlePendingVertical    | 垂直方向上下间距 |
+| minimumWidth    | 标签最小宽度 |
+| normalTitleColor    | 标签未选中时的文字颜色 |
+| normalBorderColor    | 标签未选中时边框颜色 |
+| selectedTitleColor    | 标签选中时的文字颜色 |
+| selectedBorderColor    | 标签选中时边框颜色 |
+| indicatorWidth    | 选中标签指示条宽度 |
 
 ### AUITextField
-| API              | Describe             |
+| API              | 描述             |
 | ---------------- | ---------------- |
-| backgroundColor    | Background color |
-| leftIconImage    | Image on the left side of the text field |
-| rightIconImage    | Image when the right part of the text field is not selected |
-| rightSelectedIconImage    | Image when the right part of the input box is selected |
-| placeHolder    | The content of the placeholder |
-| placeHolderColor    | Color of placeholders|
-| placeHolderFont    | Font size of placeholders |
-| text    | Input Content |
-| textColor    | Input text color |
-| textFont    | Input text font size |
-| keyBoardType    | KeyBoard type |
-| isSecureTextEntry    | Is it a password input box |
-| clearButtonMode    | Clear button |
-| textAlignment    | Style for text alignment |
-| returnKeyType    | Type of keyboard return |
-| cornerRadius    | Size of corner radius |
-| topText    | The content of the top text |
-| topTextFont    | Font size of top text |
-| topTextColor    | Font color of top text |
-| bottomText    | Text content at the bottom |
-| bottomTextFont    | Text font size at the bottom |
-| bottomTextColor    | Text color at the bottom |
-| dividerColor    | The color of the bottom divider line |
+| backgroundColor    | 背景色 |
+| leftIconImage    | 输入框左部图片 |
+| rightIconImage    | 输入框右部未选中时图片 |
+| rightSelectedIconImage    | 输入框右部选中时图片 |
+| placeHolder    | 输入占位符 |
+| placeHolderColor    | 输入占位符颜色 |
+| placeHolderFont    | 输入占位符字体 |
+| text    | 输入内容 |
+| textColor    | 输入文字颜色 |
+| textFont    | 输入文字字体 |
+| keyBoardType    | 键盘类型 |
+| isSecureTextEntry    | 是否是密码输入框 |
+| clearButtonMode    | 清除按钮（输入框内右侧小叉） |
+| textAlignment    | 文字对齐方式 |
+| returnKeyType    | 键盘返回类型 |
+| cornerRadius    | 圆角大小 |
+| topText    | 顶部文字内容 |
+| topTextFont    | 顶部文字字体 |
+| topTextColor    | 顶部文字字体颜色 |
+| bottomText    | 底部文字内容 |
+| bottomTextFont    | 底部文字字体 |
+| bottomTextColor    | 底部文字颜色 |
+| dividerColor    | 输入内容底部分割线颜色 |
 
 
 ### AUIToast
 
-| API              | Describe             |
+| API              | 描述             |
 | ---------------- | ---------------- |
-| text    | Text content |
-| textColor    | Text color |
-| font    | Font size |
-| tagImage    | icon |
-| postion | Display Location |
+| text    | 文字内容 |
+| textColor    | 文字颜色 |
+| font    | 文字字体 |
+| tagImage    | 图标 |
+| postion | 显示位置 |

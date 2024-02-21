@@ -1,5 +1,12 @@
+## [1.1.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.1.0)
+- 新增统一的后端管理服务及其代码，提供房间管理、Token生成、IM语聊房创建和rtm踢人功能。
+- 完善邀请申请服务模块。
+- 优化代码，修复线上问题。
 
-English | [中文](CHANGELOG.zh.md)
+## [1.0.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.0.0)
+- 使用了基于客户端本地化读写云存储数据的方案，可以保证多设备数据读写的一致性。
+- 新增了独立的房间管理模块，通过后端微服务提供对房间的增删改查等功能。
+- 升级KTVAPI到最新版本
 
 ## [1.0.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.0.0)
 - We have implemented a client-side localized read-write cloud storage data solution, ensuring consistency in data read-write across multiple devices.
@@ -10,40 +17,39 @@ English | [中文](CHANGELOG.zh.md)
 - [iOS]Upgrade SDWebImage to 5.x.
 
 ## [0.5.3](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.3)
-- [iOS]Compatible with Objective-C
+- [iOS]适配Objective-C。
 
 ## [0.5.2](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.2)
-- appId removed from AUICommonConfig as an attribute of AUIRoomContext
-- [iOS]Change all methods in AUIRoomManagerRespDelegate to optional
-- [Android]Change the delegate interface to observer
+- appId从AUICommonConfig移除，作为AUIRoomContext的属性。
+- [iOS]AUIRoomManagerRespDelegate里所有方法改为optional。
+- [Android]将delegate接口改成observer。
 
 ## [0.5.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.1)
-- [iOS]Fix subspec redundancy dependency issue
-- Fix other remaining bugs
+- [iOS]修复subspec冗余依赖问题。
+- 剩余Bug修复。
 
 ## [0.5.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.5.0)
-- Update RTM to stable version
-- Fix other remaining bugs
+- 更新RTM至稳定版。
+- 其他剩余Bug修复。
 
 ## [0.4.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.4.0)
-- RTM Remove Local Dependency
-- Upgrade KTVAPI
-- Support pure service component dependencies
-- Optimization of microphone mute logic
-- Fix other remaining bugs
+- RTM移除本地依赖。
+- 升级KTVAPI。
+- 支持纯Service组件依赖。
+- 麦位静音逻辑优化。
+- 其他剩余Bug修复。
 
 ## [0.3.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/karaoke-0.3.0)
-- Adapt to new skin
-- Publish AUIKit to Maven/CocoaPods
-- Fix other remaining bugs
+- 适配新皮肤。
+- 发布AUIKit到Maven/CocoaPods。
+- 其他剩余Bug修复。
 
 ## [0.2.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/0.2.0)
 
-- Add IM components
-- Add top room information component
-- Add Gift components
-- Supports pure UI component dependencies
+- 新增IM组件。
+- 新增顶部房间信息组件。
+- 新增礼物组件。
+- 支持纯UI组件依赖。
 
 ## [0.1.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/karaoke_0.1.1)
-
 

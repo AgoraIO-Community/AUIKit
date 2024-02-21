@@ -194,7 +194,7 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
-        button.setTitle("设置", for: .normal)
+        button.setTitle(aui_localized("setting"), for: .normal)
         button.addTarget(self, action: #selector(onClickSetting), for: .touchUpInside)
         return button
     }()
@@ -206,7 +206,7 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
-        button.setTitle("音效", for: .normal)
+        button.setTitle(aui_localized("voiceConversion"), for: .normal)
         button.addTarget(self, action: #selector(onClickVoiceConversion), for: .touchUpInside)// 图片在上文字在下 view.addSubview(button)
         return button
     }()
@@ -242,8 +242,8 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
-        button.setTitle("加入合唱", for: .normal)
-        button.setTitle("加载中", for: .disabled)
+        button.setTitle(aui_localized("joinChorus"), for: .normal)
+        button.setTitle(aui_localized("loading"), for: .disabled)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
         button.addTarget(self, action: #selector(didJoinChorus), for: .touchUpInside)
         return button
@@ -271,8 +271,8 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
-        button.setTitle("播放", for: .normal)
-        button.setTitle("暂停", for: .selected)
+        button.setTitle(aui_localized("play"), for: .normal)
+        button.setTitle(aui_localized("pause"), for: .selected)
         button.addTarget(self, action: #selector(playOrPause), for: .touchUpInside)
         return button
     }()
@@ -284,7 +284,7 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
-        button.setTitle("切歌", for: .normal)
+        button.setTitle(aui_localized("skipSong"), for: .normal)
         button.addTarget(self, action: #selector(nextSong), for: .touchUpInside)
         return button
     }()
@@ -296,7 +296,7 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
-        button.setTitle("点歌", for: .normal)
+        button.setTitle(aui_localized("selectSong"), for: .normal)
         button.addTarget(self, action: #selector(onSelectSong), for: .touchUpInside)
         return button
     }()
@@ -309,7 +309,7 @@ open class AUIPlayerView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageTopTextBottom
         button.style = theme
-        button.setTitle("原唱", for: .normal)
+        button.setTitle(aui_localized("originalArtist"), for: .normal)
         button.addTarget(self, action: #selector(changeAudioTrack), for: .touchUpInside)
         return button
     }()
@@ -440,14 +440,14 @@ extension AUIPlayerView {
         AUIAlertView.theme_defaultAlert()
             .isShowCloseButton(isShow: false)
             .title(title: aui_localized("switchToNextSong"))
-            .rightButton(title: "确认")
+            .rightButton(title: aui_localized("confirm"))
             .rightButtonTapClosure(onTap: {[weak self] text in
                 guard let self = self else { return }
                 self.getEventHander { delegate in
                     delegate.onButtonTapAction(playerView: self, actionType: .nextSong)
                 }
             })
-            .leftButton(title: "取消")
+            .leftButton(title: aui_localized("cancel"))
             .show()
     }
     

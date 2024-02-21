@@ -287,7 +287,9 @@ class AUIRtmManager constructor(
 
     fun fetchMetaDataSnapshot(channelName: String, completion: (AUIRtmException?) -> Unit){
         getMetadata(channelName){ error, metadata ->
-            proxy.processMetaData(channelName, metadata)
+            metadata?.let {
+                proxy.processMetaData(channelName, it)
+            }
             completion.invoke(error)
         }
     }
@@ -314,18 +316,21 @@ class AUIRtmManager constructor(
         storage.removeChannelMetadata(channelName, channelType, data, options,
             lockName, object : ResultCallback<Void> {
                 override fun onSuccess(responseInfo: Void?) {
-                    completion.invoke(null)
+                    runOnMainThread {
+                        completion.invoke(null)
+                    }
                 }
 
                 override fun onFailure(errorInfo: ErrorInfo?) {
-                    errorInfo ?: return
-                    completion.invoke(
-                        AUIRtmException(
-                            RtmErrorCode.getValue(errorInfo.errorCode),
-                            errorInfo.errorReason,
-                            errorInfo.operation
+                    runOnMainThread {
+                        completion.invoke(
+                            AUIRtmException(
+                                RtmErrorCode.getValue(errorInfo?.errorCode),
+                                errorInfo?.errorReason ?: "",
+                                errorInfo?.operation ?: ""
+                            )
                         )
-                    )
+                    }
                 }
             })
     }
@@ -346,6 +351,8 @@ class AUIRtmManager constructor(
             data.setMetadataItem(item)
         }
 
+        AUILogger.logger().d("AUIRtmManager", "metadata=" + metadata)
+
         val options = MetadataOptions(true, true)
         storage.setChannelMetadata(
             channelName,
@@ -355,18 +362,21 @@ class AUIRtmManager constructor(
             lockName,
             object : ResultCallback<Void> {
                 override fun onSuccess(responseInfo: Void?) {
-                    completion.invoke(null)
+                    runOnMainThread {
+                        completion.invoke(null)
+                    }
                 }
 
                 override fun onFailure(errorInfo: ErrorInfo?) {
-                    errorInfo ?: return
-                    completion.invoke(
-                        AUIRtmException(
-                            RtmErrorCode.getValue(errorInfo.errorCode),
-                            errorInfo.errorReason,
-                            errorInfo.operation
+                    runOnMainThread {
+                        completion.invoke(
+                            AUIRtmException(
+                                RtmErrorCode.getValue(errorInfo?.errorCode),
+                                errorInfo?.errorReason ?: "",
+                                errorInfo?.operation ?: ""
+                            )
                         )
-                    )
+                    }
                 }
             })
     }
@@ -395,18 +405,22 @@ class AUIRtmManager constructor(
             lockName,
             object : ResultCallback<Void> {
                 override fun onSuccess(responseInfo: Void?) {
-                    completion.invoke(null)
+                    runOnMainThread {
+                        completion.invoke(null)
+                    }
                 }
 
                 override fun onFailure(errorInfo: ErrorInfo?) {
-                    errorInfo ?: return
-                    completion.invoke(
-                        AUIRtmException(
-                            RtmErrorCode.getValue(errorInfo.errorCode),
-                            errorInfo.errorReason,
-                            errorInfo.operation
+                    runOnMainThread {
+                        completion.invoke(
+                            AUIRtmException(
+                                RtmErrorCode.getValue(errorInfo?.errorCode),
+                                errorInfo?.errorReason ?: "",
+                                errorInfo?.operation ?: ""
+                            )
                         )
-                    )
+                    }
+
                 }
             })
     }
@@ -414,7 +428,7 @@ class AUIRtmManager constructor(
     fun getMetadata(
         channelName: String,
         channelType: RtmChannelType = RtmChannelType.MESSAGE,
-        completion: (AUIRtmException?, io.agora.rtm.Metadata?) -> Unit
+        completion: (AUIRtmException?, Map<String, String>?) -> Unit
     ) {
         val storage = rtmClient.storage
         storage.getChannelMetadata(
@@ -422,18 +436,25 @@ class AUIRtmManager constructor(
             channelType,
             object : ResultCallback<io.agora.rtm.Metadata> {
                 override fun onSuccess(responseInfo: io.agora.rtm.Metadata?) {
-                    completion.invoke(null, responseInfo)
+                    val metadata = mutableMapOf<String, String>()
+                    responseInfo?.metadataItems?.forEach {
+                        metadata[it.key] = it.value
+                    }
+                    runOnMainThread {
+                        completion.invoke(null, metadata)
+                    }
                 }
 
                 override fun onFailure(errorInfo: ErrorInfo?) {
-                    errorInfo ?: return
-                    completion.invoke(
-                        AUIRtmException(
-                            RtmErrorCode.getValue(errorInfo.errorCode),
-                            errorInfo.errorReason,
-                            errorInfo.operation
-                        ), null
-                    )
+                    runOnMainThread {
+                        completion.invoke(
+                            AUIRtmException(
+                                RtmErrorCode.getValue(errorInfo?.errorCode),
+                                errorInfo?.errorReason ?: "",
+                                errorInfo?.operation ?: ""
+                            ), null
+                        )
+                    }
                 }
             })
     }
@@ -702,6 +723,14 @@ class AUIRtmManager constructor(
     private val receiptTimeoutRun = mutableMapOf<String, AUIRtmReceiptHandler>()
     private val receiptHandler = Handler(Looper.getMainLooper())
 
+    private fun runOnMainThread(run: () -> Unit) {
+        if (Thread.currentThread() == receiptHandler.looper.thread) {
+            run.invoke()
+        } else {
+            receiptHandler.post(run)
+        }
+    }
+
     fun sendReceipt(channelName: String, userId: String, receipt: AUIRtmReceiptModel) {
         publish(channelName, userId, GsonTools.beanToString(receipt) ?: "") {}
     }
@@ -712,9 +741,11 @@ class AUIRtmManager constructor(
     }
 
     fun markReceiptFinished(uniqueId: String, error: AUIRtmException? ) {
-        receiptTimeoutRun.remove(uniqueId)?.let {
-            it.closure.invoke(error)
-            receiptHandler.removeCallbacks(it.runnable)
+        runOnMainThread {
+            receiptTimeoutRun.remove(uniqueId)?.let {
+                it.closure.invoke(error)
+                receiptHandler.removeCallbacks(it.runnable)
+            }
         }
     }
 
@@ -781,17 +812,21 @@ class AUIRtmManager constructor(
             options,
             object : ResultCallback<Void> {
                 override fun onSuccess(responseInfo: Void?) {
-                    completion.invoke(null)
+                    runOnMainThread {
+                        completion.invoke(null)
+                    }
                 }
 
                 override fun onFailure(errorInfo: ErrorInfo?) {
-                    completion.invoke(
-                        AUIRtmException(
-                            errorInfo?.errorCode?.ordinal ?: -1,
-                            errorInfo?.errorReason ?: "",
-                            errorInfo?.operation ?: ""
+                    runOnMainThread {
+                        completion.invoke(
+                            AUIRtmException(
+                                errorInfo?.errorCode?.ordinal ?: -1,
+                                errorInfo?.errorReason ?: "",
+                                errorInfo?.operation ?: ""
+                            )
                         )
-                    )
+                    }
                 }
             }
         )

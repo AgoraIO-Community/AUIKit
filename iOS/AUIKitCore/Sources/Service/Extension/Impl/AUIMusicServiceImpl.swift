@@ -63,7 +63,7 @@ open class AUIMusicServiceImpl: NSObject {
         self.ktvApi = ktvApi
         self.listCollection = AUIListCollection(channelName: channelName, observeKey: kChooseSongKey, rtmManager: rtmManager)
         
-        listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem in
+        listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem, attr in
             return self?.metadataWillAdd(publiserId: publisherId, 
                                          dataCmd: dataCmd,
                                          newItem: newItem)
@@ -86,11 +86,11 @@ open class AUIMusicServiceImpl: NSObject {
         }
         
         listCollection.subscribeAttributesWillSet { channelName, key, valueCmd, attr in
-            guard valueCmd == AUIMusicCmd.pingSongCmd.rawValue else { return attr }
-            guard let value = attr.getList() else { return attr }
+            guard valueCmd == AUIMusicCmd.pingSongCmd.rawValue else { return }
+            guard let value = attr.getList() else { return }
             
             let sortList = self._sortChooseSongList(chooseSongList: value)
-            return AUIAttributesModel(list: sortList)
+            attr.setList(sortList)
         }
     }
 }

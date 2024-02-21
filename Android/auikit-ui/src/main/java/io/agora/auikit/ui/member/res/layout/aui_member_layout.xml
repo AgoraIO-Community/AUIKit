@@ -58,7 +58,8 @@
     <TextView
         android:id="@+id/ivRoomCount"
         android:layout_marginStart="?attr/aui_upperRight_count_spacing"
-        app:layout_constraintLeft_toRightOf="@+id/llMemberRank"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toEndOf="@id/llMemberRank"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="?attr/aui_upperRight_member_count_width"

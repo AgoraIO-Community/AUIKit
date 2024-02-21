@@ -1,9 +1,11 @@
 package io.agora.auikit.service.imp
 
+import androidx.annotation.StringRes
 import io.agora.auikit.model.AUIGiftEntity
 import io.agora.auikit.model.AUIGiftTabEntity
 import io.agora.auikit.model.AUIRoomContext
 import io.agora.auikit.service.IAUIGiftsService
+import io.agora.auikit.service.R
 import io.agora.auikit.service.callback.AUICallback
 import io.agora.auikit.service.callback.AUIException
 import io.agora.auikit.service.callback.AUIGiftListCallback
@@ -30,68 +32,72 @@ class AUIGiftServiceImpl constructor(
         this.roomContext = AUIRoomContext.shared()
     }
 
+    private fun getString(@StringRes id: Int) : String {
+        return roomContext.mCommonConfig?.context?.getString(id) ?: ""
+    }
+
     override fun getGiftsFromService(callback: AUIGiftListCallback?) {
         callback?.onResult(null, listOf(
             AUIGiftTabEntity(
                 1,
-                "Gifts",
+                getString(R.string.aui_gift_group_name),
                 listOf(
                     AUIGiftEntity(
                         "2665752a-e273-427c-ac5a-4b2a9c82b255",
-                        "Sweet Heart",
+                        getString(R.string.aui_gift_sweet_heart),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift1.png"
                     ),
                     AUIGiftEntity(
                         "ff3bbb9e-ef18-430f-aa61-5bddf75eb722",
-                        "Flower",
+                        getString(R.string.aui_gift_flower),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift2.png"
                     ),
                     AUIGiftEntity(
                         "94f296fa-86d9-4552-84db-025b05ed9f8d",
-                        "Sweet Heart",
+                        getString(R.string.aui_gift_sweet_heart),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift3.png"
                     ),
                     AUIGiftEntity(
                         "d4cd0526-d8db-4e00-8fc0-d5228907a517",
-                        "Super Agora",
+                        getString(R.string.aui_gift_super_agora),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift4.png"
                     ),
                     AUIGiftEntity(
                         "c1997f02-d927-46f5-adda-e6af6714bd75",
-                        "Star",
+                        getString(R.string.aui_gift_star),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift5.png"
                     ),
                     AUIGiftEntity(
                         "0c62b402-376f-4fbb-b584-769a8249189e",
-                        "Lollipop",
+                        getString(R.string.aui_gift_lollipop),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift6.png"
                     ),AUIGiftEntity(
                         "ce3f8bc3-74d7-43be-a040-c397d5c49f6d",
-                        "Diamond",
+                        getString(R.string.aui_gift_diamond),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift7.png"
                     ),
                     AUIGiftEntity(
                         "948b1a3b-b2c6-41fc-99b7-a5b9457cd159",
-                        "Crown",
+                        getString(R.string.aui_gift_crown),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift8.png"
                     ),
                     AUIGiftEntity(
                         "f1e12397-feb7-4c01-b834-f11faf321dbf",
-                        "Mic",
+                        getString(R.string.aui_gift_mic),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift9.png"
                     ),
                     AUIGiftEntity(
                         "e915438c-7fbd-4e03-840f-0036ec97c824",
-                        "Balloon",
+                        getString(R.string.aui_gift_balloon),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift10.png",
                         giftEffect = "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pag/ballon.pag",
@@ -99,7 +105,7 @@ class AUIGiftServiceImpl constructor(
                     ),
                     AUIGiftEntity(
                         "0c832b52-8f2e-4202-958b-9410db2d9438",
-                        "Plant",
+                        getString(R.string.aui_gift_plant),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift11.png",
                         giftEffect = "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pag/planet.pag",
@@ -107,7 +113,7 @@ class AUIGiftServiceImpl constructor(
                     ),
                     AUIGiftEntity(
                         "beada6a3-eae6-450e-869c-743d02fa95e7",
-                        "Rocket",
+                        getString(R.string.aui_gift_rocket),
                         "1",
                         "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pictures/gift/AUIKitGift12.png",
                         giftEffect = "https://fullapp.oss-cn-beijing.aliyuncs.com/uikit/pag/rocket.pag",

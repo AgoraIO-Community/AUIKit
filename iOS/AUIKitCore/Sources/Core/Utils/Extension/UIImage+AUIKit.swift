@@ -39,7 +39,7 @@ extension String {
     }
     
     private func appendPngExentionIfEmpty() -> String{
-        var url = URL(fileURLWithPath: self)
+        let url = URL(fileURLWithPath: self)
         if url.pathExtension.isEmpty {
             return appending(".png")
         }

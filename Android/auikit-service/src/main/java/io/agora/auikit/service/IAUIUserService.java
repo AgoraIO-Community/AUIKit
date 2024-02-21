@@ -45,6 +45,13 @@ public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUs
      */
     void muteUserVideo(boolean isMute, @Nullable AUICallback callback);
 
+    /**
+     * 踢人
+     * @param userId
+     * @param callback
+     */
+    void kickUser(@NonNull String userId, @Nullable AUICallback callback);
+
     interface AUIUserRespObserver {
         /**
          * 用户进入房间后获取到的所有用户信息
@@ -69,6 +76,12 @@ public interface IAUIUserService extends IAUICommonService<IAUIUserService.AUIUs
          * @param userInfo 用户信息
          */
         default void onRoomUserLeave(@NonNull String roomId, @NonNull AUIUserInfo userInfo) {}
+
+        /**
+         * 自己被踢出房间回调
+         * @param roomId 房间唯一id
+         */
+        default void onLocalUserKickedOut(@NonNull String roomId){}
 
         /**
          * 用户信息修改

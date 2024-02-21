@@ -3,10 +3,13 @@ package io.agora.auikit.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import io.agora.auikit.model.AUIUserInfo;
 import io.agora.auikit.service.callback.AUICallback;
+import io.agora.auikit.service.callback.AUIException;
 
 public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationService.AUIInvitationRespObserver> {
     /**
@@ -125,5 +128,13 @@ public interface IAUIInvitationService extends IAUICommonService<IAUIInvitationS
          * @param userList
          */
         default void onApplyListUpdate(List<AUIUserInfo> userList){}
+
+        default @Nullable AUIException onInviteWillAccept(@NotNull String userId, int seatIndex) {
+            return null;
+        }
+
+        default @Nullable AUIException onApplyWillAccept(@NotNull String userId, int seatIndex) {
+            return null;
+        }
     }
 }

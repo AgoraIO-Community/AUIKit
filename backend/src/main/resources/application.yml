@@ -1,0 +1,72 @@
+spring:
+  profiles:
+    # Set environment
+    active: dev
+  application:
+    # Application name
+    name: uikit
+  data:
+    # MongoDB configuration
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/test
+  # Redis configuration
+  redis:
+    database: 0
+    host: localhost
+    lettuce:
+      # Pool
+      pool:
+        max-active: 100
+        max-wait: -1
+        max-idle: 50
+        min-idle: 10
+    password: admin
+    port: 6379
+    timeout: 3000
+
+# Log
+log:
+  level: info
+  path: ./logs
+# Metric
+# http://127.0.0.1:9090/metrics/prometheus
+management:
+  server:
+    port: 9090
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /metrics
+  metrics:
+    enable:
+      all: false
+
+chatRoom:
+  domain: https://a1.easemob.com
+
+kickOut:
+  domain: https://api.agora.io
+
+token:
+  expirationInSeconds: 86400
+  privilegeExpirationInSeconds: 86400
+
+whitelist:
+  token:
+    appId:
+    appCert:
+  chatRoom:
+    appId:
+    orgName:
+    appName:
+    clientId:
+    clientSecret:
+  rtcKickOutAuth:
+    appId:
+    basicAuth:

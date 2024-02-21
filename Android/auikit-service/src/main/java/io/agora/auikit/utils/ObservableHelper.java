@@ -19,7 +19,9 @@ public class ObservableHelper<EventHandler> {
         if (eventHandler == null) {
             return;
         }
-        eventHandlerList.add(eventHandler);
+        if (!eventHandlerList.contains(eventHandler)) {
+            eventHandlerList.add(eventHandler);
+        }
     }
 
     public void unSubscribeEvent(@Nullable EventHandler eventHandler) {

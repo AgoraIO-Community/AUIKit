@@ -313,18 +313,18 @@ class AUIJukeboxServiceImpl constructor(
         observeKey: String,
         valueCmd: String?,
         value: AUIAttributesModel
-    ): AUIAttributesModel {
+    ) {
         if (valueCmd == AUIJukeboxCmd.pingSongCmd.name) {
-            val songList = value.getList() ?: return value
-            return AUIAttributesModel(sortChooseSongList(songList))
+            val songList = value.getList() ?: return
+            value.setList(sortChooseSongList(songList))
         }
-        return value
     }
 
     private fun metadataWillAdd(
         publisherId: String,
         valueCmd: String?,
-        value: Map<String, Any>
+        value: Map<String, Any>,
+        attrs: AUIAttributesModel
     ): AUICollectionException? {
 
         val owner = value["owner"] as? Map<*, *>
