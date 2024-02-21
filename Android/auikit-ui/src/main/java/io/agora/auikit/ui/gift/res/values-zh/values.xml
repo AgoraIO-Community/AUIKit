@@ -2,5 +2,5 @@
 <resources>
     <string name="voice_gift_sent">赠送 </string>
     <string name="voice_chatroom_gift_title">打赏</string>
-    <string name="voice_gift_dialog_action">Action</string>
+    <string name="voice_gift_dialog_action">发送</string>
 </resources>
