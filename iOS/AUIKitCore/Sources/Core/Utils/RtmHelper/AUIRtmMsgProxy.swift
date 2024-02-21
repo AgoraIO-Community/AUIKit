@@ -50,11 +50,6 @@ import AgoraRtmKit
     func onReleaseLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail)
 }
 
-@objc public protocol AUIRtmLockProxyDelegate: NSObjectProtocol {
-    func onReceiveLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail)
-    func onReleaseLockDetail(channelName: String, lockDetail: AgoraRtmLockDetail)
-}
-
 
 /// RTM消息转发器
 open class AUIRtmMsgProxy: NSObject {
