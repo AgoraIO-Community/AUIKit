@@ -55,4 +55,8 @@ extension AUIMicSeatInfo: AUIMicSeatCellDataProtocol {
     public var micSeat: UInt {
         return self.seatIndex
     }
+    
+    public var isEmptySeat: Bool {
+        return self.user?.userId.isEmpty ?? true
+    }
 }

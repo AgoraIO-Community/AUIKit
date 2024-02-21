@@ -258,7 +258,7 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
         hostIcon.isHidden = item?.micSeat != 0
         updateRoleUI(with: item?.role ?? .offlineAudience)
         guard let mic = item else { return }
-        if mic.role == .onlineAudience,mic.isMuteAudio == false,mic.isLock == false {
+        if mic.isEmptySeat == false, mic.isMuteAudio == false, mic.isLock == false {
             rippleView.isHidden = false
         } else {
             rippleView.isHidden = true
@@ -280,5 +280,4 @@ open class AUIMicSeatItemCell: UICollectionViewCell {
             }
         }
     }
-    
 }
