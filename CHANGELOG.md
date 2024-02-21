@@ -1,8 +1,7 @@
-## [1.0.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.0.1)
+## [1.1.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.1.0)
 - 新增统一的后端管理服务及其代码，提供房间管理、Token生成、IM语聊房创建和rtm踢人功能。
 - 完善邀请申请服务模块。
 - 优化代码，修复线上问题。
-
 
 ## [1.0.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.0.0)
 - 使用了基于客户端本地化读写云存储数据的方案，可以保证多设备数据读写的一致性。
