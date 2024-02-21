@@ -14,7 +14,6 @@ import io.agora.auikit.ui.micseats.IMicSeatsView
 import io.agora.auikit.ui.micseats.MicSeatItem
 import io.agora.auikit.ui.micseats.MicSeatStatus
 import io.agora.auikit.utils.DeviceTools
-import kotlin.math.min
 
 class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
     /**
@@ -29,12 +28,12 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
     /**
      * 横向间距
      */
-    private var horizontalSpacing = 0
+    private var horizontalSpacing = 0.0f
 
     /**
      * 纵向间距
      */
-    private var verticalSpacing = 0
+    private var verticalSpacing = 0.0f
     /**
      * 座位数
      */
@@ -60,12 +59,16 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
     /**
      * ItemView 的宽度
      */
-    private var childWidth = 62
+    private var childWidth = 100.0f
 
     /**
      * ItemView 的高度
      */
-    private var childHeight = 100
+    private var childHeight = 100.0f
+
+    private var centerHeight = 150.0f
+
+    private var centerWidth = 120.0f
 
     private var isReady:Boolean = false
 
@@ -91,7 +94,7 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
         addView(layout)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    override fun  onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         mWidth = w
         mHeight = h
@@ -119,13 +122,22 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
                 itemView.tag = i
                 val seatItem = mMicSeatMap[i]
                 seatItem?.let {
-                    itemView.x = it.micX - DeviceTools.dp2px(context,(childWidth/2).toFloat())
-                    itemView.y = it.micY - DeviceTools.dp2px(context,(min(childWidth,childHeight)/2).toFloat())
+                    itemView.x = it.micX
+                    itemView.y = it.micY
                 }
                 itemView.let {
-                    it.layoutParams = ViewGroup.LayoutParams(
-                        DeviceTools.dp2px(context,childWidth+20.toFloat()),
-                        DeviceTools.dp2px(context,childHeight.toFloat()))
+                    if (i == 0) {
+                        it.layoutParams = ViewGroup.LayoutParams(
+                            DeviceTools.dp2px(context, centerWidth),
+                            DeviceTools.dp2px(context, centerHeight)
+                        )
+                    } else {
+                        it.layoutParams = ViewGroup.LayoutParams(
+                            DeviceTools.dp2px(context, childWidth),
+                            DeviceTools.dp2px(context, childHeight)
+                        )
+                    }
+
 
                     micSeatItemViewWrap?.setView(it)
                     itemView.setOnClickListener{ it1 ->
@@ -144,21 +156,25 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
      * 获取麦位view坐标
      */
     private fun getMicSeatCoordinate(){
-        horizontalSpacing = (mWidth - childWidth * numColumns) / (numColumns+1)
-        verticalSpacing = (mHeight - childHeight * numRows) / (numRows + 1)
+        val childWidthPixel = DeviceTools.dp2px(context, childWidth).toFloat()
+        val childHeightPixel = DeviceTools.dp2px(context, childHeight).toFloat()
+        val centerWithPixel = DeviceTools.dp2px(context, centerWidth).toFloat()
+        val centerHeightPixel = DeviceTools.dp2px(context, centerWidth).toFloat()
+        horizontalSpacing = (mWidth - childWidthPixel * numColumns) / (numColumns+1)
+        verticalSpacing = (mHeight - childHeightPixel * numRows - centerHeightPixel) / (numRows + 1)
         var endX = 0f
         var endY = 0f
         for (i in 0 until micSeatCount) {
             if (i == 0){
-                mMicSeatMap[0] = MicSeatItem(i,centerX ,childHeight+(childHeight/4).toFloat())
+                mMicSeatMap[0] = MicSeatItem(i, centerX - centerWithPixel / 2.0f, 0.0f)
             }else{
                 if (i <= 4){
-                    endX = ((horizontalSpacing * i) + childWidth * (i-1)).toFloat()
-                    endY = verticalSpacing * 1 + childHeight * 1 + (childHeight/3).toFloat()
+                    endX = (horizontalSpacing * i) + childWidthPixel * (i-1)
+                    endY = verticalSpacing * 1 + centerHeightPixel
                 }else{
                     val b = (i - 4)
-                    endX = ((horizontalSpacing * b) + childWidth * (b-1)).toFloat()
-                    endY = (verticalSpacing * 2 + childHeight * 2).toFloat()
+                    endX = (horizontalSpacing * b) + childWidthPixel * (b-1)
+                    endY = verticalSpacing * 2 + childHeightPixel + centerHeightPixel
                 }
                 mMicSeatMap[i] = MicSeatItem(i,endX,endY)
             }
@@ -183,8 +199,8 @@ class AUIMicSeatHostAudienceLayout : FrameLayout, IMicSeatsView{
 
         fun setView(view: IMicSeatItemView) {
             this.view = view
-            titleText?.let { setTitleText(it) }
             setTitleIndex(titleIndex)
+            titleText?.let { setTitleText(it) }
             setRoomOwnerVisibility(roomOwnerVisibility)
             setAudioMuteVisibility(audioMuteVisibility)
             setVideoMuteVisibility(videoMuteVisibility)

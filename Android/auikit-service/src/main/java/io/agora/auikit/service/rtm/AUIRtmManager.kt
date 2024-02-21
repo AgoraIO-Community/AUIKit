@@ -351,6 +351,8 @@ class AUIRtmManager constructor(
             data.setMetadataItem(item)
         }
 
+        AUILogger.logger().d("AUIRtmManager", "metadata=" + metadata)
+
         val options = MetadataOptions(true, true)
         storage.setChannelMetadata(
             channelName,
