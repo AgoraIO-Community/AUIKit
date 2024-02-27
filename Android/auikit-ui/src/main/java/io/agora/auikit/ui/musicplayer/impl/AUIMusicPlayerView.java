@@ -303,9 +303,9 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
                 mActiveSkipPrelude.setVisibility(View.INVISIBLE);
             }
 
-            if(progress >= mKaraokeView.getLyricsData().duration){
+            if (progress >= mKaraokeView.getLyricsData().duration) {
                 mActiveSkipPostlude.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 mActiveSkipPostlude.setVisibility(View.INVISIBLE);
             }
         }
@@ -419,6 +419,8 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
             }
             mLeaveChorus.setVisibility(View.VISIBLE);
             mMusicStartBtn.setVisibility(View.GONE);
+            mActiveSkipPrelude.setVisibility(View.INVISIBLE);
+            mActiveSkipPostlude.setVisibility(View.INVISIBLE);
         });
     }
 
