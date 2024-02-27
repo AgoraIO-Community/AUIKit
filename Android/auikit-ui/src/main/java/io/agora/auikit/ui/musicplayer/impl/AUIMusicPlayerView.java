@@ -61,6 +61,8 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     private MaterialButton mSwitchSongBtn;
     private MaterialButton mActiveChooseSongBtn;
     private MaterialButton mActiveOriginalBtn;
+    private View mActiveSkipPrelude;
+    private View mActiveSkipPostlude;
     private MaterialButton mLeaveChorus;
     private MaterialButton mControllerBtn;
     private MaterialButton mPresetView;
@@ -84,6 +86,8 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
     private final List<ControllerEffectInfo> voiceConversionList = new ArrayList<>();
 
     private MusicSettingInfo musicSettingInfo = new MusicSettingInfo();
+
+    private boolean isAudience = false;
 
     public AUIMusicPlayerView(@NonNull Context context) {
         super(context);
@@ -112,6 +116,8 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
         mSwitchSongBtn = mMusicPlayerActiveView.findViewById(R.id.ivChangeSong);
         mActiveChooseSongBtn = mMusicPlayerActiveView.findViewById(R.id.ivChooseSong);
         mActiveOriginalBtn = mMusicPlayerActiveView.findViewById(R.id.switchOriginal);
+        mActiveSkipPrelude = mMusicPlayerActiveView.findViewById(R.id.llSkipPrelude);
+        mActiveSkipPostlude = mMusicPlayerActiveView.findViewById(R.id.llSkipPostlude);
         mKaraokeView = new KaraokeView(mLrcView, mScoringView);
         mMusicControllerGroup = mMusicPlayerActiveView.findViewById(R.id.rlMusicControlMenu);
         mJoinChorusView = mMusicPlayerActiveView.findViewById(R.id.btnJoinChorus);
@@ -195,6 +201,28 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
         mPresetView.setOnClickListener(v -> {
             showPresetDialog();
         });
+
+        // 跳过前奏
+        mActiveSkipPrelude.findViewById(R.id.ivSkipPreludeSkip).setOnClickListener(v -> {
+            LyricsModel lyricsData = mKaraokeView.getLyricsData();
+            if (lyricsData != null) {
+                long seekPosition = lyricsData.startOfVerse - 2000;
+                mActionDelegate.onSkipPrelude(seekPosition);
+            }
+            mActiveSkipPrelude.setVisibility(View.INVISIBLE);
+        });
+        mActiveSkipPrelude.findViewById(R.id.ivSkipPreludeCancel).setOnClickListener(v -> {
+            mActiveSkipPrelude.setVisibility(View.INVISIBLE);
+        });
+
+        // 跳过尾奏
+        mActiveSkipPostlude.findViewById(R.id.ivSkipPostludeSkip).setOnClickListener(v -> {
+            mActionDelegate.onSkipPostlude();
+            mActiveSkipPostlude.setVisibility(View.INVISIBLE);
+        });
+        mActiveSkipPostlude.findViewById(R.id.ivSkipPostludeCancel).setOnClickListener(v -> {
+            mActiveSkipPostlude.setVisibility(View.INVISIBLE);
+        });
     }
 
     @Override
@@ -271,6 +299,18 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
 
     // 设置进程
     public void setProgress(Long progress) {
+        if (!isAudience) {
+            if (progress >= mKaraokeView.getLyricsData().startOfVerse - 2000) {
+                mActiveSkipPrelude.setVisibility(View.INVISIBLE);
+            }
+
+            if(progress >= mKaraokeView.getLyricsData().duration){
+                mActiveSkipPostlude.setVisibility(View.VISIBLE);
+            }else{
+                mActiveSkipPostlude.setVisibility(View.INVISIBLE);
+            }
+        }
+
         mKaraokeView.setProgress(progress);
     }
 
@@ -332,11 +372,13 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
             mPreparePrecent.setText("0%");
             mActiveOriginalBtn.setActivated(false);
 
+            this.isAudience = isAudience;
             if (isAudience) {
                 mMusicControllerGroup.setVisibility(View.GONE);
                 mJoinChorusView.setVisibility(View.VISIBLE);
                 mJoinChorusLoadingView.setVisibility(View.INVISIBLE);
-
+                mActiveSkipPrelude.setVisibility(View.INVISIBLE);
+                mActiveSkipPostlude.setVisibility(View.INVISIBLE);
                 if (isRoomOwner) {
                     // 房主允许切歌
                     mSwitchSongBtn.setVisibility(View.VISIBLE);
@@ -346,6 +388,8 @@ public class AUIMusicPlayerView extends FrameLayout implements IMusicPlayerView 
                 mMusicControllerGroup.setVisibility(View.VISIBLE);
                 mJoinChorusView.setVisibility(View.INVISIBLE);
                 mJoinChorusLoadingView.setVisibility(View.INVISIBLE);
+                mActiveSkipPrelude.setVisibility(View.VISIBLE);
+                mActiveSkipPostlude.setVisibility(View.INVISIBLE);
             }
         });
     }

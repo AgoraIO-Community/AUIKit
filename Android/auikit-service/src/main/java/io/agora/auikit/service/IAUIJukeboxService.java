@@ -27,8 +27,8 @@ public interface IAUIJukeboxService extends IAUICommonService<IAUIJukeboxService
     // 4 -> "抖音热歌"
     // 5 -> "古风热歌"
     // 6 -> "KTV必唱"
-    List<String> songCategories = Arrays.asList("热门新歌", "嗨歌推荐", "抖音热歌", "KTV必唱");
-    List<Integer> songCategoryIds = Arrays.asList(2, 3, 4, 6);
+    List<String> songCategories = Arrays.asList("嗨歌推荐", "抖音热歌", "热门新歌", "KTV必唱");
+    List<Integer> songCategoryIds = Arrays.asList(3, 4, 2, 6);
     int songPageSize = 10;
     int songPageStartIndex = 1;
 

@@ -8,8 +8,8 @@
     <string name="aui_musicplayer_play">播放</string>
     <string name="aui_musicplayer_switch_song">切歌</string>
     <string name="aui_musicplayer_origin">原唱</string>
-    <string name="aui_musicplayer_voice_controller">调音</string>
-    <string name="aui_musicplayer_voice_preset">音效</string>
+    <string name="aui_musicplayer_voice_controller">设置</string>
+    <string name="aui_musicplayer_voice_preset">变声</string>
     <string name="aui_musicplayer_leave_chorus">放麦</string>
     <string name="aui_musicplayer_loading">歌曲准备中</string>
     <string name="aui_score_formatter">%s分</string>
@@ -35,4 +35,6 @@
     <string name="aui_musicplayer_reverb_ethereal">空灵</string>
     <string name="aui_musicplayer_reverb_popular">流行</string>
     <string name="aui_musicplayer_reverb_rnb">R&amp;B</string>
+    <string name="aui_musicplayer_skip_prelude">跳过前奏</string>
+    <string name="aui_musicplayer_skip_postlude">跳过尾奏</string>
 </resources>
