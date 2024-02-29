@@ -39,7 +39,7 @@ private enum AUIChorusCMd: String {
         self.ktvApi = ktvApi
         
         self.listCollection = AUIListCollection(channelName: channelName, observeKey: kChorusKey, rtmManager: rtmManager)
-        listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem in
+        listCollection.subscribeWillAdd {[weak self] publisherId, dataCmd, newItem, m in
             return self?.metadataWillAdd(publiserId: publisherId,
                                          dataCmd: dataCmd,
                                          newItem: newItem)

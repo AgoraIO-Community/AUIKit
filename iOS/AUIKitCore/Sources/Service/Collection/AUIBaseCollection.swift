@@ -20,6 +20,7 @@ public class AUIBaseCollection: NSObject {
     private(set) var observeKey: String
     private(set) var rtmManager: AUIRtmManager
 
+    private(set) var valueWillChangeClosure: AUICollectionValueWillChangeClosure?
     private(set) var metadataWillAddClosure: AUICollectionAddClosure?
     private(set) var metadataWillUpdateClosure: AUICollectionUpdateClosure?
     private(set) var metadataWillMergeClosure: AUICollectionUpdateClosure?
@@ -47,6 +48,12 @@ public class AUIBaseCollection: NSObject {
 }
 
 extension AUIBaseCollection: IAUICollection {
+    
+    /// 当收到远端需要修改
+    /// - Parameter callback: <#callback description#>
+    public func subsceibeValueWillChange(callback: AUICollectionValueWillChangeClosure?) {
+        self.valueWillChangeClosure = callback
+    }
     
     public func subscribeWillAdd(callback: AUICollectionAddClosure?) {
         self.metadataWillAddClosure = callback

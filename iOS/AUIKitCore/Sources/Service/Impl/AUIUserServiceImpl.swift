@@ -102,16 +102,6 @@ extension AUIUserServiceImpl: AUIRtmUserProxyDelegate {
             obj.onRoomUserLeave(roomId: channelName, userInfo: user)
         }
     }
-    
-    public func onUserBeKicked(channelName: String, userId: String, userInfo: [String : Any]) {
-        aui_info("onUserBeKicked: \(userId)", tag: "AUIUserServiceImpl")
-        let user = userList.filter({$0.userId == userId}).first ?? AUIUserInfo.yy_model(withJSON: userInfo)!
-        self.userList = userList.filter({$0.userId != userId})
-        self.respDelegates.allObjects.forEach { obj in
-            guard let obj = obj as? AUIUserRespDelegate else {return}
-            obj.onUserBeKicked(roomId: channelName, userId: user.userId)
-        }
-    }
 }
 
 extension AUIUserServiceImpl: AUIUserServiceDelegate {

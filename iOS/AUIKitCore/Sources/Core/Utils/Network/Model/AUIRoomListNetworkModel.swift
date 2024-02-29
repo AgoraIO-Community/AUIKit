@@ -11,6 +11,8 @@ import UIKit
 public class AUIRoomListNetworkModel: AUINetworkModel {
     public var lastCreateTime: NSNumber?
     public var pageSize: Int = 10
+    public var appId: String? = AUIRoomContext.shared.commonConfig?.appId
+    public var sceneId: String?
     public override init() {
         super.init()
         interfaceName = "/v2/room/list"

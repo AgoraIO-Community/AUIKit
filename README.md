@@ -1,27 +1,43 @@
 # AUIKit
 
-English | [中文](README.zh.md)
+AUIKit 是一个框架，可提供一组可自定义的 UI 组件和服务，以帮助开发人员快速创建视觉上吸引人且用户友好的应用程序。 它包括各种预置组件，如按钮、文本字段和标签，以及更复杂的组件，如麦克风座和自动点唱机。 此外，AUIKit 提供内置的自定义选项，以便开发人员可以轻松修改组件的外观以适应其应用程序的风格。 借助 AUIKit，开发人员可以节省创建应用程序 UI 的时间和精力，从而打造出更精美、功能更强大的产品。
 
-AUIKit is a framework that provides a collection of customizable UI components and services to help developers create visually appealing and user-friendly apps quickly. It includes various pre-built components such as buttons, text fields, and labels, as well as more complex components like mic seats and jukebox. Additionally, AUIKit offers built-in customization options so that developers can easily modify the look and feel of the components to fit their app's style. With AUIKit, developers can save time and effort in creating their app's UI, resulting in a more polished and functional product.
+---
+## 快速上手
+你可以进入不同平台的项目查看如何快速上手。
 
-## QuickStart
-You can refer to each individual platform to learn how to quick start the project.
-
-| Platfomr | Langr       | 项目               |
+| 平台     | 语言        | 位置               |
 | -------- | ----------- | ------------------ |
 | Android  | Java/Kotlin | [Android](Android) |
 | iOS      | Swift       | [iOS](iOS)         |
+| 后端服务 | Java        | [backend](backend) |
 
-## Feedback
+---
+## 相关项目
 
-If you have any problems or suggestions regarding the sample projects, feel free to file an issue.
+- [AUIKaraoke](https://github.com/AgoraIO-Community/AUIKaraoke)
+- [AUIVoiceRoom](https://github.com/AgoraIO-Community/AUIVoiceRoom)
 
-## Related project
 
-- [AUIKitKaraoke](https://github.com/AgoraIO-Community/AUIKitKaraoke)
+---
+## 反馈
 
-## License
+> 方案1：如果您已经在使用声网服务或者在对接中，可以直接联系对接的销售或服务
+> 
+> 方案2：发送邮件给 [support@agora.io](mailto:support@agora.io) 咨询
+> 
+> 方案3：扫码加入我们的微信交流群提问
+> 
+> <img src="https://download.agora.io/demo/release/SDHY_QA.jpg" width="360" height="360">
 
-Copyright © Agora Corporation. All rights reserved.
+---
+## 许可证
 
-Licensed under the [MIT license](LICENSE).
+版权所有 Agora, Inc. 保留所有权利。
+
+使用 [MIT 许可证](/LICENSE)
+
+
+
+
+

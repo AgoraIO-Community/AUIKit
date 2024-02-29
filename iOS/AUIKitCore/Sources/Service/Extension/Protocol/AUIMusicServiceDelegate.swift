@@ -87,9 +87,18 @@ import Foundation
     /// - Parameter song: <#song description#>
     func onUpdateAllChooseSongs(songs: [AUIChooseMusicModel])
     
-    
+    /// 歌曲即将添加
+    /// - Parameters:
+    ///   - userId: <#userId description#>
+    ///   - metaData: <#metaData description#>
+    /// - Returns: <#description#>
     @objc optional func onSongWillAdd(userId: String, metaData: NSMutableDictionary) -> NSError?
     
+    /// 歌曲即将删除
+    /// - Parameters:
+    ///   - songCode: <#songCode description#>
+    ///   - metaData: <#metaData description#>
+    /// - Returns: <#description#>
     @objc optional func onSongWillRemove(songCode: String, metaData: NSMutableDictionary) -> NSError?
 
 }

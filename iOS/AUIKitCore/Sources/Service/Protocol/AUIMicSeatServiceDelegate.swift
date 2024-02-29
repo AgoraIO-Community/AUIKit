@@ -34,9 +34,9 @@ import Foundation
     /// 抱人上麦（房主调用）
     /// - Parameters:
     ///   - seatIndex: 麦位索引
-    ///   - userId: 用户id
+    ///   - userId: 用户
     ///   - callback: 操作完成回调
-    func pickSeat(seatIndex: Int, userId: String, callback: @escaping AUICallback)
+    func pickSeat(seatIndex: Int, user: AUIUserThumbnailInfo, callback: @escaping AUICallback)
     
     
     /// 踢人下麦（房主调用）

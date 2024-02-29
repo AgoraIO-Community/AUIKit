@@ -1,7 +1,4 @@
 {
-  "Seat": {
-      "backgroundColor": "#00000000"
-  },
   "SeatItem": {
       "avatarCornerRadius": 28,
       "avatarBorderColor": "#00000000",

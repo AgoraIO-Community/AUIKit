@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class AUIRoomInfo extends AUICreateRoomInfo implements Serializable {
 
@@ -13,5 +14,7 @@ public class AUIRoomInfo extends AUICreateRoomInfo implements Serializable {
     @SerializedName("onlineUsers")
     public int memberCount = 0; // 房间人数
     public long createTime = 0; // 房间创建时间
+
+    public Map<String, Object> customPayload; // 扩展字段
 
 }

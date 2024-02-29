@@ -28,7 +28,7 @@ abstract class AUIBaseCollection(
     }
 
     protected var metadataWillAddClosure: ((
-        publisherId: String, valueCmd: String?, value: Map<String, Any>
+        publisherId: String, valueCmd: String?, value: Map<String, Any>, attrs: AUIAttributesModel
     ) -> AUICollectionException?)? = null
 
     protected var metadataWillUpdateClosure: ((
@@ -53,8 +53,10 @@ abstract class AUIBaseCollection(
 
     protected var attributesWillSetClosure: ((
         channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel
-    ) -> AUIAttributesModel)? = null
+    ) -> Unit)? = null
 
+    protected var valueWillChangeClosure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> Map<String, Any>?)? =
+        null
 
     init {
         rtmManager.subscribeMessage(messageRespObserver)
@@ -69,7 +71,7 @@ abstract class AUIBaseCollection(
         )
     }
 
-    final override fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> AUICollectionException?)?) {
+    final override fun subscribeWillAdd(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, attr: AUIAttributesModel) -> AUICollectionException?)?) {
         metadataWillAddClosure = closure
     }
 
@@ -89,12 +91,16 @@ abstract class AUIBaseCollection(
         attributesDidChangedClosure = closure
     }
 
-    final override fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel) -> AUIAttributesModel)?) {
+    final override fun subscribeAttributesWillSet(closure: ((channelName: String, observeKey: String, valueCmd: String?, value: AUIAttributesModel) -> Unit)?) {
         attributesWillSetClosure = closure
     }
 
     override fun subscribeWillCalculate(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>, cKey: List<String>, cValue: Int, cMin: Int, cMax: Int) -> AUICollectionException?)?) {
         metadataWillCalculateClosure = closure
+    }
+
+    override fun subscribeValueWillChange(closure: ((publisherId: String, valueCmd: String?, value: Map<String, Any>) -> Map<String, Any>?)?) {
+        valueWillChangeClosure = closure
     }
 
     protected fun localUid() = AUIRoomContext.shared().currentUserInfo.userId

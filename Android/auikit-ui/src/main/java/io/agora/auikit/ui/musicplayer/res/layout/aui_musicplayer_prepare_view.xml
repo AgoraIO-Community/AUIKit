@@ -9,19 +9,55 @@
     tools:background="?attr/aui_musicPlayer_backgroundColor"
     tools:theme="?attr/aui_musicPlayer_appearance">
 
-    <TextView
-        android:id="@+id/ivPrepareView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="?attr/aui_musicPlayer_prepareIcon"
-        android:drawablePadding="5dp"
-        android:gravity="center"
-        android:textColor="?attr/aui_musicPlayer_prepareTextColor"
-        android:textSize="?attr/aui_musicPlayer_prepareTextSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="0%" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/aui_musicplayer_prepare_loading_bg"
+        android:layout_width="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="3dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvTip"
+            style="@style/Widget.AppCompat.ProgressBar"
+            app:layout_constraintBottom_toTopOf="@id/tvProgress"/>
+
+        <TextView
+            android:id="@+id/tvTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/progress"
+            app:layout_constraintStart_toEndOf="@id/progress"
+            app:layout_constraintBottom_toBottomOf="@id/progress"
+            android:textColor="@color/aui_white"
+            android:textSize="13sp"
+            android:text="@string/aui_musicplayer_loading"/>
+
+        <TextView
+            android:id="@+id/tvProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="?attr/aui_musicPlayer_prepareTextColor"
+            android:textSize="?attr/aui_musicPlayer_prepareTextSize"
+            app:layout_constraintTop_toBottomOf="@id/progress"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="0%" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

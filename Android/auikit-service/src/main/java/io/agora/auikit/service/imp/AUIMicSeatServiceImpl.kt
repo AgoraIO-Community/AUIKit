@@ -211,9 +211,26 @@ class AUIMicSeatServiceImpl(
     }
 
 
-    override fun pickSeat(seatIndex: Int, userId: String, callback: AUICallback?) {
+    override fun pickSeat(seatIndex: Int,  user: AUIUserThumbnailInfo , callback: AUICallback?) {
         // do nothing
-        throw RuntimeException("Not implement yet.")
+        val value = mapOf(
+            "$seatIndex" to mapOf(
+                "owner" to user,
+                "micSeatStatus" to AUIMicSeatStatus.used
+            )
+        )
+        mapCollection.mergeMetaData(
+            AUIMicSeatCmd.enterSeatCmd.name,
+            value,
+            null
+        ){
+            callback?.onResult(
+                if (it == null) null else AUIException(
+                    AUIException.ERROR_CODE_RTM_COLLECTION,
+                    "$it"
+                )
+            )
+        }
     }
 
 

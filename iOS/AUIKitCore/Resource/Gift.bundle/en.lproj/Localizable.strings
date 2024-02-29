@@ -5,7 +5,7 @@
   Created by 朱继超 on 2022/9/19.
   
 */
-"Send"="Send";
-"Contribution Total"="Contribution Total";
-"Gifts" = "Gifts";
-"Sent " = "Sent ";
+"Send"="发送";
+"Contribution Total"="贡献总计";
+"Gifts" = "送给";
+"Sent " = "赠送 ";

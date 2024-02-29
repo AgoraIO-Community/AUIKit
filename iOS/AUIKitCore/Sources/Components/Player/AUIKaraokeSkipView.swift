@@ -39,7 +39,7 @@ open class AUIKaraokeSkipView: UIView {
         let button = AUIButton()
         button.textImageAlignment = .imageCenterTextCenter
         button.style = theme
-        button.setTitle("跳过前奏", for: .normal)
+        button.setTitle(aui_localized("skipPrelude"), for: .normal)
         button.addTarget(self, action: #selector(skip(_:)), for: .touchUpInside)
         return button
     }()
@@ -71,7 +71,8 @@ open class AUIKaraokeSkipView: UIView {
     }
 
     func setSkipType(type: SkipType) {
-        skipBtn.setTitle("跳过\(type == .prelude ? "前" : "尾")奏", for: .normal)
+        let title = type == .prelude ? aui_localized("skipPrelude") : aui_localized("skipEpilogue")
+        skipBtn.setTitle(title, for: .normal)
     }
 
     private func setupUI() {

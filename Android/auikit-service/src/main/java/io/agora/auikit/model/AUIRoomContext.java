@@ -13,13 +13,15 @@ import io.agora.auikit.service.arbiter.AUIArbiter;
 
 public class AUIRoomContext {
     private static volatile AUIRoomContext instance = null;
+
     private AUIRoomContext() {
         // 私有构造函数
     }
+
     public static AUIRoomContext shared() {
         if (instance == null) {
-            synchronized (AUIRoomContext.class){
-                if(instance == null){
+            synchronized (AUIRoomContext.class) {
+                if (instance == null) {
                     instance = new AUIRoomContext();
                 }
             }
@@ -34,25 +36,27 @@ public class AUIRoomContext {
     public @Nullable AUICommonConfig mCommonConfig;
     private final Map<String, AUIRoomInfo> roomInfoMap = new HashMap<>();
 
+    private @Nullable NtpTimeSource ntpTimeSource;
+
     public void setCommonConfig(@NonNull AUICommonConfig config) {
         mCommonConfig = config;
         currentUserInfo = config.owner;
     }
 
     public @NonNull AUICommonConfig requireCommonConfig() {
-        if(mCommonConfig == null){
+        if (mCommonConfig == null) {
             throw new RuntimeException("mCommonConfig is null now!");
         }
         return mCommonConfig;
     }
 
-    public boolean isRoomOwner(String channelName){
+    public boolean isRoomOwner(String channelName) {
         return isRoomOwner(channelName, currentUserInfo.userId);
     }
 
-    public boolean isRoomOwner(String channelName, String userId){
+    public boolean isRoomOwner(String channelName, String userId) {
         AUIRoomInfo roomInfo = roomInfoMap.get(channelName);
-        if(roomInfo == null || roomInfo.owner == null){
+        if (roomInfo == null || roomInfo.owner == null) {
             return false;
         }
         return roomInfo.owner.userId.equals(userId);
@@ -72,18 +76,18 @@ public class AUIRoomContext {
         roomInfoMap.put(info.roomId, info);
     }
 
-    public void cleanRoom(String channelName){
+    public void cleanRoom(String channelName) {
         roomInfoMap.remove(channelName);
         roomConfigMap.remove(channelName);
         AUIArbiter auiArbiter = roomArbiterMap.remove(channelName);
-        if(auiArbiter != null){
+        if (auiArbiter != null) {
             auiArbiter.deInit();
         }
     }
 
-    public String getRoomOwner(String channelName){
+    public String getRoomOwner(String channelName) {
         AUIRoomInfo roomInfo = roomInfoMap.get(channelName);
-        if(roomInfo == null || roomInfo.owner == null){
+        if (roomInfo == null || roomInfo.owner == null) {
             return "";
         }
         return roomInfo.owner.userId;
@@ -95,5 +99,20 @@ public class AUIRoomContext {
 
     public @Nullable AUIArbiter getArbiter(@NotNull String channelName) {
         return roomArbiterMap.get(channelName);
+    }
+
+    public void setNtpTimeSource(@Nullable NtpTimeSource ntpTimeSource) {
+        this.ntpTimeSource = ntpTimeSource;
+    }
+
+    public long getNtpTime() {
+        if (ntpTimeSource != null) {
+            return ntpTimeSource.getNtpTime();
+        }
+        return System.currentTimeMillis();
+    }
+
+    public interface NtpTimeSource {
+        long getNtpTime();
     }
 }

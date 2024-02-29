@@ -55,6 +55,8 @@
         <item name="aui_musicPlayer_activeJoinChorusBackground">@drawable/aui_button_normal</item>
         <item name="aui_musicPlayer_activeJoinChorusTextColor">@android:color/white</item>
         <item name="aui_musicPlayer_activeJoinChorusTextSize">14sp</item>
+        <item name="aui_musicPlayer_activeSkipTextColor">@android:color/white</item>
+        <item name="aui_musicPlayer_activeSkipTextSize">13sp</item>
         <!--  已点歌 end-->
 
         <item name="aui_musicPlayer_gradeBackgroundColor">@color/aui_white_light</item>

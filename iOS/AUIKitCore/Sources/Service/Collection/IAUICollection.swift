@@ -9,20 +9,23 @@ import Foundation
 
 public typealias AUICollectionGetClosure = (NSError?, Any?)-> Void
 
-//(publisher uid, valueCmd, new value)
-public typealias AUICollectionAddClosure = (String, String?, [String: Any]) -> NSError?
+//(publisher uid, valueCmd, new value of item) -> value[new value of edit item]
+public typealias AUICollectionValueWillChangeClosure = (String, String?, [String: Any]) -> [String: Any]?
 
-//(publisher uid, valueCmd, new value, old value of item)
+//(publisher uid, valueCmd, new value of item,  old value of all items)
+public typealias AUICollectionAddClosure = (String, String?, [String: Any], AUIAttributesModel) -> NSError?
+
+//(publisher uid, valueCmd, new value of item, old value of item)
 public typealias AUICollectionUpdateClosure = (String, String?, [String: Any], [String: Any]) -> NSError?
 
-//(publisher uid, valueCmd, oldValue)
+//(publisher uid, valueCmd, old value of item)
 public typealias AUICollectionRemoveClosure = (String, String?, [String: Any]) -> NSError?
 
 //(publisher uid, valueCmd, old value of item, keys, update value, min, max)
 public typealias AUICollectionCalculateClosure = (String, String?, [String: Any], [String], Int, Int, Int) -> NSError?
 
 //(channelName, key, valueCmd, value[will set metadata])->value[can set metadata]
-public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, AUIAttributesModel) -> AUIAttributesModel
+public typealias AUICollectionAttributesWillSetClosure = (String, String, String?, AUIAttributesModel) -> Void
 
 //(channelName, key, value)
 public typealias AUICollectionAttributesDidChangedClosure = (String, String, AUIAttributesModel) -> Void
@@ -38,6 +41,18 @@ public typealias AUICollectionAttributesDidChangedClosure = (String, String, AUI
         super.init()
     }
     
+    public func setMap(_ attributes: [String: Any]?) {
+        if self.attributes is [String: Any] {
+            self.attributes = attributes
+        }
+    }
+    
+    public func setList(_ attributes: [[String: Any]]?) {
+        if self.attributes is [[String: Any]] {
+            self.attributes = attributes
+        }
+    }
+    
     public func getMap() -> [String: Any]? {
         return attributes as? [String: Any]
     }
@@ -48,6 +63,10 @@ public typealias AUICollectionAttributesDidChangedClosure = (String, String, AUI
 }
 
 @objc public protocol IAUICollection: NSObjectProtocol {
+    
+    /// 对应的节点对象将要被更新，询问是否需要本地增删(例如更新一个节点，需要再次更新最新时间)
+    /// - Parameter callback: <#callback description#>
+    @objc optional func subsceibeValueWillChange(callback: AUICollectionValueWillChangeClosure?)
     
     /// 添加新的节点
     /// - Parameter callback: <#callback description#>

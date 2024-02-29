@@ -86,10 +86,4 @@ import Foundation
     ///   - mute: 摄像头状态
     func onUserVideoMute(userId: String, mute: Bool)
     
-    /// Description 用户被踢出房间
-    /// - Parameters:
-    ///   - roomId: 房间id
-    ///   - userId: 用户id
-    func onUserBeKicked(roomId: String, userId: String)
-    
 }

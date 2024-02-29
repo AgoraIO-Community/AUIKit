@@ -27,7 +27,7 @@ open class AUIAlertView: UIView {
     }()
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "标题"
+        label.text = aui_localized("title")
         label.textColor = UIColor(red: 27/255.0, green: 16/255.0, blue: 103/255.0, alpha: 1.0)
         label.font = UIFont.systemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +45,7 @@ open class AUIAlertView: UIView {
     }()
     private lazy var textField: UITextField = {
        let textField = UITextField()
-        textField.placeholder = "请输入内容"
+        textField.placeholder = aui_localized("contentPlaceholder")
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.isHidden = true
         textField.leftView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 10, height: 10)))
@@ -74,7 +74,7 @@ open class AUIAlertView: UIView {
     }()
     private lazy var leftButton: UIButton = {
         let button = UIButton()
-        button.setTitle("取消", for: .normal)
+        button.setTitle(aui_localized("cancel"), for: .normal)
         button.setTitleColor(UIColor(red: 120/255.0, green: 0/255.0, blue: 255/255.0, alpha: 1.0), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17)
         button.layer.cornerRadius = 25
@@ -87,7 +87,7 @@ open class AUIAlertView: UIView {
     }()
     private lazy var rightButton: UIButton = {
         let button = UIButton()
-        button.setTitle("确定", for: .normal)
+        button.setTitle(aui_localized("confirm"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17)
         button.layer.cornerRadius = 25

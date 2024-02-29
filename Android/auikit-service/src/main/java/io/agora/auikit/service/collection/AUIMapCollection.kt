@@ -26,14 +26,14 @@ class AUIMapCollection(
                     callback?.invoke(AUICollectionException.ErrorCode.unknown.toException(), null)
                     return@getMetadata
                 }
-                val data = metaData?.metadataItems?.find { it.key == observeKey }
+                val data = metaData?.get(observeKey)
                 if (data == null) {
                     callback?.invoke(null, null)
                     return@getMetadata
                 }
 
                 val map = GsonTools.toBean<Map<String, Any>>(
-                    data.value,
+                    data,
                     object : TypeToken<Map<String, Any>>() {}.type
                 )
                 if (map == null) {
@@ -181,7 +181,7 @@ class AUIMapCollection(
             uniqueId = uniqueId,
             sceneKey = observeKey,
             payload = AUICollectionMessagePayload(
-                type = AUICollectionOperationTypeMerge,
+                type = AUICollectionOperationTypeCalculate,
                 dataCmd = valueCmd,
                 data = GsonTools.beanToMap(
                     AUICollectionCalcData(
@@ -256,25 +256,27 @@ class AUIMapCollection(
         value: Map<String, Any>,
         callback: ((error: AUICollectionException?) -> Unit)?
     ) {
+        val newValue = valueWillChangeClosure?.invoke(publisherId, valueCmd, value) ?: value
+
         val error =
-            metadataWillUpdateClosure?.invoke(publisherId, valueCmd, value, HashMap(currentMap))
+            metadataWillUpdateClosure?.invoke(publisherId, valueCmd, newValue, HashMap(currentMap))
         if (error != null) {
             callback?.invoke(error)
             return
         }
 
         val map = HashMap(currentMap)
-        value.forEach { (k, v) ->
+        newValue.forEach { (k, v) ->
             map[k] = v
         }
-        val retMap =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(map)
-            )?.getMap()
-                ?: map
+        val outAttr = AUIAttributesModel(map)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttr
+        )
+        val retMap = outAttr.getMap()
         val data = GsonTools.beanToString(retMap)
         if (data == null) {
             callback?.invoke(AUICollectionException.ErrorCode.encodeToJsonStringFail.toException())
@@ -301,22 +303,24 @@ class AUIMapCollection(
         value: Map<String, Any>,
         callback: ((error: AUICollectionException?) -> Unit)?
     ) {
+        val newValue = valueWillChangeClosure?.invoke(publisherId, valueCmd, value) ?: value
+
         val error =
-            metadataWillMergeClosure?.invoke(publisherId, valueCmd, value, HashMap(currentMap))
+            metadataWillMergeClosure?.invoke(publisherId, valueCmd, newValue, HashMap(currentMap))
         if (error != null) {
             callback?.invoke(error)
             return
         }
 
-        val map = AUICollectionUtils.mergeMap(currentMap, value)
-        val retMap =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(map)
-            )?.getMap()
-                ?: map
+        val map = AUICollectionUtils.mergeMap(currentMap, newValue)
+        val outAttr = AUIAttributesModel(map)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttr
+        )
+        val retMap = outAttr.getMap()
         val data = GsonTools.beanToString(retMap)
         if (data == null) {
             callback?.invoke(AUICollectionException.ErrorCode.encodeToJsonStringFail.toException())
@@ -366,14 +370,14 @@ class AUIMapCollection(
             value.min,
             value.max
         ) ?: mutableMapOf()
-        val retMap =
-            attributesWillSetClosure?.invoke(
-                channelName,
-                observeKey,
-                valueCmd,
-                AUIAttributesModel(map)
-            )?.getMap()
-                ?: map
+        val outAttr = AUIAttributesModel(map)
+        attributesWillSetClosure?.invoke(
+            channelName,
+            observeKey,
+            valueCmd,
+            outAttr
+        )
+        val retMap = outAttr.getMap()
         val data = GsonTools.beanToString(retMap)
         if (data == null) {
             callback?.invoke(AUICollectionException.ErrorCode.encodeToJsonStringFail.toException())
