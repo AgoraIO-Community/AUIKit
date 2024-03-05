@@ -30,6 +30,11 @@ enum class AUIInvitationCmd {
     rejectInvit,
 }
 
+private val kSeatNoKey = "seatNo"
+private val kStatusKey = "status"
+
+private val kEditTimeKey = "editTime"
+
 class AUIInvitationServiceImpl(
     private val channelName: String,
     private val rtmManager: AUIRtmManager
@@ -109,8 +114,8 @@ class AUIInvitationServiceImpl(
             AUIInvitationCmd.sendInvit.name,
             GsonTools.beanToMap(info),
             listOf(
-                mapOf("userId" to userId, "status" to AUIInvitationInfo.AUIInvitationStatus.Waiting),
-                mapOf("userId" to userId, "status" to AUIInvitationInfo.AUIInvitationStatus.Accept),
+                mapOf("userId" to userId, kStatusKey to AUIInvitationInfo.AUIInvitationStatus.Waiting),
+                mapOf("userId" to userId, kStatusKey to AUIInvitationInfo.AUIInvitationStatus.Accept),
             )
         ) {
             callback?.onResult(
@@ -126,8 +131,8 @@ class AUIInvitationServiceImpl(
         invitationCollection.mergeMetaData(
             AUIInvitationCmd.acceptInvit.name,
             mapOf(
-                "status" to AUIInvitationInfo.AUIInvitationStatus.Accept,
-                "editTime" to roomContext.ntpTime
+                kStatusKey to AUIInvitationInfo.AUIInvitationStatus.Accept,
+                kEditTimeKey to roomContext.ntpTime
             ),
             listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Invite))
         ) {
@@ -144,8 +149,8 @@ class AUIInvitationServiceImpl(
         invitationCollection.mergeMetaData(
             AUIInvitationCmd.rejectInvit.name,
             mapOf(
-                "status" to AUIInvitationInfo.AUIInvitationStatus.Reject,
-                "editTime" to roomContext.ntpTime
+                kStatusKey to AUIInvitationInfo.AUIInvitationStatus.Reject,
+                kEditTimeKey to roomContext.ntpTime
             ),
             listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Invite))
         ) {
@@ -162,8 +167,8 @@ class AUIInvitationServiceImpl(
         invitationCollection.mergeMetaData(
             AUIInvitationCmd.cancelInvit.name,
             mapOf(
-                "status" to AUIInvitationInfo.AUIInvitationStatus.Cancel,
-                "editTime" to roomContext.ntpTime
+                kStatusKey to AUIInvitationInfo.AUIInvitationStatus.Cancel,
+                kEditTimeKey to roomContext.ntpTime
             ),
             listOf(
                 mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Invite)
@@ -188,8 +193,8 @@ class AUIInvitationServiceImpl(
             AUIInvitationCmd.sendApply.name,
             GsonTools.beanToMap(info),
             listOf(
-                mapOf("userId" to info.userId, "status" to AUIInvitationStatus.Waiting),
-                mapOf("userId" to info.userId, "status" to AUIInvitationStatus.Accept)
+                mapOf("userId" to info.userId, kStatusKey to AUIInvitationStatus.Waiting),
+                mapOf("userId" to info.userId, kStatusKey to AUIInvitationStatus.Accept)
             )
         ) {
             callback.onResult(
@@ -209,8 +214,8 @@ class AUIInvitationServiceImpl(
         invitationCollection.mergeMetaData(
             AUIInvitationCmd.cancelApply.name,
             mapOf(
-                "status" to AUIInvitationStatus.Cancel,
-                "editTime" to roomContext.ntpTime
+                kStatusKey to AUIInvitationStatus.Cancel,
+                kEditTimeKey to roomContext.ntpTime
             ),
             listOf(
                 mapOf(
@@ -232,8 +237,8 @@ class AUIInvitationServiceImpl(
         invitationCollection.mergeMetaData(
             AUIInvitationCmd.acceptApply.name,
             mapOf(
-                "status" to AUIInvitationStatus.Accept,
-                "editTime" to roomContext.ntpTime
+                kStatusKey to AUIInvitationStatus.Accept,
+                kEditTimeKey to roomContext.ntpTime
             ),
             listOf(
                 mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Apply)
@@ -252,8 +257,8 @@ class AUIInvitationServiceImpl(
         invitationCollection.mergeMetaData(
             AUIInvitationCmd.rejectApply.name,
             mapOf(
-                "status" to AUIInvitationInfo.AUIInvitationStatus.Reject,
-                "editTime" to roomContext.ntpTime
+                kStatusKey to AUIInvitationInfo.AUIInvitationStatus.Reject,
+                kEditTimeKey to roomContext.ntpTime
             ),
             listOf(mapOf("userId" to userId, "type" to AUIInvitationInfo.AUIInvitationType.Apply))
         ) {
@@ -277,7 +282,7 @@ class AUIInvitationServiceImpl(
         val tempItem = mutableMapOf<String, Any>()
         tempItem.putAll(value)
         val currentTime = roomContext.ntpTime
-        tempItem["editTime"] = currentTime
+        tempItem[kEditTimeKey] = currentTime
         when (valueCmd) {
             AUIInvitationCmd.sendInvit.name,
             AUIInvitationCmd.sendApply.name -> tempItem["createTime"] = currentTime
@@ -311,7 +316,7 @@ class AUIInvitationServiceImpl(
         return when (valueCmd) {
             AUIInvitationCmd.acceptInvit.name -> {
                 val userId = oldValue["userId"] as? String ?: ""
-                val seatIndex = (oldValue["seatNo"] as? Long)?.toInt() ?: 0
+                val seatIndex = (oldValue[kSeatNoKey] as? Long)?.toInt() ?: 0
                 var error: AUIException? = null
                 observableHelper.notifyEventHandlers {
                     error = it.onInviteWillAccept(userId, seatIndex)
@@ -321,7 +326,7 @@ class AUIInvitationServiceImpl(
 
             AUIInvitationCmd.acceptApply.name -> {
                 val userId = oldValue["userId"] as? String ?: ""
-                val seatIndex = (oldValue["seatNo"] as? Long)?.toInt() ?: 0
+                val seatIndex = (oldValue[kSeatNoKey] as? Long)?.toInt() ?: 0
                 var error: AUIException? = null
                 observableHelper.notifyEventHandlers {
                     error = it.onApplyWillAccept(userId, seatIndex)
@@ -345,10 +350,11 @@ class AUIInvitationServiceImpl(
     ) {
         val list = value.getList() ?: return
         val currentTime = roomContext.ntpTime
-        val filterList = list.filter { attr ->
-            val editTime = attr["editTime"] as? Long ?: 0
+        var filterList = rejectDuplicateAcceptedRequests(list) ?: list
+        filterList = filterList.filter { attr ->
+            val editTime = attr[kEditTimeKey] as? Long ?: 0
             val invalidTs = attr["invalidTs"] as? Long ?: 0
-            val status = attr["status"] as? Int ?: 0
+            val status = attr[kStatusKey] as? Int ?: 0
             if (status == AUIInvitationInfo.AUIInvitationStatus.Waiting) {
                 return@filter true
             }
@@ -475,6 +481,28 @@ class AUIInvitationServiceImpl(
         checkThrottler.triggerLastEvent(delay = 300) {
             checkWaitingTimeout()
         }
+    }
+
+    private fun rejectDuplicateAcceptedRequests(list: List<Map<String, Any>>): List<Map<String, Any>>? {
+        //获取accept的麦位数组
+        val acceptSeatNos = list.map { item ->
+            if (item[kStatusKey] == AUIInvitationStatus.Accept.toLong()) {
+                return@map item[kSeatNoKey] as? Long
+            }
+            return@map null
+        }
+
+        val updateList = mutableListOf<Map<String, Any>>()
+        list.forEach { i ->
+            val item = HashMap(i)
+            if(item[kStatusKey] == AUIInvitationStatus.Waiting.toLong() && acceptSeatNos.contains(item[kSeatNoKey])){
+                val currentTime = roomContext.ntpTime
+                item[kStatusKey] = AUIInvitationStatus.Reject
+                item[kEditTimeKey] = currentTime
+            }
+            updateList.add(item)
+        }
+        return updateList
     }
 
     private fun checkWaitingTimeout() {
