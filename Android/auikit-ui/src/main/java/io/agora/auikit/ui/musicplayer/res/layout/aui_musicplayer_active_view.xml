@@ -314,10 +314,78 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llSkipPrelude"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/aui_musicplayer_skip_btn_bg"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/switchOriginal"
+        app:layout_constraintStart_toEndOf="@id/ivMusicStart">
+
+        <TextView
+            android:id="@+id/ivSkipPreludeSkip"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/aui_musicplayer_skip_prelude"
+            android:textColor="?attr/aui_musicPlayer_activeSkipTextColor"
+            android:textSize="?attr/aui_musicPlayer_activeSkipTextSize" />
+
+        <ImageView
+            android:id="@+id/ivSkipPreludeCancel"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/aui_musicplayer_skip_cancel" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llSkipPostlude"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/aui_musicplayer_skip_btn_bg"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:visibility="invisible"
+        android:paddingEnd="4dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/switchOriginal"
+        app:layout_constraintStart_toEndOf="@id/ivMusicStart">
+
+        <TextView
+            android:id="@+id/ivSkipPostludeSkip"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/aui_musicplayer_skip_postlude"
+            android:textColor="?attr/aui_musicPlayer_activeSkipTextColor"
+            android:textSize="?attr/aui_musicPlayer_activeSkipTextSize" />
+
+        <ImageView
+            android:id="@+id/ivSkipPostludeCancel"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/aui_musicplayer_skip_cancel" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/rlMusicControlMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="switchOriginal,ivMusicStart,ivChangeSong,ivMusicVoiceSettings,ivMusicPreset" />
+        app:constraint_referenced_ids="switchOriginal,ivMusicStart,ivChangeSong,ivMusicVoiceSettings,ivMusicPreset,llSkipPrelude,llSkipPostlude" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

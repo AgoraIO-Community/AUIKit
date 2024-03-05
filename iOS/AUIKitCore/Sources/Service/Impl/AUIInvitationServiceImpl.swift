@@ -27,6 +27,7 @@ private let kEditTimeKey = "editTime"
 private let kStatusKey = "status"
 private let kUserIdKey = "userId"
 private let kTypeKey = "type"
+private let kSeatNoKey = "seatNo"
 
 //邀请Service实现
 @objc open class AUIInvitationServiceImpl: NSObject {
@@ -75,7 +76,9 @@ private let kTypeKey = "type"
             guard let self = self else { return }
             guard let value = attr.getList() else { return }
             let currentTime = self.getRoomContext().getNtpTime()
-            let filterList = value.filter { attr in
+            //把已经accept的麦位申请&邀请给reject
+            var filterList = self.rejectDuplicateAcceptedRequests(list: value)
+            filterList = filterList.filter { attr in
                 let editTime = attr[kEditTimeKey] as? Int64 ?? 0
                 let invalidTs = attr["invalidTs"] as? Int64 ?? kInvitationInvalidTs
                 let status = attr[kStatusKey] as? Int
@@ -133,6 +136,32 @@ extension AUIInvitationServiceImpl {
         timer?.fire()
     }
     
+    private func rejectDuplicateAcceptedRequests(list: [[String: Any]]) -> [[String: Any]] {
+        //获取accept的麦位数组
+        let acceptSeatNos = list.map({ item in
+            if item[kStatusKey] as? Int == AUIInvitationStatus.accept.rawValue {
+                return item[kSeatNoKey] as? Int
+            }
+            return nil
+        })
+        
+        var updateList = [[String: Any]]()
+        for var item in list {
+            //如果accept过的麦位还有申请的，设置为reject
+            if let seatNo = item[kSeatNoKey] as? Int,
+               let status = item[kStatusKey] as? Int,
+               status == AUIInvitationStatus.waiting.rawValue,
+                acceptSeatNos.contains(seatNo) {
+                let currentTime = self.getRoomContext().getNtpTime()
+                item[kStatusKey] = AUIInvitationStatus.reject.rawValue
+                item[kEditTimeKey] = currentTime
+            }
+            updateList.append(item)
+        }
+        
+        return updateList
+    }
+    
     private func valueWillChange(publiserId: String,
                                  dataCmd: String?,
                                  newItem: [String: Any]) -> [String: Any]? {
@@ -188,7 +217,7 @@ extension AUIInvitationServiceImpl {
         }
         
         let userId: String = currentMap[kUserIdKey] as? String ?? ""
-        let seatIndex: Int = currentMap["seatNo"] as? Int ?? 0
+        let seatIndex: Int = currentMap[kSeatNoKey] as? Int ?? 0
         let metaData = NSMutableDictionary()
         var err: NSError? = nil
         switch dataCmd {

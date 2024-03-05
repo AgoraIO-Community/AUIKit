@@ -26,5 +26,7 @@ public interface IMusicPlayerView {
         void onMusicPitch(int pitch);
         void onAudioEffect(int effectId);
         void onVoiceConversion(int voiceId);
+        void onSkipPrelude(long seekPosition);
+        void onSkipPostlude();
     }
 }

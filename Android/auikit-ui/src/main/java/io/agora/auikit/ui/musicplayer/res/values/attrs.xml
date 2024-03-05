@@ -50,6 +50,8 @@
         <attr name="aui_musicPlayer_activeJoinChorusBackground" format="reference|color" />
         <attr name="aui_musicPlayer_activeJoinChorusTextColor" format="color" />
         <attr name="aui_musicPlayer_activeJoinChorusTextSize" format="dimension" />
+        <attr name="aui_musicPlayer_activeSkipTextColor" format="color" />
+        <attr name="aui_musicPlayer_activeSkipTextSize" format="dimension" />
 
         <attr name="aui_musicPlayer_gradeBackgroundColor" format="color"/>
         <attr name="aui_musicPlayer_gradeContentStartColor" format="color"/>

@@ -1,3 +1,7 @@
+## [1.1.1](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.1.1)
+- 修复某个用户上麦邀请/申请被同意后，申请同一个麦位的其他用户无法申请其他麦位的bug。
+- [Android]完善K歌播放器逻辑及ui
+
 ## [1.1.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.1.0)
 - 新增统一的后端管理服务及其代码，提供房间管理、Token生成、IM语聊房创建和rtm踢人功能。
 - 完善邀请申请服务模块。
