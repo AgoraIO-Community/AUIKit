@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore', '~> 1.1.6'
     ss.dependency 'AgoraRtm_iOS', '2.1.8'
-    ss.dependency 'AgoraRtcEngine_Special_iOS'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
     ss.dependency 'Agora_Chat_iOS'
@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
     'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
     ]
     ss.dependency 'AgoraRtm_iOS', '2.1.8'
-    ss.dependency 'AgoraRtcEngine_Special_iOS'
+    ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
     ss.dependency 'Agora_Chat_iOS'
