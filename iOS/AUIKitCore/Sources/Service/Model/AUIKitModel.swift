@@ -17,6 +17,8 @@ import Foundation
     public var owner: AUIUserThumbnailInfo?   //房主信息
     
     public var customPayload: [String: Any] = [:]   //扩展信息
+    
+    public var createTime: Int64 = 0
 }
 
 ///用户简略信息，用于各个模型传递简单数据
