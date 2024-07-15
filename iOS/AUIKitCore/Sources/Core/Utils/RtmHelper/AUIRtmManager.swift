@@ -143,24 +143,20 @@ extension AUIRtmManager {
             return
         }
         
-        var items: [AgoraRtmStateItem] = []
+        var items: [String: String] = [:]
         attr.forEach { (key: String, value: Any) in
-            let item = AgoraRtmStateItem()
-            item.key = key
             if let val = value as? String {
-                item.value = val
+                items[key] = val
             } else if let val = value as? UInt {
-                item.value = "\(val)"
+                items[key] = "\(val)"
             } else if let val = value as? Double {
-                item.value = "\(val)"
+                items[key] = "\(val)"
             } else {
                 aui_error("setPresenceState missmatch item: \(key): \(value)", tag: "AUIRtmManager")
                 return
             }
-            
-            items.append(item)
         }
-        presence.setState(channelName: channelName, 
+        presence.setState(channelName: channelName,
                           channelType: rtmChannelType,
                           items: items,
                           completion: { resp, error in
@@ -285,16 +281,10 @@ extension AUIRtmManager {
                               removeKeys: [String],
                               lockName: String,
                               completion: @escaping (NSError?)->()) {
-        guard let data = rtmClient.getStorage()?.createMetadata(),
-              let storage = rtmClient.getStorage() else {
+        guard let storage = rtmClient.getStorage(),
+              let data = AgoraRtmMetadata.createMetadata(keys: removeKeys) else {
             assert(false, "cleanMetadata fail")
             return
-        }
-        
-        for key in removeKeys {
-            let item = AgoraRtmMetadataItem()
-            item.key = key
-            data.setMetadataItem(item)
         }
         
         let options = AgoraRtmMetadataOptions()
@@ -308,7 +298,7 @@ extension AUIRtmManager {
             aui_info("cleanMetadata[\(channelName)][\(lockName)] finished: \(error?.errorCode.rawValue ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError())
         }
-        aui_info("cleanMetadata[\(channelName)] \(removeKeys)", tag: "AUIRtmManager")
+        aui_info("cleanMetadata[\(channelName)][\(lockName)] \(removeKeys)", tag: "AUIRtmManager")
     }
     
     public func setBatchMetadata(channelName: String,
@@ -343,16 +333,9 @@ extension AUIRtmManager {
                             metadata: [String: String],
                             completion: @escaping (NSError?)->()) {
         guard let storage = rtmClient.getStorage(),
-              let data = storage.createMetadata() else {
+              let data = AgoraRtmMetadata.createMetadata(metadata: metadata) else {
             assert(false, "setMetadata fail")
             return
-        }
-        
-        metadata.forEach { (key: String, value: String) in
-            let item = AgoraRtmMetadataItem()
-            item.key = key
-            item.value = value
-            data.setMetadataItem(item)
         }
 
         let options = AgoraRtmMetadataOptions()
@@ -374,15 +357,9 @@ extension AUIRtmManager {
                         metadata: [String: String],
                         completion: @escaping (NSError?)->()) {
         guard let storage = rtmClient.getStorage(),
-                  let data = storage.createMetadata() else {
+              let data = AgoraRtmMetadata.createMetadata(metadata: metadata) else {
             assert(false, "updateMetadata fail")
             return
-        }
-        metadata.forEach { (key: String, value: String) in
-            let item = AgoraRtmMetadataItem()
-            item.key = key
-            item.value = value
-            data.setMetadataItem(item)
         }
 
         let options = AgoraRtmMetadataOptions()
@@ -402,7 +379,7 @@ extension AUIRtmManager {
     public func getMetadata(channelName: String, completion: @escaping (NSError?, [String: String]?)->()) {
         getMetadata(channelName: channelName) { error, data in
             var map: [String: String] = [:]
-            data?.getItems().forEach({ item in
+            data?.items?.forEach({ item in
                 map[item.key] = item.value
             })
             completion(error, map)
@@ -417,7 +394,7 @@ extension AUIRtmManager {
         let date = Date()
         storage.getChannelMetadata(channelName: channelName, channelType: rtmChannelType) { resp, error in
             aui_benchmark("getChannelMetadata[\(channelName)]", cost: -date.timeIntervalSinceNow)
-            aui_info("getMetadata[\(channelName)] finished: \(error?.errorCode.rawValue ?? 0) item count: \(resp?.data?.getItems().count ?? 0)", tag: "AUIRtmManager")
+            aui_info("getMetadata[\(channelName)] finished: \(error?.errorCode.rawValue ?? 0) item count: \(resp?.data?.items?.count ?? 0)", tag: "AUIRtmManager")
             completion(error?.toNSError(), resp?.data)
         }
         aui_info("getMetadata", tag: "AUIRtmManager")
@@ -456,7 +433,7 @@ extension AUIRtmManager {
     
     public func removeUserMetadata(userId: String) {
         guard let storage = rtmClient.getStorage(),
-                  let data = storage.createMetadata() else {
+              let data = AgoraRtmMetadata() else {
             aui_info("removeUserMetadata fail", tag: "AUIRtmManager")
             assert(false, "removeUserMetadata fail")
             return
@@ -465,7 +442,7 @@ extension AUIRtmManager {
         options.recordTs = true
         options.recordUserId = true
         
-        storage.removeUserMetadata(userId: userId, 
+        storage.removeUserMetadata(userId: userId,
                                    data: data,
                                    options: options,
                                    completion: { resp, error in
@@ -476,7 +453,7 @@ extension AUIRtmManager {
     
     public func setUserMetadata(userId: String, metadata: [String: String]) {
         guard let storage = rtmClient.getStorage(),
-                let data = storage.createMetadata() else {
+              let data = AgoraRtmMetadata.createMetadata(metadata: metadata) else {
             assert(false, "setUserMetadata fail")
             return
         }
@@ -484,14 +461,7 @@ extension AUIRtmManager {
         options.recordTs = true
         options.recordUserId = true
         
-        metadata.forEach { (key: String, value: String) in
-            let item = AgoraRtmMetadataItem()
-            item.key = key
-            item.value = value
-            data.setMetadataItem(item)
-        }
-        
-        storage.setUserMetadata(userId: userId, 
+        storage.setUserMetadata(userId: userId,
                                 data: data,
                                 options: options,
                                 completion: { resp, error in
@@ -502,7 +472,7 @@ extension AUIRtmManager {
     
     public func updateUserMetadata(userId: String, metadata: [String: String]) {
         guard let storage = rtmClient.getStorage(),
-                let data = storage.createMetadata() else {
+              let data = AgoraRtmMetadata.createMetadata(metadata: metadata) else {
             aui_error("updateUserlMetadata fail", tag: "AUIRtmManager")
             assert(false, "updateUserlMetadata fail")
             return
@@ -511,14 +481,7 @@ extension AUIRtmManager {
         options.recordTs = true
         options.recordUserId = true
         
-        metadata.forEach { (key: String, value: String) in
-            let item = AgoraRtmMetadataItem()
-            item.key = key
-            item.value = value
-            data.setMetadataItem(item)
-        }
-        
-        storage.updateUserMetadata(userId: userId, 
+        storage.updateUserMetadata(userId: userId,
                                    data: data,
                                    options: options,
                                    completion: { resp, error in

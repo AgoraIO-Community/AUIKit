@@ -346,7 +346,6 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraClearVisionExtension.framework/AgoraClearVisionExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraContentInspectExtension.framework/AgoraContentInspectExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraDav1d.framework/AgoraDav1d",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraDrmLoaderExtension.framework/AgoraDrmLoaderExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraFaceDetectionExtension.framework/AgoraFaceDetectionExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraReplayKitExtension.framework/AgoraReplayKitExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/AgoraRtcKit.framework/AgoraRtcKit",
@@ -360,7 +359,8 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/Agoraffmpeg.framework/Agoraffmpeg",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/video_dec.framework/video_dec",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_Special_iOS/video_enc.framework/video_enc",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtm_iOS/AgoraRtmKit.framework/AgoraRtmKit",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtm/AgoraRtmKit.framework/AgoraRtmKit",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtm/aosl.framework/aosl",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Agora_Chat_iOS/AgoraChat.framework/AgoraChat",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -381,7 +381,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraClearVisionExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraContentInspectExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraDav1d.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraDrmLoaderExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraFaceDetectionExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraReplayKitExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraRtcKit.framework",
@@ -396,6 +395,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_dec.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_enc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraRtmKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/aosl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraChat.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
