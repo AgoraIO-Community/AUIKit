@@ -7,6 +7,7 @@ import io.agora.auikit.utils.AUILogger
 import io.agora.auikit.utils.GsonTools
 import io.agora.rtm.ErrorInfo
 import io.agora.rtm.JoinChannelOptions
+import io.agora.rtm.Metadata
 import io.agora.rtm.MetadataItem
 import io.agora.rtm.MetadataOptions
 import io.agora.rtm.PresenceOptions
@@ -16,7 +17,6 @@ import io.agora.rtm.RtmClient
 import io.agora.rtm.RtmConstants
 import io.agora.rtm.RtmConstants.RtmChannelType
 import io.agora.rtm.RtmConstants.RtmErrorCode
-import io.agora.rtm.StateItem
 import io.agora.rtm.StreamChannel
 import io.agora.rtm.SubscribeOptions
 import io.agora.rtm.WhoNowResult
@@ -302,12 +302,12 @@ class AUIRtmManager constructor(
         completion: (AUIRtmException?) -> Unit
     ) {
         val storage = rtmClient.storage
-        val data = storage.createMetadata()
+        val data = Metadata()
 
         removeKeys.forEach {
             val item = MetadataItem()
             item.key = it
-            data.setMetadataItem(item)
+            data.items.add(item)
         }
 
         val options = MetadataOptions()
@@ -343,12 +343,12 @@ class AUIRtmManager constructor(
         completion: (AUIRtmException?) -> Unit
     ) {
         val storage = rtmClient.storage ?: return
-        val data = storage.createMetadata()
+        val data = Metadata()
         metadata.forEach { entry ->
             val item = MetadataItem()
             item.key = entry.key
             item.value = entry.value
-            data.setMetadataItem(item)
+            data.items.add(item)
         }
 
         AUILogger.logger().d("AUIRtmManager", "metadata=" + metadata)
@@ -389,12 +389,12 @@ class AUIRtmManager constructor(
         completion: (AUIRtmException?) -> Unit
     ) {
         val storage = rtmClient.storage
-        val data = storage.createMetadata()
+        val data = Metadata()
         metadata.forEach { entry ->
             val item = MetadataItem()
             item.key = entry.key
             item.value = entry.value
-            data.setMetadataItem(item)
+            data.items.add(item)
         }
         val options = MetadataOptions()
         storage.updateChannelMetadata(
@@ -437,7 +437,7 @@ class AUIRtmManager constructor(
             object : ResultCallback<io.agora.rtm.Metadata> {
                 override fun onSuccess(responseInfo: io.agora.rtm.Metadata?) {
                     val metadata = mutableMapOf<String, String>()
-                    responseInfo?.metadataItems?.forEach {
+                    responseInfo?.items?.forEach {
                         metadata[it.key] = it.value
                     }
                     runOnMainThread {
@@ -504,12 +504,9 @@ class AUIRtmManager constructor(
         completion: (AUIRtmException?) -> Unit
     ) {
         val presence = rtmClient.presence
-        val items = ArrayList<StateItem>()
+        val items = mutableMapOf<String, String>()
         attr.forEach { entry ->
-            val item = StateItem()
-            item.key = entry.key
-            item.value = entry.value.toString()
-            items.add(item)
+            items[entry.key] = entry.value.toString()
         }
         logger.d(
             "PresenceState",
@@ -862,7 +859,7 @@ class AUIRtmManager constructor(
 
     fun removeUserMetadata(userId: String) {
         val storage = rtmClient.storage
-        val data = storage.createMetadata()
+        val data = Metadata()
         val options = MetadataOptions()
         options.recordTs = true
         options.recordUserId = true
@@ -879,7 +876,7 @@ class AUIRtmManager constructor(
 
     fun setUserMetadata(userId: String, metadata: Map<String, String>) {
         val storage = rtmClient.storage
-        val data = storage.createMetadata()
+        val data = Metadata()
         val options = MetadataOptions()
         options.recordTs = true
         options.recordUserId = true
@@ -887,7 +884,7 @@ class AUIRtmManager constructor(
             val item = MetadataItem()
             item.key = entry.key
             item.value = entry.value
-            data.setMetadataItem(item)
+            data.items.add(item)
         }
 
         storage.setUserMetadata(userId, data, options, object : ResultCallback<Void> {
@@ -904,7 +901,7 @@ class AUIRtmManager constructor(
 
     fun updateUserMetadata(userId: String, metadata: Map<String, String>) {
         val storage = rtmClient.storage
-        val data = storage.createMetadata()
+        val data = Metadata()
         val options = MetadataOptions()
         options.recordTs = true
         options.recordUserId = true
@@ -912,7 +909,7 @@ class AUIRtmManager constructor(
             val item = MetadataItem()
             item.key = entry.key
             item.value = entry.value
-            data.setMetadataItem(item)
+            data.items.add(item)
         }
 
         storage.updateUserMetadata(userId, data, options, object : ResultCallback<Void> {
