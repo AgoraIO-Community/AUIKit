@@ -47,7 +47,7 @@ Pod::Spec.new do |s|
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
     ss.dependency 'AgoraLyricsScore', '~> 1.1.6'
-    ss.dependency 'AgoraRtm', '~> 2.2.0'
+    ss.dependency 'AgoraRtm', '~> 2.2.1'
     ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'
@@ -67,7 +67,7 @@ Pod::Spec.new do |s|
     'iOS/AUIKitCore/Sources/Core/Utils/Network/**/*',
     'iOS/AUIKitCore/Sources/Core/FoundationExtension/*',
     ]
-    ss.dependency 'AgoraRtm', '~> 2.2.0'
+    ss.dependency 'AgoraRtm', '~> 2.2.1'
     ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'
     ss.dependency 'Alamofire'

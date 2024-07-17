@@ -5,7 +5,7 @@ PODS:
     - AgoraComponetLog
     - Zip
   - AgoraRtcEngine_Special_iOS (4.1.1.26)
-  - AgoraRtm (2.2.0)
+  - AgoraRtm (2.2.1)
   - Alamofire (5.9.1)
   - AUIKitCore (1.2.0):
     - AUIKitCore/All (= 1.2.0)
@@ -13,7 +13,7 @@ PODS:
     - Agora_Chat_iOS
     - AgoraLyricsScore (~> 1.1.6)
     - AgoraRtcEngine_Special_iOS (< 4.1.1.100, > 4.1.1.19)
-    - AgoraRtm (~> 2.2.0)
+    - AgoraRtm (~> 2.2.1)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
@@ -62,9 +62,9 @@ SPEC CHECKSUMS:
   AgoraComponetLog: b359777d2ff8e9ee0237cbd0c42ceb422fd514f1
   AgoraLyricsScore: 7576387b199cdc3b2752a113688abd0a807a2ca3
   AgoraRtcEngine_Special_iOS: 62ac62b0caddac27ab3c2e26ed7a2e5d9c7739a5
-  AgoraRtm: 4813aab832ca612facb29c831339546c71e0b764
+  AgoraRtm: 0c0ea266de02ad6e4e43b1d33b7bb093bc347555
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  AUIKitCore: b8d10255d7a645133ce95a5ca67bc8cf808e61fc
+  AUIKitCore: d75c8ee614c89f00c75d4515c7f33dbdc76cb7d6
   MJRefresh: ff9e531227924c84ce459338414550a05d2aea78
   ScoreEffectUI: 2eef7a81906aae23ff96e3d7e07701a65f367b9f
   SDWebImage: 066c47b573f408f18caa467d71deace7c0f8280d
