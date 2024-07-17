@@ -73,7 +73,7 @@ dependencies {
     api 'io.agora.rtc:agora-special-full:4.1.1.20'
 
     // agora rtm
-    api 'io.agora:agora-rtm:2.1.8'
+    api 'io.agora:agora-rtm:2.2.0'
 }
 
 // Because the components are created only during the afterEvaluate phase, you must
