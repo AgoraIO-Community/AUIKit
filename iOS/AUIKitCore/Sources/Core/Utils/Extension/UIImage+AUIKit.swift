@@ -16,7 +16,7 @@ extension UIImage {
             return image
         }
         
-        print("load image not found imagefilePath: \(ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path ?? named)")
+        aui_error("load image not found imagefilePath: \(ThemeManager.currentThemePath?.URL?.appendingPathComponent(named).path ?? named)")
         assert(false)
 
         return nil
