@@ -18,6 +18,7 @@ import io.agora.auikit.service.http.room.RoomInterface
 import io.agora.auikit.service.http.room.RoomListReq
 import io.agora.auikit.service.http.room.RoomListResp
 import io.agora.auikit.service.http.room.RoomUserReq
+import io.agora.auikit.service.http.room.UpdateRoomReq
 import retrofit2.Call
 import retrofit2.Response
 
@@ -142,6 +143,31 @@ class AUIRoomManager(
                 }
 
                 override fun onFailure(call: Call<CommonResp<QueryRoomResp>>, t: Throwable) {
+                    callback?.onResult(AUIException(-1, t.message), null)
+                }
+            })
+    }
+
+    fun updateRoomInfo(
+        roomInfo: AUIRoomInfo,
+        callback: AUIRoomCallback?
+    ) {
+        roomInterface.updateRoomInfo(UpdateRoomReq(appId, sceneId, roomInfo.roomId, roomInfo))
+            .enqueue(object : retrofit2.Callback<CommonResp<String>> {
+                override fun onResponse(
+                    call: Call<CommonResp<String>>,
+                    response: Response<CommonResp<String>>
+                ) {
+                    val rsp = response.body()?.data
+                    if (response.body()?.code == 0 && rsp != null) {
+                        // success
+                        callback?.onResult(null, roomInfo)
+                    } else {
+                        callback?.onResult(Utils.errorFromResponse(response), null)
+                    }
+                }
+
+                override fun onFailure(call: Call<CommonResp<String>>, t: Throwable) {
                     callback?.onResult(AUIException(-1, t.message), null)
                 }
             })
