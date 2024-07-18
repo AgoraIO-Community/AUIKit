@@ -150,7 +150,7 @@ class AUIRtmMsgProxy : RtmEventListener {
         event ?: return
         val channelName = event.target
         val metadata = mutableMapOf<String, String>()
-        event.data.metadataItems.forEach {
+        event.data.items.forEach {
             metadata[it.key] = it.value
         }
         processMetaData(channelName, metadata)

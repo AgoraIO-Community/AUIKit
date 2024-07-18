@@ -4,16 +4,16 @@ PODS:
   - AgoraLyricsScore (1.1.6):
     - AgoraComponetLog
     - Zip
-  - AgoraRtcEngine_Special_iOS (4.1.1.17)
-  - AgoraRtm_iOS (2.1.8)
+  - AgoraRtcEngine_Special_iOS (4.1.1.26)
+  - AgoraRtm (2.2.1)
   - Alamofire (5.9.1)
-  - AUIKitCore (1.1.2):
-    - AUIKitCore/All (= 1.1.2)
-  - AUIKitCore/All (1.1.2):
+  - AUIKitCore (1.2.0):
+    - AUIKitCore/All (= 1.2.0)
+  - AUIKitCore/All (1.2.0):
     - Agora_Chat_iOS
     - AgoraLyricsScore (~> 1.1.6)
-    - AgoraRtcEngine_Special_iOS
-    - AgoraRtm_iOS (= 2.1.8)
+    - AgoraRtcEngine_Special_iOS (< 4.1.1.100, > 4.1.1.19)
+    - AgoraRtm (~> 2.2.1)
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
@@ -33,7 +33,7 @@ PODS:
   - Zip (2.1.2)
 
 DEPENDENCIES:
-  - AgoraRtcEngine_Special_iOS (= 4.1.1.17)
+  - AgoraRtcEngine_Special_iOS (= 4.1.1.26)
   - AUIKitCore (from `../../`)
   - SDWebImage
 
@@ -43,7 +43,7 @@ SPEC REPOS:
     - AgoraComponetLog
     - AgoraLyricsScore
     - AgoraRtcEngine_Special_iOS
-    - AgoraRtm_iOS
+    - AgoraRtm
     - Alamofire
     - MJRefresh
     - ScoreEffectUI
@@ -61,10 +61,10 @@ SPEC CHECKSUMS:
   Agora_Chat_iOS: e11aa75b290e5e8a6b90c1c73642ac1172a71b97
   AgoraComponetLog: b359777d2ff8e9ee0237cbd0c42ceb422fd514f1
   AgoraLyricsScore: 7576387b199cdc3b2752a113688abd0a807a2ca3
-  AgoraRtcEngine_Special_iOS: 5b3106aad2d76959393cc6497affe83dbdc926a0
-  AgoraRtm_iOS: 9fb76b5f71900d012aaed6c033e235d6fd201ed9
+  AgoraRtcEngine_Special_iOS: 62ac62b0caddac27ab3c2e26ed7a2e5d9c7739a5
+  AgoraRtm: 0c0ea266de02ad6e4e43b1d33b7bb093bc347555
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  AUIKitCore: 6c9e56047c089ab0732242a7b7575d99a428bfa2
+  AUIKitCore: d75c8ee614c89f00c75d4515c7f33dbdc76cb7d6
   MJRefresh: ff9e531227924c84ce459338414550a05d2aea78
   ScoreEffectUI: 2eef7a81906aae23ff96e3d7e07701a65f367b9f
   SDWebImage: 066c47b573f408f18caa467d71deace7c0f8280d
@@ -73,6 +73,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 0bf5403572e36902762452c4d6502c4e9f31f271
+PODFILE CHECKSUM: cd2ffaf5d9e58736d0dc0aaf60a06c1106b83e96
 
 COCOAPODS: 1.15.2

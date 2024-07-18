@@ -1,3 +1,6 @@
+## [1.2.0](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.2.0)
+- 升级Rtm SDK至2.2.1
+
 ## [1.1.2](https://github.com/AgoraIO-Community/AUIKit/releases/tag/1.1.2)
 - [iOS]更新podspec依赖版本
 

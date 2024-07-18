@@ -166,9 +166,10 @@ open class AUIRtmMsgProxy: NSObject {
     
     func processMetaData(channelName: String, data: AgoraRtmMetadata?) {
         guard let data = data else { return }
+        let items = data.items ?? []
         
         var cache = self.attributesCacheAttr[channelName] ?? [:]
-        data.getItems().forEach { item in
+        items.forEach { item in
 //            aui_info("\(item.key): \(item.value)", tag: "AUIRtmMsgProxy")
             //判断value和缓存里是否一致，这里用string可能会不准，例如不同终端序列化的时候json obj不同kv的位置不一样会造成生成的json string不同
             if cache[item.key] == item.value {
@@ -189,7 +190,7 @@ open class AUIRtmMsgProxy: NSObject {
             }
         }
         self.attributesCacheAttr[channelName] = cache
-        if data.getItems().count > 0 {
+        if items.count > 0 {
             return
         }
         for element in errorDelegates.allObjects {
@@ -248,8 +249,9 @@ extension AUIRtmMsgProxy: AgoraRtmClientDelegate {
         
 //        var map: [[]]
         var map: [String: String] = [:]
-        event.states.forEach { item in
-            map[item.key] = item.value
+        event.states.keys.forEach { key in
+            guard let key = key as? String, let value = event.states[key] as? String else {return}
+            map[key] = value
         }
         let userId = event.publisher ?? ""
         aui_info("presence userId: \(userId) event_type: \(event.type.rawValue) userInfo: \(map)", tag: "AUIRtmMsgProxy")
