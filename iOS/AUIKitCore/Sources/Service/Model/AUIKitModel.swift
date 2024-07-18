@@ -16,6 +16,8 @@ import Foundation
     public var roomId: String = ""            //房间id
     public var owner: AUIUserThumbnailInfo?   //房主信息
     
+    public var memberCount: UInt = 0
+    
     public var customPayload: [String: Any] = [:]   //扩展信息
     
     public var createTime: Int64 = 0
