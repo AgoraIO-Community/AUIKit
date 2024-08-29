@@ -131,7 +131,7 @@ import UIKit
                 attributes = self.layoutAttributesForItem(at: itemIndexPath)
                 
                 attributes?.alpha = 0.0
-                attributes?.center = CGPointMake(self.center.x, self.center.y)
+                attributes?.center = CGPoint(x: self.center.x, y: self.center.y)
                 attributes?.transform3D = CATransform3DMakeScale(0.1, 0.1, 1.0)
             }
         }
