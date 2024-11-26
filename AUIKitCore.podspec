@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AUIKitCore'
-  s.version          = '1.2.0'
+  s.version          = '1.2.1'
   s.summary          = 'A short description of AUIKit.'
   
   # This description is used to generate tags and improve search results.
@@ -46,7 +46,7 @@ Pod::Spec.new do |s|
     ss.dependency 'SDWebImage', '>=  5.0.0'
     ss.dependency 'MJRefresh'
     ss.dependency 'ScoreEffectUI'
-    ss.dependency 'AgoraLyricsScore', '~> 1.1.6'
+    ss.dependency 'AgoraLyricsScore', '~> 2.1.0'
     ss.dependency 'AgoraRtm', '~> 2.2.1'
     ss.dependency 'AgoraRtcEngine_Special_iOS','> 4.1.1.19', '< 4.1.1.100'
     ss.dependency 'Zip'

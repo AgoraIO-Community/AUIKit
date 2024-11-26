@@ -84,10 +84,10 @@ public class AUIKaraokeLrcView: UIView {
             var pos = preludeEndPosition - 2000
             if self.progress >= duration - 500 {
                 pos = duration - 500
-                self.skipCallBack?(pos, true)
+                self.skipCallBack?(Int(pos), true)
                 self.hasShowEpilogueOnce = true
             } else {
-                self.skipCallBack?(pos, false)
+                self.skipCallBack?(Int(pos), false)
                 self.hasShowPreludeEndOnce = true
             }
             
@@ -152,12 +152,12 @@ public class AUIKaraokeLrcView: UIView {
 }
 
 extension AUIKaraokeLrcView: KaraokeDelegate {
-    public func onKaraokeView(view: KaraokeView, didDragTo position: Int) {
+    public func onKaraokeView(view: KaraokeView, didDragTo position: UInt) {
         //歌词组件的滚动
         totalScore = view.scoringView.getCumulativeScore()
         gradeView.setScore(cumulativeScore: totalScore, totalScore: totalCount * 100)
         guard let delegate = self.delegate else {return}
-        delegate.onKaraokeView(didDragTo: position)
+        delegate.onKaraokeView(didDragTo: Int(position))
     }
     
     public func onKaraokeView(view: KaraokeView, didFinishLineWith model: LyricLineModel, score: Int, cumulativeScore: Int, lineIndex: Int, lineCount: Int) {
@@ -175,13 +175,13 @@ extension AUIKaraokeLrcView {
     
     public func updatePitch(pitch: Float) {
         //pitch 更新
-        lrcView?.setPitch(pitch: Double(pitch))
+        lrcView?.setPitch(speakerPitch: Double(pitch), progressInMs: 1)
     }
     
     public func updateProgress(progress: Int) {
         self.progress = progress
         //进度更新
-        lrcView?.setProgress(progress: progress)
+        lrcView?.setProgress(progress: UInt(progress))
         guard let model = self.lyricModel else {
             return
         }
@@ -205,7 +205,7 @@ extension AUIKaraokeLrcView {
         }
         let musicUrl = URL(fileURLWithPath: url)
         guard let data = try? Data(contentsOf: musicUrl),
-              let model = KaraokeView.parseLyricData(data: data) else {
+              let model = KaraokeView.parseLyricData(lyricFileData: data) else {
             return
         }
         currentLoadLrcPath = url
@@ -213,7 +213,7 @@ extension AUIKaraokeLrcView {
         totalCount = model.lines.count
         totalLines = 0
         totalScore = 0
-        lrcView?.setLyricData(data: model)
+        lrcView?.setLyricData(data: model, usingInternalScoring: true)
     }
 }
 
